@@ -168,9 +168,12 @@ The single operating manual for launching and scaling Jetson into new markets.
 - [Appendix A-8: Lessons Learned Template](appendix-a8-lessons-learned-template.md)
 - [Appendix A-9: Market Launch Gates & Readiness Criteria](appendix-a9-market-launch-gates-readiness-criteria.md)
 - [Appendix A-10: Weekly Expansion Launch Call Agenda Template](appendix-a10-weekly-expansion-launch-call-agenda-template.md)
+- [Gate Integration Roadmap](gate-integration-roadmap.md)
 
 ---
 
 ## Change Log
+
+**2026-02-16**: Added gate integration roadmap with section-by-section cross-reference plan. Updated Appendix A-10 with War Room vs. Launch Call distinction, attendance requirements (one rep per stakeholder team), agenda 24-hour advance requirement, and East-to-West presentation order.
 
 **2026-02-16**: Moved "1. Ownership & Governance" section from top of document (above overview sections) back to proper position after Document Control section and before Part I. Structure now flows: Header → Overview → Document Control → Section 1 → Part I onwards.

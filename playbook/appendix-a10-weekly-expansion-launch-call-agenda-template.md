@@ -7,14 +7,29 @@ This is not a status update meeting for its own sake. It's a **decision-making f
 - Reallocates resources between launches if needed
 - Makes greenlight/pause/delay decisions based on gate status
 - Unblocks Market Launch Leads who are stuck on cross-functional dependencies
+
+> **Critical distinction: Weekly Launch Call vs. War Room**
+>
+> The Weekly Expansion Launch Call is a **standing meeting** that runs throughout all active market launches. It is the primary governance and decision-making forum for the expansion portfolio.
+>
+> The **Launch War Room** (see Section 8.4) is a **tactical, high-frequency meeting** (daily or multiple times per week) that is stood up **only when a specific market launch is deemed at risk** and there is no clear path to resolution. The War Room is called by the VP of Expansion and focuses intensively on one market until the crisis is resolved.
+>
+> - **Weekly Launch Call**: Portfolio-level governance, all markets, weekly cadence, strategic decisions
+> - **War Room**: Single-market crisis response, daily/multi-day cadence, tactical problem-solving, temporary
+>
+> Most launches will never require a War Room. The Weekly Launch Call is sufficient for standard tracking and decision-making.
+
 > **Core principle:** One page per market. Red/yellow/green for every gate and workstream. No narrative unless it's attached to a decision request.
 ---
 ## Meeting Cadence & Attendance
 **Frequency:** Weekly, same day/time (e.g., every Monday 10:00 AM PT)
 **Duration:** 60 minutes (scales with number of active markets: ~15 min per market + 15 min buffer for escalations)
+**Led By:** Expansion Project Managers
+
 **Required Attendees:**
 - VP of Expansion (Brett Zriny) — Chair
 - Market Launch Leads (one per active market)
+- **At least one representative from each stakeholder team** (attendance by a member of each team is required)
 **Optional Attendees (Standing Invite):**
 - VP of Field Operations (Cameron) — for G4/G5 readiness decisions
 - Chief Procurement Officer (Mike Galbraith) — for supply chain/fleet/facility escalations
@@ -23,7 +38,10 @@ This is not a status update meeting for its own sake. It's a **decision-making f
 - CFO or Finance Lead — for budget/capex escalations
 - Head of People/TA — for hiring escalations
 **Meeting Owner:** VP of Expansion
-**Pre-Work Required:** Each Market Launch Lead submits their one-page status update (template below) **24 hours before the call** via Slack or shared doc
+
+**Pre-Work Required:**
+- **Agenda shared 24 hours in advance:** Expansion Project Manager compiles all status updates and shares consolidated agenda **24 hours before the call**
+- Each Market Launch Lead submits status update **24 hours before the call** via Slack or shared doc
 ---
 ## Agenda Structure
 ### Part 1: Portfolio Overview (5 minutes)
@@ -51,9 +69,13 @@ Today's Focus:
 ### Part 2: Market-by-Market Status (10–15 minutes per market)
 Each market follows the **one-page status template** below. Market Launch Lead presents; VP of Expansion asks clarifying questions and makes decisions.
 **Order of Presentation:**
-1. Markets with **red items** or **at-risk gates** go first (most time needed)
-2. Markets with **yellow items** but no reds go second
-3. Markets that are **all green** go last (quick confirmation only)
+
+Markets are reviewed in **East to West** geographic order, covering one location at a time.
+
+Within each market presentation, prioritize discussion based on status:
+1. **Red items** discussed first (most time needed)
+2. **Yellow items** discussed second
+3. **Green items** confirmed quickly
 ---
 ## One-Page Market Status Template
 ### Market: [Market Name]
@@ -231,7 +253,7 @@ To ensure consistency across all markets, use these definitions:
 This weekly call agenda integrates with:
 - **Appendix A-2: Expansion Weekly Rhythm Template** — Defines the broader weekly cadence for Market Launch Leads (this call is one component)
 - **Appendix A-9: Market Launch Gates & Readiness Criteria** — The gate structure and pass criteria used in status reporting
-- **Section 8.4: Launch War Room Protocol** — Once a market reaches G5 (go-live), the daily war room replaces this weekly call for that market
+- **Section 8.4: Launch War Room Protocol** — A temporary, high-intensity forum called by VP of Expansion only when a specific market launch is at risk with no clear path to resolution. The War Room does not replace this weekly call — it supplements it for crisis situations. See the distinction callout at the top of this document.
 - **Section 9.2: Stabilization Scorecard** — Once a market reaches G6, it exits this weekly call and transitions to GM-led operations
 ---
 ## Sample Completed Status Update
