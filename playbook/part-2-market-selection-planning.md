@@ -11,7 +11,7 @@ How Jetson identifies, scores, and plans new market entries — from initial sco
 ## 3. Market Identification & Prioritization
 
 - **3.1** Market Scoring Model
-- **3.2** Market Greenlight Criteria *(Gate G0 — see [Appendix A-9](appendix-a9-market-launch-gates-readiness-criteria.md))*
+- [**3.2** Market Greenlight Criteria & Gate G0](section-3.2-market-greenlight-criteria.md)
 - **3.3** Market Sequencing & Portfolio Planning
 - **3.4** Kill Criteria (When to Walk Away or Pause)
 

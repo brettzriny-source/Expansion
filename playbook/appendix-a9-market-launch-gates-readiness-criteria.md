@@ -53,13 +53,13 @@ G6: Stabilization & Handoff to GM Playbook
 ### Pass Criteria
 | # | Criterion | Owner | Evidence Required |
 |---|-----------|-------|-------------------|
-| G0.1 | Warehouse location/zip code identified and validated | Expansion/Ops | Service area map showing 1-day install coverage |
-| G0.2 | Rebate programs identified and eligibility confirmed | Finance | List of available rebates with $ amounts and application timelines |
-| G0.3 | Loan/financing programs identified and partnerships scoped | Finance | Loan partner list with terms, rates, and setup requirements |
-| G0.4 | License requirements mapped (business, contractor, permits) | Expansion/Ops | Licensing roadmap with application timelines and fees |
-| G0.5 | Launch installation volume targets confirmed (soft launch + ramp) | Expansion/Ops | Volume targets by week for first 90 days |
-| G0.6 | Capex/opex budget approved (real estate, fleet, inventory, headcount) | Expansion/Finance | Signed budget approval from CFO and CEO |
-| G0.7 | Market launch charter signed | Expansion/Ops | Charter document with scope, timeline, success criteria |
+| 1 | Warehouse location/zip code identified and validated | Expansion/Ops | Service area map showing 1-day install coverage |
+| 2 | Rebate programs identified and eligibility confirmed | Finance | List of available rebates with $ amounts and application timelines |
+| 3 | Loan/financing programs identified and partnerships scoped | Finance | Loan partner list with terms, rates, and setup requirements |
+| 4 | License requirements mapped (business, contractor, permits) | Expansion/Ops | Licensing roadmap with application timelines and fees |
+| 5 | Launch installation volume targets confirmed (soft launch + ramp) | Expansion/Ops | Volume targets by week for first 90 days |
+| 6 | Capex/opex budget approved (real estate, fleet, inventory, headcount) | Expansion/Finance | Signed budget approval from CFO and CEO |
+| 7 | Market launch charter signed | Expansion/Ops | Charter document with scope, timeline, success criteria |
 ### What Happens Next
 - Market Launch Lead is assigned
 - T-minus timeline is activated in Smartsheet
@@ -80,11 +80,11 @@ G6: Stabilization & Handoff to GM Playbook
 ### Pass Criteria
 | # | Criterion | Owner | Evidence Required |
 |---|-----------|-------|-------------------|
-| G1.1 | Lease negotiated and fully executed | Expansion/Finance | Signed lease agreement with move-in date confirmed |
-| G1.2 | Facility insurance and security deposit submitted | Finance | Certificate of insurance + proof of deposit payment |
-| G1.3 | Warehouse occupancy date confirmed and within timeline | Expansion/Ops | Landlord confirmation of occupancy date ≤ T-30 from planned go-live |
-| G1.4 | Facility layout, racking plan, and EV charger placement finalized | Expansion/Supply Chain | CAD drawing or floor plan with dimensions, racking layout, parking, charger locations |
-| G1.5 | Site meets minimum requirements (ceiling height, dock door, power) | Expansion/Ops | Site inspection checklist completed (Appendix TBD) |
+| 1 | Lease negotiated and fully executed | Expansion/Finance | Signed lease agreement with move-in date confirmed |
+| 2 | Facility insurance and security deposit submitted | Finance | Certificate of insurance + proof of deposit payment |
+| 3 | Warehouse occupancy date confirmed and within timeline | Expansion/Ops | Landlord confirmation of occupancy date ≤ T-30 from planned go-live |
+| 4 | Facility layout, racking plan, and EV charger placement finalized | Expansion/Supply Chain | CAD drawing or floor plan with dimensions, racking layout, parking, charger locations |
+| 5 | Site meets minimum requirements (ceiling height, dock door, power) | Expansion/Ops | Site inspection checklist completed (Appendix TBD) |
 ### Critical Path Dependencies (from Smartsheet)
 - Warehouse tours completed
 - Lease negotiation to execution (16 days — historically at-risk)
@@ -109,13 +109,13 @@ G6: Stabilization & Handoff to GM Playbook
 ### Pass Criteria
 | # | Criterion | Owner | Evidence Required |
 |---|-----------|-------|-------------------|
-| G2.1 | Business license applications submitted | Expansion/Ops | Confirmation numbers and expected approval dates |
-| G2.2 | Contractor/home improvement license applications submitted | Expansion/Ops | Confirmation numbers and expected approval dates |
-| G2.3 | Rebate/preferred contractor applications submitted | Expansion/Ops | Application confirmation + timeline to approval |
-| G2.4 | Loan partner setup initiated | Finance | Signed partnership agreements or applications in process |
-| G2.5 | GM hired and offer accepted | People/TA | Signed offer letter + start date ≤ T-45 from go-live |
-| G2.6 | FSM hired and offer accepted | People/TA | Signed offer letter + start date ≤ T-30 from go-live |
-| G2.7 | Warehouse Manager hired and offer accepted | People/TA | Signed offer letter + start date ≤ T-30 from go-live |
+| 1 | Business license applications submitted | Expansion/Ops | Confirmation numbers and expected approval dates |
+| 2 | Contractor/home improvement license applications submitted | Expansion/Ops | Confirmation numbers and expected approval dates |
+| 3 | Rebate/preferred contractor applications submitted | Expansion/Ops | Application confirmation + timeline to approval |
+| 4 | Loan partner setup initiated | Finance | Signed partnership agreements or applications in process |
+| 5 | GM hired and offer accepted | People/TA | Signed offer letter + start date ≤ T-45 from go-live |
+| 6 | FSM hired and offer accepted | People/TA | Signed offer letter + start date ≤ T-30 from go-live |
+| 7 | Warehouse Manager hired and offer accepted | People/TA | Signed offer letter + start date ≤ T-30 from go-live |
 ### Critical Path Dependencies (from Smartsheet)
 - Leadership jobs posted (GM, FSM, WH Manager)
 - Leadership recruiting and interviews (26 days — at-risk item)
@@ -139,14 +139,14 @@ G6: Stabilization & Handoff to GM Playbook
 ### Pass Criteria
 | # | Criterion | Owner | Evidence Required |
 |---|-----------|-------|-------------------|
-| G3.1 | Warehouse occupancy achieved | Expansion/Ops | Keys in hand, access confirmed |
-| G3.2 | Racking installed and labeled (aisle/bay/level/master setup) | Expansion/Supply Chain | Photos of completed racking + NetSuite location master updated |
-| G3.3 | IT installation complete (network, workstations, printing/scanning) | Expansion/IT | IT readiness checklist signed off (Appendix TBD) |
-| G3.4 | Office setup complete (desks, meeting rooms, safety equipment) | Expansion/IT | Office photos + furniture/equipment checklist complete |
-| G3.5 | EV chargers installed and operational | Expansion/Supply Chain | Charger testing complete, fleet charging plan validated |
-| G3.6 | All ops and warehouse coordinator roles filled | People/TA | Signed offer letters for all positions + start dates confirmed |
-| G3.7 | Background checks and onboarding paperwork complete | People/TA | All team members cleared to start |
-| G3.8 | Utilities, internet, and trash service active | Expansion/IT | Service confirmation + account numbers documented |
+| 1 | Warehouse occupancy achieved | Expansion/Ops | Keys in hand, access confirmed |
+| 2 | Racking installed and labeled (aisle/bay/level/master setup) | Expansion/Supply Chain | Photos of completed racking + NetSuite location master updated |
+| 3 | IT installation complete (network, workstations, printing/scanning) | Expansion/IT | IT readiness checklist signed off (Appendix TBD) |
+| 4 | Office setup complete (desks, meeting rooms, safety equipment) | Expansion/IT | Office photos + furniture/equipment checklist complete |
+| 5 | EV chargers installed and operational | Expansion/Supply Chain | Charger testing complete, fleet charging plan validated |
+| 6 | All ops and warehouse coordinator roles filled | People/TA | Signed offer letters for all positions + start dates confirmed |
+| 7 | Background checks and onboarding paperwork complete | People/TA | All team members cleared to start |
+| 8 | Utilities, internet, and trash service active | Expansion/IT | Service confirmation + account numbers documented |
 ### Critical Path Dependencies (from Smartsheet)
 - Racking permit window (28 days — at-risk item)
 - Racking installed (3 days — at-risk item)
@@ -172,18 +172,18 @@ G6: Stabilization & Handoff to GM Playbook
 ### Pass Criteria
 | # | Criterion | Owner | Evidence Required |
 |---|-----------|-------|-------------------|
-| G4.1 | Vehicles landed and readiness check complete | Expansion/Fleet | Vehicle delivery confirmation + standardized loadout checklist signed |
-| G4.2 | Vehicle outfitting complete (racks, tools, branding, chargers tested) | Expansion/Fleet | Photos of outfitted vehicles + loadout verification |
-| G4.3 | Initial inventory received and put away | Supply Chain | Receiving logs + cycle count complete in NetSuite |
-| G4.4 | Installation kits built and staged | Warehouse | Kit BOM checklist complete + dry run completed |
-| G4.5 | Mock install and truck load/unload time trials completed | Training/Ops | Mock install video or checklist + time trial results documented |
-| G4.6 | Field ops team completed JetStart (Jetson University) training | Training/Ops | Training completion certificates for all installers |
-| G4.7 | Field ops team passed certification (install quality, safety, customer interaction) | Training/Ops | Certification checklist signed by Training Lead |
-| G4.8 | ServiceTitan dispatch workflows configured and tested | Warehouse/Ops | Test job created, scheduled, dispatched, and closed in ServiceTitan |
-| G4.9 | NetSuite locations, items, and approvals configured | Warehouse/Ops | Test transactions completed (PO, receiving, kit build, cycle count) |
-| G4.10 | Mobile devices set up (field MDM, logins, MFA, apps) | Warehouse/Ops | All field devices tested and handed to installers |
-| G4.11 | Sales enablement complete (pricing, intake, phone tree, website, digital ads live) | Sales/Marketing/Expansion | Customer can request a quote and be scheduled in target service area |
-| G4.12 | Training and launch readiness gate passed | Training/Ops | Final readiness review with VP of Expansion and VP of Field Operations |
+| 1 | Vehicles landed and readiness check complete | Expansion/Fleet | Vehicle delivery confirmation + standardized loadout checklist signed |
+| 2 | Vehicle outfitting complete (racks, tools, branding, chargers tested) | Expansion/Fleet | Photos of outfitted vehicles + loadout verification |
+| 3 | Initial inventory received and put away | Supply Chain | Receiving logs + cycle count complete in NetSuite |
+| 4 | Installation kits built and staged | Warehouse | Kit BOM checklist complete + dry run completed |
+| 5 | Mock install and truck load/unload time trials completed | Training/Ops | Mock install video or checklist + time trial results documented |
+| 6 | Field ops team completed JetStart (Jetson University) training | Training/Ops | Training completion certificates for all installers |
+| 7 | Field ops team passed certification (install quality, safety, customer interaction) | Training/Ops | Certification checklist signed by Training Lead |
+| 8 | ServiceTitan dispatch workflows configured and tested | Warehouse/Ops | Test job created, scheduled, dispatched, and closed in ServiceTitan |
+| 9 | NetSuite locations, items, and approvals configured | Warehouse/Ops | Test transactions completed (PO, receiving, kit build, cycle count) |
+| 10 | Mobile devices set up (field MDM, logins, MFA, apps) | Warehouse/Ops | All field devices tested and handed to installers |
+| 11 | Sales enablement complete (pricing, intake, phone tree, website, digital ads live) | Sales/Marketing/Expansion | Customer can request a quote and be scheduled in target service area |
+| 12 | Training and launch readiness gate passed | Training/Ops | Final readiness review with VP of Expansion and VP of Field Operations |
 ### Critical Path Dependencies (from Smartsheet)
 - Place Rivian van order (33 days — at-risk item, longest lead time)
 - Vehicles landed (at-risk milestone)
@@ -212,11 +212,11 @@ G6: Stabilization & Handoff to GM Playbook
 ### Pass Criteria
 | # | Criterion | Owner | Evidence Required |
 |---|-----------|-------|-------------------|
-| G5.1 | First installation completed successfully | Ops | Install completion documentation in ServiceTitan + customer sign-off |
-| G5.2 | Customer satisfaction confirmed (no major issues, willing to provide testimonial) | Ops | Customer Net Promoter Score (NPS) ≥ 8 OR follow-up call confirms satisfaction |
-| G5.3 | Install met quality standards (QA checklist passed, no callbacks within 48 hours) | Ops | QA checklist complete + no immediate service requests |
-| G5.4 | System commissioned and functional (Jetson Hub connected, app working) | Ops | Hub online in customer app + remote diagnostics functional |
-| G5.5 | Installation time within target range (1-day install achieved) | Ops | Install start and end times logged + within 8-hour window |
+| 1 | First installation completed successfully | Ops | Install completion documentation in ServiceTitan + customer sign-off |
+| 2 | Customer satisfaction confirmed (no major issues, willing to provide testimonial) | Ops | Customer Net Promoter Score (NPS) ≥ 8 OR follow-up call confirms satisfaction |
+| 3 | Install met quality standards (QA checklist passed, no callbacks within 48 hours) | Ops | QA checklist complete + no immediate service requests |
+| 4 | System commissioned and functional (Jetson Hub connected, app working) | Ops | Hub online in customer app + remote diagnostics functional |
+| 5 | Installation time within target range (1-day install achieved) | Ops | Install start and end times logged + within 8-hour window |
 ### What Happens Next
 - Daily launch war room begins (Section 8.4)
 - Soft launch phase continues with controlled volume ramp
@@ -238,16 +238,16 @@ G6: Stabilization & Handoff to GM Playbook
 These criteria are defined in detail in **Section 9.2: Stabilization Scorecard**. Summary:
 | # | Criterion | Owner | Evidence Required |
 |---|-----------|-------|-------------------|
-| G6.1 | Install volume ramped to target (≥80% of planned weekly volume for 4 consecutive weeks) | Ops | ServiceTitan volume reports |
-| G6.2 | Callback rate below threshold (≤5% within 30 days of install) | Ops | Callback tracking report |
-| G6.3 | Quality score meets standard (QA checklist pass rate ≥95%) | Ops | QA audit results |
-| G6.4 | Labor efficiency within target (install hours per job ≤ target +10%) | Ops | Time tracking data from ServiceTitan |
-| G6.5 | Customer satisfaction meets standard (NPS ≥70, review average ≥4.5 stars) | Ops | NPS survey results + Google review average |
-| G6.6 | Inventory accuracy ≥95% (cycle count results) | Warehouse | NetSuite cycle count variance reports |
-| G6.7 | Team retention stable (≤10% turnover in first 90 days, excluding probation failures) | GM | HR turnover report |
-| G6.8 | GM fully trained and confident in operations | GM | GM self-assessment + VP of Expansion validation |
-| G6.9 | All systems stable (NetSuite, ServiceTitan, fleet, facility) | Ops/IT | No critical system issues in past 30 days |
-| G6.10 | Lessons learned document completed | Expansion | Lessons learned submitted using Appendix A-8 template |
+| 1 | Install volume ramped to target (≥80% of planned weekly volume for 4 consecutive weeks) | Ops | ServiceTitan volume reports |
+| 2 | Callback rate below threshold (≤5% within 30 days of install) | Ops | Callback tracking report |
+| 3 | Quality score meets standard (QA checklist pass rate ≥95%) | Ops | QA audit results |
+| 4 | Labor efficiency within target (install hours per job ≤ target +10%) | Ops | Time tracking data from ServiceTitan |
+| 5 | Customer satisfaction meets standard (NPS ≥70, review average ≥4.5 stars) | Ops | NPS survey results + Google review average |
+| 6 | Inventory accuracy ≥95% (cycle count results) | Warehouse | NetSuite cycle count variance reports |
+| 7 | Team retention stable (≤10% turnover in first 90 days, excluding probation failures) | GM | HR turnover report |
+| 8 | GM fully trained and confident in operations | GM | GM self-assessment + VP of Expansion validation |
+| 9 | All systems stable (NetSuite, ServiceTitan, fleet, facility) | Ops/IT | No critical system issues in past 30 days |
+| 10 | Lessons learned document completed | Expansion | Lessons learned submitted using Appendix A-8 template |
 ### What Happens Next
 - Formal handoff checklist completed (Appendix A-6)
 - Market Launch Lead and expansion team step out
@@ -301,7 +301,7 @@ Every override must be documented in the weekly gate scorecard (Appendix A-2) wi
 - Update the **weekly gate scorecard** (Appendix A-2) with red/yellow/green status for each criterion
 - Escalate yellow or red items to VP of Expansion immediately — delays are not failures, but surprises are
 ### For Cross-Functional Partners
-- Know which gate criteria you own (e.g., Finance owns G0.2, G0.3, G0.6, G2.4)
+- Know which gate criteria you own (e.g., Finance owns G0 criteria 2, 3, 6 and G2 criterion 4)
 - Treat your gate criteria as **non-negotiable deliverables**
 - Communicate status proactively to the Market Launch Lead — don't wait to be asked
 ### For the VP of Expansion

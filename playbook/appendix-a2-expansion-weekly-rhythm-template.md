@@ -104,14 +104,14 @@ This is the report every Market Launch Lead submits to the VP of Expansion every
 **Pass Criteria Status:**
 | Criterion | Status | Notes |
 |-----------|--------|-------|
-| G3.1: Warehouse occupancy achieved | 🟢 Green | Occupancy on 02/19, keys in hand |
-| G3.2: Racking installed and labeled | 🔴 Red | Permit delayed 2 weeks; considering temp racking |
-| G3.3: IT installation complete | 🟢 Green | On track for 03/05 completion |
-| G3.4: Office setup complete | 🟢 Green | Furniture delivered, setup in progress |
-| G3.5: EV chargers installed | 🟡 Yellow | Electrician availability tight; may slip 1 week |
-| G3.6: All ops roles filled | 🟡 Yellow | 6/10 roles filled; 4 open positions |
-| G3.7: Background checks complete | 🟢 Green | All cleared for 6 hired roles |
-| G3.8: Utilities active | 🟢 Green | Internet, power, trash service live |
+| G3 — Warehouse occupancy achieved | 🟢 Green | Occupancy on 02/19, keys in hand |
+| G3 — Racking installed and labeled | 🔴 Red | Permit delayed 2 weeks; considering temp racking |
+| G3 — IT installation complete | 🟢 Green | On track for 03/05 completion |
+| G3 — Office setup complete | 🟢 Green | Furniture delivered, setup in progress |
+| G3 — EV chargers installed | 🟡 Yellow | Electrician availability tight; may slip 1 week |
+| G3 — All ops roles filled | 🟡 Yellow | 6/10 roles filled; 4 open positions |
+| G3 — Background checks complete | 🟢 Green | All cleared for 6 hired roles |
+| G3 — Utilities active | 🟢 Green | Internet, power, trash service live |
 ---
 ### Top 3 Risks
 | # | Risk | Impact | Mitigation | Owner | Status |

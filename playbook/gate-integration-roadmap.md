@@ -41,14 +41,14 @@ This section defines the criteria for **Gate G0: Market Selection & Budget Appro
 **Critical Path Items:**
 - Market launch charter and budget approval (Task 1.7) ⚠️ At Risk
 
-**Pass Criteria:**
-- G0.1: Warehouse location identified
-- G0.2: Rebate programs identified
-- G0.3: Loan programs identified
-- G0.4: License requirements mapped
-- G0.5: Volume targets confirmed
-- G0.6: Budget approved
-- G0.7: Launch charter signed
+**Pass Criteria (7 total):**
+- Warehouse location identified
+- Rebate programs identified
+- Loan programs identified
+- License requirements mapped
+- Volume targets confirmed
+- Budget approved
+- Launch charter signed
 
 **Review:** Use Appendix A-3 (Market Greenlight Scorecard) to evaluate readiness before advancing to G1.
 ```
@@ -74,18 +74,18 @@ This section defines the criteria for **Gate G0: Market Selection & Budget Appro
 ### Gate Checkpoints: G0 → G1 → G2
 
 This checklist spans three gates:
-- **G0** (Market Assessment): Tasks 1.1-1.7
-- **G1** (Real Estate): Tasks 2.1-2.9 ⚠️ Lease negotiation and occupancy are critical path
-- **G2** (Compliance & Leadership): Tasks 3.1-3.4 and 4.1-4.3
+- **G0** (Market Assessment): Tasks 1.1–1.7
+- **G1** (Real Estate): Tasks 2.1–2.9 ⚠️ Lease negotiation and occupancy are critical path
+- **G2** (Compliance & Leadership): Tasks 3.1–3.4 and 4.1–4.3
 
 See Appendix A-9 for complete gate criteria.
 ```
 
 #### 4.3 Budget & Financial Model
 
-**Add G0.6 reference:**
+**Add G0 reference:**
 
-> **Gate Requirement:** Budget approval is Gate G0.6 (see Appendix A-9). No market advances past G0 without CFO and CEO budget approval.
+> **Gate Requirement:** Budget approval is a G0 pass criterion (see Appendix A-9). No market advances past G0 without CFO and CEO budget approval.
 
 #### 4.4 Facility & Warehouse Readiness
 
@@ -100,21 +100,21 @@ See Appendix A-9 for complete gate criteria.
 - Lease negotiation (Task 2.7): 12-16 days ⚠️ At Risk
 - Warehouse occupancy (Task 2.9): Must complete for G1 pass ⚠️ At Risk
 
-**G1 Pass Criteria:**
-- G1.1: Lease executed
-- G1.2: Insurance and deposit in place
-- G1.3: Occupancy date confirmed (≤ T-30 from go-live)
-- G1.4: Facility layout finalized
-- G1.5: Site meets minimum requirements
+**G1 Pass Criteria (5 total):**
+- Lease executed
+- Insurance and deposit in place
+- Occupancy date confirmed (≤ T-30 from go-live)
+- Facility layout finalized
+- Site meets minimum requirements
 
 **Escalation:** Report G1 status weekly in Expansion Launch Call (Appendix A-10). Lease delays are common failure mode — see Appendix A-9 for mitigation strategies.
 ```
 
 #### 4.5 Fleet & Equipment Procurement
 
-**Add G4.1 reference:**
+**Add G4 reference:**
 
-> **Gate Requirement:** Vehicles must be landed and outfitted for Gate G4.1-G4.2 pass. Gantt Task 6.1 (Place Rivian order) is 25-33 days and sits on critical path ⚠️. Order vehicles at T-90 or earlier.
+> **Gate Requirement:** Vehicles must be landed and outfitted for G4 pass (vehicle readiness criteria). Gantt Task 6.1 (Place Rivian order) is 25-33 days and sits on critical path ⚠️. Order vehicles at T-90 or earlier.
 
 ---
 
@@ -128,7 +128,7 @@ See Appendix A-9 for complete gate criteria.
 **Add at top:**
 
 ```markdown
-### Gate G2.5: GM Hired
+### Gate G2: GM Hired
 
 **Gantt Reference:** Phase 4 — Talent Launch, Tasks 4.1-4.3
 
@@ -137,7 +137,7 @@ See Appendix A-9 for complete gate criteria.
 - Recruiting window: 20 days (Task 4.2) ⚠️ At Risk
 - Hired milestone: T-60 minimum (Task 4.3) ⚠️ Critical
 
-**G2.5 Pass Criterion:** Signed offer letter + start date ≤ T-45 from go-live
+**G2 Pass Criterion:** Signed offer letter + start date ≤ T-45 from go-live
 
 **Common Failure:** GM hire falls through or delays. See Appendix A-9, Gate G2 failure modes for mitigation strategies.
 
@@ -149,7 +149,7 @@ See Appendix A-9 for complete gate criteria.
 **Add at top:**
 
 ```markdown
-### Gate G3.6-G3.7: Ops & WH Coordinators Hired
+### Gate G3: Ops & WH Coordinators Hired
 
 **Gantt Reference:** Phase 4 — Talent Launch, Tasks 4.5-4.8
 
@@ -159,7 +159,7 @@ See Appendix A-9 for complete gate criteria.
 - Hired milestone: T-30 minimum (Task 4.7) ⚠️ Critical
 - Onboarding: 2-4 days (Task 4.8)
 
-**G3.6-G3.7 Pass Criteria:**
+**G3 Pass Criteria (hiring):**
 - All ops and warehouse coordinator roles filled (signed offers)
 - Background checks and onboarding paperwork complete
 
@@ -178,7 +178,7 @@ See Appendix A-9 for complete gate criteria.
 **Add at top:**
 
 ```markdown
-### Gate G4.6-G4.7: Training & Certification Complete
+### Gate G4: Training & Certification Complete
 
 **Gantt Reference:** Phase 4 — Talent Launch, Tasks 4.9-4.11 + Phase 6, Task 6.20
 
@@ -188,7 +188,7 @@ See Appendix A-9 for complete gate criteria.
 - Training + readiness gate: 11 days (Task 6.20) ⚠️ Critical Path
 - Ready to install: T-0 (Task 4.11)
 
-**G4.6-G4.7 Pass Criteria:**
+**G4 Pass Criteria (training):**
 - Training completion certificates for all installers
 - Certification checklist signed by Training Lead
 - Quality, safety, and customer interaction standards met
@@ -203,14 +203,14 @@ See Appendix A-9, Gate G4 for certification standards.
 ### Section 7: Local Market Entry Strategy
 
 **Current State:** Narrative about sales and GTM
-**Needs:** Gate G4.11 and G5 cross-references
+**Needs:** Gate G4 (sales enablement) and G5 cross-references
 
 #### 7.1 Brand Introduction & Local Awareness
 
 **Add at top:**
 
 ```markdown
-### Gate G4.11: Sales Enablement Complete
+### Gate G4: Sales Enablement Complete
 
 **Gantt Reference:** Phase 7 — Sales Enablement (Tasks 7.1-7.10)
 
@@ -219,7 +219,7 @@ See Appendix A-9, Gate G4 for certification standards.
 - Digital/website/intake setup: 1 day each (Tasks 7.2-7.9)
 - **Sales start: T-30 to T-40** (Task 7.10) — Pipeline build window
 
-**G4.11 Pass Criterion:**
+**G4 Pass Criterion (sales enablement):**
 Customer can request a quote and be scheduled in target service area. All enablement items live:
 - Pricing, intake, phone tree, website, digital ads, PR, affiliates, referral lists
 
@@ -243,13 +243,13 @@ Customer can request a quote and be scheduled in target service area. All enable
 **Gantt Reference:** Phase 8 — Operations Launch (Task 8.1)
 
 **Go-Live Prerequisites (G4 must pass):**
-- Vehicles landed and outfitted (G4.1-G4.2)
-- Inventory kitted and staged (G4.3-G4.5)
-- Training certified (G4.6-G4.7)
-- Systems live (G4.8-G4.10)
-- Sales enablement complete (G4.11)
+- Vehicles landed and outfitted
+- Inventory kitted and staged
+- Training certified
+- Systems live
+- Sales enablement complete
 
-**G5 Pass Criteria:**
+**G5 Pass Criteria (5 total):**
 - First installation completed successfully
 - Customer satisfaction confirmed (NPS ≥ 8)
 - Quality standards met (QA checklist passed, no immediate callbacks)
@@ -394,7 +394,7 @@ Use this template when updating sections:
 
 ### Phase 2: High Priority (Next Update)
 
-- [ ] Section 7.1 (Sales Enablement) — Add G4.11 and MA lesson learned
+- [ ] Section 7.1 (Sales Enablement) — Add G4 sales enablement reference and MA lesson learned
 - [ ] Section 8.1 (Go-Live) — Add G5 reference
 - [ ] Section 8.4 (War Room) — Add entry/exit criteria and distinction from Weekly Call
 - [ ] Section 9.2 (Stabilization) — Add G6 reference
@@ -404,15 +404,15 @@ Use this template when updating sections:
 
 - [ ] Section 4.2 (Pre-Launch Checklist) — Add G0, G1, G2 references
 - [ ] Section 4.4 (Facility) — Add G1 detailed callout
-- [ ] Section 5.2 (GM Hiring) — Add G2.5 reference
-- [ ] Section 5.3 (Field Hiring) — Add G3.6-G3.7 reference
+- [ ] Section 5.2 (GM Hiring) — Add G2 (GM hired) reference
+- [ ] Section 5.3 (Field Hiring) — Add G3 (ops & WH hiring) reference
 
 ### Phase 4: Lower Priority
 
 - [ ] Section 3.2 (Greenlight) — Add G0 reference
-- [ ] Section 6.2 (Training) — Add G4.6-G4.7 reference
-- [ ] Section 4.3 (Budget) — Add G0.6 reference
-- [ ] Section 4.5 (Fleet) — Add G4.1-G4.2 reference
+- [ ] Section 6.2 (Training) — Add G4 (training & certification) reference
+- [ ] Section 4.3 (Budget) — Add G0 (budget approval) reference
+- [ ] Section 4.5 (Fleet) — Add G4 (vehicle readiness) reference
 
 ---
 

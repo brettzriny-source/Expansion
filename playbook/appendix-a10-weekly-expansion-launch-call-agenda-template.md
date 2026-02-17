@@ -90,8 +90,8 @@ Within each market presentation, prioritize discussion based on status:
 |------|--------|-------------------|---------------|-------------|
 | G0: Market Selection & Budget Approval | 🟢 Green | 7/7 | None | Completed [date] |
 | G1: Real Estate Secured | 🟢 Green | 5/5 | None | Completed [date] |
-| G2: Compliance & Leadership in Place | 🟡 Yellow | 5/7 | G2.5 (GM hire delayed), G2.6 (FSM offer pending) | Target: [date] |
-| G3: Facility Ready & Team Hired | 🔴 Red | 2/8 | G3.2 (racking permit delayed), G3.6 (ops hiring shortfall) | Target: [date] |
+| G2: Compliance & Leadership in Place | 🟡 Yellow | 5/7 | GM hire delayed, FSM offer pending | Target: [date] |
+| G3: Facility Ready & Team Hired | 🔴 Red | 2/8 | Racking permit delayed, ops hiring shortfall | Target: [date] |
 | G4: Physical Readiness & Training Complete | ⚪ Not Started | 0/12 | N/A | Target: [date] |
 | G5: Go-Live — First Installation | ⚪ Not Started | 0/5 | N/A | Target: [date] |
 | G6: Stabilization & Handoff | ⚪ Not Started | 0/10 | N/A | Target: [date] |
@@ -271,8 +271,8 @@ Here's a real example of what a completed one-page status looks like:
 |------|--------|-------------------|---------------|-------------|
 | G0: Market Selection & Budget Approval | 🟢 Green | 7/7 | None | Completed 12/29/25 |
 | G1: Real Estate Secured | 🟢 Green | 5/5 | None | Completed 02/05/26 |
-| G2: Compliance & Leadership in Place | 🟡 Yellow | 6/7 | G2.6 (FSM offer extended but not yet accepted) | Target: 02/20/26 |
-| G3: Facility Ready & Team Hired | 🔴 Red | 3/8 | G3.2 (racking permit delayed), G3.5 (EV chargers not yet installed), G3.6 (ops hiring 60% complete) | Target: 03/19/26 |
+| G2: Compliance & Leadership in Place | 🟡 Yellow | 6/7 | FSM offer extended but not yet accepted | Target: 02/20/26 |
+| G3: Facility Ready & Team Hired | 🔴 Red | 3/8 | Racking permit delayed, EV chargers not yet installed, ops hiring 60% complete | Target: 03/19/26 |
 | G4: Physical Readiness & Training Complete | ⚪ Not Started | 0/12 | N/A | Target: 04/18/26 |
 | G5: Go-Live — First Installation | ⚪ Not Started | 0/5 | N/A | Target: 04/21/26 |
 | G6: Stabilization & Handoff | ⚪ Not Started | 0/10 | N/A | Target: 07/15/26 |
