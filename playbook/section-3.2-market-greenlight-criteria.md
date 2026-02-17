@@ -12,11 +12,9 @@ The greenlight criteria map directly to **Gate G0: Market Selection & Budget App
 
 ---
 
-## Gate Checkpoint: G0
+## Gate Checkpoint: G0 — Market Selection & Budget Approval
 
-> **Gate G0: Market Selection & Budget Approval**
->
-> This section defines the criteria for Gate G0 — the first gate in the Jetson market launch lifecycle. A market does not advance past G0 without meeting all pass criteria below.
+This section defines the criteria for Gate G0 — the first gate in the Jetson market launch lifecycle. A market does not advance past G0 without meeting all pass criteria below.
 
 **Gantt Reference:** Phase 1 — Market Assessment (Tasks 1.1–1.7)
 
