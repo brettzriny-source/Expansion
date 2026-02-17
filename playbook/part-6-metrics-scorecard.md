@@ -15,8 +15,7 @@ How Jetson measures expansion performance — from pre-launch milestones through
 - **10.3** Stabilization Metrics (Callback Rate, Revenue Ramp, Retention, NPS)
 - **10.4** Portfolio-Level Metrics (Markets Launched vs. Plan, Time-to-Stable, Cost per Launch)
 - **10.5** Green / Yellow / Red Thresholds
-
-> **Related:** [Appendix A-9 — Market Launch Gates & Readiness Criteria](appendix-a9-market-launch-gates-readiness-criteria.md)
+- See also: [Appendix A-9 — Market Launch Gates & Readiness Criteria](appendix-a9-market-launch-gates-readiness-criteria.md)
 
 ---
 

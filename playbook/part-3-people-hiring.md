@@ -24,8 +24,7 @@ The hiring and training playbook for new markets — from recruiting strategy th
 - **6.2** Field Team Certification Before Go-Live
 - **6.3** Shadow & Apprenticeship Model (Sending New Hires to Existing Markets)
 - **6.4** Readiness Gate: "No Launch Until Training Complete"
-
-> **Related:** [Appendix A-5 — New Market GM 30/60/90 Plan](appendix-a5-new-market-gm-30-60-90-plan.md)
+- See also: [Appendix A-5 — New Market GM 30/60/90 Plan](appendix-a5-new-market-gm-30-60-90-plan.md)
 
 ---
 

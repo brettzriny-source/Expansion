@@ -14,8 +14,7 @@ How Jetson identifies, scores, and plans new market entries — from initial sco
 - [**3.2** Market Greenlight Criteria & Gate G0](section-3.2-market-greenlight-criteria.md)
 - **3.3** Market Sequencing & Portfolio Planning
 - **3.4** Kill Criteria (When to Walk Away or Pause)
-
-> **Related:** [Appendix A-3 — Market Greenlight Scorecard Template](appendix-a3-market-greenlight-scorecard-template.md)
+- See also: [Appendix A-3 — Market Greenlight Scorecard Template](appendix-a3-market-greenlight-scorecard-template.md)
 
 ---
 
@@ -27,8 +26,7 @@ How Jetson identifies, scores, and plans new market entries — from initial sco
 - **4.4** Facility & Warehouse Readiness
 - **4.5** Fleet & Equipment Procurement
 - **4.6** Technology & Systems Setup (Zuper, HubSpot, Rippling, NetSuite Provisioning)
-
-> **Related:** [Section 2.1 — Master Launch Timeline](section-2.1-master-launch-timeline.md) | [Appendix A-1 — Master Checklist](appendix-a1-market-launch-master-checklist.md)
+- See also: [Section 2.1 — Master Launch Timeline](section-2.1-master-launch-timeline.md) | [Appendix A-1 — Master Checklist](appendix-a1-market-launch-master-checklist.md)
 
 ---
 
