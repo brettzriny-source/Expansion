@@ -1,255 +1,314 @@
-<callout icon="📋" color="blue_bg">
 # 1.2 RACI Matrix for Market Launch Lifecycle
-Who owns what — at every phase — so nothing falls through the cracks.
-</callout>
-
+Who does what at each stage of a market launch — with zero ambiguity about accountability.
 ## Purpose
-
-A market launch touches every function at Jetson — Sales, Customer Ops, Procurement, Field Operations, and the Expansion team itself. Without crystal-clear role assignments at each phase, two things happen: critical tasks get duplicated (wasting time) or — worse — they get orphaned (and blow up later). This section defines the RACI framework for every phase of the market launch lifecycle, from initial scoring through formal handoff to steady-state operations. It is the single reference for "who does what, and who decides" at every stage of a launch.
-
-<callout icon="💡" color="yellow_bg">
-**Core rule:** Every launch activity has exactly one Accountable owner. If you can't point to a single name, the activity is unowned — and unowned activities are the #1 source of launch delays.
-</callout>
-
+A market launch involves 40+ people across 10+ functions. Without explicit accountability, work falls through cracks, two teams duplicate effort, or nobody owns the outcome. This section provides the definitive RACI matrix for every major activity across the launch lifecycle, organized by gate (G0 through G6).
+RACI stands for:
+- **R = Responsible:** Does the work
+- **A = Accountable:** Owns the outcome; approves the work; single decision maker
+- **C = Consulted:** Provides input before decisions or actions
+- **I = Informed:** Kept updated on progress and decisions
+> **Core rule:** Every activity has exactly one A. If you see two A's, that's a bug — fix it.
 ---
-
-<callout icon="1️⃣" color="green_bg">
-### 1) How RACI Works at Jetson
-</callout>
-
-**A) The Four Roles**
-
-| Role | Definition | Jetson Translation |
-|------|-----------|-------------------|
-| **R — Responsible** | Does the work. Executes the task. | The person (or team) with hands on keyboard, boots on ground, or pen on contract. |
-| **A — Accountable** | Owns the outcome. Single decision-maker. | The one name that gets the call when something goes sideways. There is exactly **one A** per activity — no exceptions. |
-| **C — Consulted** | Provides input *before* the decision or action. | Cross-functional partners whose expertise shapes the work — but they don't own the deliverable. |
-| **I — Informed** | Notified *after* the decision or action. | Stakeholders who need visibility but aren't in the critical path. |
-
-**B) Jetson-Specific RACI Principles**
-
-- **One A, always.** If a RACI row has two A's, it has zero owners. Escalate to the VP of Expansion to resolve.
-- **R can be shared.** Multiple people or teams can execute — but the A still owns the outcome.
-- **C means before, I means after.** If you're consulted, your input is expected *before* the action. If you're informed, you receive the update *after*. Confusing these causes either bottlenecks (everyone weighs in) or surprises (no one knew).
-- **Cross-functional partners are R or C — not A.** During a launch, Sales, Customer Ops, and Procurement are embedded in the launch but accountable to their functional leaders. The Market Launch Lead coordinates them; their functional VP owns their performance.
-- **The A shifts at handoff.** Before stabilization, the Market Launch Lead is A for most launch activities. After formal handoff, the GM becomes A. This transition is explicit and gated (see Section 1.4 and Section 9.3).
-
-<callout icon="📝" color="gray_bg">
-**Note:** The Regional Expansion Director role is TBD. When created, this role will sit between the VP of Expansion and Market Launch Lead on multi-market oversight activities. Until then, the VP of Expansion holds those responsibilities directly.
-</callout>
-
+## How to Use This RACI Matrix
+### For Market Launch Leads
+- You are **A** (Accountable) for most launch activities through G5
+- You coordinate all **R** (Responsible) parties to ensure work gets done
+- You escalate to VP of Expansion when an **A** from another function is blocking progress
+### For Cross-Functional Partners
+- Know where you are **A** vs. **R** vs. **C** vs. **I**
+- If you are **A**, you own the outcome — don't wait for the Market Launch Lead to chase you
+- If you are **C**, provide input proactively when asked — silence is not consent
+### For the VP of Expansion
+- Use this to identify gaps in ownership when launches are off track
+- Update this matrix when organizational structure changes (e.g., new roles, new responsibilities)
+- Enforce the "one A" rule — no shared accountability
+### For GMs
+- You transition from **C/I** during early gates to **A** after G6 handoff
+- During G3–G5, you are **R** or **C** on most activities — learning and building local capability
+- After G6, the GM Playbook RACI takes over (not this one)
 ---
-
-<callout icon="2️⃣" color="green_bg">
-### 2) The Market Launch Lifecycle — Phases & RACI
-</callout>
-
-The market launch lifecycle has **five phases**, each with a distinct set of activities, owners, and readiness gates. The RACI tables below cover the high-level assignments. For the fully expanded, activity-by-activity matrix, see **Appendix A-4: Expansion RACI Matrix (Full Detail)**.
-
-**A) Phase 1 — Market Identification & Greenlight**
-*From initial scoring through the formal greenlight decision.*
-
-| Activity | VP of Expansion (Brett) | Market Launch Lead | Sales (Angie) | Procurement (Mike) | Field Ops (Cameron) | Customer Ops (Ryan) |
-|----------|:-----------------------:|:------------------:|:-------------:|:-------------------:|:-------------------:|:-------------------:|
-| Market scoring & analysis | **A / R** | C | C | C | C | I |
-| Competitive & regulatory assessment | **A** | R | C | I | C | I |
-| Financial modeling (cost per launch) | **A** | R | C | C | I | I |
-| Portfolio sequencing recommendation | **A / R** | I | C | C | C | I |
-| Greenlight decision | **A** | I | C | C | C | I |
-
-> **Who decides:** The VP of Expansion makes the greenlight call. Cross-functional leaders are consulted to validate feasibility — Sales on demand potential, Procurement on supply chain, Field Ops on labor availability — but the decision authority sits with Brett.
-
-**B) Phase 2 — Market Launch Planning (T-90 to T-30)**
-*From greenlight through pre-launch readiness. The Market Launch Lead is assigned and becomes the single-threaded owner of execution.*
-
-| Activity | VP of Expansion (Brett) | Market Launch Lead | Sales (Angie) | Procurement (Mike) | Field Ops (Cameron) | Customer Ops (Ryan) |
-|----------|:-----------------------:|:------------------:|:-------------:|:-------------------:|:-------------------:|:-------------------:|
-| Launch timeline & milestone plan | C | **A / R** | C | C | C | C |
-| Licensing & permits | I | **A / R** | I | I | C | I |
-| Facility & warehouse selection | C | **A** | I | **R** | C | I |
-| Fleet & equipment procurement | I | **A** | I | **R** | C | I |
-| Systems provisioning (**Zuper**, **HubSpot**, **Rippling**, **NetSuite**) | I | **A / R** | C | C | I | C |
-| Budget tracking & variance reporting | **A** | **R** | I | I | I | I |
-| Hiring plan development | C | **A / R** | I | I | C | I |
-| Insurance & entity setup | I | **A / R** | I | I | I | I |
-
-> **Who decides:** The Market Launch Lead owns day-to-day planning decisions. The VP of Expansion is accountable for budget and portfolio-level trade-offs. Procurement *executes* warehouse and fleet setup but the Market Launch Lead *owns* the outcome — if the warehouse isn't ready, that's the Launch Lead's problem to escalate, not Procurement's problem to self-manage.
-
-<callout icon="⚠️" color="orange_bg">
-**The MA expansion taught us:** Don't treat facility and warehouse readiness as a background task. The Market Launch Lead must personally track warehouse setup weekly from T-90 onward. A warehouse that's "almost ready" at go-live means installs without parts — and that's a quality crisis on Day 1.
-</callout>
-
-**C) Phase 3 — Hiring, Training & Pre-Launch Readiness (T-60 to T-0)**
-*Team is hired, trained, and certified. All readiness gates must pass before soft launch.*
-
-| Activity | VP of Expansion (Brett) | Market Launch Lead | Sales (Angie) | Procurement (Mike) | Field Ops (Cameron) | Customer Ops (Ryan) |
-|----------|:-----------------------:|:------------------:|:-------------:|:-------------------:|:-------------------:|:-------------------:|
-| GM selection (if separate from Launch Lead) | **A** | C | I | I | C | I |
-| Field team recruiting & hiring | C | **A / R** | I | I | C | I |
-| Field team training & certification | I | **A** | I | I | **R** | I |
-| Sales team ramp plan (new market) | C | C | **A / R** | I | I | I |
-| Customer Ops readiness (scheduling, permits, **Zuper** config) | I | C | I | I | I | **A / R** |
-| BOM kitting & inventory stocking | I | C | I | **A / R** | I | I |
-| Pre-launch readiness gate review | **A** | **R** | C | C | C | C |
-| Shadow/apprenticeship deployment to existing markets | I | **A** | I | I | **R** | I |
-
-> **Who decides:** The pre-launch readiness gate is the critical checkpoint. The Market Launch Lead *runs* the review — compiling status from every function — but the VP of Expansion *approves* the gate. No market moves to soft launch without the VP of Expansion's sign-off.
-
-<callout icon="⚠️" color="red_bg">
-**Non-negotiable:** The readiness gate is not a formality. If licensing, warehouse, or first-crew certification is incomplete, the launch does not proceed. Pressure to "just get going" is the single most common failure mode in market launches. The gate exists to prevent it.
-</callout>
-
-**D) Phase 4 — Soft Launch & Go-Live (T-0 to T+30)**
-*Controlled volume, then full operations. War room cadence is active.*
-
-| Activity | VP of Expansion (Brett) | Market Launch Lead | Sales (Angie) | Procurement (Mike) | Field Ops (Cameron) | Customer Ops (Ryan) |
-|----------|:-----------------------:|:------------------:|:-------------:|:-------------------:|:-------------------:|:-------------------:|
-| Soft launch execution (controlled volume) | C | **A / R** | C | I | C | C |
-| Daily war room facilitation | I | **A / R** | C | C | C | C |
-| Install quality monitoring | C | **A** | I | I | **R** | I |
-| Demand generation activation | I | C | **A / R** | I | I | I |
-| Scheduling & fulfillment coordination | I | C | I | I | I | **A / R** |
-| Inventory & supply chain monitoring | I | C | I | **A / R** | I | I |
-| Escalation management | **A** | **R** | C | C | C | C |
-| Go-live decision (move from soft to full) | **A** | **R** | C | C | C | C |
-
-> **Who decides:** The Market Launch Lead runs the launch day-to-day and facilitates the war room. The VP of Expansion makes the go-live call — the decision to move from controlled volume to full operations. This is not a date on a calendar; it's a readiness assessment based on soft launch performance data.
-
-<callout icon="💡" color="yellow_bg">
-**Core rule:** Soft launch is not a dress rehearsal — it's live operations at controlled volume. The war room cadence (daily standups with all functional leads) stays active from soft launch through at least T+30 of go-live. See Section 8.4 for the war room protocol.
-</callout>
-
-**E) Phase 5 — Stabilization & Handoff (T+30 to T+90)**
-*Performance is monitored against the stabilization scorecard. Formal handoff to steady-state when criteria are met.*
-
-| Activity | VP of Expansion (Brett) | Market Launch Lead | Sales (Angie) | Procurement (Mike) | Field Ops (Cameron) | Customer Ops (Ryan) | Incoming GM |
-|----------|:-----------------------:|:------------------:|:-------------:|:-------------------:|:-------------------:|:-------------------:|:-----------:|
-| Stabilization scorecard tracking | **A** | **R** | C | C | C | C | C |
-| 30/60/90-day performance reviews | **A** | **R** | C | I | C | C | C |
-| War room wind-down (daily → weekly) | I | **A / R** | I | I | I | I | C |
-| GM onboarding & knowledge transfer | C | **A / R** | I | I | C | I | **R** |
-| Lessons learned capture | **A** | **R** | C | C | C | C | I |
-| Formal handoff decision | **A** | **R** | C | C | C | C | I |
-| Handoff execution (Expansion → GM Playbook) | C | **A / R** | I | I | C | I | **R** |
-
-> **Who decides:** The VP of Expansion approves the formal handoff based on the stabilization scorecard (Section 9.2). This is not a date — it's a scorecard. The Market Launch Lead compiles the evidence, the incoming GM validates readiness to accept, and the VP of Expansion makes the call. Once handed off, the market operates under **GM Playbook** governance.
-
+## RACI Conventions for This Playbook
+### Role Abbreviations
+| Abbreviation | Role | Reports To |
+|--------------|------|------------|
+| **VP-EXP** | VP of Expansion (Brett Zriny) | CEO |
+| **MLL** | Market Launch Lead | VP of Expansion |
+| **GM** | General Manager (Market) | VP of Field Operations (post-handoff) |
+| **FSM** | Field Service Manager (Market) | GM |
+| **WM** | Warehouse Manager (Market) | GM |
+| **VP-FO** | VP of Field Operations (Cameron) | CEO |
+| **CPO** | Chief Procurement Officer (Mike Galbraith) | CEO |
+| **VP-Sales** | VP of Sales (Angie Hirata) | CEO |
+| **VP-CO** | VP of Customer Ops (Ryan Delmaire) | CEO |
+| **CFO** | Chief Financial Officer | CEO |
+| **Head-TA** | Head of Talent Acquisition / People Ops | CFO or COO |
+| **Head-IT** | Head of IT | CTO |
+| **Head-Mktg** | Head of Marketing | VP of Sales |
+| **Supply Chain** | Supply Chain Team | CPO |
+| **Fleet** | Fleet Team | CPO |
+| **Training** | Training / JetStart Team | VP of Field Operations |
+### RACI Assignment Rules
+1. **Every row has exactly one A.** No exceptions.
+2. **A ≠ R.** The person accountable (A) is often not the person doing the work (R). Accountable means "owns the outcome and makes the final call."
+3. **No empty cells.** If a role is not involved in an activity, mark it with **—** (dash).
+4. **C vs. I distinction matters.**
+   - **C (Consulted):** Must provide input before a decision is made. Two-way communication.
+   - **I (Informed):** Needs to know the outcome. One-way communication.
+5. **When in doubt, fewer C's and I's is better.** Over-consultation slows decisions.
 ---
-
-<callout icon="3️⃣" color="green_bg">
-### 3) How to Read and Use the RACI
-</callout>
-
-**A) For the Market Launch Lead**
-
-You are the central node. You hold **A** for the majority of launch execution activities from T-90 through handoff. That means:
-- You don't have to do everything yourself — but you own every outcome.
-- When a cross-functional partner is **R** on an activity (e.g., Procurement on warehouse setup), you are still **A**. If they're behind, it's your job to escalate — not to wait.
-- Your daily war room is where RACI comes to life. Every functional lead reports status against their **R** assignments; you hold the integrated view.
-
-**B) For Cross-Functional Partners (Sales, Customer Ops, Procurement, Field Ops)**
-
-You are embedded in the launch — but you report to your functional leader, not the Market Launch Lead. Your RACI role is typically **R** (execute) or **C** (advise). That means:
-- When you're **R**, deliver on time. The Market Launch Lead is tracking your output daily.
-- When you're **C**, provide input *before* the decision. Don't surface concerns after the plan is locked.
-- If you're stretched across multiple launches, flag capacity conflicts to your functional VP *and* the VP of Expansion. Don't silently deprioritize.
-
-**C) For the VP of Expansion**
-
-You hold **A** at the portfolio level: greenlight decisions, budget accountability, readiness gates, and handoff approvals. You are **not** in the day-to-day execution path — that's the Market Launch Lead's domain. Your RACI role is to:
-- Set the bar (readiness gates, stabilization criteria, kill criteria)
-- Approve phase transitions (greenlight, soft launch, go-live, handoff)
-- Break ties and resolve cross-functional conflicts that the Market Launch Lead can't resolve at their level
-- Hold the pattern across markets — ensuring lessons from Market 1 are embedded in Market 2's plan
-
+## G0: Market Selection & Budget Approval
+**Gate Owner:** VP of Expansion
+**Typical Duration:** 10–12 business days
+**Key Activities:** Market assessment, budget approval, charter sign-off
+| Activity | VP-EXP | MLL | CFO | CPO | VP-Sales | VP-CO | VP-FO | Supply Chain | Head-TA | GM |
+|----------|--------|-----|-----|-----|----------|-------|-------|--------------|---------|-----|
+| **Market Assessment** |
+| Warehouse location/zip code assessment | A | R | — | C | — | — | C | C | — | — |
+| Rebate identification and eligibility validation | C | R | A | — | — | C | — | — | — | — |
+| Loan/financing program identification | C | R | A | — | — | C | — | — | — | — |
+| License requirements mapping (business, contractor, permits) | C | R | A | C | — | — | C | — | — | — |
+| Installation volume targets confirmation | A | R | C | C | C | C | C | — | — | — |
+| Capex/opex budget modeling and approval | C | R | A | C | — | — | C | — | C | — |
+| Market launch charter creation and sign-off | A | R | C | C | C | C | C | — | C | — |
+| **Gate Decision** |
+| G0 pass/fail decision | A | R | C | — | — | — | — | — | — | — |
+### Key Observations
+- **VP of Expansion** is accountable for market selection and greenlight decision
+- **Market Launch Lead** is assigned during G0 and does most of the assessment work
+- **CFO** owns all financial decisions (rebates, loans, budget approval)
+- **GM** is not yet involved (hasn't been hired)
 ---
-
-<callout icon="4️⃣" color="green_bg">
-### 4) Common Failure Modes (And the Fix)
-</callout>
-
-**A) "Two people think they're Accountable"**
-
-**Failure:** Both the Market Launch Lead and Procurement think they own warehouse readiness. Neither escalates delays because each assumes the other is on it.
-
-**Fix:** One A, always. The Market Launch Lead is A for warehouse readiness. Procurement is R (executes the setup). If there's confusion, pull up this RACI. If the RACI doesn't resolve it, escalate to the VP of Expansion within 24 hours.
-
+## G1: Real Estate Secured (Lease Signed)
+**Gate Owner:** Market Launch Lead (with VP of Expansion approval)
+**Typical Duration from G0:** 35–50 days
+**Key Activities:** Site search, lease negotiation, facility layout planning
+| Activity | VP-EXP | MLL | CFO | CPO | VP-FO | Supply Chain | Fleet | Head-IT | GM |
+|----------|--------|-----|-----|-----|-------|--------------|-------|---------|-----|
+| **Real Estate** |
+| Interview and select local broker | C | A/R | — | — | — | — | — | — | — |
+| Warehouse site tours and evaluation | C | A/R | — | C | — | C | — | — | — |
+| Site inspection (ceiling height, power, dock door, etc.) | I | A | — | — | C | R | — | C | — |
+| Lease negotiation to execution | C | A | R | — | — | — | — | — | — |
+| Facility insurance and security deposit | I | R | A | — | — | — | — | — | — |
+| Warehouse occupancy date confirmation | C | A | — | — | — | R | — | — | — |
+| **Facility Planning** |
+| Facility layout, racking, parking, EV charger plan | C | A | — | R | — | R | C | C | — |
+| EV charger electrical scope and permitting | I | R | — | R | — | R | — | C | — |
+| **Gate Decision** |
+| G1 pass/fail decision | A | R | — | — | — | C | — | — | — |
+### Key Observations
+- **Market Launch Lead** owns real estate search and lease execution (with CFO signing lease)
+- **Supply Chain** is heavily consulted on facility layout and racking requirements
+- **GM** still not hired yet (typically hired during G2)
 ---
-
-**B) "Consulted becomes a veto"**
-
-**Failure:** A cross-functional partner marked as C treats their input as a blocking vote. The Market Launch Lead can't move forward because Sales "hasn't approved" the timeline.
-
-**Fix:** C means input, not approval. The A (Market Launch Lead) must seek input from C parties — but the decision is theirs. If a C party has a material objection, the right move is to escalate to the VP of Expansion — not to grant veto power.
-
+## G2: Compliance & Leadership in Place
+**Gate Owner:** Market Launch Lead
+**Typical Duration from G1:** 10–15 days (overlaps with G3 prep)
+**Key Activities:** License applications, GM/FSM/WM hiring
+| Activity | VP-EXP | MLL | CFO | CPO | VP-FO | Head-TA | GM | FSM | WM |
+|----------|--------|-----|-----|-----|-------|---------|-----|-----|-----|
+| **Compliance & Licensing** |
+| Business license applications | I | A/R | — | — | — | — | — | — | — |
+| Contractor/home improvement license applications | I | A/R | — | — | C | — | — | — | — |
+| Rebate/preferred contractor applications | C | A/R | R | — | — | — | — | — | — |
+| Loan partner setup | I | R | A | — | — | — | — | — | — |
+| **Leadership Hiring** |
+| Define GM job description and comp band | C | R | — | — | C | A | — | — | — |
+| GM recruiting, interviews, and selection | A | R | — | — | C | R | — | — | — |
+| GM offer letter and start date negotiation | C | R | — | — | — | A | — | — | — |
+| Define FSM and WM job descriptions and comp bands | I | R | — | — | C | A | C | — | — |
+| FSM and WM recruiting, interviews, and selection | C | R | — | — | C | R | R | — | — |
+| FSM and WM offer letters and start dates | I | R | — | — | — | A | R | — | — |
+| **Gate Decision** |
+| G2 pass/fail decision | A | R | — | — | — | C | — | — | — |
+### Key Observations
+- **Market Launch Lead** owns all licensing and compliance work
+- **Head of TA** is accountable for all hiring (recruiting, offers, comp bands)
+- **GM** begins participating in hiring decisions once they start (hiring FSM and WM)
+- **VP of Expansion** remains accountable for GM selection (this is a critical hire)
 ---
-
-**C) "Informed means ignored"**
-
-**Failure:** The Market Launch Lead marks Customer Support as I on a launch milestone, then doesn't actually inform them. Support learns about go-live when the first customer calls in.
-
-**Fix:** I is an active obligation, not a passive label. Build an explicit communication plan for I stakeholders — automated updates, weekly launch emails, or a shared dashboard. If someone is marked I, they should never be surprised.
-
+## G3: Facility Ready & Team Hired
+**Gate Owner:** Market Launch Lead
+**Typical Duration from G2:** 30–40 days
+**Key Activities:** Racking install, IT setup, ops team hiring, systems config
+| Activity | VP-EXP | MLL | CPO | VP-FO | Supply Chain | Fleet | Head-IT | Head-TA | GM | FSM | WM |
+|----------|--------|-----|-----|-------|--------------|-------|---------|---------|-----|-----|-----|
+| **Facility Setup** |
+| Finalize facility layout and racking requirements | I | R | C | — | A | — | C | — | C | — | R |
+| Engage racking contractor and manage install | I | R | — | — | A | — | — | — | C | — | R |
+| Racking permit applications and approvals | I | A/R | — | — | C | — | — | — | — | — | C |
+| Racking installation and labeling (aisle/bay/level) | I | C | — | — | R | — | — | — | C | — | A |
+| IT installation (network, workstations, printers) | I | R | — | — | — | — | A | — | C | — | C |
+| Office setup (desks, furniture, safety equipment) | I | R | — | — | — | — | A | — | C | — | C |
+| EV charger installation and testing | I | R | — | — | A | C | C | — | C | — | C |
+| Utilities, internet, trash service activation | I | A/R | — | — | — | — | C | — | — | — | C |
+| **Ops Team Hiring** |
+| Define ops and WH coordinator job descriptions | I | R | — | C | — | — | — | A | R | R | R |
+| Ops and WH coordinator recruiting and interviews | I | R | — | C | — | — | — | R | R | R | A |
+| Ops and WH coordinator offers and onboarding | I | I | — | — | — | — | — | A | C | C | R |
+| Background checks and onboarding paperwork | I | I | — | — | — | — | — | A | — | — | R |
+| **Gate Decision** |
+| G3 pass/fail decision | A | R | C | C | — | — | — | C | C | — | — |
+### Key Observations
+- **Warehouse Manager** becomes accountable for racking setup and ops hiring once they start
+- **Supply Chain** owns racking contractor engagement and install
+- **Head of IT** owns all IT and office setup
+- **GM, FSM, WM** are now involved (C or R) in most facility and hiring activities — this is their market being built
 ---
-
-**D) "The RACI exists but no one checks it"**
-
-**Failure:** The matrix was built during planning but never referenced during execution. Ownership drifts. Tasks fall through cracks.
-
-**Fix:** The RACI is a living reference. The Market Launch Lead should review it at the start of each phase transition. The war room agenda should include a "RACI check" for any activity that's off-track — who owns it, who's executing, who's blocked.
-
+## G4: Physical Readiness & Training Complete
+**Gate Owner:** Market Launch Lead (with VP of Field Operations approval)
+**Typical Duration from G3:** 30–40 days
+**Key Activities:** Fleet delivery, inventory kitting, training certification, systems config, sales enablement
+| Activity | VP-EXP | MLL | CPO | VP-FO | VP-Sales | VP-CO | Supply Chain | Fleet | Training | Head-IT | Head-Mktg | GM | FSM | WM |
+|----------|--------|-----|-----|-------|----------|-------|--------------|-------|----------|---------|-----------|-----|-----|-----|
+| **Fleet & Vehicles** |
+| Place Rivian van order | I | R | C | — | — | — | — | A | — | — | — | — | — | — |
+| Vehicle delivery confirmation and inspection | I | R | — | — | — | — | — | A | — | — | — | C | R | — |
+| Vehicle outfitting (racks, tools, branding, chargers) | I | R | — | C | — | — | — | A | — | — | — | C | R | — |
+| Vehicle readiness check and loadout verification | I | C | — | C | — | — | — | R | — | — | — | C | A | — |
+| **Inventory & Kitting** |
+| Initial BOM planning and PO release (long-lead items) | I | R | C | — | — | — | A | — | — | — | — | — | — | C |
+| Order, receive, and put-away inventory | I | C | — | — | — | — | A | — | — | — | — | — | — | R |
+| Define kit BOM, pick lists, packaging standards | I | R | — | C | — | — | A | — | C | — | — | — | — | R |
+| Build installation kits and conduct dry runs | I | C | — | C | — | — | C | — | R | — | — | C | R | A |
+| Mock install and truck load/unload time trials | I | C | — | R | — | — | — | — | A | — | — | C | R | C |
+| **Systems Configuration** |
+| Configure ServiceTitan dispatch workflows | I | R | — | C | — | R | — | — | — | C | — | C | — | A |
+| Configure NetSuite locations, items, approvals | I | R | — | — | — | — | R | — | — | C | — | C | — | A |
+| Mobile device setup (field MDM, logins, MFA, apps) | I | R | — | — | — | — | — | — | — | A | — | — | — | C |
+| **Training** |
+| Onboarding paperwork, payroll, safety docs | I | R | — | — | — | — | — | — | — | — | — | C | C | A |
+| Onsite field ops training (shadow/evaluation) | I | C | — | C | — | — | — | — | A | — | — | R | R | C |
+| Field ops to JetStart (Jetson University) | I | C | — | R | — | — | — | — | A | — | — | C | R | — |
+| Field ops certification (install quality, safety, customer interaction) | I | C | — | A | — | — | — | — | R | — | — | C | R | — |
+| **Sales Enablement** |
+| Pricing locked for market | I | R | C | — | R | — | — | — | — | — | — | — | — | — |
+| Equipment selection matrix updated | I | I | R | — | — | — | — | — | — | — | — | — | — | — |
+| Intake enabled (quote flow, scheduling) | I | R | — | — | C | A | — | — | — | R | — | — | — | — |
+| Phone tree setup and enabled | I | R | — | — | — | C | — | — | — | A | — | — | — | — |
+| Website setup (service area, pricing, booking) | I | R | — | — | — | — | — | — | — | C | A | — | — | — |
+| Digital ads launch (Google, Meta, etc.) | I | R | — | — | — | — | — | — | — | — | A | — | — | — |
+| PR launch (press release, local media) | I | R | — | — | — | — | — | — | — | — | A | — | — | — |
+| **Readiness Gate** |
+| Training and launch readiness gate review | A | R | — | A | — | — | — | — | R | — | — | C | C | C |
+| **Gate Decision** |
+| G4 pass/fail decision | A | R | — | A | — | — | — | — | — | — | — | C | C | C |
+### Key Observations
+- **Fleet team** owns vehicle ordering and outfitting
+- **Supply Chain** owns inventory and kitting
+- **Warehouse Manager** is now accountable for kitting and inventory put-away
+- **Training team** owns field ops certification
+- **VP of Field Operations** must approve G4 pass (joint decision with VP of Expansion) — this is the "ops is ready" gate
+- **Sales does not start until G4 is passed** — this is enforced by RACI (VP of Sales is informed, not accountable, until G4 pass)
 ---
-
-**E) "The handoff is fuzzy"**
-
-**Failure:** The market is "kind of stable" but nobody formally transitions ownership. The Market Launch Lead moves on to the next market. The incoming GM assumes Expansion is still watching. Quality drifts.
-
-**Fix:** The handoff is a specific moment — gated by the stabilization scorecard (Section 9.2) and approved by the VP of Expansion. Until that gate passes, the Market Launch Lead remains A. After it passes, the GM is A under the **GM Playbook**. There is no gray zone.
-
+## G5: Go-Live — First Installation
+**Gate Owner:** VP of Expansion and VP of Field Operations (joint)
+**Typical Duration from G4:** 1–3 days
+**Key Activities:** First install execution, quality validation, customer satisfaction
+| Activity | VP-EXP | MLL | VP-FO | VP-Sales | VP-CO | Training | GM | FSM | WM |
+|----------|--------|-----|-------|----------|-------|----------|----|-----|-----|
+| **First Installation** |
+| Schedule first installation customer | I | R | C | C | R | — | C | A | — |
+| Conduct first installation | I | C | C | — | — | C | R | A | C |
+| QA checklist completion and sign-off | I | R | R | — | — | C | C | A | — |
+| Customer satisfaction follow-up (NPS survey) | I | R | — | — | R | — | C | R | — |
+| System commissioning (Hub connected, app working) | I | R | C | — | R | — | C | A | — |
+| Installation time tracking and efficiency validation | I | R | R | — | — | — | C | A | — |
+| **Launch War Room** |
+| Daily launch war room setup and cadence | C | A | R | C | C | — | R | R | R |
+| Post-install quality checks on all jobs | I | C | R | — | C | — | C | A | — |
+| **Gate Decision** |
+| G5 pass/fail decision | A | R | A | — | — | — | C | C | — |
+### Key Observations
+- **FSM** is now accountable for field execution (first install, QA, time tracking)
+- **GM** is accountable for local operations but still supported by Market Launch Lead
+- **Market Launch Lead** runs the daily launch war room (coordination function)
+- **VP of Field Operations** must approve G5 pass (joint decision with VP of Expansion)
 ---
-
-<callout icon="5️⃣" color="green_bg">
-### 5) RACI Quick-Reference Summary
-</callout>
-
-For fast orientation, here's the simplified accountability map across the full lifecycle:
-
-| Lifecycle Phase | Primary Accountable (A) | Key Responsible (R) | Key Consulted (C) |
-|----------------|:-----------------------:|:-------------------:|:-----------------:|
-| Market Identification & Scoring | VP of Expansion | VP of Expansion | Sales, Procurement, Field Ops |
-| Greenlight Decision | VP of Expansion | VP of Expansion | All functional leads |
-| Launch Planning (T-90 to T-30) | Market Launch Lead* | Market Launch Lead + functional leads | VP of Expansion |
-| Hiring & Team Build | Market Launch Lead | Market Launch Lead + HR | VP of Expansion, Field Ops |
-| Training & Certification | Market Launch Lead | Field Ops (Cameron) | VP of Expansion |
-| Pre-Launch Readiness Gate | VP of Expansion | Market Launch Lead | All functional leads |
-| Soft Launch | Market Launch Lead | Market Launch Lead + all functions | VP of Expansion |
-| Go-Live Decision | VP of Expansion | Market Launch Lead | All functional leads |
-| Go-Live Execution | Market Launch Lead | Market Launch Lead + all functions | VP of Expansion |
-| Stabilization Monitoring | VP of Expansion | Market Launch Lead | All functional leads |
-| Formal Handoff Decision | VP of Expansion | Market Launch Lead + incoming GM | Field Ops, Customer Ops |
-| Steady-State Operations | General Manager | Per **GM Playbook** | Per **GM Playbook** |
-
-*During Launch Planning, the VP of Expansion retains A for budget and portfolio-level decisions while the Market Launch Lead holds A for execution milestones.*
-
-<callout icon="📝" color="gray_bg">
-**Note:** This summary table is intentionally simplified. For the full activity-level RACI matrix — including sub-tasks within each phase, IT/systems provisioning, legal/compliance, and marketing — see **Appendix A-4: Expansion RACI Matrix (Full Detail)**.
-</callout>
-
+## G6: Stabilization & Handoff to GM Playbook
+**Gate Owner:** GM and VP of Expansion (joint)
+**Typical Duration from G5:** 60–90 days
+**Key Activities:** Volume ramp, stabilization scorecard, lessons learned, formal handoff
+| Activity | VP-EXP | MLL | VP-FO | CPO | Supply Chain | GM | FSM | WM |
+|----------|--------|-----|-------|-----|--------------|-----|-----|-----|
+| **Post-Launch Stabilization** |
+| Hypercare support period (daily standups, issue resolution) | C | R | C | C | C | A | R | R |
+| Daily ops huddle (scheduling, quality, safety) | I | I | C | — | — | A | R | R |
+| Process hardening and SOP documentation | I | C | C | C | C | A | R | R |
+| KPI tracking and dashboard setup | I | R | R | — | — | A | R | R |
+| Weekly KPI cadence establishment | I | I | C | — | — | A | R | R |
+| Cycle count program and shrink controls | I | I | — | C | R | C | — | A |
+| Vendor and supply chain optimization | I | I | — | R | A | C | — | R |
+| Local supplier onboarding and SLAs | I | I | — | R | A | C | — | R |
+| **Handoff Process** |
+| Stabilization scorecard review (Section 9.2) | C | R | R | — | — | A | R | R |
+| Formal handoff checklist completion (Appendix A-6) | A | R | C | — | — | R | — | — |
+| Lessons learned document creation (Appendix A-8) | C | A | C | C | C | C | — | — |
+| Post-mortem meeting | A | R | R | C | C | R | — | — |
+| Playbook update with lessons learned | A | R | — | — | — | — | — | — |
+| **Gate Decision** |
+| G6 pass/fail decision (handoff approval) | A | R | C | — | — | A | — | — |
+### Key Observations
+- **GM** is now accountable for stabilization and daily operations
+- **Market Launch Lead** transitions from A (accountable) to R (responsible) — supporting GM but no longer owning outcomes
+- **Handoff is joint decision** between VP of Expansion and GM (both must sign off)
+- **Lessons learned is non-negotiable** — Market Launch Lead owns this deliverable
+- After G6 pass, Market Launch Lead steps out and GM operates under GM Playbook governance
 ---
-
-<callout icon="⚠️" color="red_bg">
-**Non-negotiable: If an activity has no single A, it is unowned. Unowned activities do not "work themselves out" — they surface as launch-day crises. When in doubt, the Market Launch Lead is A until the VP of Expansion says otherwise.**
-</callout>
-
-<callout icon="📝" color="gray_bg">
-**Note:** As the Expansion team scales and the Regional Expansion Director role is introduced, this RACI will be updated to reflect the additional oversight layer between the VP of Expansion and Market Launch Leads. Until that role is filled, the VP of Expansion holds direct accountability for all portfolio-level decisions. Check with Brett Zriny for the latest org design.
-</callout>
-
+## RACI Summary by Role
+### VP of Expansion (Brett Zriny)
+**Accountable for:**
+- Market selection and greenlight (G0)
+- All gate pass/fail decisions (G0–G6)
+- GM hiring decision (G2)
+- Handoff to GM (G6)
+- Lessons learned and playbook updates (G6)
+**Not accountable for:**
+- Day-to-day execution (that's Market Launch Lead or GM)
+- Functional work (real estate, hiring, IT, supply chain) — those have separate A's
+### Market Launch Lead
+**Accountable for:**
+- All launch activities from G0 through G5
+- Weekly gate scorecard updates
+- Launch war room coordination (G5)
+- Lessons learned document (G6)
+**Transitions to supporting role:**
+- After G6 handoff, steps out completely
+### General Manager (Market)
+**Accountable for:**
+- Local operations starting at G3 (hiring, facility readiness)
+- Field execution starting at G5 (first install, quality, crew management)
+- Stabilization and handoff readiness (G6)
+- Full market ownership post-G6 (GM Playbook governance)
+**Not accountable for:**
+- Launch coordination (that's Market Launch Lead until G6)
+- Cross-functional workstreams owned by HQ (sales, customer ops, procurement)
+### Cross-Functional Leads (Sales, Customer Ops, Procurement, IT, TA, Marketing)
+**Accountable for:**
+- Their function's deliverables within the launch timeline
+- Examples: Sales enablement, systems configuration, hiring, inventory, marketing launch
+**Not accountable for:**
+- Overall launch success (that's VP of Expansion)
+- Launch timeline coordination (that's Market Launch Lead)
 ---
-
-<callout icon="🎯" color="red_bg">
+## Common RACI Failures (And the Fix)
+| Failure | What Happens | The Fix |
+|---------|--------------|---------|
+| **Two people think they're A** | Confusion about who makes the final call; decisions stall or conflict | RACI review: pick one A, make the other R or C. If both are needed for approval, make it a joint gate decision (like G5 and G6). |
+| **Nobody is A** | Work falls through cracks; "I thought you owned that" | Assign an A explicitly. If unclear, default to Market Launch Lead for launch activities or GM for post-go-live activities. |
+| **Too many C's (Consulted)** | Decision paralysis; every choice requires 10 people to weigh in | Limit C to people whose input materially changes the decision. Everyone else is I. |
+| **R is confused with A** | The person doing the work thinks they make the final call (they don't) | Clarify: R does the work, A approves it and owns the outcome. |
+| **RACI not updated when org structure changes** | Matrix is out of date; people follow old accountability lines | VP of Expansion reviews and updates RACI whenever roles change or new functions are added. |
+---
+## Integration with Other Playbook Sections
+This RACI matrix integrates with:
+- **Section 1.1: Centralized vs. Regional vs. Market-Level Ownership** — The ownership principles that underlie this RACI
+- **Appendix A-9: Market Launch Gates & Readiness Criteria** — The gate structure that organizes this RACI
+- **Appendix A-10: Weekly Expansion Launch Call Agenda** — The weekly forum where RACI accountability is reviewed
+- **Section 8.4: Launch War Room Protocol** — The daily cadence during G5 where RACI is executed
+- **Appendix A-6: Handoff Checklist** — The formal transfer of accountability at G6
+---
 ## If You Only Remember 3 Things
-1. **Every launch activity has exactly one Accountable owner.** If you can't name the single person who owns the outcome, the activity is unowned — escalate immediately.
-2. **The Market Launch Lead is the central A from planning through handoff.** Cross-functional partners execute (R) and advise (C), but the Launch Lead owns the integrated outcome. Don't wait for someone else to escalate — that's your job.
-3. **The RACI shifts at handoff — and handoff is a scorecard, not a date.** Until the VP of Expansion approves the formal transition, Expansion owns the market. After handoff, the GM owns it under the GM Playbook. There is no shared ownership zone.
-</callout>
+1. **Every activity has exactly one A (Accountable).** If you see two A's or zero A's, that's a bug. Fix it immediately.
+2. **The Market Launch Lead is A for the launch (G0–G5). The GM is A for the run (post-G6).** The handoff at G6 is where accountability formally transfers.
+3. **RACI is not a suggestion — it's a contract.** If you are A, you own the outcome. If you are R, you do the work. If you are C, you provide input. If you are I, you stay informed. Don't confuse them.
