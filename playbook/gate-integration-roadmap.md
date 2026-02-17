@@ -22,36 +22,7 @@ Sections 3-11 need gate cross-references added to tie the narrative content back
 
 ### Section 3: Market Identification & Prioritization
 
-**Current State:** Narrative about market scoring and selection
-**Needs:** Gate G0 cross-references
-
-#### Updates Required
-
-**Location:** Section 3.2 (Market Greenlight Criteria)
-
-**Add this callout:**
-
-```markdown
-### Gate Checkpoint: G0
-
-This section defines the criteria for **Gate G0: Market Selection & Budget Approval** (see Appendix A-9).
-
-**Gantt Reference:** Phase 1 — Market Assessment (Tasks 1.1-1.7)
-
-**Critical Path Items:**
-- Market launch charter and budget approval (Task 1.7) ⚠️ At Risk
-
-**Pass Criteria (7 total):**
-- Warehouse location identified
-- Rebate programs identified
-- Loan programs identified
-- License requirements mapped
-- Volume targets confirmed
-- Budget approved
-- Launch charter signed
-
-**Review:** Use Appendix A-3 (Market Greenlight Scorecard) to evaluate readiness before advancing to G1.
-```
+**Status:** Complete — see [Section 3.2 — Market Greenlight Criteria & Gate G0](section-3.2-market-greenlight-criteria.md)
 
 ---
 
@@ -409,7 +380,7 @@ Use this template when updating sections:
 
 ### Phase 4: Lower Priority
 
-- [ ] Section 3.2 (Greenlight) — Add G0 reference
+- [x] Section 3.2 (Greenlight) — G0 reference added (see section-3.2-market-greenlight-criteria.md)
 - [ ] Section 6.2 (Training) — Add G4 (training & certification) reference
 - [ ] Section 4.3 (Budget) — Add G0 (budget approval) reference
 - [ ] Section 4.5 (Fleet) — Add G4 (vehicle readiness) reference
