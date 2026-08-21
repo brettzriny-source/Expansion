@@ -447,10 +447,6 @@
               <div class="input-wrap"><span class="aff pre">$</span><input id="upfit" type="number" min="0" step="100" value="8000" class="has-pre"></div>
             </div>
             <div class="field">
-              <label for="chargeInstall">Charging install <span class="note">one-time</span></label>
-              <div class="input-wrap"><span class="aff pre">$</span><input id="chargeInstall" type="number" min="0" step="100" value="0" class="has-pre"></div>
-            </div>
-            <div class="field">
               <label for="ins">Insurance <span class="flag">confirm</span></label>
               <div class="input-wrap"><span class="aff pre">$</span><input id="ins" type="number" min="0" step="10" value="250" class="has-pre has-suf"><span class="aff suf">/mo</span></div>
             </div>
@@ -478,12 +474,8 @@
               <label for="kwh">Electricity <span class="note">blended</span></label>
               <div class="input-wrap"><span class="aff pre">$</span><input id="kwh" type="number" min="0" step="0.01" value="0.16" class="has-pre has-suf"><span class="aff suf">/kWh</span></div>
             </div>
-            <div class="field">
-              <label for="credit">Incentive credit <span class="note">optional</span></label>
-              <div class="input-wrap"><span class="aff pre">$</span><input id="credit" type="number" min="0" step="10" value="0" class="has-pre has-suf"><span class="aff suf">/mo</span></div>
-            </div>
           </div>
-          <p class="small" style="margin:4px 0 0">One-time costs — upfitting, charging install, and telematics hardware + install — are amortized straight-line over the lease term. Charging cost scales with mileage. Incentive credit is a monthly pass-through (e.g. 45W commercial EV credit) — leave at $0 if already baked into the lease payment.</p>
+          <p class="small" style="margin:4px 0 0">One-time costs — upfitting and telematics hardware + install — are amortized straight-line over the lease term. Charging cost scales with mileage. EV incentives are handled within the lease payment by state, so they are not modeled as a separate line here.</p>
           <div style="margin-top:14px"><button class="reset" id="resetBtn" type="button">↺ Reset all assumptions</button></div>
         </div>
       </section>
@@ -577,8 +569,8 @@
   var DEFAULTS = {
     techs:1, days:21, milesMode:"estimate", milesDirect:1200,
     reimb:0.725, stipend:0,
-    lease:899, term:36, upfit:8000, chargeInstall:0, ins:250, teleSub:40, teleUnit:40, teleInstall:120, maint:60,
-    eff:2.3, kwh:0.16, credit:0
+    lease:899, term:36, upfit:8000, ins:250, teleSub:40, teleUnit:40, teleInstall:120, maint:60,
+    eff:2.3, kwh:0.16
   };
   var state = {};
 
@@ -621,17 +613,15 @@
     var lease   = num("lease");
     var term    = Math.max(1, num("term"));
     var upfitM  = num("upfit") / term;
-    var instM   = num("chargeInstall") / term;
     var teleHwM = (num("teleUnit") + num("teleInstall")) / term;
     var ins     = num("ins");
     var teleSub = num("teleSub");
     var maint   = num("maint");
     var eff     = Math.max(0.1, num("eff"));
     var kwh     = num("kwh");
-    var credit  = num("credit");
     var chargeM = (miles / eff) * kwh;
 
-    var rFixed  = lease + upfitM + instM + teleHwM + ins + teleSub + maint - credit;
+    var rFixed  = lease + upfitM + teleHwM + ins + teleSub + maint;
     var rTotal  = rFixed + chargeM;
 
     var perMileVar = kwh / eff;           // R1T variable $/mi
@@ -645,8 +635,8 @@
     return {
       techs:techs, miles:miles, mode:mode,
       pReimb:pReimb, stipend:stipend, pTotal:pTotal,
-      lease:lease, upfitM:upfitM, instM:instM, teleHwM:teleHwM, ins:ins, teleSub:teleSub, maint:maint,
-      chargeM:chargeM, credit:credit, rTotal:rTotal, rFixed:rFixed,
+      lease:lease, upfitM:upfitM, teleHwM:teleHwM, ins:ins, teleSub:teleSub, maint:maint,
+      chargeM:chargeM, rTotal:rTotal, rFixed:rFixed,
       perMilePersonal: miles>0 ? pTotal/miles : reimb,
       perMileR1T: miles>0 ? rTotal/miles : null,
       delta:delta, breakeven:breakeven, denom:denom
@@ -691,7 +681,7 @@
       (r.stipend>0 ? seg(r.stipend, maxTot, "#b8a684") : "");
     var rSegs = [
       ["Lease", r.lease, COST_COLORS.lease],
-      ["Setup (amortized)", r.upfitM + r.instM + r.teleHwM, COST_COLORS.upfit],
+      ["Setup (amortized)", r.upfitM + r.teleHwM, COST_COLORS.upfit],
       ["Charging", r.chargeM, COST_COLORS.charge],
       ["Insurance", r.ins, COST_COLORS.insurance],
       ["Telematics sub", r.teleSub, COST_COLORS.telematics],
@@ -700,7 +690,7 @@
     $("rBar").innerHTML = rSegs.map(function(s){ return seg(s[1], maxTot, s[2]); }).join("");
     $("rLegend").innerHTML = rSegs.filter(function(s){return s[1]>0;}).map(function(s){
       return '<span class="li"><span class="d" style="background:'+s[2]+'"></span>'+s[0]+'<span class="amt">'+fmt(s[1])+'</span></span>';
-    }).join("") + (r.credit>0 ? '<span class="li"><span class="d" style="background:transparent;border:1px solid var(--line-strong)"></span>Incentive credit<span class="amt">−'+fmt(r.credit)+'</span></span>' : "");
+    }).join("");
 
     // metrics
     $("mPersonal").textContent = fmt2(r.perMilePersonal);
@@ -733,13 +723,11 @@
       row("Vehicle stipend", r.stipend*k, null, {muted:r.stipend===0}) +
       row("Lease payment", null, r.lease*k) +
       row("Upfitting (amortized)", null, r.upfitM*k) +
-      row("Charging install (amortized)", null, r.instM*k, {muted:r.instM===0}) +
       row("Telematics hardware + install (amortized)", null, r.teleHwM*k, {muted:r.teleHwM===0}) +
       row("Insurance", null, r.ins*k) +
       row("Telematics subscription", null, r.teleSub*k) +
       row("Maintenance", null, r.maint*k) +
       row("Charging (energy)", null, r.chargeM*k) +
-      (r.credit>0 ? '<tr><td>Incentive credit</td><td>—</td><td class="neg">−'+fmt(r.credit*k)+'</td></tr>' : "") +
       '<tr class="sum"><td>Total / month'+(fleetOn?' · fleet':'')+'</td><td>'+fmt(r.pTotal*k)+'</td><td>'+fmt(r.rTotal*k)+'</td></tr>' +
       '<tr class="sum"><td>Total / year'+(fleetOn?' · fleet':'')+'</td><td>'+fmt(r.pTotal*k*12)+'</td><td>'+fmt(r.rTotal*k*12)+'</td></tr>';
   }
