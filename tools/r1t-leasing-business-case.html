@@ -354,11 +354,11 @@
   </header>
 
   <div class="banner">
-    <span class="ic">!</span>
+    <span class="ic">i</span>
     <div>
-      <b>Confirm the flagged assumptions before sharing.</b> Values marked <span class="flag">confirm</span> are placeholders — pull the current figures from the
+      <b>Every assumption is editable.</b> Cost inputs reflect confirmed quotes; operating assumptions (job mix, mileage, energy) draw on the
       <a href="https://apps.jetsoncorp.com/fleet-dashboard#/future" target="_blank" rel="noopener">Fleet Dashboard</a>
-      (couldn't be reached from this build) and drop in the up-to-date R1T lease rate. Everything else is editable too.
+      future scenario. Adjust any field and the verdict updates live.
     </div>
   </div>
 
@@ -432,7 +432,7 @@
       <section class="card">
         <div class="card-h"><span class="n">5</span><h2>R1T Fully-Loaded Cost</h2><span class="hint">per truck / month</span></div>
         <div class="card-b">
-          <p class="section-note" style="margin-top:0"><b style="color:var(--ink)">Modeled configuration:</b> R1T Premium with all-season wheels. Lease, upfitting, insurance, and telematics install reflect confirmed quotes; items still marked <span class="flag">confirm</span> are placeholders.</p>
+          <p class="section-note" style="margin-top:0"><b style="color:var(--ink)">Modeled configuration:</b> R1T Premium with all-season wheels. Lease, upfitting, insurance, and telematics reflect confirmed quotes.</p>
           <div class="grid2">
             <div class="field">
               <label for="lease">Lease payment</label>
@@ -451,12 +451,8 @@
               <div class="input-wrap"><span class="aff pre">$</span><input id="ins" type="number" min="0" step="10" value="375" class="has-pre has-suf"><span class="aff suf">/mo</span></div>
             </div>
             <div class="field">
-              <label for="teleSub">Telematics subscription <span class="flag">confirm</span></label>
+              <label for="teleSub">Telematics subscription</label>
               <div class="input-wrap"><span class="aff pre">$</span><input id="teleSub" type="number" min="0" step="5" value="40" class="has-pre has-suf"><span class="aff suf">/mo</span></div>
-            </div>
-            <div class="field">
-              <label for="teleUnit">Telematics unit <span class="note">one-time</span> <span class="flag">confirm</span></label>
-              <div class="input-wrap"><span class="aff pre">$</span><input id="teleUnit" type="number" min="0" step="5" value="40" class="has-pre"></div>
             </div>
             <div class="field">
               <label for="teleInstall">Telematics install <span class="note">one-time</span></label>
@@ -475,7 +471,7 @@
               <div class="input-wrap"><span class="aff pre">$</span><input id="kwh" type="number" min="0" step="0.01" value="0.16" class="has-pre has-suf"><span class="aff suf">/kWh</span></div>
             </div>
           </div>
-          <p class="small" style="margin:4px 0 0">One-time costs — upfitting and telematics hardware + install — are amortized straight-line over the lease term. Charging cost scales with mileage. EV incentives are handled within the lease payment by state, so they are not modeled as a separate line here.</p>
+          <p class="small" style="margin:4px 0 0">One-time costs — upfitting and telematics install — are amortized straight-line over the lease term. Charging cost scales with mileage. EV incentives are handled within the lease payment by state, so they are not modeled as a separate line here.</p>
           <div style="margin-top:14px"><button class="reset" id="resetBtn" type="button">↺ Reset all assumptions</button></div>
         </div>
       </section>
@@ -537,6 +533,7 @@
         <div class="card-b">
           <div class="intang">
             <div class="it"><span class="m">+</span><span><b>Brand presence.</b> Wrapped R1Ts are rolling billboards at every job site and driveway.</span></div>
+            <div class="it"><span class="m">+</span><span><b>Brand control at the curb.</b> No risk of a tech pulling up in a dirty, damaged, lifted/modified, or sticker-covered personal vehicle — every truck presents one clean, professional image in the customer's driveway.</span></div>
             <div class="it"><span class="m">+</span><span><b>Recruiting &amp; retention.</b> A company truck is a real perk; techs stop putting wear on their own cars.</span></div>
             <div class="it"><span class="m">+</span><span><b>Tool security &amp; readiness.</b> Standardized, locked upfit means every truck is job-ready.</span></div>
             <div class="it"><span class="m">+</span><span><b>Telematics &amp; control.</b> Routing, safety, and utilization data you can't get from personal cars.</span></div>
@@ -569,7 +566,7 @@
   var DEFAULTS = {
     techs:1, days:21, milesMode:"estimate", milesDirect:1200,
     reimb:0.725, stipend:0,
-    lease:2206, term:36, upfit:12685, ins:375, teleSub:40, teleUnit:40, teleInstall:107, maint:60,
+    lease:2206, term:36, upfit:12685, ins:375, teleSub:40, teleInstall:107, maint:60,
     eff:2.3, kwh:0.16
   };
   var state = {};
@@ -613,7 +610,7 @@
     var lease   = num("lease");
     var term    = Math.max(1, num("term"));
     var upfitM  = num("upfit") / term;
-    var teleHwM = (num("teleUnit") + num("teleInstall")) / term;
+    var teleHwM = num("teleInstall") / term;
     var ins     = num("ins");
     var teleSub = num("teleSub");
     var maint   = num("maint");
@@ -723,7 +720,7 @@
       row("Vehicle stipend", r.stipend*k, null, {muted:r.stipend===0}) +
       row("Lease payment", null, r.lease*k) +
       row("Upfitting (amortized)", null, r.upfitM*k) +
-      row("Telematics hardware + install (amortized)", null, r.teleHwM*k, {muted:r.teleHwM===0}) +
+      row("Telematics install (amortized)", null, r.teleHwM*k, {muted:r.teleHwM===0}) +
       row("Insurance", null, r.ins*k) +
       row("Telematics subscription", null, r.teleSub*k) +
       row("Maintenance", null, r.maint*k) +
