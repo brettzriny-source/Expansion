@@ -443,8 +443,8 @@
               <div class="input-wrap"><input id="term" type="number" min="1" step="1" value="36" class="has-suf"><span class="aff suf">mo</span></div>
             </div>
             <div class="field">
-              <label for="upfit">Upfitting <span class="note">one-time</span></label>
-              <div class="input-wrap"><span class="aff pre">$</span><input id="upfit" type="number" min="0" step="100" value="12685" class="has-pre"></div>
+              <label for="upfit">Upfitting <span class="note">one-time</span> <sup style="color:var(--accent);font-weight:700">*</sup></label>
+              <div class="input-wrap"><span class="aff pre">$</span><input id="upfit" type="number" min="0" step="100" value="26935" class="has-pre"></div>
             </div>
             <div class="field">
               <label for="ins">Insurance</label>
@@ -472,6 +472,7 @@
             </div>
           </div>
           <p class="small" style="margin:4px 0 0">One-time costs — upfitting and telematics install — are amortized straight-line over the lease term. Charging cost scales with mileage. EV incentives are handled within the lease payment by state, so they are not modeled as a separate line here.</p>
+          <p class="small" style="margin:8px 0 0"><b style="color:var(--ink)">*&nbsp;What&rsquo;s in upfitting ($26,935):</b> base build $12,685 (shelving, electrical, and ~$3,500 vehicle wrap already included) + bed topper $6,250 + Bott storage modules $8,000. These are early, low-volume quotes — per-truck upfit cost is expected to come down meaningfully as fleet volume scales.</p>
           <div style="margin-top:14px"><button class="reset" id="resetBtn" type="button">↺ Reset all assumptions</button></div>
         </div>
       </section>
@@ -566,7 +567,7 @@
   var DEFAULTS = {
     techs:1, days:21, milesMode:"estimate", milesDirect:1200,
     reimb:0.725, stipend:0,
-    lease:2206, term:36, upfit:12685, ins:375, teleSub:40, teleInstall:107, maint:60,
+    lease:2206, term:36, upfit:26935, ins:375, teleSub:40, teleInstall:107, maint:60,
     eff:2.3, kwh:0.16
   };
   var state = {};
