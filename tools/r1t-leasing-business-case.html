@@ -250,6 +250,18 @@
   .seg button.on { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.12); }
   :root[data-theme="dark"] .seg button.on, .seg button.on { background: var(--accent); color: var(--accent-ink); }
 
+  .vsel {
+    width:100%; font-family:var(--sans); font-weight:600; font-size:15px; color:var(--ink);
+    background:var(--surface-2); border:1px solid var(--line-strong); border-radius:10px;
+    padding:10px 34px 10px 12px; cursor:pointer; -webkit-appearance:none; appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%236c7365' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 12px center;
+  }
+  .vsel:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent); }
+  .specstrip { display:flex; flex-wrap:wrap; gap:8px; margin:2px 0 14px; }
+  .chip { font-size:12px; background:var(--surface-2); border:1px solid var(--line); border-radius:999px; padding:5px 11px; color:var(--ink-soft); }
+  .chip b { color:var(--ink); font-weight:800; font-variant-numeric:tabular-nums; }
+
   .miles-out {
     margin-top: 12px; padding: 12px 14px; border-radius: 12px;
     background: var(--surface-2); border: 1px dashed var(--line-strong);
@@ -348,7 +360,7 @@
     <div>
       <div class="brandline"><span class="dot"></span><span class="eyebrow">Jetson Fleet Finance</span></div>
       <h1>R1T Fleet<br>Business Case</h1>
-      <p class="sub">Model the fully-loaded cost of leasing Rivian R1Ts for our electricians against reimbursing them for personal-vehicle miles. Adjust any assumption — the verdict updates live.</p>
+      <p class="sub">Compare the fully-loaded cost of putting our electricians in a company electric truck — leased or purchased — against reimbursing them for personal-vehicle miles. Switch vehicles and adjust any assumption; the verdict updates live.</p>
     </div>
     <button class="theme-toggle" id="themeBtn" type="button">◐ Theme</button>
   </header>
@@ -430,16 +442,46 @@
       </section>
 
       <section class="card">
-        <div class="card-h"><span class="n">5</span><h2>R1T Fully-Loaded Cost</h2><span class="hint">per truck / month</span></div>
+        <div class="card-h"><span class="n">5</span><h2>Vehicle — Fully-Loaded Cost</h2><span class="hint">per truck / month</span></div>
         <div class="card-b">
-          <p class="section-note" style="margin-top:0"><b style="color:var(--ink)">Modeled configuration:</b> R1T Premium with all-season wheels. Lease, upfitting, insurance, and telematics reflect confirmed quotes.</p>
+          <div class="field">
+            <label for="vehicle">Vehicle</label>
+            <select id="vehicle" class="vsel">
+              <option value="r1t">Rivian R1T — Premium (lease)</option>
+              <option value="silv_ext">Chevrolet Silverado EV LT — Extended Range (buy)</option>
+              <option value="silv_std">Chevrolet Silverado EV LT — Standard Range (buy)</option>
+              <option value="f150">Ford F-150 Lightning (Used) — Pro / XLT (buy)</option>
+            </select>
+          </div>
+          <div class="specstrip" id="specStrip">
+            <span class="chip"><b id="spRange">—</b>&nbsp;mi EPA range</span>
+            <span class="chip"><b id="spEff">—</b>&nbsp;mi/kWh</span>
+            <span class="chip" id="spAcq">—</span>
+            <span class="chip" id="spDaily">—</span>
+          </div>
+          <p class="section-note" id="configNote" style="margin-top:0"><b style="color:var(--ink)">Modeled configuration:</b> R1T Premium with all-season wheels.</p>
+          <div class="field">
+            <label>Acquisition</label>
+            <div class="seg" id="acqMode">
+              <button type="button" data-a="lease" class="on">Lease</button>
+              <button type="button" data-a="purchase">Purchase</button>
+            </div>
+          </div>
           <div class="grid2">
-            <div class="field">
-              <label for="lease">Lease payment</label>
+            <div class="field" id="leaseField">
+              <label for="lease">Monthly lease</label>
               <div class="input-wrap"><span class="aff pre">$</span><input id="lease" type="number" min="0" step="10" value="2206" class="has-pre has-suf"><span class="aff suf">/mo</span></div>
             </div>
+            <div class="field" id="priceField" style="display:none">
+              <label for="price">Purchase price</label>
+              <div class="input-wrap"><span class="aff pre">$</span><input id="price" type="number" min="0" step="500" value="71700" class="has-pre"></div>
+            </div>
+            <div class="field" id="resaleField" style="display:none">
+              <label for="resale">Resale at end <span class="note">optional</span></label>
+              <div class="input-wrap"><span class="aff pre">$</span><input id="resale" type="number" min="0" step="500" value="0" class="has-pre"></div>
+            </div>
             <div class="field">
-              <label for="term">Lease term</label>
+              <label for="term">Term / hold</label>
               <div class="input-wrap"><input id="term" type="number" min="1" step="1" value="36" class="has-suf"><span class="aff suf">mo</span></div>
             </div>
             <div class="field">
@@ -471,7 +513,7 @@
               <div class="input-wrap"><span class="aff pre">$</span><input id="kwh" type="number" min="0" step="0.01" value="0.16" class="has-pre has-suf"><span class="aff suf">/kWh</span></div>
             </div>
           </div>
-          <p class="small" style="margin:4px 0 0">One-time costs — upfitting and telematics install — are amortized straight-line over the lease term. Charging cost scales with mileage. EV incentives are handled within the lease payment by state, so they are not modeled as a separate line here.</p>
+          <p class="small" style="margin:4px 0 0">One-time costs — upfitting and telematics install — are amortized straight-line over the term / hold period. For a purchased truck, the vehicle line is straight-line depreciation of (price − resale) over that period; financing interest is not modeled. Charging cost scales with mileage. EV incentives are handled within the acquisition cost by state, so they are not modeled as a separate line here.</p>
           <p class="small" style="margin:8px 0 0"><b style="color:var(--ink)">*&nbsp;What&rsquo;s in upfitting ($26,935):</b> base build $12,685 (shelving, electrical, and ~$3,500 vehicle wrap already included) + bed topper $6,250 + Bott storage modules $8,000. These are early, low-volume quotes — per-truck upfit cost is expected to come down meaningfully as fleet volume scales.</p>
           <div style="margin-top:14px"><button class="reset" id="resetBtn" type="button">↺ Reset all assumptions</button></div>
         </div>
@@ -487,7 +529,7 @@
         <div class="foot">
           <div><div class="k">Per truck / yr</div><div class="val" id="vYear">—</div></div>
           <div><div class="k">Fleet / yr</div><div class="val" id="vFleet">—</div></div>
-          <div><div class="k">Over lease term</div><div class="val" id="vTerm">—</div></div>
+          <div><div class="k">Over term</div><div class="val" id="vTerm">—</div></div>
         </div>
       </div>
 
@@ -500,7 +542,7 @@
               <div class="bar" id="pBar"></div>
             </div>
             <div class="cmp-row">
-              <div class="top"><span class="name"><span class="d" style="background:var(--r1t)"></span>R1T (fully loaded)</span><span class="tot" id="rTot">—</span></div>
+              <div class="top"><span class="name"><span class="d" style="background:var(--r1t)"></span><span id="rName">R1T (fully loaded)</span></span><span class="tot" id="rTot">—</span></div>
               <div class="bar" id="rBar"></div>
               <div class="legend" id="rLegend"></div>
             </div>
@@ -513,7 +555,7 @@
         <div class="card-b">
           <div class="tiles">
             <div class="tile"><div class="k">Cost / mile — Personal</div><div class="v" id="mPersonal">—</div></div>
-            <div class="tile"><div class="k">Cost / mile — R1T</div><div class="v" id="mR1T">—</div></div>
+            <div class="tile"><div class="k" id="mVLabel">Cost / mile — R1T</div><div class="v" id="mR1T">—</div></div>
             <div class="tile"><div class="k">Break-even mileage</div><div class="v" id="mBreak">—</div><div class="cap" id="mBreakCap">R1T wins above this</div></div>
           </div>
         </div>
@@ -523,7 +565,7 @@
         <div class="card-h"><span class="n">≡</span><h2>Cost Breakdown</h2><span class="hint" id="fleetHint">per truck / mo</span></div>
         <div class="card-b" style="overflow-x:auto">
           <table class="detail" id="detail">
-            <thead><tr><th>Line item</th><th>Personal</th><th>R1T</th></tr></thead>
+            <thead><tr><th>Line item</th><th>Personal</th><th id="detailVHead">R1T</th></tr></thead>
             <tbody id="detailBody"></tbody>
           </table>
         </div>
@@ -533,7 +575,7 @@
         <div class="card-h"><span class="n">★</span><h2>Beyond the Numbers</h2></div>
         <div class="card-b">
           <div class="intang">
-            <div class="it"><span class="m">+</span><span><b>Brand presence.</b> Wrapped R1Ts are rolling billboards at every job site and driveway.</span></div>
+            <div class="it"><span class="m">+</span><span><b>Brand presence.</b> Wrapped trucks are rolling billboards at every job site and driveway.</span></div>
             <div class="it"><span class="m">+</span><span><b>Brand control at the curb.</b> No risk of a tech pulling up in a dirty, damaged, lifted/modified, or sticker-covered personal vehicle — every truck presents one clean, professional image in the customer's driveway.</span></div>
             <div class="it"><span class="m">+</span><span><b>Recruiting &amp; retention.</b> A company truck is a real perk; techs stop putting wear on their own cars.</span></div>
             <div class="it"><span class="m">+</span><span><b>Tool security &amp; readiness.</b> Standardized, locked upfit means every truck is job-ready.</span></div>
@@ -564,11 +606,19 @@
     telematics:"#6c7365", maintenance:"#ACAA93"
   };
 
+  // Vehicle presets. Prices per confirmed quotes; range & efficiency from EPA
+  // specs (real-world efficiency de-rated for work payload).
+  var VEHICLES = {
+    r1t:      { name:"R1T",                    desc:"Rivian R1T Premium with all-season wheels", acq:"lease",    lease:2206, price:0,     resale:0, term:36, eff:2.3, range:329 },
+    silv_ext: { name:"Silverado EV (Ext.)",    desc:"Chevrolet Silverado EV LT — Extended Range", acq:"purchase", lease:0,    price:71700, resale:0, term:60, eff:2.0, range:410 },
+    silv_std: { name:"Silverado EV (Std.)",    desc:"Chevrolet Silverado EV LT — Standard Range", acq:"purchase", lease:0,    price:63500, resale:0, term:60, eff:2.0, range:283 },
+    f150:     { name:"F-150 Lightning (Used)", desc:"Ford F-150 Lightning (Used) — Pro / XLT",     acq:"purchase", lease:0,    price:50000, resale:0, term:60, eff:2.0, range:240 }
+  };
+
   var DEFAULTS = {
     techs:1, days:21, milesMode:"estimate", milesDirect:1200,
     reimb:0.725, stipend:0,
-    lease:2206, term:36, upfit:26935, ins:375, teleSub:40, teleInstall:107, maint:60,
-    eff:2.3, kwh:0.16
+    upfit:26935, ins:375, teleSub:40, teleInstall:107, maint:60, kwh:0.16
   };
   var state = {};
 
@@ -607,9 +657,12 @@
     var pReimb  = miles * reimb;
     var pTotal  = pReimb + stipend;
 
-    // R1T
-    var lease   = num("lease");
+    // vehicle acquisition (lease payment, or purchase depreciated over hold)
     var term    = Math.max(1, num("term"));
+    var acqMode = state.acqMode;
+    var acq     = acqMode === "purchase"
+                    ? Math.max(0, num("price") - num("resale")) / term
+                    : num("lease");
     var upfitM  = num("upfit") / term;
     var teleHwM = num("teleInstall") / term;
     var ins     = num("ins");
@@ -619,7 +672,7 @@
     var kwh     = num("kwh");
     var chargeM = (miles / eff) * kwh;
 
-    var rFixed  = lease + upfitM + teleHwM + ins + teleSub + maint;
+    var rFixed  = acq + upfitM + teleHwM + ins + teleSub + maint;
     var rTotal  = rFixed + chargeM;
 
     var perMileVar = kwh / eff;           // R1T variable $/mi
@@ -633,7 +686,7 @@
     return {
       techs:techs, miles:miles, mode:mode,
       pReimb:pReimb, stipend:stipend, pTotal:pTotal,
-      lease:lease, upfitM:upfitM, teleHwM:teleHwM, ins:ins, teleSub:teleSub, maint:maint,
+      acq:acq, acqMode:acqMode, upfitM:upfitM, teleHwM:teleHwM, ins:ins, teleSub:teleSub, maint:maint,
       chargeM:chargeM, rTotal:rTotal, rFixed:rFixed,
       perMilePersonal: miles>0 ? pTotal/miles : reimb,
       perMileR1T: miles>0 ? rTotal/miles : null,
@@ -643,6 +696,15 @@
 
   function render(){
     var r = compute();
+    var veh = VEHICLES[state.vehicle];
+    var vName = veh.name;
+
+    // spec strip (range/acq set on vehicle change; eff & daily update live)
+    $("spEff").textContent = num("eff").toFixed(1);
+    var daily = num("days") > 0 ? r.miles / num("days") : 0;
+    var dEl = $("spDaily");
+    dEl.innerHTML = "≈ <b>" + fmtN(daily) + "</b> mi/day";
+    dEl.style.color = (veh.range && daily > veh.range * 0.8) ? "var(--warn)" : "";
 
     // miles readout
     $("milesVal").textContent = fmtN(r.miles);
@@ -653,16 +715,16 @@
     var r1tCheaper = r.delta < 0;
     var perTruck = Math.abs(r.delta);
     big.classList.toggle("win", r1tCheaper);
-    tag.innerHTML = r1tCheaper ? "● R1T leasing wins" : "● Personal vehicle wins";
+    tag.innerHTML = r1tCheaper ? "● " + vName + " wins" : "● Personal vehicle wins";
     if (Math.abs(r.delta) < 1) {
       big.innerHTML = "Essentially <em>break-even</em>";
       line.innerHTML = "The two options cost about the same at <b>"+fmtN(r.miles)+" mi/mo</b>. Intangibles likely tip the call.";
     } else if (r1tCheaper) {
       big.innerHTML = "Save <em>"+fmt(perTruck)+"</em>/truck·mo";
-      line.innerHTML = "At <b>"+fmtN(r.miles)+" mi/mo</b>, a fully-loaded R1T costs <b>"+fmt(perTruck)+" less per truck each month</b> than reimbursing personal miles.";
+      line.innerHTML = "At <b>"+fmtN(r.miles)+" mi/mo</b>, a fully-loaded "+vName+" costs <b>"+fmt(perTruck)+" less per truck each month</b> than reimbursing personal miles.";
     } else {
       big.innerHTML = "Costs <em>"+fmt(perTruck)+"</em>/truck·mo";
-      line.innerHTML = "At <b>"+fmtN(r.miles)+" mi/mo</b>, a fully-loaded R1T costs <b>"+fmt(perTruck)+" more per truck each month</b> than reimbursing personal miles.";
+      line.innerHTML = "At <b>"+fmtN(r.miles)+" mi/mo</b>, a fully-loaded "+vName+" costs <b>"+fmt(perTruck)+" more per truck each month</b> than reimbursing personal miles.";
     }
     var sign = r1tCheaper ? "−" : "+";
     $("vYear").textContent  = sign + fmt(perTruck*12);
@@ -670,6 +732,9 @@
     $("vTerm").textContent  = sign + fmt(perTruck*Math.max(1,num("term"))*r.techs);
 
     // comparison bars
+    $("rName").textContent = vName + " (fully loaded)";
+    $("mVLabel").textContent = "Cost / mile — " + vName;
+    $("detailVHead").textContent = vName;
     var maxTot = Math.max(r.pTotal, r.rTotal, 1);
     $("pTot").textContent = fmt(r.pTotal);
     $("rTot").textContent = fmt(r.rTotal);
@@ -678,7 +743,7 @@
       seg(r.pReimb, maxTot, "var(--personal)") +
       (r.stipend>0 ? seg(r.stipend, maxTot, "#b8a684") : "");
     var rSegs = [
-      ["Lease", r.lease, COST_COLORS.lease],
+      [r.acqMode==="purchase"?"Financing (amortized)":"Lease", r.acq, COST_COLORS.lease],
       ["Setup (amortized)", r.upfitM + r.teleHwM, COST_COLORS.upfit],
       ["Charging", r.chargeM, COST_COLORS.charge],
       ["Insurance", r.ins, COST_COLORS.insurance],
@@ -699,11 +764,11 @@
       cap.textContent = "Personal is cheaper per mile at any mileage";
     } else if (r.breakeven < 0) {
       mb.textContent = "0 mi"; mb.className = "v good";
-      cap.textContent = "R1T wins at every mileage level";
+      cap.textContent = vName + " wins at every mileage level";
     } else {
       mb.textContent = fmtN(r.breakeven) + " mi"; mb.className = "v";
       var cur = r.miles;
-      cap.innerHTML = "R1T wins above this — you're at <b style='color:var(--ink)'>"+fmtN(cur)+"</b>";
+      cap.innerHTML = vName + " wins above this — you're at <b style='color:var(--ink)'>"+fmtN(cur)+"</b>";
     }
 
     // detail table (respects fleet toggle via techs multiplier shown separately)
@@ -719,7 +784,7 @@
     body.innerHTML =
       row("Mileage reimbursement", r.pReimb*k, null) +
       row("Vehicle stipend", r.stipend*k, null, {muted:r.stipend===0}) +
-      row("Lease payment", null, r.lease*k) +
+      row(r.acqMode==="purchase"?"Financing (amortized)":"Lease payment", null, r.acq*k) +
       row("Upfitting (amortized)", null, r.upfitM*k) +
       row("Telematics install (amortized)", null, r.teleHwM*k, {muted:r.teleHwM===0}) +
       row("Insurance", null, r.ins*k) +
@@ -750,6 +815,35 @@
     render();
   });
 
+  // vehicle preset + acquisition mode
+  function setAcqUI(mode){
+    state.acqMode = mode;
+    $("leaseField").style.display  = mode === "lease" ? "" : "none";
+    $("priceField").style.display  = mode === "purchase" ? "" : "none";
+    $("resaleField").style.display = mode === "purchase" ? "" : "none";
+    Array.prototype.forEach.call($("acqMode").querySelectorAll("button"), function(x){ x.classList.toggle("on", x.dataset.a === mode); });
+  }
+  function applyVehicle(key){
+    var v = VEHICLES[key]; if (!v) return;
+    state.vehicle = key;
+    state.range = v.range;
+    $("vehicle").value = key;
+    $("lease").value  = v.lease;
+    $("price").value  = v.price;
+    $("resale").value = v.resale;
+    $("term").value   = v.term;
+    $("eff").value    = v.eff;
+    setAcqUI(v.acq);
+    $("configNote").innerHTML = '<b style="color:var(--ink)">Modeled configuration:</b> ' + v.desc + '.';
+    $("spRange").textContent = v.range;
+    $("spAcq").textContent = v.acq === "purchase" ? "Purchase" : "Lease";
+  }
+  $("vehicle").addEventListener("change", function(){ applyVehicle(this.value); render(); });
+  $("acqMode").addEventListener("click", function(e){
+    var b = e.target.closest("button"); if (!b) return;
+    setAcqUI(b.dataset.a); render();
+  });
+
   // fleet toggle on breakdown header
   var fleetHint = $("fleetHint");
   fleetHint.style.cursor = "pointer";
@@ -778,6 +872,7 @@
       if ($(key)) $(key).value = DEFAULTS[key];
     });
     JOBS.forEach(function(j){ $("jd_"+j.key).value = j.perDay; $("jm_"+j.key).value = j.miles; });
+    applyVehicle("r1t");
     state.milesMode = "estimate";
     Array.prototype.forEach.call($("milesMode").querySelectorAll("button"), function(x){ x.classList.toggle("on", x.dataset.m==="estimate"); });
     $("directWrap").style.display = "none";
@@ -785,6 +880,7 @@
   });
 
   state.milesMode = "estimate";
+  applyVehicle("r1t");
   render();
 })();
 </script>
