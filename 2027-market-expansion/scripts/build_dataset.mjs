@@ -28,12 +28,24 @@ const CAND = {
 };
 const CAND_ID = new Set(Object.values(CAND).filter(Boolean));
 
+// ── Market-rate stack: strip the income-qualified $8k HEAR (HEEHRA, ≤150% AMI) ──
+// HEAR does not reach Jetson's market-rate customers, so it's excluded from the
+// plotted rebate stack. Panorama bakes HEAR into stackable.high; we subtract the
+// $8k HEAR line ONLY where the stack note actually carries it (regex guards against
+// docking e.g. MA's Mass Save, whose note reads "HEAR not separately launched").
+const HEAR8 = /HEAR \$8K/i;
+const marketRate = (high, note) =>
+  high == null ? null : (note && HEAR8.test(note) ? Math.max(0, high - 8000) : high);
+
 const base = ALL_MARKETS.map(m => {
   const s = REBATE_DATA.stackable[m.id];
   const fed = REBATE_DATA.federal[m.state];
   return {
     id: m.id, name: m.name, state: m.state,
-    x: s?.high ?? null, rebateLow: s?.low ?? null, rebateNote: s?.note ?? null,
+    x: marketRate(s?.high, s?.note),          // market-rate stack, HEAR excluded
+    xFull: s?.high ?? null,                    // Panorama's full stack incl. HEAR (reference only)
+    hearInStack: !!(s?.note && HEAR8.test(s.note)),
+    rebateLow: s?.low ?? null, rebateNote: s?.note ?? null,
     y: modeledInstall(m.warehouseCost, m.degreeDays),
     tam: m.warehouseTam, tier: m.tier,
     kind: m.isExisting ? "existing" : "modeled",
@@ -52,14 +64,16 @@ const estimated = [
   { name:"Las Vegas",      state:"NV", x:11200, rebateLow:1000, y:modeledInstall("Low",2700),    hear:"pending", analog:"Reno (NV Energy PowerShift $3.2K + NV HEAR $8K, pending)" },
   { name:"Richmond",       state:"VA", x:8050,  rebateLow:50,   y:modeledInstall("Medium",3900), hear:"pending", analog:"Fairfax (Dominion $50 + VA HEAR $8K, pending)" },
 ].map(e => ({ id:"EST_"+e.name.replace(/\W/g,"").toUpperCase(), ...e, kind:"candidate",
-             candidate:true, source:"estimated", tam:null, tier:null, rebateNote:e.analog }));
+             candidate:true, source:"estimated", tam:null, tier:null, rebateNote:e.analog,
+             xFull:e.x, hearInStack:HEAR8.test(e.analog),
+             x:marketRate(e.x, e.analog) }));   // market-rate: HEAR stripped from estimates too
 
 const all = [...base, ...estimated];
 
 const roster = Object.entries(CAND).map(([name,id]) => {
   const rec = id ? base.find(b=>b.id===id) : estimated.find(e=>e.name===name);
-  return { name, id, source: rec.source, x: rec.x, y: rec.y, hear: rec.hear,
-           tam: rec.tam ?? null, tier: rec.tier ?? null,
+  return { name, id, source: rec.source, x: rec.x, xFull: rec.xFull, hearInStack: rec.hearInStack,
+           y: rec.y, hear: rec.hear, tam: rec.tam ?? null, tier: rec.tier ?? null,
            pipeline: ["Portland","Dallas"].includes(name), note: rec.rebateNote };
 });
 

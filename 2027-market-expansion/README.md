@@ -15,7 +15,7 @@ Status: **working draft — Slides 1 & 2 only.** Further slides pending sign-off
 
 | Field | Source | Notes |
 |---|---|---|
-| Rebate stack (Slide 1 **x-axis**) | **live** — Panorama `src/data/rebates.js` → `stackable[id].high` | Max stackable = utility + state + federal HEAR where live/approved/pending. Basis April 2026; monorepo files last synced **2026-08-24**. |
+| Rebate stack (Slide 1 **x-axis**) | **live** — Panorama `src/data/rebates.js` → `stackable[id].high` **minus the $8k HEAR line** | Plotted value = **market-rate stack** (utility + state, no income qualification). Panorama's `high` bakes in federal HEAR; we subtract the $8k HEAR component where the stack note carries it (`/HEAR \$8K/`), so income-qualified HEAR is excluded — it does not reach market-rate buyers (≤150% AMI cap). Basis April 2026; files synced **2026-08-24**. |
 | W-TAM / tier / existing flag / HEAR status | **live** — Panorama `src/data/markets.js`, `rebates.js` | Panorama = source of truth (the proforma app syncs *from* it). |
 | Install cost (Slide 1 **y-axis**) | ⚠ **MODELED — not a Panorama field** | Panorama stores no per-market install price. See formula below. Treat the vertical axis as directional, not quoted pricing. |
 | 5 markets (Raleigh-Durham, Austin, Charlotte, Las Vegas, Richmond) | ⚠ **ESTIMATED — not in Panorama** | No Panorama record exists. Rebate figures inferred from each state's HEAR framework + nearest Panorama analog (see `scripts/build_dataset.mjs`). Rendered as amber **open dashed rings**. |
@@ -29,9 +29,10 @@ installCost = $19,000 base
 Chosen so the plotted range (~$14.8k–$23.9k) sits inside Slide 7's $13k–$25.5k axis. It is a transparent proxy, **not** a Jetson pricebook figure.
 
 ### Known caveats (flagged, not silently estimated)
-- Federal **25C** credit expired Dec 31 2025 — excluded from all stacks.
-- Several candidates depend on **pending** HEAR programs (SLC, Westfield, Chicago North, Las Vegas, Richmond) — their high rebate stack is not yet realized; flagged on both slides.
-- Markets with rebate > $15k are clamped to the chart's right edge (`≥$15k`).
+- **HEAR (HEEHRA) is excluded** from the plotted stack — it is income-qualified (≤150% AMI) and does not reach Jetson's market-rate buyers. Panorama *does* include HEAR (a `federal` block + $8k baked into every `stackable.high`); we strip it. Result: market-rate stacks are thin ($50–$6k) and net out-of-pocket runs **$12k–$23k** across the candidates.
+- Federal **25C** market-rate credit expired Dec 31 2025 — excluded.
+- Diagonal net-out-of-pocket bands set at **$12k / $16k / $20k** (adapted from Slide 7's $8/$12/$16k to bracket the ex-HEAR range).
+- Markets whose market-rate stack exceeds **$12k** are clamped to the chart's right edge (`≥$12k`).
 - **Vancouver** omitted from the map (no rebate record in Panorama).
 - Panorama tracks **67** markets — the brief's "126 markets / 22 unverified" refers to the older source deck; this codebase has **no `unverified` flag**, so unverified markets cannot be machine-detected here.
 - Per Panorama, **Portland & Dallas are modeled *expansion* markets** (in pipeline scenarios), **not** live "existing" markets; **Austin is not in Panorama at all**. This differs from the brief's assumption — confirm with Z.

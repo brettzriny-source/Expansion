@@ -178,7 +178,7 @@
     <div class="slidenum">01</div>
     <div class="eyebrow">The policy-offset map <span class="dot">&mdash;</span> re-plotted on live Panorama data</div>
     <h1 class="title">Out-of-pocket is the outcome, not the axis</h1>
-    <p class="dek">Every market sits at its <b>install cost</b> (vertical) against the <b>rebate stack it can reach</b> (horizontal). The diagonals are what a homeowner actually pays &mdash; <b>net out-of-pocket</b>. The <b style="color:#D8801E">12 amber markets</b> are our 2027 candidates: we want them landing down and to the right, where the stack does the heavy lifting.</p>
+    <p class="dek">Each market sits at its <b>install cost</b> (vertical) against the <b>market-rate rebate stack</b> (horizontal) &mdash; utility + state only, with income-qualified <b>HEAR stripped out</b> because it doesn&rsquo;t reach our buyers. The diagonals are <b>net out-of-pocket</b>. Without HEAR the stack is thin almost everywhere, so OOP runs <b>$12&ndash;23k</b>: the <b style="color:#D8801E">12 amber markets</b> are our 2027 candidates, and the map shows which keep out-of-pocket lowest (down-right) versus which lean on policy market-rate customers can&rsquo;t use (up-left).</p>
 
     <div class="chartrow">
       <div class="chartbox">
@@ -202,7 +202,7 @@
     </div>
 
     <div class="footnote">
-      <b>Sources &amp; caveats.</b> Rebate stack (x) = maximum stackable rebate (utility + state + federal HEAR where live/approved/pending), pulled live from Panorama <b>rebates.js</b> (<code>project-panorama</code>, monorepo <code>conductor-playground</code>) &mdash; data basis April 2026, files last synced <b>2026-08-24</b>. &nbsp;<span class="flag">Install cost (y) is MODELED, not a Panorama field</span> &mdash; Panorama stores no per-market install price; y = $19k national base &times; regional cost factor (from Panorama <code>warehouseCost</code>) + cold-climate adder (from heating degree-days). Treat the vertical axis as directional, not quoted pricing. &nbsp;<span class="flag">Amber open rings (Raleigh-Durham, Austin, Charlotte, Las&nbsp;Vegas, Richmond) are estimated</span> &mdash; these 5 have no Panorama record; rebate figures are inferred from each state&rsquo;s HEAR framework and the nearest Panorama analog. &nbsp;Federal 25C credit expired Dec&nbsp;31&nbsp;2025 and is excluded. Markets with rebate &gt; $15k are clamped to the right edge. Vancouver omitted (no rebate record).
+      <b>Sources &amp; caveats.</b> Rebate stack (x) = <b>market-rate stack</b> = utility + state programs available without income qualification, pulled live from Panorama <b>rebates.js</b> (<code>project-panorama</code>, monorepo <code>conductor-playground</code>). <span class="flag">Federal HEAR (HEEHRA) is excluded</span> &mdash; it is income-capped (&le;150% AMI) and does not reach market-rate buyers; Panorama bakes an $8k HEAR line into its full stack, which we subtract where it applies. The market-rate 25C credit expired Dec&nbsp;31&nbsp;2025 (also excluded). Data basis April 2026, files last synced <b>2026-08-24</b>. &nbsp;<span class="flag">Install cost (y) is MODELED, not a Panorama field</span> &mdash; Panorama stores no per-market install price; y = $19k national base &times; regional cost factor (from Panorama <code>warehouseCost</code>) + cold-climate adder (heating degree-days). Treat the vertical axis as directional, not quoted pricing. &nbsp;<span class="flag">Amber open rings (Raleigh-Durham, Austin, Charlotte, Las&nbsp;Vegas, Richmond) are estimated</span> &mdash; no Panorama record; rebate inferred from each state&rsquo;s programs and the nearest Panorama analog. &nbsp;Diagonal bands mark net out-of-pocket at $12k/$16k/$20k. Markets whose market-rate stack exceeds $12k clamp to the right edge. Vancouver omitted (no rebate record).
     </div>
   </section>
 
@@ -211,10 +211,10 @@
     <div class="slidenum">02</div>
     <div class="eyebrow">Where we go next <span class="dot">&mdash;</span> the shortlist</div>
     <h1 class="title">The 12 markets we&rsquo;re recommending for 2027</h1>
-    <p class="dek">Ordered as briefed. <b>Net out-of-pocket</b> (modeled install &minus; rebate stack) shown per market &mdash; the number the customer feels. Amber throughout marks these as 2027 candidates, matching Slide&nbsp;1.</p>
+    <p class="dek">Ordered as briefed. <b>Net out-of-pocket</b> (modeled install &minus; <b>market-rate</b> rebate stack, HEAR excluded) shown per market &mdash; the number the customer feels. Amber throughout marks these as 2027 candidates, matching Slide&nbsp;1.</p>
     <div class="listgrid" id="listgrid"></div>
     <div class="footnote s2note">
-      <b>Legend.</b> <span class="chip src-p" style="text-transform:uppercase">Panorama data</span> live scorecard record &nbsp;&middot;&nbsp; <span class="chip src-e" style="text-transform:uppercase">Estimated</span> not in Panorama, inferred from state HEAR + analog &nbsp;&middot;&nbsp; <span class="chip pipe" style="text-transform:uppercase">In pipeline</span> already a modeled expansion market (reprioritizing) &nbsp;&middot;&nbsp; HEAR chip = federal rebate program status in that state. &nbsp; OOP and rebate figures per Slide&nbsp;1 sourcing; install cost is modeled. <span class="flag">Austin, Charlotte, Raleigh-Durham, Las&nbsp;Vegas, Richmond are estimated</span> &mdash; not yet in Panorama.
+      <b>Legend.</b> <span class="chip src-p" style="text-transform:uppercase">Panorama data</span> live scorecard record &nbsp;&middot;&nbsp; <span class="chip src-e" style="text-transform:uppercase">Estimated</span> not in Panorama, inferred from state programs + analog &nbsp;&middot;&nbsp; <span class="chip pipe" style="text-transform:uppercase">In pipeline</span> already a modeled expansion market (reprioritizing) &nbsp;&middot;&nbsp; HEAR chip = income-qualified federal program status &mdash; <b>excluded</b> from the market-rate stack above, shown as low-income upside. &nbsp; Stack &amp; OOP are market-rate (HEAR removed) per Slide&nbsp;1; install cost is modeled. <span class="flag">Austin, Charlotte, Raleigh-Durham, Las&nbsp;Vegas, Richmond are estimated</span> &mdash; not yet in Panorama.
     </div>
   </section>
 </div>
@@ -232,7 +232,7 @@ const SVGNS = "http://www.w3.org/2000/svg";
 const el = (t,a={}) => { const e=document.createElementNS(SVGNS,t); for(const k in a) e.setAttribute(k,a[k]); return e; };
 
 // ── scales ──────────────────────────────────────────────────
-const XW=[0,15000], YW=[13000,25500];
+const XW=[0,12000], YW=[13000,25500];
 const P = { l:66, r:96, t:26, b:56 };      // viewBox 1120 x 486
 const VW=1120, VH=486;
 const px0=P.l, px1=VW-P.r, py0=VH-P.b, py1=P.t;
@@ -248,12 +248,12 @@ svg.append(gGrid,gDiag,gQuad,gDot,gLbl);
 gGrid.append(el("rect",{x:px0,y:py1,width:px1-px0,height:py0-py1,fill:"#ffffff",stroke:C.softgray,"stroke-width":1,rx:3}));
 
 // ── grid + ticks ────────────────────────────────────────────
-const xticks=[0,4000,8000,12000,15000], yticks=[13000,16000,19000,22000,25500];
+const xticks=[0,3000,6000,9000,12000], yticks=[13000,16000,19000,22000,25500];
 xticks.forEach(t=>{
   const x=sx(t);
   gGrid.append(el("line",{x1:x,y1:py1,x2:x,y2:py0,stroke:C.softgray,"stroke-width":1,"stroke-dasharray":"1 5"}));
   const lab=el("text",{x:x,y:py0+20,"text-anchor":"middle","font-size":12,fill:C.darkgray,"font-weight":600});
-  lab.textContent = t===15000 ? "≥$15k" : (t===0?"$0":"$"+t/1000+"k");
+  lab.textContent = t===12000 ? "≥$12k" : (t===0?"$0":"$"+t/1000+"k");
   gGrid.append(lab);
 });
 yticks.forEach(t=>{
@@ -265,7 +265,7 @@ yticks.forEach(t=>{
 });
 // axis titles
 const xt=el("text",{x:(px0+px1)/2,y:py0+44,"text-anchor":"middle","font-size":12.5,fill:C.forest,"font-weight":800});
-xt.textContent="POLICY OFFSET  —  MARKET-RATE REBATE STACK  ($, MAX STACKABLE)";
+xt.textContent="MARKET-RATE REBATE STACK  —  UTILITY + STATE, HEAR EXCLUDED  ($)";
 xt.setAttribute("letter-spacing",".04em"); gGrid.append(xt);
 const yt=el("text",{x:18,y:(py0+py1)/2,"text-anchor":"middle","font-size":12.5,fill:C.forest,"font-weight":800,transform:`rotate(-90 18 ${(py0+py1)/2})`});
 yt.textContent="HEAT-PUMP INSTALL COST  ($, MODELED*)"; yt.setAttribute("letter-spacing",".04em"); gGrid.append(yt);
@@ -280,8 +280,8 @@ function seg(c){
   pts = pts.filter((p,i)=>pts.findIndex(q=>Math.abs(q[0]-p[0])<1&&Math.abs(q[1]-p[1])<1)===i);
   return pts.slice(0,2);
 }
-const OOP_T={8000:0.5, 12000:0.66, 16000:0.5};   // fraction along line for the label
-[8000,12000,16000].forEach(c=>{
+const OOP_T={12000:0.52, 16000:0.5, 20000:0.4};   // fraction along line for the label
+[12000,16000,20000].forEach(c=>{
   const s=seg(c); if(s.length<2) return;
   const [a,b]=s;
   const ax=sx(a[0]),ay=sy(a[1]),bx=sx(b[0]),by=sy(b[1]);
@@ -298,10 +298,10 @@ const OOP_T={8000:0.5, 12000:0.66, 16000:0.5};   // fraction along line for the 
 
 // ── quadrant labels (diagonal bands) ────────────────────────
 const quads=[
-  {x:900, y:25050, t:["AVOID /","RE-UNDERWRITE"], col:"#b4471f", anc:"start"},
-  {x:13700, y:25050, t:["POLICY-","DEPENDENT"], col:"#9a6412", anc:"end"},
-  {x:600, y:13500, t:["VOLUME","PLAYS"], col:C.darkgray, anc:"start"},
-  {x:14400, y:13500, t:["STRUCTURALLY","ADVANTAGED"], col:"#1f7a43", anc:"end"},
+  {x:700,   y:25050, t:["AVOID /","RE-UNDERWRITE"], col:"#b4471f", anc:"start"},
+  {x:11300, y:25050, t:["POLICY-","DEPENDENT"], col:"#9a6412", anc:"end"},
+  {x:450,   y:13500, t:["VOLUME","PLAYS"], col:C.darkgray, anc:"start"},
+  {x:11550, y:13500, t:["STRUCTURALLY","ADVANTAGED"], col:"#1f7a43", anc:"end"},
 ];
 quads.forEach(q=>{
   q.t.forEach((line,i)=>{
@@ -327,9 +327,10 @@ function showTT(e,r){
   const src = r.source==="estimated" ? `<span class="est-tag">Estimated — not in Panorama</span>` : `Panorama live data`;
   const hearTxt={live:"Live",approved:"Approved",pending:"Pending",none:"None"}[r.hear]||r.hear;
   tt.innerHTML=`<div class="tn ${r.candidate?'amber':''}">${r.name}, ${r.state}</div>`+
-    `<div class="row"><span class="tk">Rebate stack</span><span>${fmt$(r.x)}${r.x>=15000?'+':''}</span></div>`+
+    `<div class="row"><span class="tk">Market-rate stack</span><span>${fmt$(r.x)}${r.x>=12000?'+':''}</span></div>`+
     `<div class="row"><span class="tk">Install (modeled)</span><span>${fmt$(r.y)}</span></div>`+
     `<div class="row"><span class="tk">Net out-of-pocket</span><span class="${r.candidate?'amber':''}">${fmt$(oop)}</span></div>`+
+    (r.hearInStack?`<div class="row"><span class="tk">HEAR (excl., income-qual.)</span><span>+$8,000</span></div>`:"")+
     `<div class="row"><span class="tk">HEAR status</span><span>${hearTxt}</span></div>`+
     (r.tam?`<div class="row"><span class="tk">W-TAM / tier</span><span>${(r.tam/1000).toFixed(0)}k · ${r.tier}</span></div>`:"")+
     `<div style="margin-top:5px;font-size:10.5px" class="tk">${src}</div>`;
@@ -344,7 +345,7 @@ const hideTT=()=>tt.style.opacity=0;
 
 const labels=[]; // for candidates + existing
 rows.forEach(r=>{
-  const x=sx(r.x)+(r._ox||0), y=sy(r.y)+(r._oy||0), off=r.x>=15000;
+  const x=sx(r.x)+(r._ox||0), y=sy(r.y)+(r._oy||0), off=r.x>=12000;
   let node;
   if(r.candidate){
     if(r.source==="estimated"){
