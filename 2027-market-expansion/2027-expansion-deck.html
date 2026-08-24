@@ -178,7 +178,7 @@
     <div class="slidenum">01</div>
     <div class="eyebrow">The policy-offset map <span class="dot">&mdash;</span> re-plotted on live Panorama data</div>
     <h1 class="title">Out-of-pocket is the outcome, not the axis</h1>
-    <p class="dek">Each market sits at its <b>install cost</b> (vertical) against the <b>market-rate rebate stack</b> (horizontal) &mdash; utility + state only, with income-qualified <b>HEAR stripped out</b> because it doesn&rsquo;t reach our buyers. The diagonals are <b>net out-of-pocket</b>. Without HEAR the stack is thin almost everywhere, so OOP runs <b>$12&ndash;23k</b>: the <b style="color:#D8801E">12 amber markets</b> are our 2027 candidates, and the map shows which keep out-of-pocket lowest (down-right) versus which lean on policy market-rate customers can&rsquo;t use (up-left).</p>
+    <p class="dek">Each market sits at its <b>install cost</b> (vertical) against the <b>market-rate rebate stack</b> (horizontal) &mdash; utility + state only, with income-qualified <b>HEAR stripped out</b> because it doesn&rsquo;t reach our buyers. The diagonals are <b>net out-of-pocket</b>. Without HEAR the stack is thin almost everywhere, so OOP runs <b>$12&ndash;23k</b>: the <b style="color:#D8801E">14 amber markets</b> are our 2027 candidates, and the map shows which keep out-of-pocket lowest (down-right) versus which lean on policy market-rate customers can&rsquo;t use (up-left).</p>
 
     <div class="chartrow">
       <div class="chartbox">
@@ -210,7 +210,7 @@
   <section class="slide" id="slide2">
     <div class="slidenum">02</div>
     <div class="eyebrow">Where we go next <span class="dot">&mdash;</span> the shortlist</div>
-    <h1 class="title">The 12 markets we&rsquo;re recommending for 2027</h1>
+    <h1 class="title">The 14 markets we&rsquo;re recommending for 2027</h1>
     <p class="dek">Ordered as briefed. <b>Net out-of-pocket</b> (modeled install &minus; <b>market-rate</b> rebate stack, HEAR excluded) shown per market &mdash; the number the customer feels. Amber throughout marks these as 2027 candidates, matching Slide&nbsp;1.</p>
     <div class="listgrid" id="listgrid"></div>
     <div class="footnote s2note">
@@ -459,7 +459,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "hear": "pending",
-      "candidate": false,
+      "candidate": true,
       "source": "panorama"
     },
     {
@@ -595,7 +595,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "hear": "approved",
-      "candidate": false,
+      "candidate": true,
       "source": "panorama"
     },
     {
@@ -1622,6 +1622,34 @@ const DATA = {
       "tier": "A",
       "pipeline": false,
       "note": "Xcel $1.5K + MN HEAR $8K (pending)"
+    },
+    {
+      "name": "Philadelphia",
+      "id": "PHI",
+      "source": "panorama",
+      "x": 1700,
+      "xFull": 9700,
+      "hearInStack": true,
+      "y": 19800,
+      "hear": "pending",
+      "tam": 313937,
+      "tier": "A",
+      "pipeline": false,
+      "note": "PECO $300 + EAP $1.4K + PA HEAR $8K (pending)"
+    },
+    {
+      "name": "Royal Oak Metro",
+      "id": "ROY",
+      "source": "panorama",
+      "x": 1200,
+      "xFull": 9200,
+      "hearInStack": true,
+      "y": 20500,
+      "hear": "approved",
+      "tam": 254169,
+      "tier": "A",
+      "pipeline": false,
+      "note": "DTE $1.2K + MI HEAR $8K"
     }
   ],
   "missing": [

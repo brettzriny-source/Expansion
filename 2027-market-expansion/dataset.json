@@ -235,7 +235,7 @@
       "tier": "A",
       "kind": "modeled",
       "hear": "pending",
-      "candidate": false,
+      "candidate": true,
       "source": "panorama"
     },
     {
@@ -371,7 +371,7 @@
       "tier": "A",
       "kind": "modeled",
       "hear": "approved",
-      "candidate": false,
+      "candidate": true,
       "source": "panorama"
     },
     {
@@ -1398,6 +1398,34 @@
       "tier": "A",
       "pipeline": false,
       "note": "Xcel $1.5K + MN HEAR $8K (pending)"
+    },
+    {
+      "name": "Philadelphia",
+      "id": "PHI",
+      "source": "panorama",
+      "x": 1700,
+      "xFull": 9700,
+      "hearInStack": true,
+      "y": 19800,
+      "hear": "pending",
+      "tam": 313937,
+      "tier": "A",
+      "pipeline": false,
+      "note": "PECO $300 + EAP $1.4K + PA HEAR $8K (pending)"
+    },
+    {
+      "name": "Royal Oak Metro",
+      "id": "ROY",
+      "source": "panorama",
+      "x": 1200,
+      "xFull": 9200,
+      "hearInStack": true,
+      "y": 20500,
+      "hear": "approved",
+      "tam": 254169,
+      "tier": "A",
+      "pipeline": false,
+      "note": "DTE $1.2K + MI HEAR $8K"
     }
   ],
   "missing": [

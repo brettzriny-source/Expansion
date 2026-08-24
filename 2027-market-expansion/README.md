@@ -4,10 +4,10 @@ A **standalone** pitch deck proposing Jetson's next-market recommendations for 2
 This does **not** touch the master *Panorama Policy Overlay* deck — it is a new, separate output.
 
 - **Deliverable:** `2027-expansion-deck.html` — a self-contained interactive HTML deck (open in any browser; also published as a private Claude Artifact).
-- **Slide 1:** the policy-offset market map ("Out-of-pocket is the outcome, not the axis"), mimicking Slide 7 of the master deck, re-plotted on **live Panorama data**, with the 12 2027 candidates in **amber (`#F9A843`)**.
-- **Slide 2:** the 12 recommended 2027 markets as a clean list.
+- **Slide 1:** the policy-offset market map ("Out-of-pocket is the outcome, not the axis"), mimicking Slide 7 of the master deck, re-plotted on **live Panorama data**, with the 14 2027 candidates in **amber (`#F9A843`)**.
+- **Slide 2:** the 14 recommended 2027 markets as a clean list.
 
-The list is the 11 originally briefed markets plus **Minneapolis** (added at Z's request — a live Panorama market: Tier A, W-TAM 376k, rebate stack $400–$9,500, MN HEAR pending).
+The list is the 11 originally briefed markets plus **Minneapolis**, **Philadelphia**, and **Royal Oak Metro** (added at Z's request — all live Panorama markets).
 
 Status: **working draft — Slides 1 & 2 only.** Further slides pending sign-off from Z (VP New Market Expansion).
 
