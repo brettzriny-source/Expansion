@@ -1,0 +1,59 @@
+# 2027 Market Expansion Deck
+
+A **standalone** pitch deck proposing Jetson's next-market recommendations for 2027.
+This does **not** touch the master *Panorama Policy Overlay* deck — it is a new, separate output.
+
+- **Deliverable:** `2027-expansion-deck.html` — a self-contained interactive HTML deck (open in any browser; also published as a private Claude Artifact).
+- **Slide 1:** the policy-offset market map ("Out-of-pocket is the outcome, not the axis"), mimicking Slide 7 of the master deck, re-plotted on **live Panorama data**, with the 11 2027 candidates in **amber (`#F9A843`)**.
+- **Slide 2:** the 11 recommended 2027 markets as a clean list.
+
+Status: **working draft — Slides 1 & 2 only.** Further slides pending sign-off from Z (VP New Market Expansion).
+
+## Data provenance
+
+| Field | Source | Notes |
+|---|---|---|
+| Rebate stack (Slide 1 **x-axis**) | **live** — Panorama `src/data/rebates.js` → `stackable[id].high` | Max stackable = utility + state + federal HEAR where live/approved/pending. Basis April 2026; monorepo files last synced **2026-08-24**. |
+| W-TAM / tier / existing flag / HEAR status | **live** — Panorama `src/data/markets.js`, `rebates.js` | Panorama = source of truth (the proforma app syncs *from* it). |
+| Install cost (Slide 1 **y-axis**) | ⚠ **MODELED — not a Panorama field** | Panorama stores no per-market install price. See formula below. Treat the vertical axis as directional, not quoted pricing. |
+| 5 markets (Raleigh-Durham, Austin, Charlotte, Las Vegas, Richmond) | ⚠ **ESTIMATED — not in Panorama** | No Panorama record exists. Rebate figures inferred from each state's HEAR framework + nearest Panorama analog (see `scripts/build_dataset.mjs`). Rendered as amber **open dashed rings**. |
+
+### Modeled install-cost formula (y-axis)
+```
+installCost = $19,000 base
+            × regional factor   (Panorama warehouseCost: Low 0.78 / Medium 1.00 / High 1.22)
+            + cold-climate adder (heating degree-days: ≥6500 → +$1,500 / ≥5000 → +$750 / else +$0)
+```
+Chosen so the plotted range (~$14.8k–$23.9k) sits inside Slide 7's $13k–$25.5k axis. It is a transparent proxy, **not** a Jetson pricebook figure.
+
+### Known caveats (flagged, not silently estimated)
+- Federal **25C** credit expired Dec 31 2025 — excluded from all stacks.
+- Several candidates depend on **pending** HEAR programs (SLC, Westfield, Chicago North, Las Vegas, Richmond) — their high rebate stack is not yet realized; flagged on both slides.
+- Markets with rebate > $15k are clamped to the chart's right edge (`≥$15k`).
+- **Vancouver** omitted from the map (no rebate record in Panorama).
+- Panorama tracks **67** markets — the brief's "126 markets / 22 unverified" refers to the older source deck; this codebase has **no `unverified` flag**, so unverified markets cannot be machine-detected here.
+- Per Panorama, **Portland & Dallas are modeled *expansion* markets** (in pipeline scenarios), **not** live "existing" markets; **Austin is not in Panorama at all**. This differs from the brief's assumption — confirm with Z.
+
+## Open questions for Z
+1. Confirm the accent color `#F9A843` against Jetson brand guidelines (the official palette has no approved warm accent).
+2. Confirm the modeled install-cost approach for the y-axis, or supply real install pricing.
+3. Confirm the pipeline-vs-new distinction for Portland / Dallas / Austin.
+4. Confirm output format — currently interactive HTML / Artifact.
+
+## Rebuild
+Requires Node (ESM) + Python 3 and a local checkout of the `conductor-playground` monorepo.
+```bash
+export PANORAMA_SRC=/path/to/conductor-playground/project-panorama/src   # optional; has a default
+node   scripts/compute.mjs         # sanity-print the live Panorama values
+node   scripts/build_dataset.mjs   # regenerate dataset.json from live data
+python3 scripts/build.py           # inline font + logo + data → 2027-expansion-deck.html
+```
+
+## Files
+```
+2027-expansion-deck.html   generated, self-contained deck (the deliverable)
+deck.template.html         HTML/CSS/JS template with __FONT_B64__ / __LOGO_B64__ / __DATASET__ placeholders
+dataset.json               computed plot data (live Panorama + 5 estimates)
+assets/                    Jetson brand font (MNKY Jane) + green logo, inlined at build
+scripts/                   compute.mjs · build_dataset.mjs · build.py
+```

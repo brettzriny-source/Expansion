@@ -1,0 +1,431 @@
+<title>2027 Market Expansion</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  @font-face {
+    font-family: "MNKY Jane";
+    src: url("data:font/woff2;base64,__FONT_B64__") format("woff2");
+    font-weight: 100 900;
+    font-display: swap;
+  }
+  :root {
+    --forest:#0F1F0D; --fern:#113823; --green:#3CD567; --lime:#CBFF8A;
+    --offwhite:#FBFAF1; --cream:#F2F0E4; --darkgray:#666858; --midgray:#ACAA93;
+    --softgray:#E2E1D3; --amber:#F9A843; --amber-deep:#D8801E;
+    --ink:#0F1F0D; --paper:#FBFAF1;
+    --disp:"MNKY Jane","Archivo","Helvetica Neue",Arial,sans-serif;
+  }
+  * { box-sizing:border-box; }
+  html,body { margin:0; padding:0; }
+  body {
+    font-family:var(--disp);
+    background:
+      radial-gradient(120% 90% at 50% -10%, #14301c 0%, var(--forest) 55%, #081206 100%);
+    color:var(--offwhite);
+    -webkit-font-smoothing:antialiased;
+    padding:32px 20px 64px;
+    min-height:100vh;
+  }
+  .wrap { max-width:1160px; margin:0 auto; }
+
+  /* ── deck chrome ─────────────────────────────────────────── */
+  .deckhead {
+    display:flex; align-items:flex-end; justify-content:space-between;
+    gap:20px; padding:4px 6px 20px; flex-wrap:wrap;
+  }
+  .deckhead .lhs { display:flex; align-items:center; gap:16px; }
+  .deckhead img { height:26px; display:block; }
+  .deckhead .divider { width:1px; height:26px; background:#ffffff26; }
+  .deckhead .kicker {
+    font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--lime); font-weight:700;
+  }
+  .deckhead .sub { font-size:12px; color:var(--midgray); margin-top:2px; letter-spacing:.02em; }
+  .draftpill {
+    font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; font-weight:800;
+    color:var(--amber); border:1px solid #f9a84355; background:#f9a8431a;
+    padding:5px 10px; border-radius:999px; white-space:nowrap;
+  }
+
+  /* ── slide cards ─────────────────────────────────────────── */
+  .slide {
+    position:relative;
+    width:100%;
+    background:var(--paper);
+    color:var(--ink);
+    border-radius:14px;
+    box-shadow:0 24px 60px -20px #000000aa, 0 2px 0 #ffffff10 inset;
+    padding:34px 40px 26px;
+    margin-bottom:34px;
+    overflow:hidden;
+  }
+  .slide::before {
+    content:""; position:absolute; left:0; top:0; bottom:0; width:6px;
+    background:linear-gradient(var(--green),var(--fern));
+  }
+  .slidenum {
+    position:absolute; top:26px; right:34px;
+    font-size:11px; color:var(--midgray); letter-spacing:.16em; font-weight:700;
+  }
+  .eyebrow {
+    font-size:12px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--fern); font-weight:800; margin:0 0 8px;
+  }
+  .eyebrow .dot { color:var(--amber); }
+  h1.title {
+    font-size:34px; line-height:1.02; font-weight:800; letter-spacing:-.01em;
+    margin:0 0 6px; color:var(--forest); text-wrap:balance; max-width:20ch;
+  }
+  .dek { font-size:14.5px; line-height:1.45; color:var(--darkgray); margin:0 0 14px; max-width:78ch; font-weight:500; }
+  .dek b { color:var(--fern); font-weight:700; }
+
+  /* ── chart ───────────────────────────────────────────────── */
+  .chartrow { display:flex; gap:20px; align-items:stretch; }
+  .chartbox { flex:1 1 auto; min-width:0; }
+  svg.scatter { width:100%; height:auto; display:block; }
+  .legend {
+    flex:0 0 214px; display:flex; flex-direction:column; gap:14px;
+    padding-top:6px;
+  }
+  .legend h4 {
+    margin:0 0 2px; font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--darkgray); font-weight:800;
+  }
+  .lgroup { display:flex; flex-direction:column; gap:8px; }
+  .litem { display:flex; align-items:center; gap:9px; font-size:12px; color:var(--forest); font-weight:600; }
+  .litem small { color:var(--midgray); font-weight:500; display:block; font-size:10.5px; line-height:1.2; }
+  .swatch { flex:0 0 auto; width:18px; height:18px; position:relative; }
+  .callout {
+    margin-top:2px; background:var(--cream); border:1px solid var(--softgray);
+    border-radius:9px; padding:11px 12px;
+  }
+  .callout .ct { font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; font-weight:800; color:var(--amber-deep); margin-bottom:5px; }
+  .callout .cb { font-size:11.5px; line-height:1.4; color:var(--darkgray); }
+
+  .footnote {
+    margin-top:16px; padding-top:12px; border-top:1px solid var(--softgray);
+    font-size:10.5px; line-height:1.5; color:var(--midgray);
+  }
+  .footnote b { color:var(--darkgray); font-weight:700; }
+  .footnote .flag { color:var(--amber-deep); font-weight:700; }
+
+  /* tooltip */
+  #tt {
+    position:fixed; pointer-events:none; z-index:50; opacity:0; transition:opacity .08s;
+    background:var(--forest); color:var(--offwhite); border:1px solid #ffffff22;
+    border-radius:9px; padding:9px 11px; font-size:11.5px; line-height:1.45;
+    box-shadow:0 10px 30px -8px #000000cc; max-width:250px;
+  }
+  #tt .tn { font-weight:800; font-size:12.5px; margin-bottom:3px; }
+  #tt .tk { color:var(--midgray); }
+  #tt .amber { color:var(--amber); font-weight:700; }
+  #tt .row { display:flex; justify-content:space-between; gap:14px; }
+  .est-tag { color:var(--amber-deep); }
+
+  /* ── slide 2 list ────────────────────────────────────────── */
+  .listgrid { display:grid; grid-template-columns:1fr 1fr; gap:10px 26px; margin-top:6px; }
+  .mrow {
+    display:flex; align-items:center; gap:14px;
+    padding:11px 14px; border-radius:10px; background:var(--cream);
+    border:1px solid var(--softgray);
+  }
+  .mrow .rank {
+    flex:0 0 auto; width:30px; height:30px; border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:14px; color:var(--forest);
+    background:var(--amber); box-shadow:0 2px 0 #d8801e;
+  }
+  .mrow .body { flex:1 1 auto; min-width:0; }
+  .mrow .mname { font-size:17px; font-weight:800; color:var(--forest); line-height:1.05; letter-spacing:-.01em; }
+  .mrow .mname span.st { color:var(--midgray); font-weight:600; font-size:12px; letter-spacing:.04em; }
+  .mrow .chips { display:flex; flex-wrap:wrap; gap:5px; margin-top:5px; }
+  .chip {
+    font-size:9.5px; letter-spacing:.05em; font-weight:800; text-transform:uppercase;
+    padding:2.5px 7px; border-radius:999px; white-space:nowrap;
+  }
+  .chip.src-p { color:var(--fern); background:#3cd56722; border:1px solid #3cd56755; }
+  .chip.src-e { color:var(--amber-deep); background:#f9a8431f; border:1px solid #f9a84366; }
+  .chip.pipe { color:var(--darkgray); background:#66685815; border:1px solid #66685840; }
+  .chip.hear-live, .chip.hear-approved { color:#1f7a43; background:#3cd56718; border:1px solid #3cd56744; }
+  .chip.hear-pending { color:#9a6412; background:#f9a84315; border:1px solid #f9a84340; }
+  .chip.hear-none { color:var(--darkgray); background:#acaa9322; border:1px solid #acaa9355; }
+  .mrow .val { flex:0 0 auto; text-align:right; }
+  .mrow .val .oop { font-size:16px; font-weight:800; color:var(--forest); font-variant-numeric:tabular-nums; }
+  .mrow .val .oopl { font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--midgray); font-weight:700; }
+  .mrow .val .reb { font-size:10.5px; color:var(--darkgray); margin-top:2px; font-variant-numeric:tabular-nums; }
+  .s2note { margin-top:8px; }
+
+  @media (max-width:820px){
+    .chartrow{ flex-direction:column; } .legend{ flex-basis:auto; flex-direction:row; flex-wrap:wrap; gap:18px; }
+    .listgrid{ grid-template-columns:1fr; } h1.title{ font-size:27px; }
+  }
+</style>
+
+<div class="wrap">
+  <div class="deckhead">
+    <div class="lhs">
+      <img src="data:image/png;base64,__LOGO_B64__" alt="Jetson" />
+      <div class="divider"></div>
+      <div>
+        <div class="kicker">2027 Market Expansion</div>
+        <div class="sub">Next-market recommendations &middot; VP New Market Expansion</div>
+      </div>
+    </div>
+    <div class="draftpill">Working draft &middot; not the master deck</div>
+  </div>
+
+  <!-- ══ SLIDE 1 ══════════════════════════════════════════════ -->
+  <section class="slide" id="slide1">
+    <div class="slidenum">01</div>
+    <div class="eyebrow">The policy-offset map <span class="dot">&mdash;</span> re-plotted on live Panorama data</div>
+    <h1 class="title">Out-of-pocket is the outcome, not the axis</h1>
+    <p class="dek">Every market sits at its <b>install cost</b> (vertical) against the <b>rebate stack it can reach</b> (horizontal). The diagonals are what a homeowner actually pays &mdash; <b>net out-of-pocket</b>. The <b style="color:#D8801E">11 amber markets</b> are our 2027 candidates: we want them landing down and to the right, where the stack does the heavy lifting.</p>
+
+    <div class="chartrow">
+      <div class="chartbox">
+        <svg class="scatter" viewBox="0 0 1120 486" role="img" aria-label="Scatter plot of heat-pump install cost versus rebate stack for Jetson markets, with 2027 candidates highlighted in amber."></svg>
+      </div>
+      <aside class="legend">
+        <div>
+          <h4>Marker key</h4>
+          <div class="lgroup">
+            <div class="litem"><span class="swatch" data-sw="candP"></span><div>2027 candidate<small>Panorama data</small></div></div>
+            <div class="litem"><span class="swatch" data-sw="candE"></span><div>2027 candidate<small>estimated &mdash; not in Panorama</small></div></div>
+            <div class="litem"><span class="swatch" data-sw="exist"></span><div>Existing market<small>live Jetson deals</small></div></div>
+            <div class="litem"><span class="swatch" data-sw="model"></span><div>Modeled market<small>Panorama, projected</small></div></div>
+          </div>
+        </div>
+        <div class="callout">
+          <div class="ct">Read the diagonals</div>
+          <div class="cb">Down-right = low out-of-pocket = <b style="color:#1f7a43">structurally advantaged</b>. Up-left = the rebate can&rsquo;t cover the cost = <b style="color:#b4471f">re-underwrite</b>.</div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="footnote">
+      <b>Sources &amp; caveats.</b> Rebate stack (x) = maximum stackable rebate (utility + state + federal HEAR where live/approved/pending), pulled live from Panorama <b>rebates.js</b> (<code>project-panorama</code>, monorepo <code>conductor-playground</code>) &mdash; data basis April 2026, files last synced <b>2026-08-24</b>. &nbsp;<span class="flag">Install cost (y) is MODELED, not a Panorama field</span> &mdash; Panorama stores no per-market install price; y = $19k national base &times; regional cost factor (from Panorama <code>warehouseCost</code>) + cold-climate adder (from heating degree-days). Treat the vertical axis as directional, not quoted pricing. &nbsp;<span class="flag">Amber open rings (Raleigh-Durham, Austin, Charlotte, Las&nbsp;Vegas, Richmond) are estimated</span> &mdash; these 5 have no Panorama record; rebate figures are inferred from each state&rsquo;s HEAR framework and the nearest Panorama analog. &nbsp;Federal 25C credit expired Dec&nbsp;31&nbsp;2025 and is excluded. Markets with rebate &gt; $15k are clamped to the right edge. Vancouver omitted (no rebate record).
+    </div>
+  </section>
+
+  <!-- ══ SLIDE 2 ══════════════════════════════════════════════ -->
+  <section class="slide" id="slide2">
+    <div class="slidenum">02</div>
+    <div class="eyebrow">Where we go next <span class="dot">&mdash;</span> the shortlist</div>
+    <h1 class="title">The 11 markets we&rsquo;re recommending for 2027</h1>
+    <p class="dek">Ordered as briefed. <b>Net out-of-pocket</b> (modeled install &minus; rebate stack) shown per market &mdash; the number the customer feels. Amber throughout marks these as 2027 candidates, matching Slide&nbsp;1.</p>
+    <div class="listgrid" id="listgrid"></div>
+    <div class="footnote s2note">
+      <b>Legend.</b> <span class="chip src-p" style="text-transform:uppercase">Panorama data</span> live scorecard record &nbsp;&middot;&nbsp; <span class="chip src-e" style="text-transform:uppercase">Estimated</span> not in Panorama, inferred from state HEAR + analog &nbsp;&middot;&nbsp; <span class="chip pipe" style="text-transform:uppercase">In pipeline</span> already a modeled expansion market (reprioritizing) &nbsp;&middot;&nbsp; HEAR chip = federal rebate program status in that state. &nbsp; OOP and rebate figures per Slide&nbsp;1 sourcing; install cost is modeled. <span class="flag">Austin, Charlotte, Raleigh-Durham, Las&nbsp;Vegas, Richmond are estimated</span> &mdash; not yet in Panorama.
+    </div>
+  </section>
+</div>
+
+<div id="tt"></div>
+
+<script>
+const DATA = __DATASET__;
+const C = { forest:"#0F1F0D", fern:"#113823", green:"#3CD567", lime:"#CBFF8A",
+  offwhite:"#FBFAF1", darkgray:"#666858", midgray:"#ACAA93", softgray:"#E2E1D3",
+  amber:"#F9A843", amberDeep:"#D8801E" };
+const fmt$ = n => "$" + Math.round(n).toLocaleString();
+const fmtK = n => n>=1000 ? "$"+(n/1000).toFixed(n%1000?1:0)+"k" : "$"+n;
+const SVGNS = "http://www.w3.org/2000/svg";
+const el = (t,a={}) => { const e=document.createElementNS(SVGNS,t); for(const k in a) e.setAttribute(k,a[k]); return e; };
+
+// ── scales ──────────────────────────────────────────────────
+const XW=[0,15000], YW=[13000,25500];
+const P = { l:66, r:96, t:26, b:56 };      // viewBox 1120 x 486
+const VW=1120, VH=486;
+const px0=P.l, px1=VW-P.r, py0=VH-P.b, py1=P.t;
+const clampX = v => Math.min(v, XW[1]);
+const sx = v => px0 + (clampX(v)-XW[0])/(XW[1]-XW[0])*(px1-px0);
+const sy = v => py0 + (Math.max(YW[0],Math.min(YW[1],v))-YW[0])/(YW[1]-YW[0])*(py1-py0);
+
+const svg = document.querySelector("svg.scatter");
+const gGrid=el("g"), gDiag=el("g"), gQuad=el("g"), gDot=el("g"), gLbl=el("g");
+svg.append(gGrid,gDiag,gQuad,gDot,gLbl);
+
+// plot frame
+gGrid.append(el("rect",{x:px0,y:py1,width:px1-px0,height:py0-py1,fill:"#ffffff",stroke:C.softgray,"stroke-width":1,rx:3}));
+
+// ── grid + ticks ────────────────────────────────────────────
+const xticks=[0,4000,8000,12000,15000], yticks=[13000,16000,19000,22000,25500];
+xticks.forEach(t=>{
+  const x=sx(t);
+  gGrid.append(el("line",{x1:x,y1:py1,x2:x,y2:py0,stroke:C.softgray,"stroke-width":1,"stroke-dasharray":"1 5"}));
+  const lab=el("text",{x:x,y:py0+20,"text-anchor":"middle","font-size":12,fill:C.darkgray,"font-weight":600});
+  lab.textContent = t===15000 ? "≥$15k" : (t===0?"$0":"$"+t/1000+"k");
+  gGrid.append(lab);
+});
+yticks.forEach(t=>{
+  const y=sy(t);
+  gGrid.append(el("line",{x1:px0,y1:y,x2:px1,y2:y,stroke:C.softgray,"stroke-width":1,"stroke-dasharray":"1 5"}));
+  const lab=el("text",{x:px0-10,y:y+4,"text-anchor":"end","font-size":12,fill:C.darkgray,"font-weight":600});
+  lab.textContent="$"+(t/1000).toFixed(t%1000?1:0)+"k";
+  gGrid.append(lab);
+});
+// axis titles
+const xt=el("text",{x:(px0+px1)/2,y:py0+44,"text-anchor":"middle","font-size":12.5,fill:C.forest,"font-weight":800});
+xt.textContent="POLICY OFFSET  —  MARKET-RATE REBATE STACK  ($, MAX STACKABLE)";
+xt.setAttribute("letter-spacing",".04em"); gGrid.append(xt);
+const yt=el("text",{x:18,y:(py0+py1)/2,"text-anchor":"middle","font-size":12.5,fill:C.forest,"font-weight":800,transform:`rotate(-90 18 ${(py0+py1)/2})`});
+yt.textContent="HEAT-PUMP INSTALL COST  ($, MODELED*)"; yt.setAttribute("letter-spacing",".04em"); gGrid.append(yt);
+
+// ── diagonal OOP reference lines: Y = X + c ─────────────────
+function seg(c){
+  // param over X, clip to plot window
+  let pts=[];
+  const cand=[[XW[0], XW[0]+c],[XW[1], XW[1]+c],[YW[0]-c, YW[0]],[YW[1]-c, YW[1]]];
+  cand.forEach(([x,y])=>{ if(x>=XW[0]-1&&x<=XW[1]+1&&y>=YW[0]-1&&y<=YW[1]+1) pts.push([Math.max(XW[0],Math.min(XW[1],x)),Math.max(YW[0],Math.min(YW[1],y))]); });
+  // dedupe
+  pts = pts.filter((p,i)=>pts.findIndex(q=>Math.abs(q[0]-p[0])<1&&Math.abs(q[1]-p[1])<1)===i);
+  return pts.slice(0,2);
+}
+const OOP_T={8000:0.5, 12000:0.66, 16000:0.5};   // fraction along line for the label
+[8000,12000,16000].forEach(c=>{
+  const s=seg(c); if(s.length<2) return;
+  const [a,b]=s;
+  const ax=sx(a[0]),ay=sy(a[1]),bx=sx(b[0]),by=sy(b[1]);
+  gDiag.append(el("line",{x1:ax,y1:ay,x2:bx,y2:by,stroke:C.midgray,"stroke-width":1.4,"stroke-dasharray":"2 5",opacity:.9}));
+  // rotated label riding the line at mid-span, nudged just above it, with a white halo
+  const t=OOP_T[c];
+  const lx=ax+(bx-ax)*t, ly=ay+(by-ay)*t;
+  const ang=Math.atan2(by-ay,bx-ax)*180/Math.PI;
+  const nx=Math.sin(ang*Math.PI/180)*9, ny=-Math.cos(ang*Math.PI/180)*9; // perpendicular, upward
+  const tx=el("text",{x:lx+nx,y:ly+ny,"text-anchor":"middle","font-size":10.5,fill:C.darkgray,"font-weight":700,
+    transform:`rotate(${ang} ${lx+nx} ${ly+ny})`,stroke:"#ffffff","stroke-width":3,"paint-order":"stroke","stroke-linejoin":"round"});
+  tx.textContent="$"+c/1000+"k out-of-pocket"; gDiag.append(tx);
+});
+
+// ── quadrant labels (diagonal bands) ────────────────────────
+const quads=[
+  {x:900, y:25050, t:["AVOID /","RE-UNDERWRITE"], col:"#b4471f", anc:"start"},
+  {x:13700, y:25050, t:["POLICY-","DEPENDENT"], col:"#9a6412", anc:"end"},
+  {x:600, y:13500, t:["VOLUME","PLAYS"], col:C.darkgray, anc:"start"},
+  {x:14400, y:13500, t:["STRUCTURALLY","ADVANTAGED"], col:"#1f7a43", anc:"end"},
+];
+quads.forEach(q=>{
+  q.t.forEach((line,i)=>{
+    const tx=el("text",{x:sx(q.x),y:sy(q.y)+i*13,"text-anchor":q.anc,"font-size":11,fill:q.col,"font-weight":800,opacity:.85});
+    tx.setAttribute("letter-spacing",".06em"); tx.textContent=line; gQuad.append(tx);
+  });
+});
+
+// ── markers ─────────────────────────────────────────────────
+const rows = DATA.all.filter(r=>r.x!=null);
+// draw order: modeled, existing, candidates(amber) on top
+const order = r => r.candidate?3 : r.kind==="existing"?2 : 1;
+rows.sort((a,b)=>order(a)-order(b));
+
+// spread markers that land on the exact same pixel (e.g. Dallas+Austin, Raleigh+Charlotte)
+const groups={};
+rows.forEach(r=>{ const k=Math.round(sx(r.x))+"_"+Math.round(sy(r.y)); (groups[k]=groups[k]||[]).push(r); });
+Object.values(groups).forEach(g=>{ if(g.length>1){ g.forEach((r,i)=>{ const a=(i/g.length)*2*Math.PI - Math.PI/4; r._ox=Math.cos(a)*7.5; r._oy=Math.sin(a)*7.5; }); } });
+
+const tt=document.getElementById("tt");
+function showTT(e,r){
+  const oop=r.y-r.x;
+  const src = r.source==="estimated" ? `<span class="est-tag">Estimated — not in Panorama</span>` : `Panorama live data`;
+  const hearTxt={live:"Live",approved:"Approved",pending:"Pending",none:"None"}[r.hear]||r.hear;
+  tt.innerHTML=`<div class="tn ${r.candidate?'amber':''}">${r.name}, ${r.state}</div>`+
+    `<div class="row"><span class="tk">Rebate stack</span><span>${fmt$(r.x)}${r.x>=15000?'+':''}</span></div>`+
+    `<div class="row"><span class="tk">Install (modeled)</span><span>${fmt$(r.y)}</span></div>`+
+    `<div class="row"><span class="tk">Net out-of-pocket</span><span class="${r.candidate?'amber':''}">${fmt$(oop)}</span></div>`+
+    `<div class="row"><span class="tk">HEAR status</span><span>${hearTxt}</span></div>`+
+    (r.tam?`<div class="row"><span class="tk">W-TAM / tier</span><span>${(r.tam/1000).toFixed(0)}k · ${r.tier}</span></div>`:"")+
+    `<div style="margin-top:5px;font-size:10.5px" class="tk">${src}</div>`;
+  tt.style.opacity=1;
+  const pad=14; let x=e.clientX+pad, y=e.clientY+pad;
+  const b=tt.getBoundingClientRect();
+  if(x+b.width>innerWidth-8) x=e.clientX-b.width-pad;
+  if(y+b.height>innerHeight-8) y=e.clientY-b.height-pad;
+  tt.style.left=x+"px"; tt.style.top=y+"px";
+}
+const hideTT=()=>tt.style.opacity=0;
+
+const labels=[]; // for candidates + existing
+rows.forEach(r=>{
+  const x=sx(r.x)+(r._ox||0), y=sy(r.y)+(r._oy||0), off=r.x>=15000;
+  let node;
+  if(r.candidate){
+    if(r.source==="estimated"){
+      node=el("circle",{cx:x,cy:y,r:7.5,fill:C.offwhite,stroke:C.amber,"stroke-width":2.4,"stroke-dasharray":"3 2.4"});
+    } else {
+      node=el("circle",{cx:x,cy:y,r:7.5,fill:C.amber,stroke:C.amberDeep,"stroke-width":1.6});
+    }
+  } else if(r.kind==="existing"){
+    node=el("circle",{cx:x,cy:y,r:5,fill:C.fern,stroke:C.offwhite,"stroke-width":1.4});
+  } else {
+    node=el("circle",{cx:x,cy:y,r:4,fill:"none",stroke:C.midgray,"stroke-width":1.4,opacity:.75});
+  }
+  node.style.cursor="pointer";
+  node.addEventListener("mousemove",e=>showTT(e,r));
+  node.addEventListener("mouseleave",hideTT);
+  gDot.append(node);
+  if(off){ // off-scale marker
+    const a=el("text",{x:x+9,y:y+4,"font-size":11,fill:r.candidate?C.amberDeep:C.midgray,"font-weight":800}); a.textContent="›"; gDot.append(a);
+  }
+  if(r.candidate || r.kind==="existing") labels.push({r,x,y});
+});
+
+// ── labels with simple vertical dodge ───────────────────────
+labels.sort((a,b)=>a.y-b.y || a.x-b.x);
+const placed=[];
+labels.forEach(L=>{
+  const r=L.r; const cand=r.candidate;
+  let anchor = L.x > (px0+px1)/2 - 40 ? "end" : "start";
+  let dx = anchor==="end" ? -11 : 11;
+  let ty = L.y + 4;
+  // dodge against already-placed labels on same side & near x
+  let guard=0;
+  while(guard<40 && placed.some(p=> p.anchor===anchor && Math.abs(p.x-L.x)<86 && Math.abs(p.ty-ty)<13)){ ty+=13; guard++; }
+  placed.push({x:L.x,ty,anchor});
+  const g=el("g");
+  const t=el("text",{x:L.x+dx,y:ty,"text-anchor":anchor,"font-size":cand?12:10.5,
+    "font-weight":cand?800:600, fill:cand?C.amberDeep:C.fern});
+  t.textContent = r.name + (r.source==="estimated" ? " ~" : "");
+  // faint leader if dodged far
+  if(Math.abs(ty-(L.y+4))>10){
+    g.append(el("line",{x1:L.x+(anchor==="end"?-4:4),y1:L.y,x2:L.x+dx-(anchor==="end"?-2:2),y2:ty-4,stroke:cand?C.amber:C.softgray,"stroke-width":1,opacity:.6}));
+  }
+  g.append(t); gLbl.append(g);
+});
+
+// ── legend swatches ─────────────────────────────────────────
+document.querySelectorAll(".swatch").forEach(s=>{
+  const k=s.dataset.sw; const ns=document.createElementNS(SVGNS,"svg");
+  ns.setAttribute("viewBox","0 0 18 18"); ns.setAttribute("width","18"); ns.setAttribute("height","18");
+  let c;
+  if(k==="candP") c=el("circle",{cx:9,cy:9,r:6.5,fill:C.amber,stroke:C.amberDeep,"stroke-width":1.4});
+  if(k==="candE") c=el("circle",{cx:9,cy:9,r:6.5,fill:C.offwhite,stroke:C.amber,"stroke-width":2.2,"stroke-dasharray":"3 2.2"});
+  if(k==="exist") c=el("circle",{cx:9,cy:9,r:5,fill:C.fern,stroke:"#ffffff","stroke-width":1});
+  if(k==="model") c=el("circle",{cx:9,cy:9,r:5,fill:"none",stroke:C.midgray,"stroke-width":1.4});
+  ns.append(c); s.append(ns);
+});
+
+// ── Slide 2 list ────────────────────────────────────────────
+const hearLabel={live:"HEAR Live",approved:"HEAR Approved",pending:"HEAR Pending",none:"No HEAR"};
+const grid=document.getElementById("listgrid");
+DATA.roster.forEach((r,i)=>{
+  const oop=r.y-r.x;
+  const row=document.createElement("div"); row.className="mrow";
+  const chips=[];
+  chips.push(r.source==="panorama"
+    ? `<span class="chip src-p">Panorama data</span>`
+    : `<span class="chip src-e">Estimated</span>`);
+  if(r.pipeline) chips.push(`<span class="chip pipe">In pipeline</span>`);
+  chips.push(`<span class="chip hear-${r.hear}">${hearLabel[r.hear]}</span>`);
+  row.innerHTML=
+    `<div class="rank">${i+1}</div>`+
+    `<div class="body">`+
+      `<div class="mname">${r.name} <span class="st">${r.id?stateOf(r):stateEst(r)}</span></div>`+
+      `<div class="chips">${chips.join("")}</div>`+
+    `</div>`+
+    `<div class="val">`+
+      `<div class="oop">${fmt$(oop)}</div><div class="oopl">net OOP*</div>`+
+      `<div class="reb">stack ${fmtK(r.x)}${r.x>=15000?'+':''}</div>`+
+    `</div>`;
+  grid.append(row);
+});
+function stateOf(r){ const m=DATA.all.find(a=>a.id===r.id); return m?m.state:""; }
+function stateEst(r){ const m=DATA.all.find(a=>a.name===r.name && a.source==="estimated"); return m?m.state:""; }
+</script>
