@@ -31,6 +31,10 @@ const CAND = {
 };
 const CAND_ID = new Set(Object.values(CAND));
 
+// Licensed-model markets (shown as a distinct category, not amber candidates)
+const LICENSED = { "Phoenix": "PHX", "Memphis": "MEM", "Providence": "PVD", "Hartford": "HARTFORD" };
+const LIC_ID = new Set(Object.values(LICENSED));
+
 const all = ALL_MARKETS.map(m => {
   const s = REBATE_DATA.stackable?.[m.id];
   const note = s?.note ?? null;
@@ -41,6 +45,7 @@ const all = ALL_MARKETS.map(m => {
     tam: m.warehouseTam, tier: m.tier,
     kind: m.isExisting ? "existing" : "modeled",
     candidate: CAND_ID.has(m.id),
+    licensed: LIC_ID.has(m.id),
     source: "panorama",
     riskFlag: !!(note && note.includes("⚠")),
     note,
@@ -48,14 +53,22 @@ const all = ALL_MARKETS.map(m => {
 });
 
 // Missing IDs (should be none)
-const missingIds = Object.entries(CAND).filter(([,id]) => !all.some(a => a.id === id)).map(([n]) => n);
+const missingIds = [...Object.entries(CAND), ...Object.entries(LICENSED)]
+  .filter(([,id]) => !all.some(a => a.id === id)).map(([n]) => n);
 
-const roster = Object.entries(CAND).map(([name, id]) => {
-  const r = all.find(a => a.id === id);
-  return { name, id, source: "panorama", x: r.x, y: r.y, tam: r.tam, tier: r.tier,
-           kind: r.kind, riskFlag: r.riskFlag, note: r.note,
-           pipeline: ["Portland", "Dallas"].includes(name) };
-});
+const roster = [
+  ...Object.entries(CAND).map(([name, id]) => {
+    const r = all.find(a => a.id === id);
+    return { name, id, group: "candidate", x: r.x, y: r.y, tam: r.tam, tier: r.tier,
+             kind: r.kind, riskFlag: r.riskFlag, note: r.note,
+             pipeline: ["Portland", "Dallas"].includes(name) };
+  }),
+  ...Object.entries(LICENSED).map(([name, id]) => {
+    const r = all.find(a => a.id === id);
+    return { name, id, group: "licensed", x: r.x, y: r.y, tam: r.tam, tier: r.tier,
+             kind: r.kind, riskFlag: r.riskFlag, note: r.note, pipeline: false };
+  }),
+];
 
 writeFileSync(OUT, JSON.stringify({ all, roster, missing: missingIds }, null, 2));
 console.log("wrote", OUT, "| markets:", all.length, "| candidates found:", roster.length,

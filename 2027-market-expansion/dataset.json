@@ -10,6 +10,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": true,
       "note": "LADWP $5.5K + CA TECH $3K. ⚠ HEAR waitlist only as of Feb 24, 2026 — not bankable for new projects."
@@ -24,6 +25,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": true,
       "note": "Anaheim $1K + CA TECH $3K. ⚠ HEAR waitlist only."
@@ -38,6 +40,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": true,
       "note": "City of Riverside $3.75K + CA TECH $3K. ⚠ HEAR waitlist only."
@@ -52,6 +55,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": true,
       "note": "CCA $3.5K + CA TECH $3K. ⚠ HEAR waitlist only."
@@ -66,6 +70,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": true,
       "note": "SMUD $3K + CA TECH $3K. ⚠ HEAR waitlist only."
@@ -80,6 +85,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "PSE $4K + WA HEAR $8K"
@@ -94,6 +100,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Pacific Power $4K + ET $2K + OR HEAR $8K"
@@ -108,6 +115,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": true,
       "source": "panorama",
       "riskFlag": false,
       "note": "SRP $1.125K + Efficiency AZ up to $14K full electrification. APS ended residential rebates 1/1/26. SRP Cool Cash expires 4/30/26."
@@ -122,6 +130,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Denton $2.5K max. No HEAR in TX, 25C expired."
@@ -136,6 +145,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Entergy $1.08K max. No HEAR in TX, 25C expired."
@@ -150,6 +160,7 @@
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "CPS $0.8K max. No HEAR in TX, 25C expired."
@@ -164,6 +175,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "ComEd $2K ducted + Naperville $600 + IL HEAR $8K (pending DOE approval)"
@@ -178,6 +190,7 @@
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "ComEd $2K ducted + IL HEAR $8K (pending DOE approval)"
@@ -192,6 +205,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": true,
       "note": "PECO $300 + EAP Tier 3 $1.4K + hybrid $250 = $1,950 stack + PA HEAR $8K (pending). ⚠ Act 129 Phase IV ends 5/31/26."
@@ -206,6 +220,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "BGE EmPOWER $15K (state-mandated, ratepayer funded) + MontCo $2.5K + MD HEAR $8K (DOE-approved but not yet launched)"
@@ -220,6 +235,7 @@
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "PSEG LI market $4.5K (DAC $5.625K) + NY Clean Heat $5–12K + HEAR/EmPower+ up to $24K IQ"
@@ -234,6 +250,7 @@
       "tier": "B",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "JCP&L $1K + NJ HEAR $8K (pending)"
@@ -248,6 +265,7 @@
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": true,
       "source": "panorama",
       "riskFlag": false,
       "note": "RI Energy $3K + RI HEAR $8K"
@@ -262,6 +280,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Xcel $2K cold-climate + $600 insulation + MN HEAR $8K (pending DOE approval)"
@@ -276,6 +295,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "We Energies $1.5K + WI HEAR $8K"
@@ -290,6 +310,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "RMP Wattsmart $2K (revised Feb 27, 2026) + UT HEAR $8K (pending — no consumer timeline)"
@@ -304,6 +325,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "DTE $1.2K + MI HEAR $8K"
@@ -318,6 +340,7 @@
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Dominion $50 + VA HEAR $8K (pending)"
@@ -332,6 +355,7 @@
       "tier": "A",
       "kind": "existing",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Xcel $6.75K + CO tax $1K + DRCOG $1.5K (mid-2026) + HEAR $8K"
@@ -346,6 +370,7 @@
       "tier": "C",
       "kind": "existing",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "EW $2K + CO tax $1K + HEAR $8K"
@@ -360,6 +385,7 @@
       "tier": "C",
       "kind": "existing",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "CSU $1.5K + CO tax $1K + HEAR $8K"
@@ -374,6 +400,7 @@
       "tier": "C",
       "kind": "existing",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -388,6 +415,7 @@
       "tier": "C",
       "kind": "existing",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "ConEd $4.5K + NYSERDA $3K + NY HEAR $8K"
@@ -402,6 +430,7 @@
       "tier": "A",
       "kind": "existing",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Mass Save up to $8.5K whole-home (HEAR not separately launched in MA)"
@@ -416,6 +445,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Idaho Power $250 max. ID HEAR not available."
@@ -430,6 +460,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Avista $1K + WA HEAR $8K"
@@ -444,6 +475,7 @@
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "TEP instant rebate + AZ HEAR $8K"
@@ -458,6 +490,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "TVA $1.5K + TN HEAR $8K (pending Q3 2026)"
@@ -472,6 +505,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "TVA $1.5K + TN HEAR $8K (pending Q3 2026)"
@@ -486,6 +520,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "MidAmerican ~$1.5K + IA HEAR $8K (pending)"
@@ -500,6 +535,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "NV Energy $3.2K + NV HEAR $8K (pending mid-late 2026)"
@@ -514,6 +550,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "SWEPCO $2.5K + AR HEAR $8K (pending)"
@@ -528,6 +565,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Duke $1K + NC HEAR $8K"
@@ -542,6 +580,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "FC Utils $2K + CO tax $1K + HEAR $8K"
@@ -556,6 +595,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "EWEB $1K + OR HEAR $8K"
@@ -570,6 +610,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "PNM $860 + NM HEAR $8K"
@@ -584,6 +625,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "TVA $1.5K + TN HEAR $8K (pending Q3 2026)"
@@ -598,6 +640,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "TVA $1.5K max. AL HEAR not launched, no date."
@@ -612,6 +655,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Duke $1K + SC HEAR $8K (pending 2026)"
@@ -626,6 +670,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "FPL $600 + FL HEAR $8K (pending)"
@@ -640,6 +685,7 @@
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Duke FL $800 + FL HEAR $8K (pending)"
@@ -654,6 +700,7 @@
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Duke FL $400 + FL HEAR $8K (pending)"
@@ -668,6 +715,7 @@
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "JEA $500 + FL HEAR $8K (pending)"
@@ -682,6 +730,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "GA Power $500 + GA HEAR $8K (pending)"
@@ -696,6 +745,7 @@
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "CEI $800 + OH HEAR $8K (approved)"
@@ -710,6 +760,7 @@
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "AEP OH $1K + OH HEAR $8K (approved)"
@@ -724,6 +775,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Duke OH $800 + OH HEAR $8K (approved)"
@@ -738,6 +790,7 @@
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "AES IN $600 + IN HEAR $8K (pending)"
@@ -752,6 +805,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Evergy $500 + MO HEAR $8K (pending)"
@@ -766,6 +820,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Ameren $800 + MO HEAR $8K (pending)"
@@ -780,6 +835,7 @@
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "LG&E $500 + KY HEAR $8K (pending)"
@@ -794,6 +850,7 @@
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Entergy $400 + LA HEAR $8K (pending)"
@@ -808,6 +865,7 @@
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "OG&E $300 max. OK HEAR not submitted."
@@ -822,6 +880,7 @@
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": true,
       "source": "panorama",
       "riskFlag": false,
       "note": "Eversource $3K + CT HEAR $8K (approved)"
@@ -836,6 +895,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Delmarva $1.5K + Energize DE $500 + DE HEAR $8K (approved)"
@@ -850,6 +910,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "PEPCO $2.5K + DCSEU + DC HEAR $8K (live)"
@@ -864,6 +925,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Efficiency Maine $2.4K + ME HEAR $8K (approved)"
@@ -878,6 +940,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "NHSaves $1K + NH HEAR $8K (approved)"
@@ -892,6 +955,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "OPPD $500 + NE HEAR $8K (pending)"
@@ -906,6 +970,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Evergy $300 + KS HEAR $8K (pending)"
@@ -920,6 +985,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -934,6 +1000,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -948,6 +1015,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -962,6 +1030,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -976,6 +1045,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -990,6 +1060,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1004,6 +1075,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "BED $1.5K + EVT $1.2K + VT HEAR $8K (approved)"
@@ -1018,6 +1090,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1032,6 +1105,7 @@
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1046,6 +1120,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Pacific Power $4K + ET $2K + OR HEAR $8K (approved)"
@@ -1060,6 +1135,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Pacific Power $4K + ET $2K + OR HEAR $8K (approved)"
@@ -1074,6 +1150,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "PSE $4K + WA HEAR $8K (approved)"
@@ -1088,6 +1165,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Pacific Power $1.5K + WA HEAR $8K (approved)"
@@ -1102,6 +1180,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Benton REA $1K + WA HEAR $8K (approved)"
@@ -1116,6 +1195,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "NWE $0.7K + MT HEAR $8K (pending)"
@@ -1130,6 +1210,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "NWE $0.7K + MT HEAR $8K (pending)"
@@ -1144,6 +1225,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Black Hills $0.4K max. WY HEAR not submitted."
@@ -1158,6 +1240,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "RMP $0.7K max. WY HEAR not submitted."
@@ -1172,6 +1255,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "IF Power + RMP $0.7K max. ID HEAR not available."
@@ -1186,6 +1270,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "LES $0.8K + NE HEAR $8K (pending)"
@@ -1200,6 +1285,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Xcel SD $1.5K + SD HEAR $8K (pending)"
@@ -1214,6 +1300,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Xcel ND $1.5K + ND HEAR $8K (pending)"
@@ -1228,6 +1315,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "LG&E/KU $0.6K + KY HEAR $8K (pending)"
@@ -1242,6 +1330,7 @@
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Alabama Power $0.75K max. AL HEAR not launched."
@@ -1256,6 +1345,7 @@
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": true,
       "source": "panorama",
       "riskFlag": false,
       "note": "MLGW + TVA $1.5K + TN HEAR $8K (pending Q3 2026)"
@@ -1270,6 +1360,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "NES + TVA $1.5K + TN HEAR $8K (pending Q3 2026)"
@@ -1284,6 +1375,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1298,6 +1390,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1312,6 +1405,7 @@
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1326,6 +1420,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1340,6 +1435,7 @@
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1354,6 +1450,7 @@
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1368,6 +1465,7 @@
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1382,6 +1480,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1396,6 +1495,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1410,6 +1510,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1424,6 +1525,7 @@
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1438,6 +1540,7 @@
       "tier": "B",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1452,6 +1555,7 @@
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1466,6 +1570,7 @@
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1480,6 +1585,7 @@
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1494,6 +1600,7 @@
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1508,6 +1615,7 @@
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1522,6 +1630,7 @@
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1536,6 +1645,7 @@
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1550,6 +1660,7 @@
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1564,6 +1675,7 @@
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1578,6 +1690,7 @@
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1587,7 +1700,7 @@
     {
       "name": "Raleigh-Durham",
       "id": "RDU",
-      "source": "panorama",
+      "group": "candidate",
       "x": 720,
       "y": 19000,
       "tam": 279297,
@@ -1600,7 +1713,7 @@
     {
       "name": "Salt Lake City",
       "id": "SLC",
-      "source": "panorama",
+      "group": "candidate",
       "x": 1148,
       "y": 16300,
       "tam": 298322,
@@ -1613,7 +1726,7 @@
     {
       "name": "Portland",
       "id": "POR",
-      "source": "panorama",
+      "group": "candidate",
       "x": 5355,
       "y": 19000,
       "tam": 270220,
@@ -1626,7 +1739,7 @@
     {
       "name": "Dallas",
       "id": "DAL",
-      "source": "panorama",
+      "group": "candidate",
       "x": 1148,
       "y": 14800,
       "tam": 802398,
@@ -1639,7 +1752,7 @@
     {
       "name": "Austin",
       "id": "AUS",
-      "source": "panorama",
+      "group": "candidate",
       "x": 1148,
       "y": 14800,
       "tam": 340000,
@@ -1652,7 +1765,7 @@
     {
       "name": "Charlotte",
       "id": "CLT",
-      "source": "panorama",
+      "group": "candidate",
       "x": 720,
       "y": 19000,
       "tam": 418021,
@@ -1665,7 +1778,7 @@
     {
       "name": "Seattle",
       "id": "SEA",
-      "source": "panorama",
+      "group": "candidate",
       "x": 1913,
       "y": 23900,
       "tam": 290894,
@@ -1678,7 +1791,7 @@
     {
       "name": "Las Vegas",
       "id": "LV",
-      "source": "panorama",
+      "group": "candidate",
       "x": 1683,
       "y": 19800,
       "tam": 255000,
@@ -1691,7 +1804,7 @@
     {
       "name": "Richmond",
       "id": "RIC",
-      "source": "panorama",
+      "group": "candidate",
       "x": 230,
       "y": 19800,
       "tam": 161000,
@@ -1704,7 +1817,7 @@
     {
       "name": "Westfield (NJ)",
       "id": "WNJ",
-      "source": "panorama",
+      "group": "candidate",
       "x": 1224,
       "y": 23900,
       "tam": 146365,
@@ -1717,7 +1830,7 @@
     {
       "name": "Chicago North",
       "id": "CHI_N",
-      "source": "panorama",
+      "group": "candidate",
       "x": 2658,
       "y": 20500,
       "tam": 828471,
@@ -1730,7 +1843,7 @@
     {
       "name": "Minneapolis",
       "id": "MSP",
-      "source": "panorama",
+      "group": "candidate",
       "x": 3596,
       "y": 20500,
       "tam": 418159,
@@ -1743,7 +1856,7 @@
     {
       "name": "Philadelphia",
       "id": "PHI",
-      "source": "panorama",
+      "group": "candidate",
       "x": 1913,
       "y": 19800,
       "tam": 652188,
@@ -1756,7 +1869,7 @@
     {
       "name": "Royal Oak Metro",
       "id": "ROY",
-      "source": "panorama",
+      "group": "candidate",
       "x": 765,
       "y": 20500,
       "tam": 694985,
@@ -1764,6 +1877,58 @@
       "kind": "modeled",
       "riskFlag": false,
       "note": "DTE $1.2K + MI HEAR $8K",
+      "pipeline": false
+    },
+    {
+      "name": "Phoenix",
+      "id": "PHX",
+      "group": "licensed",
+      "x": 5400,
+      "y": 15600,
+      "tam": 643898,
+      "tier": "A",
+      "kind": "modeled",
+      "riskFlag": false,
+      "note": "SRP $1.125K + Efficiency AZ up to $14K full electrification. APS ended residential rebates 1/1/26. SRP Cool Cash expires 4/30/26.",
+      "pipeline": false
+    },
+    {
+      "name": "Memphis",
+      "id": "MEM",
+      "group": "licensed",
+      "x": 1683,
+      "y": 14800,
+      "tam": 180000,
+      "tier": "B",
+      "kind": "modeled",
+      "riskFlag": false,
+      "note": "MLGW + TVA $1.5K + TN HEAR $8K (pending Q3 2026)",
+      "pipeline": false
+    },
+    {
+      "name": "Providence",
+      "id": "PVD",
+      "group": "licensed",
+      "x": 3960,
+      "y": 19800,
+      "tam": 100000,
+      "tier": "C",
+      "kind": "modeled",
+      "riskFlag": false,
+      "note": "RI Energy $3K + RI HEAR $8K",
+      "pipeline": false
+    },
+    {
+      "name": "Hartford",
+      "id": "HARTFORD",
+      "group": "licensed",
+      "x": 3600,
+      "y": 19800,
+      "tam": 100000,
+      "tier": "C",
+      "kind": "modeled",
+      "riskFlag": false,
+      "note": "Eversource $3K + CT HEAR $8K (approved)",
       "pipeline": false
     }
   ],

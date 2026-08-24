@@ -118,6 +118,7 @@
   #tt .tn { font-weight:800; font-size:12.5px; margin-bottom:3px; }
   #tt .tk { color:var(--midgray); }
   #tt .amber { color:var(--amber); font-weight:700; }
+  #tt .lic { color:var(--green); font-weight:700; }
   #tt .row { display:flex; justify-content:space-between; gap:14px; }
   .est-tag { color:var(--amber-deep); }
 
@@ -145,6 +146,8 @@
   .chip.src-p { color:var(--fern); background:#3cd56722; border:1px solid #3cd56755; }
   .chip.src-e { color:var(--amber-deep); background:#f9a8431f; border:1px solid #f9a84366; }
   .chip.pipe { color:var(--darkgray); background:#66685815; border:1px solid #66685840; }
+  .chip.lic { color:#1f7a43; background:#3cd56722; border:1px solid #3cd56766; }
+  .mrow .rank.lic { background:var(--green); box-shadow:0 2px 0 #1f7a43; }
   .chip.hear-live, .chip.hear-approved { color:#1f7a43; background:#3cd56718; border:1px solid #3cd56744; }
   .chip.hear-pending { color:#9a6412; background:#f9a84315; border:1px solid #f9a84340; }
   .chip.hear-none { color:var(--darkgray); background:#acaa9322; border:1px solid #acaa9355; }
@@ -178,7 +181,7 @@
     <div class="slidenum">01</div>
     <div class="eyebrow">The policy-offset map <span class="dot">&mdash;</span> re-plotted on live Panorama data</div>
     <h1 class="title">Out-of-pocket is the outcome, not the axis</h1>
-    <p class="dek">Each market sits at its <b>install cost</b> (vertical) against the <b>rebate value a Jetson customer actually captures</b> (horizontal) &mdash; Panorama&rsquo;s risk-adjusted JEV figure, live from the tool. The diagonals are <b>net out-of-pocket</b>, the number the customer feels. The <b style="color:#D8801E">14 amber markets</b> are our 2027 candidates: we want them landing <b>down and to the right</b>, where the rebate covers more of the cost and out-of-pocket is lowest.</p>
+    <p class="dek">Each market sits at its <b>install cost</b> (vertical) against the <b>rebate value a Jetson customer actually captures</b> (horizontal) &mdash; Panorama&rsquo;s risk-adjusted JEV figure, live from the tool. The diagonals are <b>net out-of-pocket</b>, the number the customer feels. The <b style="color:#D8801E">14 amber markets</b> are our 2027 candidates: we want them landing <b>down and to the right</b>, where the rebate covers more of the cost and out-of-pocket is lowest. Four <b style="color:#1f7a43">licensed-model markets</b> (green diamonds) are shown alongside.</p>
 
     <div class="chartrow">
       <div class="chartbox">
@@ -189,6 +192,7 @@
           <h4>Marker key</h4>
           <div class="lgroup">
             <div class="litem"><span class="swatch" data-sw="candP"></span><div>2027 candidate<small>14 recommended markets</small></div></div>
+            <div class="litem"><span class="swatch" data-sw="lic"></span><div>Licensed market<small>licensed-model entry</small></div></div>
             <div class="litem"><span class="swatch" data-sw="exist"></span><div>Existing market<small>live Jetson deals</small></div></div>
             <div class="litem"><span class="swatch" data-sw="model"></span><div>Other Panorama market<small>tracked, not recommended</small></div></div>
           </div>
@@ -209,11 +213,11 @@
   <section class="slide" id="slide2">
     <div class="slidenum">02</div>
     <div class="eyebrow">Where we go next <span class="dot">&mdash;</span> the shortlist</div>
-    <h1 class="title">The 14 markets we&rsquo;re recommending for 2027</h1>
-    <p class="dek">Ordered as briefed. <b>Net out-of-pocket</b> (modeled install &minus; <b>Panorama JEV</b> rebate value) shown per market &mdash; the number the customer feels. All 14 are live Panorama markets; amber throughout marks them as 2027 candidates, matching Slide&nbsp;1.</p>
+    <h1 class="title">The markets we&rsquo;re recommending for 2027</h1>
+    <p class="dek">Ordered as briefed: <b>14 direct-entry candidates</b> (amber) plus <b style="color:#1f7a43">4 licensed-model markets</b> (green &ldquo;L&rdquo;). <b>Net out-of-pocket</b> (modeled install &minus; <b>Panorama JEV</b> rebate value) shown per market &mdash; the number the customer feels. All 18 are live Panorama markets, matching Slide&nbsp;1.</p>
     <div class="listgrid" id="listgrid"></div>
     <div class="footnote s2note">
-      <b>Legend.</b> <span class="chip pipe" style="text-transform:uppercase">In pipeline</span> already a modeled expansion market (reprioritizing) &nbsp;&middot;&nbsp; <span class="chip src-e" style="text-transform:uppercase">&#9888; Risk</span> funding / timing risk flagged in Panorama. &nbsp; <b>JEV</b> = Panorama&rsquo;s risk-adjusted rebate value a Jetson customer actually captures (utility + state; federal incentives $0). OOP = modeled install &minus; JEV; install cost is modeled (see Slide&nbsp;1). All 14 are live Panorama markets.
+      <b>Legend.</b> <span class="chip pipe" style="text-transform:uppercase">In pipeline</span> already a modeled expansion market (reprioritizing) &nbsp;&middot;&nbsp; <span class="chip src-e" style="text-transform:uppercase">&#9888; Risk</span> funding / timing risk flagged in Panorama. &nbsp; <b>JEV</b> = Panorama&rsquo;s risk-adjusted rebate value a Jetson customer actually captures (utility + state; federal incentives $0). OOP = modeled install &minus; JEV; install cost is modeled (see Slide&nbsp;1). All 18 are live Panorama markets.
     </div>
   </section>
 </div>
@@ -233,6 +237,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": true,
       "note": "LADWP $5.5K + CA TECH $3K. ⚠ HEAR waitlist only as of Feb 24, 2026 — not bankable for new projects."
@@ -247,6 +252,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": true,
       "note": "Anaheim $1K + CA TECH $3K. ⚠ HEAR waitlist only."
@@ -261,6 +267,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": true,
       "note": "City of Riverside $3.75K + CA TECH $3K. ⚠ HEAR waitlist only."
@@ -275,6 +282,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": true,
       "note": "CCA $3.5K + CA TECH $3K. ⚠ HEAR waitlist only."
@@ -289,6 +297,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": true,
       "note": "SMUD $3K + CA TECH $3K. ⚠ HEAR waitlist only."
@@ -303,6 +312,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "PSE $4K + WA HEAR $8K"
@@ -317,6 +327,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Pacific Power $4K + ET $2K + OR HEAR $8K"
@@ -331,6 +342,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": true,
       "source": "panorama",
       "riskFlag": false,
       "note": "SRP $1.125K + Efficiency AZ up to $14K full electrification. APS ended residential rebates 1/1/26. SRP Cool Cash expires 4/30/26."
@@ -345,6 +357,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Denton $2.5K max. No HEAR in TX, 25C expired."
@@ -359,6 +372,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Entergy $1.08K max. No HEAR in TX, 25C expired."
@@ -373,6 +387,7 @@ const DATA = {
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "CPS $0.8K max. No HEAR in TX, 25C expired."
@@ -387,6 +402,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "ComEd $2K ducted + Naperville $600 + IL HEAR $8K (pending DOE approval)"
@@ -401,6 +417,7 @@ const DATA = {
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "ComEd $2K ducted + IL HEAR $8K (pending DOE approval)"
@@ -415,6 +432,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": true,
       "note": "PECO $300 + EAP Tier 3 $1.4K + hybrid $250 = $1,950 stack + PA HEAR $8K (pending). ⚠ Act 129 Phase IV ends 5/31/26."
@@ -429,6 +447,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "BGE EmPOWER $15K (state-mandated, ratepayer funded) + MontCo $2.5K + MD HEAR $8K (DOE-approved but not yet launched)"
@@ -443,6 +462,7 @@ const DATA = {
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "PSEG LI market $4.5K (DAC $5.625K) + NY Clean Heat $5–12K + HEAR/EmPower+ up to $24K IQ"
@@ -457,6 +477,7 @@ const DATA = {
       "tier": "B",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "JCP&L $1K + NJ HEAR $8K (pending)"
@@ -471,6 +492,7 @@ const DATA = {
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": true,
       "source": "panorama",
       "riskFlag": false,
       "note": "RI Energy $3K + RI HEAR $8K"
@@ -485,6 +507,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Xcel $2K cold-climate + $600 insulation + MN HEAR $8K (pending DOE approval)"
@@ -499,6 +522,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "We Energies $1.5K + WI HEAR $8K"
@@ -513,6 +537,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "RMP Wattsmart $2K (revised Feb 27, 2026) + UT HEAR $8K (pending — no consumer timeline)"
@@ -527,6 +552,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "DTE $1.2K + MI HEAR $8K"
@@ -541,6 +567,7 @@ const DATA = {
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Dominion $50 + VA HEAR $8K (pending)"
@@ -555,6 +582,7 @@ const DATA = {
       "tier": "A",
       "kind": "existing",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Xcel $6.75K + CO tax $1K + DRCOG $1.5K (mid-2026) + HEAR $8K"
@@ -569,6 +597,7 @@ const DATA = {
       "tier": "C",
       "kind": "existing",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "EW $2K + CO tax $1K + HEAR $8K"
@@ -583,6 +612,7 @@ const DATA = {
       "tier": "C",
       "kind": "existing",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "CSU $1.5K + CO tax $1K + HEAR $8K"
@@ -597,6 +627,7 @@ const DATA = {
       "tier": "C",
       "kind": "existing",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -611,6 +642,7 @@ const DATA = {
       "tier": "C",
       "kind": "existing",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "ConEd $4.5K + NYSERDA $3K + NY HEAR $8K"
@@ -625,6 +657,7 @@ const DATA = {
       "tier": "A",
       "kind": "existing",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Mass Save up to $8.5K whole-home (HEAR not separately launched in MA)"
@@ -639,6 +672,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Idaho Power $250 max. ID HEAR not available."
@@ -653,6 +687,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Avista $1K + WA HEAR $8K"
@@ -667,6 +702,7 @@ const DATA = {
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "TEP instant rebate + AZ HEAR $8K"
@@ -681,6 +717,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "TVA $1.5K + TN HEAR $8K (pending Q3 2026)"
@@ -695,6 +732,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "TVA $1.5K + TN HEAR $8K (pending Q3 2026)"
@@ -709,6 +747,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "MidAmerican ~$1.5K + IA HEAR $8K (pending)"
@@ -723,6 +762,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "NV Energy $3.2K + NV HEAR $8K (pending mid-late 2026)"
@@ -737,6 +777,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "SWEPCO $2.5K + AR HEAR $8K (pending)"
@@ -751,6 +792,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Duke $1K + NC HEAR $8K"
@@ -765,6 +807,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "FC Utils $2K + CO tax $1K + HEAR $8K"
@@ -779,6 +822,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "EWEB $1K + OR HEAR $8K"
@@ -793,6 +837,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "PNM $860 + NM HEAR $8K"
@@ -807,6 +852,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "TVA $1.5K + TN HEAR $8K (pending Q3 2026)"
@@ -821,6 +867,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "TVA $1.5K max. AL HEAR not launched, no date."
@@ -835,6 +882,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Duke $1K + SC HEAR $8K (pending 2026)"
@@ -849,6 +897,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "FPL $600 + FL HEAR $8K (pending)"
@@ -863,6 +912,7 @@ const DATA = {
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Duke FL $800 + FL HEAR $8K (pending)"
@@ -877,6 +927,7 @@ const DATA = {
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Duke FL $400 + FL HEAR $8K (pending)"
@@ -891,6 +942,7 @@ const DATA = {
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "JEA $500 + FL HEAR $8K (pending)"
@@ -905,6 +957,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "GA Power $500 + GA HEAR $8K (pending)"
@@ -919,6 +972,7 @@ const DATA = {
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "CEI $800 + OH HEAR $8K (approved)"
@@ -933,6 +987,7 @@ const DATA = {
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "AEP OH $1K + OH HEAR $8K (approved)"
@@ -947,6 +1002,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Duke OH $800 + OH HEAR $8K (approved)"
@@ -961,6 +1017,7 @@ const DATA = {
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "AES IN $600 + IN HEAR $8K (pending)"
@@ -975,6 +1032,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Evergy $500 + MO HEAR $8K (pending)"
@@ -989,6 +1047,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Ameren $800 + MO HEAR $8K (pending)"
@@ -1003,6 +1062,7 @@ const DATA = {
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "LG&E $500 + KY HEAR $8K (pending)"
@@ -1017,6 +1077,7 @@ const DATA = {
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Entergy $400 + LA HEAR $8K (pending)"
@@ -1031,6 +1092,7 @@ const DATA = {
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "OG&E $300 max. OK HEAR not submitted."
@@ -1045,6 +1107,7 @@ const DATA = {
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": true,
       "source": "panorama",
       "riskFlag": false,
       "note": "Eversource $3K + CT HEAR $8K (approved)"
@@ -1059,6 +1122,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Delmarva $1.5K + Energize DE $500 + DE HEAR $8K (approved)"
@@ -1073,6 +1137,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "PEPCO $2.5K + DCSEU + DC HEAR $8K (live)"
@@ -1087,6 +1152,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Efficiency Maine $2.4K + ME HEAR $8K (approved)"
@@ -1101,6 +1167,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "NHSaves $1K + NH HEAR $8K (approved)"
@@ -1115,6 +1182,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "OPPD $500 + NE HEAR $8K (pending)"
@@ -1129,6 +1197,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Evergy $300 + KS HEAR $8K (pending)"
@@ -1143,6 +1212,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1157,6 +1227,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1171,6 +1242,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1185,6 +1257,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1199,6 +1272,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1213,6 +1287,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1227,6 +1302,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "BED $1.5K + EVT $1.2K + VT HEAR $8K (approved)"
@@ -1241,6 +1317,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1255,6 +1332,7 @@ const DATA = {
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1269,6 +1347,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Pacific Power $4K + ET $2K + OR HEAR $8K (approved)"
@@ -1283,6 +1362,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Pacific Power $4K + ET $2K + OR HEAR $8K (approved)"
@@ -1297,6 +1377,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "PSE $4K + WA HEAR $8K (approved)"
@@ -1311,6 +1392,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Pacific Power $1.5K + WA HEAR $8K (approved)"
@@ -1325,6 +1407,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Benton REA $1K + WA HEAR $8K (approved)"
@@ -1339,6 +1422,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "NWE $0.7K + MT HEAR $8K (pending)"
@@ -1353,6 +1437,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "NWE $0.7K + MT HEAR $8K (pending)"
@@ -1367,6 +1452,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Black Hills $0.4K max. WY HEAR not submitted."
@@ -1381,6 +1467,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "RMP $0.7K max. WY HEAR not submitted."
@@ -1395,6 +1482,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "IF Power + RMP $0.7K max. ID HEAR not available."
@@ -1409,6 +1497,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "LES $0.8K + NE HEAR $8K (pending)"
@@ -1423,6 +1512,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Xcel SD $1.5K + SD HEAR $8K (pending)"
@@ -1437,6 +1527,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Xcel ND $1.5K + ND HEAR $8K (pending)"
@@ -1451,6 +1542,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "LG&E/KU $0.6K + KY HEAR $8K (pending)"
@@ -1465,6 +1557,7 @@ const DATA = {
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "Alabama Power $0.75K max. AL HEAR not launched."
@@ -1479,6 +1572,7 @@ const DATA = {
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": true,
       "source": "panorama",
       "riskFlag": false,
       "note": "MLGW + TVA $1.5K + TN HEAR $8K (pending Q3 2026)"
@@ -1493,6 +1587,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": "NES + TVA $1.5K + TN HEAR $8K (pending Q3 2026)"
@@ -1507,6 +1602,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1521,6 +1617,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1535,6 +1632,7 @@ const DATA = {
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1549,6 +1647,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1563,6 +1662,7 @@ const DATA = {
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1577,6 +1677,7 @@ const DATA = {
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1591,6 +1692,7 @@ const DATA = {
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1605,6 +1707,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1619,6 +1722,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1633,6 +1737,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1647,6 +1752,7 @@ const DATA = {
       "tier": "A",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1661,6 +1767,7 @@ const DATA = {
       "tier": "B",
       "kind": "modeled",
       "candidate": true,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1675,6 +1782,7 @@ const DATA = {
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1689,6 +1797,7 @@ const DATA = {
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1703,6 +1812,7 @@ const DATA = {
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1717,6 +1827,7 @@ const DATA = {
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1731,6 +1842,7 @@ const DATA = {
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1745,6 +1857,7 @@ const DATA = {
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1759,6 +1872,7 @@ const DATA = {
       "tier": "B",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1773,6 +1887,7 @@ const DATA = {
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1787,6 +1902,7 @@ const DATA = {
       "tier": "C",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1801,6 +1917,7 @@ const DATA = {
       "tier": "Below",
       "kind": "modeled",
       "candidate": false,
+      "licensed": false,
       "source": "panorama",
       "riskFlag": false,
       "note": null
@@ -1810,7 +1927,7 @@ const DATA = {
     {
       "name": "Raleigh-Durham",
       "id": "RDU",
-      "source": "panorama",
+      "group": "candidate",
       "x": 720,
       "y": 19000,
       "tam": 279297,
@@ -1823,7 +1940,7 @@ const DATA = {
     {
       "name": "Salt Lake City",
       "id": "SLC",
-      "source": "panorama",
+      "group": "candidate",
       "x": 1148,
       "y": 16300,
       "tam": 298322,
@@ -1836,7 +1953,7 @@ const DATA = {
     {
       "name": "Portland",
       "id": "POR",
-      "source": "panorama",
+      "group": "candidate",
       "x": 5355,
       "y": 19000,
       "tam": 270220,
@@ -1849,7 +1966,7 @@ const DATA = {
     {
       "name": "Dallas",
       "id": "DAL",
-      "source": "panorama",
+      "group": "candidate",
       "x": 1148,
       "y": 14800,
       "tam": 802398,
@@ -1862,7 +1979,7 @@ const DATA = {
     {
       "name": "Austin",
       "id": "AUS",
-      "source": "panorama",
+      "group": "candidate",
       "x": 1148,
       "y": 14800,
       "tam": 340000,
@@ -1875,7 +1992,7 @@ const DATA = {
     {
       "name": "Charlotte",
       "id": "CLT",
-      "source": "panorama",
+      "group": "candidate",
       "x": 720,
       "y": 19000,
       "tam": 418021,
@@ -1888,7 +2005,7 @@ const DATA = {
     {
       "name": "Seattle",
       "id": "SEA",
-      "source": "panorama",
+      "group": "candidate",
       "x": 1913,
       "y": 23900,
       "tam": 290894,
@@ -1901,7 +2018,7 @@ const DATA = {
     {
       "name": "Las Vegas",
       "id": "LV",
-      "source": "panorama",
+      "group": "candidate",
       "x": 1683,
       "y": 19800,
       "tam": 255000,
@@ -1914,7 +2031,7 @@ const DATA = {
     {
       "name": "Richmond",
       "id": "RIC",
-      "source": "panorama",
+      "group": "candidate",
       "x": 230,
       "y": 19800,
       "tam": 161000,
@@ -1927,7 +2044,7 @@ const DATA = {
     {
       "name": "Westfield (NJ)",
       "id": "WNJ",
-      "source": "panorama",
+      "group": "candidate",
       "x": 1224,
       "y": 23900,
       "tam": 146365,
@@ -1940,7 +2057,7 @@ const DATA = {
     {
       "name": "Chicago North",
       "id": "CHI_N",
-      "source": "panorama",
+      "group": "candidate",
       "x": 2658,
       "y": 20500,
       "tam": 828471,
@@ -1953,7 +2070,7 @@ const DATA = {
     {
       "name": "Minneapolis",
       "id": "MSP",
-      "source": "panorama",
+      "group": "candidate",
       "x": 3596,
       "y": 20500,
       "tam": 418159,
@@ -1966,7 +2083,7 @@ const DATA = {
     {
       "name": "Philadelphia",
       "id": "PHI",
-      "source": "panorama",
+      "group": "candidate",
       "x": 1913,
       "y": 19800,
       "tam": 652188,
@@ -1979,7 +2096,7 @@ const DATA = {
     {
       "name": "Royal Oak Metro",
       "id": "ROY",
-      "source": "panorama",
+      "group": "candidate",
       "x": 765,
       "y": 20500,
       "tam": 694985,
@@ -1987,6 +2104,58 @@ const DATA = {
       "kind": "modeled",
       "riskFlag": false,
       "note": "DTE $1.2K + MI HEAR $8K",
+      "pipeline": false
+    },
+    {
+      "name": "Phoenix",
+      "id": "PHX",
+      "group": "licensed",
+      "x": 5400,
+      "y": 15600,
+      "tam": 643898,
+      "tier": "A",
+      "kind": "modeled",
+      "riskFlag": false,
+      "note": "SRP $1.125K + Efficiency AZ up to $14K full electrification. APS ended residential rebates 1/1/26. SRP Cool Cash expires 4/30/26.",
+      "pipeline": false
+    },
+    {
+      "name": "Memphis",
+      "id": "MEM",
+      "group": "licensed",
+      "x": 1683,
+      "y": 14800,
+      "tam": 180000,
+      "tier": "B",
+      "kind": "modeled",
+      "riskFlag": false,
+      "note": "MLGW + TVA $1.5K + TN HEAR $8K (pending Q3 2026)",
+      "pipeline": false
+    },
+    {
+      "name": "Providence",
+      "id": "PVD",
+      "group": "licensed",
+      "x": 3960,
+      "y": 19800,
+      "tam": 100000,
+      "tier": "C",
+      "kind": "modeled",
+      "riskFlag": false,
+      "note": "RI Energy $3K + RI HEAR $8K",
+      "pipeline": false
+    },
+    {
+      "name": "Hartford",
+      "id": "HARTFORD",
+      "group": "licensed",
+      "x": 3600,
+      "y": 19800,
+      "tam": 100000,
+      "tier": "C",
+      "kind": "modeled",
+      "riskFlag": false,
+      "note": "Eversource $3K + CT HEAR $8K (approved)",
       "pipeline": false
     }
   ],
@@ -2081,8 +2250,8 @@ quads.forEach(q=>{
 
 // ── markers ─────────────────────────────────────────────────
 const rows = DATA.all.filter(r=>r.x!=null);
-// draw order: modeled, existing, candidates(amber) on top
-const order = r => r.candidate?3 : r.kind==="existing"?2 : 1;
+// draw order: modeled < existing < candidates & licensed (prominent, on top)
+const order = r => (r.candidate||r.licensed)?3 : r.kind==="existing"?2 : 1;
 rows.sort((a,b)=>order(a)-order(b));
 
 // spread markers that land on the exact same pixel (e.g. Dallas+Austin, Raleigh+Charlotte)
@@ -2090,13 +2259,22 @@ const groups={};
 rows.forEach(r=>{ const k=Math.round(sx(r.x))+"_"+Math.round(sy(r.y)); (groups[k]=groups[k]||[]).push(r); });
 Object.values(groups).forEach(g=>{ if(g.length>1){ g.forEach((r,i)=>{ const a=(i/g.length)*2*Math.PI - Math.PI/4; r._ox=Math.cos(a)*7.5; r._oy=Math.sin(a)*7.5; }); } });
 
+// nudge near-coincident PROMINENT markers apart (e.g. Providence + Hartford)
+const prom = rows.filter(r=>r.candidate||r.licensed||r.kind==="existing");
+for(let i=0;i<prom.length;i++) for(let j=i+1;j<prom.length;j++){
+  const a=prom[i], b=prom[j];
+  const dx=Math.abs((sx(a.x)+(a._ox||0))-(sx(b.x)+(b._ox||0)));
+  const dy=Math.abs((sy(a.y)+(a._oy||0))-(sy(b.y)+(b._oy||0)));
+  if(dx<50 && dy<20){ b._oy=(b._oy||0)+20; b._ox=(b._ox||0)+6; }
+}
+
 const tt=document.getElementById("tt");
 function showTT(e,r){
   const oop=r.y-r.x;
-  tt.innerHTML=`<div class="tn ${r.candidate?'amber':''}">${r.name}, ${r.state}</div>`+
+  tt.innerHTML=`<div class="tn ${r.candidate?'amber':r.licensed?'lic':''}">${r.name}, ${r.state}${r.licensed?' &middot; licensed':''}</div>`+
     `<div class="row"><span class="tk">Rebate value (JEV)</span><span>${fmt$(r.x)}${r.x>=8000?'+':''}</span></div>`+
     `<div class="row"><span class="tk">Install (modeled)</span><span>${fmt$(r.y)}</span></div>`+
-    `<div class="row"><span class="tk">Net out-of-pocket</span><span class="${r.candidate?'amber':''}">${fmt$(oop)}</span></div>`+
+    `<div class="row"><span class="tk">Net out-of-pocket</span><span class="${r.candidate?'amber':r.licensed?'lic':''}">${fmt$(oop)}</span></div>`+
     (r.tam?`<div class="row"><span class="tk">W-TAM / tier</span><span>${(r.tam/1000).toFixed(0)}k · ${r.tier}</span></div>`:"")+
     (r.riskFlag?`<div style="margin-top:4px;font-size:10.5px" class="est-tag">⚠ funding / timing risk flagged in Panorama</div>`:"")+
     `<div style="margin-top:5px;font-size:10.5px" class="tk">Panorama JEV model &middot; live</div>`;
@@ -2112,13 +2290,12 @@ const hideTT=()=>tt.style.opacity=0;
 const labels=[]; // for candidates + existing
 rows.forEach(r=>{
   const x=sx(r.x)+(r._ox||0), y=sy(r.y)+(r._oy||0), off=r.x>=8000;
+  const dia = (cx,cy,rr)=>[cx+","+(cy-rr),(cx+rr)+","+cy,cx+","+(cy+rr),(cx-rr)+","+cy].join(" ");
   let node;
-  if(r.candidate){
-    if(r.source==="estimated"){
-      node=el("circle",{cx:x,cy:y,r:7.5,fill:C.offwhite,stroke:C.amber,"stroke-width":2.4,"stroke-dasharray":"3 2.4"});
-    } else {
-      node=el("circle",{cx:x,cy:y,r:7.5,fill:C.amber,stroke:C.amberDeep,"stroke-width":1.6});
-    }
+  if(r.licensed){
+    node=el("polygon",{points:dia(x,y,8),fill:C.green,stroke:C.forest,"stroke-width":1.5});
+  } else if(r.candidate){
+    node=el("circle",{cx:x,cy:y,r:7.5,fill:C.amber,stroke:C.amberDeep,"stroke-width":1.6});
   } else if(r.kind==="existing"){
     node=el("circle",{cx:x,cy:y,r:5,fill:C.fern,stroke:C.offwhite,"stroke-width":1.4});
   } else {
@@ -2129,30 +2306,31 @@ rows.forEach(r=>{
   node.addEventListener("mouseleave",hideTT);
   gDot.append(node);
   if(off){ // off-scale marker
-    const a=el("text",{x:x+9,y:y+4,"font-size":11,fill:r.candidate?C.amberDeep:C.midgray,"font-weight":800}); a.textContent="›"; gDot.append(a);
+    const a=el("text",{x:x+9,y:y+4,"font-size":11,fill:r.candidate?C.amberDeep:r.licensed?"#1f7a43":C.midgray,"font-weight":800}); a.textContent="›"; gDot.append(a);
   }
-  if(r.candidate || r.kind==="existing") labels.push({r,x,y});
+  if(r.candidate || r.licensed || r.kind==="existing") labels.push({r,x,y});
 });
 
 // ── labels with simple vertical dodge ───────────────────────
 labels.sort((a,b)=>a.y-b.y || a.x-b.x);
 const placed=[];
 labels.forEach(L=>{
-  const r=L.r; const cand=r.candidate;
+  const r=L.r; const emph=r.candidate||r.licensed;
+  const col = r.candidate?C.amberDeep : r.licensed?"#1f7a43" : C.fern;
   let anchor = L.x > (px0+px1)/2 - 40 ? "end" : "start";
   let dx = anchor==="end" ? -11 : 11;
   let ty = L.y + 4;
   // dodge against already-placed labels on same side & near x
   let guard=0;
-  while(guard<40 && placed.some(p=> p.anchor===anchor && Math.abs(p.x-L.x)<86 && Math.abs(p.ty-ty)<13)){ ty+=13; guard++; }
+  while(guard<40 && placed.some(p=> p.anchor===anchor && Math.abs(p.x-L.x)<96 && Math.abs(p.ty-ty)<15)){ ty+=15; guard++; }
   placed.push({x:L.x,ty,anchor});
   const g=el("g");
-  const t=el("text",{x:L.x+dx,y:ty,"text-anchor":anchor,"font-size":cand?12:10.5,
-    "font-weight":cand?800:600, fill:cand?C.amberDeep:C.fern});
-  t.textContent = r.name + (r.source==="estimated" ? " ~" : "");
+  const t=el("text",{x:L.x+dx,y:ty,"text-anchor":anchor,"font-size":emph?12:10.5,
+    "font-weight":emph?800:600, fill:col});
+  t.textContent = r.name;
   // faint leader if dodged far
   if(Math.abs(ty-(L.y+4))>10){
-    g.append(el("line",{x1:L.x+(anchor==="end"?-4:4),y1:L.y,x2:L.x+dx-(anchor==="end"?-2:2),y2:ty-4,stroke:cand?C.amber:C.softgray,"stroke-width":1,opacity:.6}));
+    g.append(el("line",{x1:L.x+(anchor==="end"?-4:4),y1:L.y,x2:L.x+dx-(anchor==="end"?-2:2),y2:ty-4,stroke:r.candidate?C.amber:r.licensed?C.green:C.softgray,"stroke-width":1,opacity:.6}));
   }
   g.append(t); gLbl.append(g);
 });
@@ -2163,7 +2341,7 @@ document.querySelectorAll(".swatch").forEach(s=>{
   ns.setAttribute("viewBox","0 0 18 18"); ns.setAttribute("width","18"); ns.setAttribute("height","18");
   let c;
   if(k==="candP") c=el("circle",{cx:9,cy:9,r:6.5,fill:C.amber,stroke:C.amberDeep,"stroke-width":1.4});
-  if(k==="candE") c=el("circle",{cx:9,cy:9,r:6.5,fill:C.offwhite,stroke:C.amber,"stroke-width":2.2,"stroke-dasharray":"3 2.2"});
+  if(k==="lic") c=el("polygon",{points:[9+",2.2","15.8,9","9,15.8","2.2,9"].join(" "),fill:C.green,stroke:C.forest,"stroke-width":1.3});
   if(k==="exist") c=el("circle",{cx:9,cy:9,r:5,fill:C.fern,stroke:"#ffffff","stroke-width":1});
   if(k==="model") c=el("circle",{cx:9,cy:9,r:5,fill:"none",stroke:C.midgray,"stroke-width":1.4});
   ns.append(c); s.append(ns);
@@ -2171,14 +2349,17 @@ document.querySelectorAll(".swatch").forEach(s=>{
 
 // ── Slide 2 list ────────────────────────────────────────────
 const grid=document.getElementById("listgrid");
-DATA.roster.forEach((r,i)=>{
-  const oop=r.y-r.x;
+let candNo=0;
+DATA.roster.forEach((r)=>{
+  const oop=r.y-r.x, lic=r.group==="licensed";
+  const badge = lic ? "L" : (++candNo);
   const row=document.createElement("div"); row.className="mrow";
   const chips=[];
+  if(lic) chips.push(`<span class="chip lic">Licensed</span>`);
   if(r.pipeline) chips.push(`<span class="chip pipe">In pipeline</span>`);
   if(r.riskFlag) chips.push(`<span class="chip src-e">&#9888; Risk</span>`);
   row.innerHTML=
-    `<div class="rank">${i+1}</div>`+
+    `<div class="rank${lic?' lic':''}">${badge}</div>`+
     `<div class="body">`+
       `<div class="mname">${r.name} <span class="st">${stateOf(r)}</span></div>`+
       (chips.length?`<div class="chips">${chips.join("")}</div>`:``)+
