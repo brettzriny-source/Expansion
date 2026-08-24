@@ -470,7 +470,7 @@
           <div class="field">
             <label>Acquisition</label>
             <div class="seg" id="acqMode">
-              <button type="button" data-a="lease" class="on">Lease</button>
+              <button type="button" data-a="lease" class="on">Lease-to-own</button>
               <button type="button" data-a="purchase">Purchase</button>
             </div>
           </div>
@@ -479,13 +479,13 @@
               <label for="lease">Monthly lease</label>
               <div class="input-wrap"><span class="aff pre">$</span><input id="lease" type="number" min="0" step="10" value="2206" class="has-pre has-suf"><span class="aff suf">/mo</span></div>
             </div>
-            <div class="field" id="priceField" style="display:none">
-              <label for="price">Purchase price</label>
-              <div class="input-wrap"><span class="aff pre">$</span><input id="price" type="number" min="0" step="500" value="71700" class="has-pre"></div>
+            <div class="field" id="priceField">
+              <label for="price">Vehicle value <span class="note">MSRP / price</span></label>
+              <div class="input-wrap"><span class="aff pre">$</span><input id="price" type="number" min="0" step="500" value="82885" class="has-pre"></div>
             </div>
-            <div class="field" id="residualField" style="display:none">
-              <label for="residualPct">Residual value <span class="note">% of price</span></label>
-              <div class="input-wrap"><input id="residualPct" type="number" min="0" max="100" step="1" value="30" class="has-suf"><span class="aff suf">%</span></div>
+            <div class="field" id="residualField">
+              <label for="residualPct">Residual value <span class="note">% at term end</span></label>
+              <div class="input-wrap"><input id="residualPct" type="number" min="0" max="100" step="1" value="35" class="has-suf"><span class="aff suf">%</span></div>
               <div class="fieldcap" id="residualCap"></div>
             </div>
             <div class="field">
@@ -574,7 +574,7 @@
       </section>
 
       <section class="card">
-        <div class="card-h"><span class="n">∞</span><h2>The 3-Year Horizon</h2><span class="hint" id="horizonHint">end of term</span></div>
+        <div class="card-h"><span class="n">∞</span><h2 id="horizonTitle">The 3-Year Horizon</h2><span class="hint" id="horizonHint">end of term</span></div>
         <div class="card-b">
           <p class="section-note" id="horizonLead"></p>
           <div class="tiles" style="grid-template-columns:1fr 1fr">
@@ -666,7 +666,7 @@
   // Vehicle presets. Prices per confirmed quotes; range & efficiency from EPA
   // specs (real-world efficiency de-rated for work payload).
   var VEHICLES = {
-    r1t:      { name:"R1T",                    desc:"Rivian R1T Premium with all-season wheels", acq:"lease",    lease:2206, price:0,     residualPct:0,  term:36, eff:2.3, range:329 },
+    r1t:      { name:"R1T",                    desc:"Rivian R1T Premium with all-season wheels", acq:"lease",    lease:2206, price:82885, residualPct:35, term:36, eff:2.3, range:329 },
     silv_ext: { name:"Silverado EV (Ext.)",    desc:"Chevrolet Silverado EV LT — Extended Range", acq:"purchase", lease:0,    price:71700, residualPct:32, term:60, eff:2.0, range:410 },
     silv_std: { name:"Silverado EV (Std.)",    desc:"Chevrolet Silverado EV LT — Standard Range", acq:"purchase", lease:0,    price:63500, residualPct:30, term:60, eff:2.0, range:283 },
     f150:     { name:"F-150 Lightning (Used)", desc:"Ford F-150 Lightning (Used) — Pro / XLT",     acq:"purchase", lease:0,    price:50000, residualPct:25, term:60, eff:2.0, range:240 }
@@ -777,7 +777,7 @@
     $("mVLabel").textContent = "Cost / mile — " + vName;
     $("detailVHead").textContent = vName;
     var resVal = num("price") * num("residualPct") / 100;
-    $("residualCap").innerHTML = "≈ <b style=\'color:var(--ink)\'>" + fmt(resVal) + "</b> retained at end · EV trucks typically hold 25–40% over ~5 yrs";
+    $("residualCap").innerHTML = "≈ <b style=\'color:var(--ink)\'>" + fmt(resVal) + "</b> resale value, owned outright at term end · edit % to taste";
     var modelKey = ({r1t:"r1t", silv_ext:"silv", silv_std:"silv", f150:"f150"})[state.vehicle] || state.vehicle;
     Array.prototype.forEach.call(document.querySelectorAll("#modelsTable tr[data-veh]"), function(tr){ tr.classList.toggle("sel", tr.dataset.veh === modelKey); });
     var maxTot = Math.max(r.pTotal, r.rTotal, 1);
@@ -839,30 +839,37 @@
       '<tr class="sum"><td>Total / month'+(fleetOn?' · fleet':'')+'</td><td>'+fmt(r.pTotal*k)+'</td><td>'+fmt(r.rTotal*k)+'</td></tr>' +
       '<tr class="sum"><td>Total / year'+(fleetOn?' · fleet':'')+'</td><td>'+fmt(r.pTotal*k*12)+'</td><td>'+fmt(r.rTotal*k*12)+'</td></tr>';
 
-    // ---- 3-year horizon: cash out, equity retained, net, run-rate ----
+    // ---- Horizon: cash out over the term vs. equity owned at the end ----
     var termH = Math.max(1, num("term"));
     var yrs = Math.round(termH/12*10)/10;
-    var upfitTot = num("upfit"), upfitLife = Math.max(1, num("upfitLife"));
-    var transferUpfit = Math.max(0, upfitTot - WRAP) * Math.max(0, upfitLife - termH) / upfitLife;
-    var residualAsset = r.acqMode === "purchase" ? num("price") * num("residualPct") / 100 : 0;
+    var upfitLife = Math.max(1, num("upfitLife"));
+    var transferUpfit = Math.max(0, num("upfit") - WRAP) * Math.max(0, upfitLife - termH) / upfitLife;
+    var residualAsset = num("price") * num("residualPct") / 100;
     var terminalAsset = residualAsset + transferUpfit;
-    var cumP = r.pTotal * termH, cumV = r.rTotal * termH;
-    var netP = cumP, netV = cumV - terminalAsset;
-    var y4P = r.pTotal, y4V = r.ins + r.teleSub + r.maint + r.chargeM;
+    var operMo = r.ins + r.teleSub + r.maint + r.chargeM;
+    var acqCash = r.acqMode === "purchase" ? num("price") : num("lease") * termH;
+    var cashV = acqCash + num("upfit") + num("teleInstall") + operMo * termH;
+    var cashP = r.pTotal * termH;
+    var netP = cashP, netV = cashV - terminalAsset;
+    var y4P = r.pTotal, y4V = operMo;
+    $("horizonTitle").textContent = "The " + yrs + "-Year Horizon";
     $("horizonHint").textContent = "end of " + termH + " mo";
     $("hNetVLabel").textContent = vName + " — net cost";
     $("hVHead").textContent = vName;
     $("hNetP").textContent = fmt(netP);
     $("hNetV").textContent = fmt(netV);
-    $("horizonLead").innerHTML = "Two very different places to stand after <b>" + termH + " months</b>: reimbursement is pure expense with nothing owned, while the " + vName + " leaves a residual asset plus reusable racking and cap.";
+    var ownLine = r.acqMode === "purchase"
+      ? "we own the " + vName + " outright, worth about " + fmt(residualAsset) + " at resale"
+      : "the lease fully pays the " + vName + " off (" + fmt(num("lease")) + " &times; " + termH + " = " + fmt(num("lease") * termH) + "), so we own it outright &mdash; worth about " + fmt(residualAsset) + " at resale";
+    $("horizonLead").innerHTML = "Two very different places to stand after <b>" + termH + " months</b>: reimbursement is pure expense with nothing owned, while " + ownLine + ", plus reusable racking and cap. Upfitting is counted up front and its reusable portion credited back as equity.";
     function hrow(label, pv, vv, opts){ opts = opts || {}; var c = opts.sum ? ' class="sum"' : (opts.muted ? ' class="muted"' : ''); return '<tr'+c+'><td>'+label+'</td><td>'+pv+'</td><td>'+vv+'</td></tr>'; }
     $("horizonBody").innerHTML =
-      hrow("Cash out over term", fmt(cumP), fmt(cumV)) +
-      hrow("Truck resale / residual", "$0", fmt(residualAsset), {muted: residualAsset===0}) +
-      hrow("Transferable racking + cap", "$0", fmt(transferUpfit)) +
+      hrow("Cash out over term", fmt(cashP), fmt(cashV)) +
+      hrow("Truck resale (owned at end)", "$0", fmt(residualAsset)) +
+      hrow("Reusable racking + cap", "$0", fmt(transferUpfit)) +
       hrow("Net " + yrs + "-yr cost", fmt(netP), fmt(netV), {sum:true}) +
       hrow("Run-rate, following year", fmt(y4P) + "/mo", fmt(y4V) + "/mo");
-    $("horizonCallout").innerHTML = '<span class="ic" style="color:var(--good)">&rarr;</span><div>After the term, reimbursement keeps costing <b>' + fmt(y4P) + '/mo</b> indefinitely with nothing owned. The ' + vName + ' either drops to about <b>' + fmt(y4V) + '/mo</b> operating-only once the truck is owned (no lease or finance payment), or you roll <b>' + fmt(terminalAsset) + '</b> of residual truck value plus reusable racking and cap into the next truck.</div>';
+    $("horizonCallout").innerHTML = '<span class="ic" style="color:var(--good)">&rarr;</span><div>After the term, reimbursement keeps costing <b>' + fmt(y4P) + '/mo</b> indefinitely with nothing owned. We own the ' + vName + ' outright &mdash; so cost drops to about <b>' + fmt(y4V) + '/mo</b> operating-only (no lease payment), and we can roll <b>' + fmt(terminalAsset) + '</b> of truck + racking/cap equity into the next truck.</div>';
   }
 
   function seg(val, max, color){
@@ -889,8 +896,8 @@
   function setAcqUI(mode){
     state.acqMode = mode;
     $("leaseField").style.display  = mode === "lease" ? "" : "none";
-    $("priceField").style.display  = mode === "purchase" ? "" : "none";
-    $("residualField").style.display = mode === "purchase" ? "" : "none";
+    $("priceField").style.display  = "";
+    $("residualField").style.display = "";
     Array.prototype.forEach.call($("acqMode").querySelectorAll("button"), function(x){ x.classList.toggle("on", x.dataset.a === mode); });
   }
   function applyVehicle(key){
