@@ -400,11 +400,13 @@
       </section>
 
       <section class="card">
-        <div class="card-h"><span class="n">2</span><h2>Daily Job Mix</h2><span class="hint">avg jobs &amp; site miles</span></div>
+        <div class="card-h"><span class="n">2</span><h2>Daily Driving</h2><span class="hint">per truck</span></div>
         <div class="card-b">
-          <p class="section-note">Set the average jobs completed per day by type and the typical round-trip miles to each site. This drives the mileage estimate.</p>
-          <div class="job-head-row"><span class="job-head">Job type</span><span class="job-head" style="text-align:center">Jobs / day</span><span class="job-head" style="text-align:center">Miles / job</span></div>
-          <div class="jobs" id="jobs" style="margin-top:8px"></div>
+          <div class="field">
+            <label for="milesDay">Miles driven per day</label>
+            <div class="input-wrap"><input id="milesDay" type="number" min="0" step="5" value="100" class="has-suf"><span class="aff suf">mi/day</span></div>
+          </div>
+          <p class="small" style="margin:6px 0 0">Typical miles a truck covers on a working day — drive time to sites plus between-job travel. Rolls up to monthly mileage below.</p>
         </div>
       </section>
 
@@ -412,18 +414,18 @@
         <div class="card-h"><span class="n">3</span><h2>Monthly Mileage</h2></div>
         <div class="card-b">
           <div class="field">
-            <label>Mileage source</label>
+            <label>Mileage basis</label>
             <div class="seg" id="milesMode">
-              <button type="button" data-m="estimate" class="on">Estimate from jobs</button>
-              <button type="button" data-m="direct">Enter directly</button>
+              <button type="button" data-m="perday" class="on">From miles / day</button>
+              <button type="button" data-m="direct">Enter monthly</button>
             </div>
           </div>
           <div class="field" id="directWrap" style="display:none">
             <label for="milesDirect">Average miles / month <span class="note">per truck</span></label>
-            <div class="input-wrap"><input id="milesDirect" type="number" min="0" step="50" value="1200" class="has-suf"><span class="aff suf">mi</span></div>
+            <div class="input-wrap"><input id="milesDirect" type="number" min="0" step="50" value="2100" class="has-suf"><span class="aff suf">mi</span></div>
           </div>
           <div class="miles-out">
-            <span class="l" id="milesLabel">Estimated from job mix</span>
+            <span class="l" id="milesLabel">Miles/day × working days</span>
             <span class="v"><span id="milesVal">0</span> <span style="font-size:14px;color:var(--ink-mute)">mi/mo</span></span>
           </div>
         </div>
@@ -602,17 +604,32 @@
     <div class="card-h"><span class="n">⊞</span><h2>EV Models Under Consideration</h2><span class="hint">fleet dashboard · future · for management review</span></div>
     <div class="card-b" style="overflow-x:auto">
       <table class="detail models" id="modelsTable">
-        <thead><tr><th>Model</th><th>Trim</th><th>MSRP</th><th>Est. lease /mo <sup style="color:var(--accent)">†</sup></th><th>Payload</th><th>Towing</th><th>Range</th><th>Eff.</th></tr></thead>
+        <thead><tr><th>Model</th><th>Type</th><th>Range</th><th>MSRP</th><th>Est. lease /mo <sup style="color:var(--accent)">&dagger;</sup></th><th>Payload</th><th>Cargo</th><th>Towing</th><th>Eff.</th><th>DC charge</th><th>Plug</th><th>Cancel risk</th></tr></thead>
         <tbody>
-          <tr data-veh="r1t"><td>Rivian R1T</td><td>Premium</td><td>$82,885<span class="mkt">− $6K rebate → $76,885 cap</span></td><td>$2,206</td><td>~1,764 lb</td><td>11,000 lb</td><td>329 mi</td><td>2.3</td></tr>
-          <tr data-veh="silv_ext"><td>Chevrolet Silverado EV LT</td><td>Extended Range</td><td>$71,700</td><td>$2,057</td><td>~1,400 lb</td><td>10,500 lb</td><td>410 mi</td><td>2.0</td></tr>
-          <tr data-veh="silv_std"><td>Chevrolet Silverado EV LT</td><td>Standard Range</td><td>$63,500</td><td>$1,822</td><td>~1,400 lb</td><td>10,000 lb</td><td>283 mi</td><td>2.0</td></tr>
-          <tr><td>Ford F-150 Lightning</td><td>Pro (new)</td><td>$54,780</td><td>$1,572</td><td>~2,000 lb</td><td>7,700–10,000 lb</td><td>240–320 mi</td><td>2.0</td></tr>
-          <tr data-veh="f150"><td>Ford F-150 Lightning</td><td>Used · Pro / XLT</td><td>~$50,000<span class="mkt">used market ~$32K–$53K</span></td><td>— <span class="mkt">bought used</span></td><td>~2,000 lb</td><td>7,700–10,000 lb</td><td>~240 mi</td><td>2.0</td></tr>
+              <tr><td>Rivian RCV500</td><td>Van</td><td>~150 mi</td><td>$71,900</td><td>~$2,063</td><td>~2,600 lbs</td><td>500 cu ft</td><td>N/A</td><td>1.8</td><td>~150 kW</td><td>CCS1</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr><td>Rivian RCV700</td><td>Van</td><td>~150 mi</td><td>$75,900</td><td>~$2,178</td><td>~2,600 lbs</td><td>700 cu ft</td><td>N/A</td><td>1.6</td><td>~150 kW</td><td>CCS1</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr data-veh="r1t"><td>Rivian R1T</td><td>Pickup</td><td>~314 mi</td><td>$72,000</td><td>~$2,066</td><td>~1,760 lbs</td><td>~77 cu ft</td><td>11,000 lbs</td><td>2.4</td><td>~215 kW</td><td>NACS</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr><td>Rivian R1S</td><td>SUV</td><td>~303 mi</td><td>$76,000</td><td>~$2,181</td><td>~900 lbs</td><td>104 cu ft</td><td>7,700 lbs</td><td>2.2</td><td>~215 kW</td><td>NACS</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr><td>Kia EV9</td><td>SUV</td><td>~304 mi</td><td>$56,395+</td><td>~$1,618</td><td>~1,200 lbs</td><td>82 cu ft</td><td>5,000 lbs</td><td>2.8</td><td>~236 kW</td><td>NACS</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr><td>Kia EV6</td><td>Crossover</td><td>~310 mi</td><td>$42,600+</td><td>~$1,222</td><td>~1,000 lbs</td><td>50 cu ft</td><td>2,300 lbs</td><td>3.5</td><td>~236 kW</td><td>NACS</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr><td>Hyundai Ioniq 5</td><td>Crossover</td><td>~303 mi</td><td>$44,745+</td><td>~$1,284</td><td>~1,000 lbs</td><td>59 cu ft</td><td>3,500 lbs</td><td>3.5</td><td>~350 kW</td><td>NACS</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr><td>Hyundai Ioniq 9</td><td>SUV</td><td>~350 mi</td><td>$56,175+</td><td>~$1,612</td><td>~1,300 lbs</td><td>87 cu ft</td><td>5,000 lbs</td><td>2.8</td><td>~350 kW</td><td>NACS</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr><td>Slate EV Truck</td><td>Pickup</td><td>~150 mi</td><td>$34,900+</td><td>~$1,001</td><td>~2,500 lbs</td><td>75 cu ft</td><td>5,000 lbs</td><td>2.5</td><td>~150 kW</td><td>CCS1</td><td><span style="color:var(--warn);font-weight:700">Medium</span></td></tr>
+              <tr><td>VW ID.Buzz</td><td>Van</td><td>~234 mi</td><td>$59,995+</td><td>~$1,721</td><td>~1,100 lbs</td><td>117 cu ft</td><td>N/A</td><td>2.6</td><td>~200 kW</td><td>CCS1</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr><td>Tesla Model 3</td><td>Sedan</td><td>~341 mi</td><td>$42,490+</td><td>~$1,219</td><td>~900 lbs</td><td>23 cu ft</td><td>N/A</td><td>4.0</td><td>~250 kW</td><td>NACS</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr><td>Tesla Model Y</td><td>Crossover</td><td>~310 mi</td><td>$44,990+</td><td>~$1,291</td><td>~1,000 lbs</td><td>76 cu ft</td><td>3,500 lbs</td><td>3.5</td><td>~250 kW</td><td>NACS</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr><td>Tesla Cybertruck</td><td>Pickup</td><td>~325 mi</td><td>$79,990+</td><td>~$2,295</td><td>~2,500 lbs</td><td>68 cu ft</td><td>11,000 lbs</td><td>2.2</td><td>~250 kW</td><td>NACS</td><td><span style="color:var(--warn);font-weight:700">Medium</span></td></tr>
+              <tr><td>Ford Mustang Mach-E</td><td>Crossover</td><td>~312 mi</td><td>$42,995+</td><td>~$1,234</td><td>~1,000 lbs</td><td>60 cu ft</td><td>N/A</td><td>3.2</td><td>~150 kW</td><td>NACS</td><td><span style="color:var(--warn);font-weight:700">Medium</span></td></tr>
+              <tr><td>Toyota bZ4X</td><td>Crossover</td><td>~252 mi</td><td>$37,070+</td><td>~$1,064</td><td>~1,000 lbs</td><td>28 cu ft</td><td>N/A</td><td>3.3</td><td>~150 kW</td><td>CCS1</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr data-veh="silv"><td>Chevrolet Silverado EV</td><td>Pickup</td><td>~400 mi</td><td>$57,095+</td><td>~$1,638</td><td>~1,300 lbs</td><td>5.11 ft bed</td><td>10,000 lbs</td><td>2.0</td><td>~350 kW</td><td>NACS</td><td><span style="color:var(--bad);font-weight:700">High</span></td></tr>
+              <tr><td>Chevrolet Equinox EV</td><td>Crossover</td><td>~315 mi</td><td>$33,900+</td><td>~$973</td><td>~1,000 lbs</td><td>57 cu ft</td><td>N/A</td><td>3.4</td><td>~150 kW</td><td>NACS</td><td><span style="color:var(--bad);font-weight:700">High</span></td></tr>
+              <tr><td>Chevrolet Blazer EV</td><td>SUV</td><td>~283 mi</td><td>$45,995+</td><td>~$1,320</td><td>~1,100 lbs</td><td>59 cu ft</td><td>4,000 lbs</td><td>2.9</td><td>~190 kW</td><td>NACS</td><td><span style="color:var(--bad);font-weight:700">High</span></td></tr>
+              <tr><td>Chevrolet BrightDrop 400</td><td>Van</td><td>~230 mi</td><td>$41,000+</td><td>~$1,176</td><td>~2,200 lbs</td><td>400 cu ft</td><td>N/A</td><td>2.0</td><td>~170 kW</td><td>CCS1</td><td><span style="color:var(--bad);text-decoration:line-through;font-weight:700">Canceled</span></td></tr>
+              <tr data-veh="f150"><td>Ford F-150 Lightning <span class="mkt">added · used</span></td><td>Pickup</td><td>~240 mi</td><td>~$50,000<span class="mkt">used mkt ~$32K–$53K</span></td><td>— <span class="mkt">bought used</span></td><td>~2,000 lbs</td><td>5.5 ft bed</td><td>~10,000 lbs</td><td>2.0</td><td>~150 kW</td><td>CCS1</td><td><span style="color:var(--ink-mute);font-weight:700">n/a</span></td></tr>
         </tbody>
       </table>
-      <p class="small" style="margin:12px 0 0"><b style="color:var(--ink)">† Monthly lease reverse-engineered from Jetson's R1T lease structure:</b> capitalized cost = MSRP − manufacturer rebate (no rebates assumed on non-Rivian brands, so those use full MSRP), 10% down, 36-month term, $0 residual (full straight-line depreciation, ≈ 2.78%/mo), 9.16% implied rate (3-yr Treasury + 4.85%, 8/21/26), plus a 0.045%/mo management fee. Because every component scales with capitalized cost, the all-in payment works out to ≈ 2.87% of cap cost per month — anchored so the R1T reproduces its actual $2,206 quote. Used trucks are modeled as purchases, not leases.</p>
-      <p class="small" style="margin:8px 0 0"><b style="color:var(--ink)">Sources &amp; caveat:</b> payload, towing, and range are manufacturer / EPA figures for representative work trims (the F-150 Lightning spans standard- and extended-range batteries). The live <a href="https://apps.jetsoncorp.com/fleet-dashboard#/future" target="_blank" rel="noopener">Fleet Dashboard</a> couldn't be reached from this build, so this reconstructs the candidate set from public specs and the figures you've shared — send the dashboard's full model list and I'll match it row-for-row.</p>
+      <p class="small" style="margin:12px 0 0"><b style="color:var(--ink)">&dagger; Monthly lease reverse-engineered from Jetson&rsquo;s R1T lease structure:</b> capitalized cost = MSRP &minus; manufacturer rebate (no rebates assumed on non-Rivian brands, so those use full MSRP), 10% down, 36-month term, $0 residual (full straight-line depreciation, &asymp; 2.78%/mo), 9.16% implied rate (3-yr Treasury + 4.85%, 8/21/26), plus a 0.045%/mo management fee &mdash; working out to &asymp; 2.87% of cap cost per month, anchored so the R1T reproduces its actual $2,206 quote. Estimates use each model&rsquo;s <em>starting</em> MSRP, so a configured build runs higher. Vans, SUVs and sedans are shown for reference; the pickups and cargo vans are the work-relevant candidates.</p>
+      <p class="small" style="margin:8px 0 0"><b style="color:var(--ink)">Notes:</b> data mirrors the Fleet Dashboard &ldquo;EV Models Under Consideration&rdquo; list. Jetson&rsquo;s modeled R1T is the <b>Premium</b> build ($82,885 &rarr; $76,885 cap after the $6K rebate &rarr; <b>$2,206</b>/mo actual), while the dashboard lists the R1T at its $72,000 base. The Ford F-150 Lightning (used) row is an added, off-list used-market option, modeled as a purchase rather than a lease. The highlighted row is the vehicle modeled above.</p>
     </div>
   </section>
 
@@ -624,11 +641,6 @@
   "use strict";
   var $ = function(id){ return document.getElementById(id); };
 
-  var JOBS = [
-    { key:"hp", name:"Heat pump install", color:"#2bb453", perDay:1, miles:38 },
-    { key:"wh", name:"Water heater",      color:"#8FD5A6", perDay:1, miles:26 },
-    { key:"ev", name:"EV charger",        color:"#113823", perDay:1, miles:20 }
-  ];
   var COST_COLORS = {
     lease:"#2bb453", upfit:"#7BC98F", charge:"#CBFF8A", insurance:"#113823",
     telematics:"#6c7365", maintenance:"#ACAA93"
@@ -644,40 +656,23 @@
   };
 
   var DEFAULTS = {
-    techs:1, days:21, milesMode:"estimate", milesDirect:1200,
+    techs:1, days:21, milesMode:"perday", milesDay:100, milesDirect:2100,
     reimb:0.76, stipend:0,
     upfit:26935, upfitLife:84, ins:375, teleSub:40, teleInstall:107, maint:60, kwh:0.16
   };
   var state = {};
 
-  // build job rows
-  var jobsEl = $("jobs");
-  JOBS.forEach(function(j){
-    var row = document.createElement("div");
-    row.className = "job-row";
-    row.innerHTML =
-      '<span class="job-name"><span class="swatch" style="background:'+j.color+'"></span>'+j.name+'</span>'+
-      '<div class="input-wrap"><input type="number" min="0" step="0.1" id="jd_'+j.key+'" value="'+j.perDay+'" style="text-align:center"></div>'+
-      '<div class="input-wrap"><input type="number" min="0" step="1" id="jm_'+j.key+'" value="'+j.miles+'" style="text-align:center"></div>';
-    jobsEl.appendChild(row);
-  });
 
   function num(id){ var v = parseFloat($(id).value); return isFinite(v) ? v : 0; }
   function fmt(n){ return "$" + Math.round(n).toLocaleString("en-US"); }
   function fmt2(n){ return "$" + n.toFixed(2); }
   function fmtN(n){ return Math.round(n).toLocaleString("en-US"); }
 
-  function milesFromJobs(){
-    var days = num("days");
-    var perDay = 0;
-    JOBS.forEach(function(j){ perDay += num("jd_"+j.key) * num("jm_"+j.key); });
-    return perDay * days;
-  }
 
   function compute(){
     var techs   = Math.max(1, num("techs"));
     var mode    = state.milesMode;
-    var miles   = mode === "direct" ? num("milesDirect") : milesFromJobs();
+    var miles   = mode === "direct" ? num("milesDirect") : num("milesDay") * num("days");
 
     // personal
     var reimb   = num("reimb");
@@ -737,7 +732,7 @@
 
     // miles readout
     $("milesVal").textContent = fmtN(r.miles);
-    $("milesLabel").textContent = r.mode === "direct" ? "Entered directly" : "Estimated from job mix";
+    $("milesLabel").textContent = r.mode === "direct" ? "Entered monthly" : "Miles/day × working days";
 
     // verdict
     var v = $("verdict"), big = $("vbig"), tag = $("vtag"), line = $("vline");
@@ -766,7 +761,8 @@
     $("detailVHead").textContent = vName;
     var resVal = num("price") * num("residualPct") / 100;
     $("residualCap").innerHTML = "≈ <b style=\'color:var(--ink)\'>" + fmt(resVal) + "</b> retained at end · EV trucks typically hold 25–40% over ~5 yrs";
-    Array.prototype.forEach.call(document.querySelectorAll("#modelsTable tr[data-veh]"), function(tr){ tr.classList.toggle("sel", tr.dataset.veh === state.vehicle); });
+    var modelKey = ({r1t:"r1t", silv_ext:"silv", silv_std:"silv", f150:"f150"})[state.vehicle] || state.vehicle;
+    Array.prototype.forEach.call(document.querySelectorAll("#modelsTable tr[data-veh]"), function(tr){ tr.classList.toggle("sel", tr.dataset.veh === modelKey); });
     var maxTot = Math.max(r.pTotal, r.rTotal, 1);
     $("pTot").textContent = fmt(r.pTotal);
     $("rTot").textContent = fmt(r.rTotal);
@@ -903,15 +899,14 @@
       if (key === "milesMode") return;
       if ($(key)) $(key).value = DEFAULTS[key];
     });
-    JOBS.forEach(function(j){ $("jd_"+j.key).value = j.perDay; $("jm_"+j.key).value = j.miles; });
     applyVehicle("r1t");
-    state.milesMode = "estimate";
-    Array.prototype.forEach.call($("milesMode").querySelectorAll("button"), function(x){ x.classList.toggle("on", x.dataset.m==="estimate"); });
+    state.milesMode = "perday";
+    Array.prototype.forEach.call($("milesMode").querySelectorAll("button"), function(x){ x.classList.toggle("on", x.dataset.m==="perday"); });
     $("directWrap").style.display = "none";
     render();
   });
 
-  state.milesMode = "estimate";
+  state.milesMode = "perday";
   applyVehicle("r1t");
   render();
 })();
