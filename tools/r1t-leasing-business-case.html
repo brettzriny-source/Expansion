@@ -574,6 +574,22 @@
       </section>
 
       <section class="card">
+        <div class="card-h"><span class="n">∞</span><h2>The 3-Year Horizon</h2><span class="hint" id="horizonHint">end of term</span></div>
+        <div class="card-b">
+          <p class="section-note" id="horizonLead"></p>
+          <div class="tiles" style="grid-template-columns:1fr 1fr">
+            <div class="tile"><div class="k">Personal — net cost</div><div class="v bad" id="hNetP">—</div><div class="cap">no asset · meter runs on</div></div>
+            <div class="tile"><div class="k" id="hNetVLabel">Vehicle — net cost</div><div class="v good" id="hNetV">—</div><div class="cap">after equity retained</div></div>
+          </div>
+          <div style="overflow-x:auto"><table class="detail" style="margin-top:14px">
+            <thead><tr><th>At end of term</th><th>Personal</th><th id="hVHead">Vehicle</th></tr></thead>
+            <tbody id="horizonBody"></tbody>
+          </table></div>
+          <div class="banner" id="horizonCallout" style="margin:14px 0 0; background:var(--good-bg); border-color:color-mix(in srgb, var(--good) 35%, transparent)"></div>
+        </div>
+      </section>
+
+      <section class="card">
         <div class="card-h"><span class="n">≡</span><h2>Cost Breakdown</h2><span class="hint" id="fleetHint">per truck / mo</span></div>
         <div class="card-b" style="overflow-x:auto">
           <table class="detail" id="detail">
@@ -645,6 +661,7 @@
     lease:"#2bb453", upfit:"#7BC98F", charge:"#CBFF8A", insurance:"#113823",
     telematics:"#6c7365", maintenance:"#ACAA93"
   };
+  var WRAP = 3500;  // vehicle-specific wrap portion of upfit (not transferable)
 
   // Vehicle presets. Prices per confirmed quotes; range & efficiency from EPA
   // specs (real-world efficiency de-rated for work payload).
@@ -821,6 +838,31 @@
       row("Charging (energy)", null, r.chargeM*k) +
       '<tr class="sum"><td>Total / month'+(fleetOn?' · fleet':'')+'</td><td>'+fmt(r.pTotal*k)+'</td><td>'+fmt(r.rTotal*k)+'</td></tr>' +
       '<tr class="sum"><td>Total / year'+(fleetOn?' · fleet':'')+'</td><td>'+fmt(r.pTotal*k*12)+'</td><td>'+fmt(r.rTotal*k*12)+'</td></tr>';
+
+    // ---- 3-year horizon: cash out, equity retained, net, run-rate ----
+    var termH = Math.max(1, num("term"));
+    var yrs = Math.round(termH/12*10)/10;
+    var upfitTot = num("upfit"), upfitLife = Math.max(1, num("upfitLife"));
+    var transferUpfit = Math.max(0, upfitTot - WRAP) * Math.max(0, upfitLife - termH) / upfitLife;
+    var residualAsset = r.acqMode === "purchase" ? num("price") * num("residualPct") / 100 : 0;
+    var terminalAsset = residualAsset + transferUpfit;
+    var cumP = r.pTotal * termH, cumV = r.rTotal * termH;
+    var netP = cumP, netV = cumV - terminalAsset;
+    var y4P = r.pTotal, y4V = r.ins + r.teleSub + r.maint + r.chargeM;
+    $("horizonHint").textContent = "end of " + termH + " mo";
+    $("hNetVLabel").textContent = vName + " — net cost";
+    $("hVHead").textContent = vName;
+    $("hNetP").textContent = fmt(netP);
+    $("hNetV").textContent = fmt(netV);
+    $("horizonLead").innerHTML = "Two very different places to stand after <b>" + termH + " months</b>: reimbursement is pure expense with nothing owned, while the " + vName + " leaves a residual asset plus reusable racking and cap.";
+    function hrow(label, pv, vv, opts){ opts = opts || {}; var c = opts.sum ? ' class="sum"' : (opts.muted ? ' class="muted"' : ''); return '<tr'+c+'><td>'+label+'</td><td>'+pv+'</td><td>'+vv+'</td></tr>'; }
+    $("horizonBody").innerHTML =
+      hrow("Cash out over term", fmt(cumP), fmt(cumV)) +
+      hrow("Truck resale / residual", "$0", fmt(residualAsset), {muted: residualAsset===0}) +
+      hrow("Transferable racking + cap", "$0", fmt(transferUpfit)) +
+      hrow("Net " + yrs + "-yr cost", fmt(netP), fmt(netV), {sum:true}) +
+      hrow("Run-rate, following year", fmt(y4P) + "/mo", fmt(y4V) + "/mo");
+    $("horizonCallout").innerHTML = '<span class="ic" style="color:var(--good)">&rarr;</span><div>After the term, reimbursement keeps costing <b>' + fmt(y4P) + '/mo</b> indefinitely with nothing owned. The ' + vName + ' either drops to about <b>' + fmt(y4V) + '/mo</b> operating-only once the truck is owned (no lease or finance payment), or you roll <b>' + fmt(terminalAsset) + '</b> of residual truck value plus reusable racking and cap into the next truck.</div>';
   }
 
   function seg(val, max, color){
