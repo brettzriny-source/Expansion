@@ -476,7 +476,7 @@
           </div>
           <div class="grid2">
             <div class="field" id="leaseField">
-              <label for="lease">Monthly lease</label>
+              <label for="lease">Monthly lease <span class="flag" id="leaseEstTag" style="display:none">estimate</span></label>
               <div class="input-wrap"><span class="aff pre">$</span><input id="lease" type="number" min="0" step="10" value="2206" class="has-pre has-suf"><span class="aff suf">/mo</span></div>
             </div>
             <div class="field" id="priceField">
@@ -662,6 +662,9 @@
     telematics:"#6c7365", maintenance:"#ACAA93"
   };
   var WRAP = 3500;  // vehicle-specific wrap portion of upfit (not transferable)
+  var LEASE_COEF = 2206/76885;  // R1T lease-derived: ~2.87% of cap cost per month
+  function estLease(){ return Math.round(num("price") * LEASE_COEF / 10) * 10; }
+  function updateLeaseTag(){ var t = $("leaseEstTag"); if (t) t.style.display = (state.acqMode === "lease" && state.leaseEstimated) ? "" : "none"; }
 
   // Vehicle presets. Prices per confirmed quotes; range & efficiency from EPA
   // specs (real-world efficiency de-rated for work payload).
@@ -899,22 +902,27 @@
     $("priceField").style.display  = "";
     $("residualField").style.display = "";
     Array.prototype.forEach.call($("acqMode").querySelectorAll("button"), function(x){ x.classList.toggle("on", x.dataset.a === mode); });
+    if (mode === "lease" && state.leaseEstimated) $("lease").value = estLease();
+    updateLeaseTag();
   }
   function applyVehicle(key){
     var v = VEHICLES[key]; if (!v) return;
     state.vehicle = key;
     state.range = v.range;
     $("vehicle").value = key;
-    $("lease").value  = v.lease;
     $("price").value  = v.price;
     $("residualPct").value = v.residualPct;
     $("term").value   = v.term;
     $("eff").value    = v.eff;
+    state.leaseEstimated = (key !== "r1t");
+    $("lease").value = (key === "r1t") ? v.lease : estLease();
     setAcqUI(v.acq);
     $("configNote").innerHTML = '<b style="color:var(--ink)">Modeled configuration:</b> ' + v.desc + '.';
     $("spRange").textContent = v.range;
-    $("spAcq").textContent = v.acq === "purchase" ? "Purchase" : "Lease";
+    $("spAcq").textContent = v.acq === "purchase" ? "Purchase" : "Lease-to-own";
   }
+  $("lease").addEventListener("input", function(){ state.leaseEstimated = false; updateLeaseTag(); });
+  $("price").addEventListener("input", function(){ if (state.leaseEstimated) $("lease").value = estLease(); });
   $("vehicle").addEventListener("change", function(){ applyVehicle(this.value); render(); });
   $("acqMode").addEventListener("click", function(e){
     var b = e.target.closest("button"); if (!b) return;
