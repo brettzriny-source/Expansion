@@ -24,6 +24,7 @@ const CAND = {
   "Raleigh-Durham": null, "Salt Lake City": "SLC", "Portland": "POR",
   "Dallas": "DAL", "Austin": null, "Charlotte": null, "Seattle": "SEA",
   "Las Vegas": null, "Richmond": null, "Westfield (NJ)": "WNJ", "Chicago North": "CHI_N",
+  "Minneapolis": "MSP",
 };
 const CAND_ID = new Set(Object.values(CAND).filter(Boolean));
 

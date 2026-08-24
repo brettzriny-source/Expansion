@@ -6,7 +6,7 @@ const { ALL_MARKETS } = await import(resolve(SRC, "data/markets.js"));
 const { REBATE_DATA } = await import(resolve(SRC, "data/rebates.js"));
 
 const CAND = { "Salt Lake City":"SLC","Portland":"POR","Dallas":"DAL",
-  "Seattle":"SEA","Westfield (NJ)":"WNJ","Chicago North":"CHI_N" };
+  "Seattle":"SEA","Westfield (NJ)":"WNJ","Chicago North":"CHI_N","Minneapolis":"MSP" };
 
 console.log("Live Panorama values (rebates.js stackable + federal HEAR status):\n");
 for (const [name,id] of Object.entries(CAND)) {

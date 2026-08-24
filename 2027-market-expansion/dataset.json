@@ -282,7 +282,7 @@
       "tier": "A",
       "kind": "modeled",
       "hear": "pending",
-      "candidate": false,
+      "candidate": true,
       "source": "panorama"
     },
     {
@@ -1218,6 +1218,18 @@
       "tier": "A",
       "pipeline": false,
       "note": "ComEd $1.475K + Naperville $600 + IL HEAR $8K (pending)"
+    },
+    {
+      "name": "Minneapolis",
+      "id": "MSP",
+      "source": "panorama",
+      "x": 9500,
+      "y": 20500,
+      "hear": "pending",
+      "tam": 375840,
+      "tier": "A",
+      "pipeline": false,
+      "note": "Xcel $1.5K + MN HEAR $8K (pending)"
     }
   ],
   "missing": [
