@@ -595,26 +595,28 @@
           </div>
         </div>
       </section>
-
-      <section class="card">
-        <div class="card-h"><span class="n">⊞</span><h2>EV Models Under Consideration</h2><span class="hint">fleet dashboard · future</span></div>
-        <div class="card-b" style="overflow-x:auto">
-          <table class="detail models" id="modelsTable">
-            <thead><tr><th>Model</th><th>Config</th><th>Price</th><th>Range</th><th>Eff.</th><th>Type</th></tr></thead>
-            <tbody>
-              <tr data-veh="r1t"><td>Rivian R1T</td><td>Premium · all-season</td><td>$2,206/mo</td><td>329 mi</td><td>2.3</td><td>Lease</td></tr>
-              <tr data-veh="silv_ext"><td>Chevrolet Silverado EV LT</td><td>Extended Range</td><td>$71,700</td><td>410 mi</td><td>2.0</td><td>Buy</td></tr>
-              <tr data-veh="silv_std"><td>Chevrolet Silverado EV LT</td><td>Standard Range</td><td>$63,500</td><td>283 mi</td><td>2.0</td><td>Buy</td></tr>
-              <tr data-veh="f150"><td>Ford F-150 Lightning</td><td>Used · Pro / XLT</td><td>$50,000<span class="mkt">used market ~$32K–$53K</span></td><td>~240 mi</td><td>2.0</td><td>Buy</td></tr>
-            </tbody>
-          </table>
-          <p class="small" style="margin:10px 0 0">R1T shown at the confirmed lease; Silverado EV LT trims at current quote pricing; F-150 Lightning at a representative used price with the current used-market range (~$32K–$53K for Pro/XLT, Aug 2026 — Ford has ended Lightning production, so used supply and pricing will keep moving). Range is EPA-estimated; efficiency is real-world, de-rated for work payload. The highlighted row is the vehicle modeled above.</p>
-        </div>
-      </section>
-
-      <p class="small foot-note">Illustrative model for internal planning — not tax or accounting advice. Confirm lease, insurance, and dashboard assumptions before circulating. Personal-vehicle cost reflects only the company's reimbursement outlay; it excludes the employee's own ownership costs.</p>
     </div>
   </div>
+
+  <section class="card" style="margin-top:22px">
+    <div class="card-h"><span class="n">⊞</span><h2>EV Models Under Consideration</h2><span class="hint">fleet dashboard · future · for management review</span></div>
+    <div class="card-b" style="overflow-x:auto">
+      <table class="detail models" id="modelsTable">
+        <thead><tr><th>Model</th><th>Trim</th><th>MSRP</th><th>Est. lease /mo <sup style="color:var(--accent)">†</sup></th><th>Payload</th><th>Towing</th><th>Range</th><th>Eff.</th></tr></thead>
+        <tbody>
+          <tr data-veh="r1t"><td>Rivian R1T</td><td>Premium</td><td>$82,885<span class="mkt">− $6K rebate → $76,885 cap</span></td><td>$2,206</td><td>~1,764 lb</td><td>11,000 lb</td><td>329 mi</td><td>2.3</td></tr>
+          <tr data-veh="silv_ext"><td>Chevrolet Silverado EV LT</td><td>Extended Range</td><td>$71,700</td><td>$2,057</td><td>~1,400 lb</td><td>10,500 lb</td><td>410 mi</td><td>2.0</td></tr>
+          <tr data-veh="silv_std"><td>Chevrolet Silverado EV LT</td><td>Standard Range</td><td>$63,500</td><td>$1,822</td><td>~1,400 lb</td><td>10,000 lb</td><td>283 mi</td><td>2.0</td></tr>
+          <tr><td>Ford F-150 Lightning</td><td>Pro (new)</td><td>$54,780</td><td>$1,572</td><td>~2,000 lb</td><td>7,700–10,000 lb</td><td>240–320 mi</td><td>2.0</td></tr>
+          <tr data-veh="f150"><td>Ford F-150 Lightning</td><td>Used · Pro / XLT</td><td>~$50,000<span class="mkt">used market ~$32K–$53K</span></td><td>— <span class="mkt">bought used</span></td><td>~2,000 lb</td><td>7,700–10,000 lb</td><td>~240 mi</td><td>2.0</td></tr>
+        </tbody>
+      </table>
+      <p class="small" style="margin:12px 0 0"><b style="color:var(--ink)">† Monthly lease reverse-engineered from Jetson's R1T lease structure:</b> capitalized cost = MSRP − manufacturer rebate (no rebates assumed on non-Rivian brands, so those use full MSRP), 10% down, 36-month term, $0 residual (full straight-line depreciation, ≈ 2.78%/mo), 9.16% implied rate (3-yr Treasury + 4.85%, 8/21/26), plus a 0.045%/mo management fee. Because every component scales with capitalized cost, the all-in payment works out to ≈ 2.87% of cap cost per month — anchored so the R1T reproduces its actual $2,206 quote. Used trucks are modeled as purchases, not leases.</p>
+      <p class="small" style="margin:8px 0 0"><b style="color:var(--ink)">Sources &amp; caveat:</b> payload, towing, and range are manufacturer / EPA figures for representative work trims (the F-150 Lightning spans standard- and extended-range batteries). The live <a href="https://apps.jetsoncorp.com/fleet-dashboard#/future" target="_blank" rel="noopener">Fleet Dashboard</a> couldn't be reached from this build, so this reconstructs the candidate set from public specs and the figures you've shared — send the dashboard's full model list and I'll match it row-for-row.</p>
+    </div>
+  </section>
+
+  <p class="small foot-note">Illustrative model for internal planning — not tax or accounting advice. Confirm lease, insurance, and dashboard assumptions before circulating. Personal-vehicle cost reflects only the company's reimbursement outlay; it excludes the employee's own ownership costs.</p>
 </div>
 
 <script>
