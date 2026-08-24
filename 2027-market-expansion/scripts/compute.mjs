@@ -1,17 +1,16 @@
-// Sanity-print the live Panorama values behind Slide 1 (the 6 candidates that
-// exist in Panorama). Read-only. Set PANORAMA_SRC or default to the monorepo clone.
+// Sanity-print the live Panorama JEV values behind Slide 1 for the 14 candidates.
+// Read-only. Set PANORAMA_SRC or default to the monorepo clone (rebate-recast/JEV build).
 import { resolve } from "path";
 const SRC = process.env.PANORAMA_SRC || "/home/user/conductor-playground/project-panorama/src";
 const { ALL_MARKETS } = await import(resolve(SRC, "data/markets.js"));
-const { REBATE_DATA } = await import(resolve(SRC, "data/rebates.js"));
 
-const CAND = { "Salt Lake City":"SLC","Portland":"POR","Dallas":"DAL",
-  "Seattle":"SEA","Westfield (NJ)":"WNJ","Chicago North":"CHI_N","Minneapolis":"MSP" };
+const CAND = { RDU:"Raleigh-Durham", SLC:"Salt Lake City", POR:"Portland", DAL:"Dallas",
+  AUS:"Austin", CLT:"Charlotte", SEA:"Seattle", LV:"Las Vegas", RIC:"Richmond",
+  WNJ:"Westfield (NJ)", CHI_N:"Chicago North", MSP:"Minneapolis", PHI:"Philadelphia", ROY:"Royal Oak Metro" };
 
-console.log("Live Panorama values (rebates.js stackable + federal HEAR status):\n");
-for (const [name,id] of Object.entries(CAND)) {
-  const m = ALL_MARKETS.find(x=>x.id===id);
-  const s = REBATE_DATA.stackable[id];
-  const fed = REBATE_DATA.federal[m.state];
-  console.log(`${name.padEnd(16)} rebate $${s.low}–$${s.high}  W-TAM ${m.warehouseTam}  Tier ${m.tier}  HEAR=${fed?.status}  | ${s.note}`);
+console.log(`Panorama markets loaded: ${ALL_MARKETS.length}. JEV $ (jevDollars) for the 14 candidates:\n`);
+for (const [id, label] of Object.entries(CAND)) {
+  const m = ALL_MARKETS.find(x => x.id === id);
+  if (!m) { console.log(`${label.padEnd(16)} — id ${id} NOT FOUND`); continue; }
+  console.log(`${label.padEnd(16)} [${id}] JEV $${String(m.jevDollars).padStart(5)}  W-TAM ${m.warehouseTam}  Tier ${m.tier}${m.isExisting ? "  (existing)" : ""}`);
 }

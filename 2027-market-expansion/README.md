@@ -7,47 +7,47 @@ This does **not** touch the master *Panorama Policy Overlay* deck — it is a ne
 - **Slide 1:** the policy-offset market map ("Out-of-pocket is the outcome, not the axis"), mimicking Slide 7 of the master deck, re-plotted on **live Panorama data**, with the 14 2027 candidates in **amber (`#F9A843`)**.
 - **Slide 2:** the 14 recommended 2027 markets as a clean list.
 
-The list is the 11 originally briefed markets plus **Minneapolis**, **Philadelphia**, and **Royal Oak Metro** (added at Z's request — all live Panorama markets).
-
 Status: **working draft — Slides 1 & 2 only.** Further slides pending sign-off from Z (VP New Market Expansion).
 
-## Data provenance
+## Data source — the current Panorama tool (JEV build)
+
+Panorama received a comprehensive overhaul (branch **`rebate-recast`** in the monorepo `conductor-playground`; commit *"Panorama: comprehensive update — DOE e2e HEAR exclusion…"*, rebate data last reviewed **May 2026**). This deck sources from that build, **not** `main` (which still holds the older 67-market, HEAR-inclusive dataset). Key differences:
+
+- **113 markets** (was 67). All 14 candidates are now live Panorama markets — none are estimated.
+- **JEV $ (`jevDollars`)** is the new headline rebate metric: the tool's **risk-adjusted** rebate a mid-AMI Jetson customer actually captures (utility + state `captureDollars`, discounted for program status, funding risk, and friction — see `data/jev.js`).
+- **Federal HEAR = $0** for every market. Per `jev.js`: DOE scoped HEAR to *electric-to-electric*, and Jetson does *gas-to-electric* conversions, so federal contributes nothing. The 25C credit expired Dec 31 2025. This is why the map's x-axis is HEAR-free by construction (no manual subtraction).
 
 | Field | Source | Notes |
 |---|---|---|
-| Rebate stack (Slide 1 **x-axis**) | **live** — Panorama `src/data/rebates.js` → `stackable[id].high` **minus the $8k HEAR line** | Plotted value = **market-rate stack** (utility + state, no income qualification). Panorama's `high` bakes in federal HEAR; we subtract the $8k HEAR component where the stack note carries it (`/HEAR \$8K/`), so income-qualified HEAR is excluded — it does not reach market-rate buyers (≤150% AMI cap). Basis April 2026; files synced **2026-08-24**. |
-| W-TAM / tier / existing flag / HEAR status | **live** — Panorama `src/data/markets.js`, `rebates.js` | Panorama = source of truth (the proforma app syncs *from* it). |
-| Install cost (Slide 1 **y-axis**) | ⚠ **MODELED — not a Panorama field** | Panorama stores no per-market install price. See formula below. Treat the vertical axis as directional, not quoted pricing. |
-| 5 markets (Raleigh-Durham, Austin, Charlotte, Las Vegas, Richmond) | ⚠ **ESTIMATED — not in Panorama** | No Panorama record exists. Rebate figures inferred from each state's HEAR framework + nearest Panorama analog (see `scripts/build_dataset.mjs`). Rendered as amber **open dashed rings**. |
+| Rebate value (Slide 1 **x-axis**) | **live** — `m.jevDollars` from Panorama `markets.js` (rebate-recast) | Risk-adjusted, HEAR-free. Candidate range $230–$5,355; all markets $0–$10,800. |
+| W-TAM / tier / existing flag | **live** — Panorama `markets.js` | Panorama = source of truth. 7 existing markets (Denver, Loveland, Colorado Springs, Vancouver, White Plains, Marlborough, …). |
+| Install cost (Slide 1 **y-axis**) | ⚠ **MODELED — not a Panorama field** | Panorama still stores no per-market install price. See formula below. Treat the vertical axis as directional, not quoted pricing. |
+| Funding/timing risk (⚠) | **live** — Panorama rebate notes (`stackable[id].note`) | Markets whose rebate note carries a ⚠ (waitlist / program ending / funding risk) are flagged. |
 
-### Modeled install-cost formula (y-axis)
+### Modeled install-cost formula (y-axis) — the one remaining estimate
 ```
 installCost = $19,000 base
             × regional factor   (Panorama warehouseCost: Low 0.78 / Medium 1.00 / High 1.22)
             + cold-climate adder (heating degree-days: ≥6500 → +$1,500 / ≥5000 → +$750 / else +$0)
 ```
-Chosen so the plotted range (~$14.8k–$23.9k) sits inside Slide 7's $13k–$25.5k axis. It is a transparent proxy, **not** a Jetson pricebook figure.
+A transparent proxy, **not** a Jetson pricebook figure. **Open ask to Z:** supply real installed cost per market (pricebook / proforma) to make the y-axis authoritative.
 
-### Known caveats (flagged, not silently estimated)
-- **HEAR (HEEHRA) is excluded** from the plotted stack — it is income-qualified (≤150% AMI) and does not reach Jetson's market-rate buyers. Panorama *does* include HEAR (a `federal` block + $8k baked into every `stackable.high`); we strip it. Result: market-rate stacks are thin ($50–$6k) and net out-of-pocket runs **$12k–$23k** across the candidates.
-- Federal **25C** market-rate credit expired Dec 31 2025 — excluded.
-- Diagonal net-out-of-pocket bands set at **$12k / $16k / $20k** (adapted from Slide 7's $8/$12/$16k to bracket the ex-HEAR range).
-- Markets whose market-rate stack exceeds **$12k** are clamped to the chart's right edge (`≥$12k`).
-- **Vancouver** omitted from the map (no rebate record in Panorama).
-- Panorama tracks **67** markets — the brief's "126 markets / 22 unverified" refers to the older source deck; this codebase has **no `unverified` flag**, so unverified markets cannot be machine-detected here.
-- Per Panorama, **Portland & Dallas are modeled *expansion* markets** (in pipeline scenarios), **not** live "existing" markets; **Austin is not in Panorama at all**. This differs from the brief's assumption — confirm with Z.
+### Chart conventions
+- Diagonal bands = net out-of-pocket (install − JEV) at **$14k / $18k / $22k**, chosen to bracket the candidate cloud.
+- Markers: amber = 2027 candidate · solid fern = existing market · hollow = other tracked Panorama market.
+- Markets with JEV > $8k clamp to the right edge.
 
 ## Open questions for Z
-1. Confirm the accent color `#F9A843` against Jetson brand guidelines (the official palette has no approved warm accent).
-2. Confirm the modeled install-cost approach for the y-axis, or supply real install pricing.
-3. Confirm the pipeline-vs-new distinction for Portland / Dallas / Austin.
-4. Confirm output format — currently interactive HTML / Artifact.
+1. Confirm `rebate-recast` (JEV build) is the correct/live Panorama source (it's an unmerged branch; `main` differs).
+2. Confirm the accent color `#F9A843` against Jetson brand guidelines.
+3. Supply real per-market install cost to replace the modeled y-axis.
+4. Confirm the pipeline flags for Portland / Dallas.
 
 ## Rebuild
-Requires Node (ESM) + Python 3 and a local checkout of the `conductor-playground` monorepo.
+Requires Node (ESM) + Python 3 and a checkout of `conductor-playground` on the **`rebate-recast`** branch.
 ```bash
 export PANORAMA_SRC=/path/to/conductor-playground/project-panorama/src   # optional; has a default
-node   scripts/compute.mjs         # sanity-print the live Panorama values
+node   scripts/compute.mjs         # sanity-print candidate JEV $
 node   scripts/build_dataset.mjs   # regenerate dataset.json from live data
 python3 scripts/build.py           # inline font + logo + data → 2027-expansion-deck.html
 ```
@@ -56,7 +56,7 @@ python3 scripts/build.py           # inline font + logo + data → 2027-expansio
 ```
 2027-expansion-deck.html   generated, self-contained deck (the deliverable)
 deck.template.html         HTML/CSS/JS template with __FONT_B64__ / __LOGO_B64__ / __DATASET__ placeholders
-dataset.json               computed plot data (live Panorama + 5 estimates)
+dataset.json               computed plot data (113 Panorama markets + 14-candidate roster)
 assets/                    Jetson brand font (MNKY Jane) + green logo, inlined at build
 scripts/                   compute.mjs · build_dataset.mjs · build.py
 ```

@@ -178,7 +178,7 @@
     <div class="slidenum">01</div>
     <div class="eyebrow">The policy-offset map <span class="dot">&mdash;</span> re-plotted on live Panorama data</div>
     <h1 class="title">Out-of-pocket is the outcome, not the axis</h1>
-    <p class="dek">Each market sits at its <b>install cost</b> (vertical) against the <b>market-rate rebate stack it can reach</b> (horizontal) &mdash; the utility and state incentives a typical buyer actually gets. The diagonals are <b>net out-of-pocket</b>, the number the customer feels. The <b style="color:#D8801E">14 amber markets</b> are our 2027 candidates: we want them landing <b>down and to the right</b>, where the stack covers more of the cost and out-of-pocket is lowest.</p>
+    <p class="dek">Each market sits at its <b>install cost</b> (vertical) against the <b>rebate value a Jetson customer actually captures</b> (horizontal) &mdash; Panorama&rsquo;s risk-adjusted JEV figure, live from the tool. The diagonals are <b>net out-of-pocket</b>, the number the customer feels. The <b style="color:#D8801E">14 amber markets</b> are our 2027 candidates: we want them landing <b>down and to the right</b>, where the rebate covers more of the cost and out-of-pocket is lowest.</p>
 
     <div class="chartrow">
       <div class="chartbox">
@@ -188,10 +188,9 @@
         <div>
           <h4>Marker key</h4>
           <div class="lgroup">
-            <div class="litem"><span class="swatch" data-sw="candP"></span><div>2027 candidate<small>Panorama data</small></div></div>
-            <div class="litem"><span class="swatch" data-sw="candE"></span><div>2027 candidate<small>estimated &mdash; not in Panorama</small></div></div>
+            <div class="litem"><span class="swatch" data-sw="candP"></span><div>2027 candidate<small>14 recommended markets</small></div></div>
             <div class="litem"><span class="swatch" data-sw="exist"></span><div>Existing market<small>live Jetson deals</small></div></div>
-            <div class="litem"><span class="swatch" data-sw="model"></span><div>Modeled market<small>Panorama, projected</small></div></div>
+            <div class="litem"><span class="swatch" data-sw="model"></span><div>Other Panorama market<small>tracked, not recommended</small></div></div>
           </div>
         </div>
         <div class="callout">
@@ -202,7 +201,7 @@
     </div>
 
     <div class="footnote">
-      <b>Sources &amp; caveats.</b> Rebate stack (x) = <b>market-rate stack</b> &mdash; the utility + state incentives available to a typical, non-income-qualified buyer, pulled live from Panorama <b>rebates.js</b> (<code>project-panorama</code>, monorepo <code>conductor-playground</code>). Income-qualified federal programs are not included. Data basis April 2026, files last synced <b>2026-08-24</b>. &nbsp;<span class="flag">Install cost (y) is MODELED, not a Panorama field</span> &mdash; Panorama stores no per-market install price; y = $19k national base &times; regional cost factor (from Panorama <code>warehouseCost</code>) + cold-climate adder (heating degree-days). Treat the vertical axis as directional, not quoted pricing. &nbsp;<span class="flag">Amber open rings (Raleigh-Durham, Austin, Charlotte, Las&nbsp;Vegas, Richmond) are estimated</span> &mdash; no Panorama record; rebate inferred from each state&rsquo;s programs and the nearest Panorama analog. &nbsp;Diagonal bands mark net out-of-pocket at $12k/$16k/$20k. Markets whose market-rate stack exceeds $12k clamp to the right edge. Vancouver omitted (no rebate record).
+      <b>Sources &amp; caveats.</b> Rebate value (x) = <b>Panorama JEV $</b> (<code>jevDollars</code>) &mdash; the tool&rsquo;s risk-adjusted rebate a mid-AMI Jetson customer captures (utility + state, discounted for program status, funding risk and friction), pulled live from Panorama (<code>project-panorama</code>, monorepo <code>conductor-playground</code>, Panorama JEV model, 113 markets, last reviewed May 2026). Federal incentives contribute $0 &mdash; the 25C credit expired Dec 2025 and the remaining federal rebate program applies only to electric-to-electric conversions, which Jetson&rsquo;s gas-to-electric jobs don&rsquo;t qualify for. &nbsp;<span class="flag">Install cost (y) is MODELED, not a Panorama field</span> &mdash; Panorama stores no per-market install price; y = $19k national base &times; regional cost factor (from Panorama <code>warehouseCost</code>) + cold-climate adder (heating degree-days). Treat the vertical axis as directional, not quoted pricing. &nbsp;All 14 candidates are live Panorama markets. Diagonal bands mark net out-of-pocket at $14k/$18k/$22k; markets with JEV &gt; $8k clamp to the right edge.
     </div>
   </section>
 
@@ -211,10 +210,10 @@
     <div class="slidenum">02</div>
     <div class="eyebrow">Where we go next <span class="dot">&mdash;</span> the shortlist</div>
     <h1 class="title">The 14 markets we&rsquo;re recommending for 2027</h1>
-    <p class="dek">Ordered as briefed. <b>Net out-of-pocket</b> (modeled install &minus; <b>market-rate</b> rebate stack) shown per market &mdash; the number the customer feels. Amber throughout marks these as 2027 candidates, matching Slide&nbsp;1.</p>
+    <p class="dek">Ordered as briefed. <b>Net out-of-pocket</b> (modeled install &minus; <b>Panorama JEV</b> rebate value) shown per market &mdash; the number the customer feels. All 14 are live Panorama markets; amber throughout marks them as 2027 candidates, matching Slide&nbsp;1.</p>
     <div class="listgrid" id="listgrid"></div>
     <div class="footnote s2note">
-      <b>Legend.</b> <span class="chip src-p" style="text-transform:uppercase">Panorama data</span> live scorecard record &nbsp;&middot;&nbsp; <span class="chip src-e" style="text-transform:uppercase">Estimated</span> not in Panorama, inferred from state programs + analog &nbsp;&middot;&nbsp; <span class="chip pipe" style="text-transform:uppercase">In pipeline</span> already a modeled expansion market (reprioritizing). &nbsp; Stack &amp; OOP are the market-rate figures per Slide&nbsp;1; install cost is modeled. <span class="flag">Austin, Charlotte, Raleigh-Durham, Las&nbsp;Vegas, Richmond are estimated</span> &mdash; not yet in Panorama.
+      <b>Legend.</b> <span class="chip pipe" style="text-transform:uppercase">In pipeline</span> already a modeled expansion market (reprioritizing) &nbsp;&middot;&nbsp; <span class="chip src-e" style="text-transform:uppercase">&#9888; Risk</span> funding / timing risk flagged in Panorama. &nbsp; <b>JEV</b> = Panorama&rsquo;s risk-adjusted rebate value a Jetson customer actually captures (utility + state; federal incentives $0). OOP = modeled install &minus; JEV; install cost is modeled (see Slide&nbsp;1). All 14 are live Panorama markets.
     </div>
   </section>
 </div>
@@ -232,7 +231,7 @@ const SVGNS = "http://www.w3.org/2000/svg";
 const el = (t,a={}) => { const e=document.createElementNS(SVGNS,t); for(const k in a) e.setAttribute(k,a[k]); return e; };
 
 // ── scales ──────────────────────────────────────────────────
-const XW=[0,12000], YW=[13000,25500];
+const XW=[0,8000], YW=[13000,25500];
 const P = { l:66, r:96, t:26, b:56 };      // viewBox 1120 x 486
 const VW=1120, VH=486;
 const px0=P.l, px1=VW-P.r, py0=VH-P.b, py1=P.t;
@@ -248,12 +247,12 @@ svg.append(gGrid,gDiag,gQuad,gDot,gLbl);
 gGrid.append(el("rect",{x:px0,y:py1,width:px1-px0,height:py0-py1,fill:"#ffffff",stroke:C.softgray,"stroke-width":1,rx:3}));
 
 // ── grid + ticks ────────────────────────────────────────────
-const xticks=[0,3000,6000,9000,12000], yticks=[13000,16000,19000,22000,25500];
+const xticks=[0,2000,4000,6000,8000], yticks=[13000,16000,19000,22000,25500];
 xticks.forEach(t=>{
   const x=sx(t);
   gGrid.append(el("line",{x1:x,y1:py1,x2:x,y2:py0,stroke:C.softgray,"stroke-width":1,"stroke-dasharray":"1 5"}));
   const lab=el("text",{x:x,y:py0+20,"text-anchor":"middle","font-size":12,fill:C.darkgray,"font-weight":600});
-  lab.textContent = t===12000 ? "≥$12k" : (t===0?"$0":"$"+t/1000+"k");
+  lab.textContent = t===8000 ? "≥$8k" : (t===0?"$0":"$"+t/1000+"k");
   gGrid.append(lab);
 });
 yticks.forEach(t=>{
@@ -265,7 +264,7 @@ yticks.forEach(t=>{
 });
 // axis titles
 const xt=el("text",{x:(px0+px1)/2,y:py0+44,"text-anchor":"middle","font-size":12.5,fill:C.forest,"font-weight":800});
-xt.textContent="MARKET-RATE REBATE STACK  —  UTILITY + STATE INCENTIVES  ($)";
+xt.textContent="REBATE VALUE A JETSON CUSTOMER CAPTURES  —  PANORAMA JEV ($)";
 xt.setAttribute("letter-spacing",".04em"); gGrid.append(xt);
 const yt=el("text",{x:18,y:(py0+py1)/2,"text-anchor":"middle","font-size":12.5,fill:C.forest,"font-weight":800,transform:`rotate(-90 18 ${(py0+py1)/2})`});
 yt.textContent="HEAT-PUMP INSTALL COST  ($, MODELED*)"; yt.setAttribute("letter-spacing",".04em"); gGrid.append(yt);
@@ -280,8 +279,8 @@ function seg(c){
   pts = pts.filter((p,i)=>pts.findIndex(q=>Math.abs(q[0]-p[0])<1&&Math.abs(q[1]-p[1])<1)===i);
   return pts.slice(0,2);
 }
-const OOP_T={12000:0.52, 16000:0.5, 20000:0.4};   // fraction along line for the label
-[12000,16000,20000].forEach(c=>{
+const OOP_T={14000:0.5, 18000:0.5, 22000:0.12};   // fraction along line for the label
+[14000,18000,22000].forEach(c=>{
   const s=seg(c); if(s.length<2) return;
   const [a,b]=s;
   const ax=sx(a[0]),ay=sy(a[1]),bx=sx(b[0]),by=sy(b[1]);
@@ -298,10 +297,10 @@ const OOP_T={12000:0.52, 16000:0.5, 20000:0.4};   // fraction along line for the
 
 // ── quadrant labels (diagonal bands) ────────────────────────
 const quads=[
-  {x:700,   y:25050, t:["AVOID /","RE-UNDERWRITE"], col:"#b4471f", anc:"start"},
-  {x:11300, y:25050, t:["POLICY-","DEPENDENT"], col:"#9a6412", anc:"end"},
-  {x:450,   y:13500, t:["VOLUME","PLAYS"], col:C.darkgray, anc:"start"},
-  {x:11550, y:13500, t:["STRUCTURALLY","ADVANTAGED"], col:"#1f7a43", anc:"end"},
+  {x:480,  y:25050, t:["AVOID /","RE-UNDERWRITE"], col:"#b4471f", anc:"start"},
+  {x:7520, y:25050, t:["POLICY-","DEPENDENT"], col:"#9a6412", anc:"end"},
+  {x:300,  y:13500, t:["VOLUME","PLAYS"], col:C.darkgray, anc:"start"},
+  {x:7700, y:13500, t:["STRUCTURALLY","ADVANTAGED"], col:"#1f7a43", anc:"end"},
 ];
 quads.forEach(q=>{
   q.t.forEach((line,i)=>{
@@ -324,15 +323,13 @@ Object.values(groups).forEach(g=>{ if(g.length>1){ g.forEach((r,i)=>{ const a=(i
 const tt=document.getElementById("tt");
 function showTT(e,r){
   const oop=r.y-r.x;
-  const src = r.source==="estimated" ? `<span class="est-tag">Estimated — not in Panorama</span>` : `Panorama live data`;
-  const hearTxt={live:"Live",approved:"Approved",pending:"Pending",none:"None"}[r.hear]||r.hear;
   tt.innerHTML=`<div class="tn ${r.candidate?'amber':''}">${r.name}, ${r.state}</div>`+
-    `<div class="row"><span class="tk">Market-rate stack</span><span>${fmt$(r.x)}${r.x>=12000?'+':''}</span></div>`+
+    `<div class="row"><span class="tk">Rebate value (JEV)</span><span>${fmt$(r.x)}${r.x>=8000?'+':''}</span></div>`+
     `<div class="row"><span class="tk">Install (modeled)</span><span>${fmt$(r.y)}</span></div>`+
     `<div class="row"><span class="tk">Net out-of-pocket</span><span class="${r.candidate?'amber':''}">${fmt$(oop)}</span></div>`+
-    `<div class="row"><span class="tk">Fed. rebate</span><span>${hearTxt}</span></div>`+
     (r.tam?`<div class="row"><span class="tk">W-TAM / tier</span><span>${(r.tam/1000).toFixed(0)}k · ${r.tier}</span></div>`:"")+
-    `<div style="margin-top:5px;font-size:10.5px" class="tk">${src}</div>`;
+    (r.riskFlag?`<div style="margin-top:4px;font-size:10.5px" class="est-tag">⚠ funding / timing risk flagged in Panorama</div>`:"")+
+    `<div style="margin-top:5px;font-size:10.5px" class="tk">Panorama JEV model &middot; live</div>`;
   tt.style.opacity=1;
   const pad=14; let x=e.clientX+pad, y=e.clientY+pad;
   const b=tt.getBoundingClientRect();
@@ -344,7 +341,7 @@ const hideTT=()=>tt.style.opacity=0;
 
 const labels=[]; // for candidates + existing
 rows.forEach(r=>{
-  const x=sx(r.x)+(r._ox||0), y=sy(r.y)+(r._oy||0), off=r.x>=12000;
+  const x=sx(r.x)+(r._ox||0), y=sy(r.y)+(r._oy||0), off=r.x>=8000;
   let node;
   if(r.candidate){
     if(r.source==="estimated"){
@@ -403,28 +400,24 @@ document.querySelectorAll(".swatch").forEach(s=>{
 });
 
 // ── Slide 2 list ────────────────────────────────────────────
-const hearLabel={live:"HEAR Live",approved:"HEAR Approved",pending:"HEAR Pending",none:"No HEAR"};
 const grid=document.getElementById("listgrid");
 DATA.roster.forEach((r,i)=>{
   const oop=r.y-r.x;
   const row=document.createElement("div"); row.className="mrow";
   const chips=[];
-  chips.push(r.source==="panorama"
-    ? `<span class="chip src-p">Panorama data</span>`
-    : `<span class="chip src-e">Estimated</span>`);
   if(r.pipeline) chips.push(`<span class="chip pipe">In pipeline</span>`);
+  if(r.riskFlag) chips.push(`<span class="chip src-e">&#9888; Risk</span>`);
   row.innerHTML=
     `<div class="rank">${i+1}</div>`+
     `<div class="body">`+
-      `<div class="mname">${r.name} <span class="st">${r.id?stateOf(r):stateEst(r)}</span></div>`+
-      `<div class="chips">${chips.join("")}</div>`+
+      `<div class="mname">${r.name} <span class="st">${stateOf(r)}</span></div>`+
+      (chips.length?`<div class="chips">${chips.join("")}</div>`:``)+
     `</div>`+
     `<div class="val">`+
       `<div class="oop">${fmt$(oop)}</div><div class="oopl">net OOP*</div>`+
-      `<div class="reb">stack ${fmtK(r.x)}${r.x>=12000?'+':''}</div>`+
+      `<div class="reb">JEV ${fmtK(r.x)}${r.x>=8000?'+':''}</div>`+
     `</div>`;
   grid.append(row);
 });
 function stateOf(r){ const m=DATA.all.find(a=>a.id===r.id); return m?m.state:""; }
-function stateEst(r){ const m=DATA.all.find(a=>a.name===r.name && a.source==="estimated"); return m?m.state:""; }
 </script>
