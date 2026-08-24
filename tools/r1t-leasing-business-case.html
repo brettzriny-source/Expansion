@@ -261,6 +261,11 @@
   .specstrip { display:flex; flex-wrap:wrap; gap:8px; margin:2px 0 14px; }
   .chip { font-size:12px; background:var(--surface-2); border:1px solid var(--line); border-radius:999px; padding:5px 11px; color:var(--ink-soft); }
   .chip b { color:var(--ink); font-weight:800; font-variant-numeric:tabular-nums; }
+  .fieldcap { font-size:11.5px; color:var(--ink-mute); margin-top:5px; }
+  table.models th, table.models td { text-align:left; white-space:nowrap; }
+  table.models .mkt { display:block; font-size:11px; color:var(--ink-mute); font-variant-numeric:normal; }
+  table.models tr.sel td { background:var(--good-bg); }
+  table.models tr.sel td:first-child { box-shadow: inset 3px 0 0 var(--good); font-weight:700; }
 
   .miles-out {
     margin-top: 12px; padding: 12px 14px; border-radius: 12px;
@@ -430,14 +435,14 @@
           <div class="grid2">
             <div class="field">
               <label for="reimb">Mileage reimbursement</label>
-              <div class="input-wrap"><span class="aff pre">$</span><input id="reimb" type="number" min="0" step="0.005" value="0.725" class="has-pre has-suf"><span class="aff suf">/mi</span></div>
+              <div class="input-wrap"><span class="aff pre">$</span><input id="reimb" type="number" min="0" step="0.005" value="0.76" class="has-pre has-suf"><span class="aff suf">/mi</span></div>
             </div>
             <div class="field">
               <label for="stipend">Monthly stipend <span class="note">optional</span></label>
               <div class="input-wrap"><span class="aff pre">$</span><input id="stipend" type="number" min="0" step="10" value="0" class="has-pre has-suf"><span class="aff suf">/mo</span></div>
             </div>
           </div>
-          <p class="small" style="margin:2px 0 0">IRS 2026 business rate is 72.5¢/mi (76¢ for Jul–Dec). Reimbursement is the company's only direct cost here — the employee absorbs the vehicle.</p>
+          <p class="small" style="margin:2px 0 0">IRS 2026 business rate rose to 76¢/mi on July 1 (72.5¢ Jan–Jun). Reimbursement is the company's only direct cost here — the employee absorbs the vehicle.</p>
         </div>
       </section>
 
@@ -476,9 +481,10 @@
               <label for="price">Purchase price</label>
               <div class="input-wrap"><span class="aff pre">$</span><input id="price" type="number" min="0" step="500" value="71700" class="has-pre"></div>
             </div>
-            <div class="field" id="resaleField" style="display:none">
-              <label for="resale">Resale at end <span class="note">optional</span></label>
-              <div class="input-wrap"><span class="aff pre">$</span><input id="resale" type="number" min="0" step="500" value="0" class="has-pre"></div>
+            <div class="field" id="residualField" style="display:none">
+              <label for="residualPct">Residual value <span class="note">% of price</span></label>
+              <div class="input-wrap"><input id="residualPct" type="number" min="0" max="100" step="1" value="30" class="has-suf"><span class="aff suf">%</span></div>
+              <div class="fieldcap" id="residualCap"></div>
             </div>
             <div class="field">
               <label for="term">Term / hold</label>
@@ -487,6 +493,10 @@
             <div class="field">
               <label for="upfit">Upfitting <span class="note">one-time</span> <sup style="color:var(--accent);font-weight:700">*</sup></label>
               <div class="input-wrap"><span class="aff pre">$</span><input id="upfit" type="number" min="0" step="100" value="26935" class="has-pre"></div>
+            </div>
+            <div class="field">
+              <label for="upfitLife">Upfit life <span class="note">racks/bins transfer</span></label>
+              <div class="input-wrap"><input id="upfitLife" type="number" min="1" step="1" value="84" class="has-suf"><span class="aff suf">mo</span></div>
             </div>
             <div class="field">
               <label for="ins">Insurance</label>
@@ -513,7 +523,7 @@
               <div class="input-wrap"><span class="aff pre">$</span><input id="kwh" type="number" min="0" step="0.01" value="0.16" class="has-pre has-suf"><span class="aff suf">/kWh</span></div>
             </div>
           </div>
-          <p class="small" style="margin:4px 0 0">One-time costs — upfitting and telematics install — are amortized straight-line over the term / hold period. For a purchased truck, the vehicle line is straight-line depreciation of (price − resale) over that period; financing interest is not modeled. Charging cost scales with mileage. EV incentives are handled within the acquisition cost by state, so they are not modeled as a separate line here.</p>
+          <p class="small" style="margin:4px 0 0">Upfitting amortizes over its own service life (racks &amp; bins transfer between trucks); telematics install amortizes over the term / hold. For a purchased truck, the vehicle line is straight-line depreciation of (price − residual) over the hold; financing interest is not modeled. Charging cost scales with mileage. EV incentives are handled within the acquisition cost by state, so they are not modeled separately. Note: the ~$3,500 wrap inside upfitting is vehicle-specific — shorten upfit life if you want to be conservative about it.</p>
           <p class="small" style="margin:8px 0 0"><b style="color:var(--ink)">*&nbsp;What&rsquo;s in upfitting ($26,935):</b> base build $12,685 (shelving, electrical, and ~$3,500 vehicle wrap already included) + bed topper $6,250 + Bott storage modules $8,000. These are early, low-volume quotes — per-truck upfit cost is expected to come down meaningfully as fleet volume scales.</p>
           <div style="margin-top:14px"><button class="reset" id="resetBtn" type="button">↺ Reset all assumptions</button></div>
         </div>
@@ -581,8 +591,24 @@
             <div class="it"><span class="m">+</span><span><b>Tool security &amp; readiness.</b> Standardized, locked upfit means every truck is job-ready.</span></div>
             <div class="it"><span class="m">+</span><span><b>Telematics &amp; control.</b> Routing, safety, and utilization data you can't get from personal cars.</span></div>
             <div class="it"><span class="m">−</span><span><b>Fleet overhead.</b> Titling, registration, downtime, and admin the personal-vehicle model avoids.</span></div>
-            <div class="it"><span class="m">−</span><span><b>Utilization risk.</b> Fixed lease cost is sunk whether or not the truck is driven.</span></div>
+            <div class="it"><span class="m">−</span><span><b>Utilization risk.</b> Fixed vehicle cost is largely sunk whether or not the truck is driven.</span></div>
           </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-h"><span class="n">⊞</span><h2>EV Models Under Consideration</h2><span class="hint">fleet dashboard · future</span></div>
+        <div class="card-b" style="overflow-x:auto">
+          <table class="detail models" id="modelsTable">
+            <thead><tr><th>Model</th><th>Config</th><th>Price</th><th>Range</th><th>Eff.</th><th>Type</th></tr></thead>
+            <tbody>
+              <tr data-veh="r1t"><td>Rivian R1T</td><td>Premium · all-season</td><td>$2,206/mo</td><td>329 mi</td><td>2.3</td><td>Lease</td></tr>
+              <tr data-veh="silv_ext"><td>Chevrolet Silverado EV LT</td><td>Extended Range</td><td>$71,700</td><td>410 mi</td><td>2.0</td><td>Buy</td></tr>
+              <tr data-veh="silv_std"><td>Chevrolet Silverado EV LT</td><td>Standard Range</td><td>$63,500</td><td>283 mi</td><td>2.0</td><td>Buy</td></tr>
+              <tr data-veh="f150"><td>Ford F-150 Lightning</td><td>Used · Pro / XLT</td><td>$50,000<span class="mkt">used market ~$32K–$53K</span></td><td>~240 mi</td><td>2.0</td><td>Buy</td></tr>
+            </tbody>
+          </table>
+          <p class="small" style="margin:10px 0 0">R1T shown at the confirmed lease; Silverado EV LT trims at current quote pricing; F-150 Lightning at a representative used price with the current used-market range (~$32K–$53K for Pro/XLT, Aug 2026 — Ford has ended Lightning production, so used supply and pricing will keep moving). Range is EPA-estimated; efficiency is real-world, de-rated for work payload. The highlighted row is the vehicle modeled above.</p>
         </div>
       </section>
 
@@ -597,9 +623,9 @@
   var $ = function(id){ return document.getElementById(id); };
 
   var JOBS = [
-    { key:"hp", name:"Heat pump install", color:"#2bb453", perDay:0.6, miles:38 },
-    { key:"wh", name:"Water heater",      color:"#8FD5A6", perDay:0.8, miles:26 },
-    { key:"ev", name:"EV charger",        color:"#113823", perDay:1.0, miles:20 }
+    { key:"hp", name:"Heat pump install", color:"#2bb453", perDay:1, miles:38 },
+    { key:"wh", name:"Water heater",      color:"#8FD5A6", perDay:1, miles:26 },
+    { key:"ev", name:"EV charger",        color:"#113823", perDay:1, miles:20 }
   ];
   var COST_COLORS = {
     lease:"#2bb453", upfit:"#7BC98F", charge:"#CBFF8A", insurance:"#113823",
@@ -609,16 +635,16 @@
   // Vehicle presets. Prices per confirmed quotes; range & efficiency from EPA
   // specs (real-world efficiency de-rated for work payload).
   var VEHICLES = {
-    r1t:      { name:"R1T",                    desc:"Rivian R1T Premium with all-season wheels", acq:"lease",    lease:2206, price:0,     resale:0, term:36, eff:2.3, range:329 },
-    silv_ext: { name:"Silverado EV (Ext.)",    desc:"Chevrolet Silverado EV LT — Extended Range", acq:"purchase", lease:0,    price:71700, resale:0, term:60, eff:2.0, range:410 },
-    silv_std: { name:"Silverado EV (Std.)",    desc:"Chevrolet Silverado EV LT — Standard Range", acq:"purchase", lease:0,    price:63500, resale:0, term:60, eff:2.0, range:283 },
-    f150:     { name:"F-150 Lightning (Used)", desc:"Ford F-150 Lightning (Used) — Pro / XLT",     acq:"purchase", lease:0,    price:50000, resale:0, term:60, eff:2.0, range:240 }
+    r1t:      { name:"R1T",                    desc:"Rivian R1T Premium with all-season wheels", acq:"lease",    lease:2206, price:0,     residualPct:0,  term:36, eff:2.3, range:329 },
+    silv_ext: { name:"Silverado EV (Ext.)",    desc:"Chevrolet Silverado EV LT — Extended Range", acq:"purchase", lease:0,    price:71700, residualPct:32, term:60, eff:2.0, range:410 },
+    silv_std: { name:"Silverado EV (Std.)",    desc:"Chevrolet Silverado EV LT — Standard Range", acq:"purchase", lease:0,    price:63500, residualPct:30, term:60, eff:2.0, range:283 },
+    f150:     { name:"F-150 Lightning (Used)", desc:"Ford F-150 Lightning (Used) — Pro / XLT",     acq:"purchase", lease:0,    price:50000, residualPct:25, term:60, eff:2.0, range:240 }
   };
 
   var DEFAULTS = {
     techs:1, days:21, milesMode:"estimate", milesDirect:1200,
-    reimb:0.725, stipend:0,
-    upfit:26935, ins:375, teleSub:40, teleInstall:107, maint:60, kwh:0.16
+    reimb:0.76, stipend:0,
+    upfit:26935, upfitLife:84, ins:375, teleSub:40, teleInstall:107, maint:60, kwh:0.16
   };
   var state = {};
 
@@ -660,10 +686,11 @@
     // vehicle acquisition (lease payment, or purchase depreciated over hold)
     var term    = Math.max(1, num("term"));
     var acqMode = state.acqMode;
+    var resaleVal = num("price") * num("residualPct") / 100;
     var acq     = acqMode === "purchase"
-                    ? Math.max(0, num("price") - num("resale")) / term
+                    ? Math.max(0, num("price") - resaleVal) / term
                     : num("lease");
-    var upfitM  = num("upfit") / term;
+    var upfitM  = num("upfit") / Math.max(1, num("upfitLife"));
     var teleHwM = num("teleInstall") / term;
     var ins     = num("ins");
     var teleSub = num("teleSub");
@@ -735,6 +762,9 @@
     $("rName").textContent = vName + " (fully loaded)";
     $("mVLabel").textContent = "Cost / mile — " + vName;
     $("detailVHead").textContent = vName;
+    var resVal = num("price") * num("residualPct") / 100;
+    $("residualCap").innerHTML = "≈ <b style=\'color:var(--ink)\'>" + fmt(resVal) + "</b> retained at end · EV trucks typically hold 25–40% over ~5 yrs";
+    Array.prototype.forEach.call(document.querySelectorAll("#modelsTable tr[data-veh]"), function(tr){ tr.classList.toggle("sel", tr.dataset.veh === state.vehicle); });
     var maxTot = Math.max(r.pTotal, r.rTotal, 1);
     $("pTot").textContent = fmt(r.pTotal);
     $("rTot").textContent = fmt(r.rTotal);
@@ -820,7 +850,7 @@
     state.acqMode = mode;
     $("leaseField").style.display  = mode === "lease" ? "" : "none";
     $("priceField").style.display  = mode === "purchase" ? "" : "none";
-    $("resaleField").style.display = mode === "purchase" ? "" : "none";
+    $("residualField").style.display = mode === "purchase" ? "" : "none";
     Array.prototype.forEach.call($("acqMode").querySelectorAll("button"), function(x){ x.classList.toggle("on", x.dataset.a === mode); });
   }
   function applyVehicle(key){
@@ -830,7 +860,7 @@
     $("vehicle").value = key;
     $("lease").value  = v.lease;
     $("price").value  = v.price;
-    $("resale").value = v.resale;
+    $("residualPct").value = v.residualPct;
     $("term").value   = v.term;
     $("eff").value    = v.eff;
     setAcqUI(v.acq);
