@@ -204,7 +204,7 @@
     </div>
 
     <div class="footnote">
-      <b>Sources &amp; caveats.</b> Rebate value (x) = <b>Panorama JEV $</b> (<code>jevDollars</code>) &mdash; the tool&rsquo;s risk-adjusted rebate a mid-AMI Jetson customer captures (utility + state, discounted for program status, funding risk and friction), pulled live from Panorama (<code>project-panorama</code>, monorepo <code>conductor-playground</code>, Panorama JEV model, 113 markets, last reviewed May 2026). Federal incentives contribute $0 &mdash; the 25C credit expired Dec 2025 and the remaining federal rebate program applies only to electric-to-electric conversions, which Jetson&rsquo;s gas-to-electric jobs don&rsquo;t qualify for. &nbsp;<span class="flag">Install cost (y) is MODELED, not a Panorama field</span> &mdash; Panorama stores no per-market install price; y = $19k national base &times; regional cost factor (from Panorama <code>warehouseCost</code>) + cold-climate adder (heating degree-days). Treat the vertical axis as directional, not quoted pricing. &nbsp;All 14 candidates are live Panorama markets. Diagonal bands mark net out-of-pocket at $14k/$18k/$22k; markets with JEV &gt; $8k clamp to the right edge. Jetson&rsquo;s existing markets are excluded from this view &mdash; the map is scoped to where we go next.
+      <b>Sources &amp; caveats.</b> Rebate value (x) = <b>Panorama JEV $</b> (<code>jevDollars</code>) &mdash; the tool&rsquo;s risk-adjusted rebate a mid-AMI Jetson customer captures (utility + state, discounted for program status, funding risk and friction), pulled live from Panorama (<code>project-panorama</code>, monorepo <code>conductor-playground</code>, Panorama JEV model, <b>126 markets</b>, synced from <code>main</code> <b>2026-08-25</b>). Values resolve the same way the tool does &mdash; the validated Notion &ldquo;Heat Pump Rebate Programs&rdquo; pull first, floor-merged against Panorama&rsquo;s legacy estimate so an incomplete pull can&rsquo;t sink a market; 74 of 126 markets are Notion-covered, the rest fall back to the legacy estimate. Federal incentives contribute $0 &mdash; the 25C credit expired Dec 2025 and the remaining federal rebate program applies only to electric-to-electric conversions, which Jetson&rsquo;s gas-to-electric jobs don&rsquo;t qualify for. &nbsp;<span class="flag">Install cost (y) is MODELED, not a Panorama field</span> &mdash; Panorama stores no per-market install price; y = $19k national base &times; regional cost factor (from Panorama <code>warehouseCost</code>) + cold-climate adder (heating degree-days). Treat the vertical axis as directional, not quoted pricing. &nbsp;All 14 candidates are live Panorama markets. Diagonal bands mark net out-of-pocket at $14k/$18k/$22k; markets with JEV &gt; $8k clamp to the right edge. Jetson&rsquo;s existing markets are excluded from this view &mdash; the map is scoped to where we go next.
     </div>
   </section>
 
@@ -383,10 +383,14 @@ labels.forEach(L=>{
   let anchor = L.x > (px0+px1)/2 - 40 ? "end" : "start";
   let dx = anchor==="end" ? -11 : 11;
   let ty = L.y + 4;
-  // dodge against already-placed labels on same side & near x
+  // width-aware dodge: compare actual text extents so long names don't collide
+  const fs = emph?12:10.5;
+  const w  = r.name.length * fs * 0.55;
+  const ext = t => anchor==="end" ? [L.x+dx-w, L.x+dx] : [L.x+dx, L.x+dx+w];
+  const [x0,x1] = ext();
   let guard=0;
-  while(guard<40 && placed.some(p=> p.anchor===anchor && Math.abs(p.x-L.x)<96 && Math.abs(p.ty-ty)<15)){ ty+=15; guard++; }
-  placed.push({x:L.x,ty,anchor});
+  while(guard<40 && placed.some(p=> Math.abs(p.ty-ty)<14 && x0 < p.x1+6 && p.x0 < x1+6)){ ty+=14; guard++; }
+  placed.push({x0,x1,ty,anchor});
   const g=el("g");
   const t=el("text",{x:L.x+dx,y:ty,"text-anchor":anchor,"font-size":emph?12:10.5,
     "font-weight":emph?800:600, fill:col});
