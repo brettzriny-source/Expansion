@@ -193,7 +193,6 @@
           <div class="lgroup">
             <div class="litem"><span class="swatch" data-sw="candP"></span><div>2027 candidate<small>14 recommended markets</small></div></div>
             <div class="litem"><span class="swatch" data-sw="lic"></span><div>Licensed market<small>licensed-model entry</small></div></div>
-            <div class="litem"><span class="swatch" data-sw="exist"></span><div>Existing market<small>live Jetson deals</small></div></div>
             <div class="litem"><span class="swatch" data-sw="model"></span><div>Other Panorama market<small>tracked, not recommended</small></div></div>
           </div>
         </div>
@@ -205,7 +204,7 @@
     </div>
 
     <div class="footnote">
-      <b>Sources &amp; caveats.</b> Rebate value (x) = <b>Panorama JEV $</b> (<code>jevDollars</code>) &mdash; the tool&rsquo;s risk-adjusted rebate a mid-AMI Jetson customer captures (utility + state, discounted for program status, funding risk and friction), pulled live from Panorama (<code>project-panorama</code>, monorepo <code>conductor-playground</code>, Panorama JEV model, 113 markets, last reviewed May 2026). Federal incentives contribute $0 &mdash; the 25C credit expired Dec 2025 and the remaining federal rebate program applies only to electric-to-electric conversions, which Jetson&rsquo;s gas-to-electric jobs don&rsquo;t qualify for. &nbsp;<span class="flag">Install cost (y) is MODELED, not a Panorama field</span> &mdash; Panorama stores no per-market install price; y = $19k national base &times; regional cost factor (from Panorama <code>warehouseCost</code>) + cold-climate adder (heating degree-days). Treat the vertical axis as directional, not quoted pricing. &nbsp;All 14 candidates are live Panorama markets. Diagonal bands mark net out-of-pocket at $14k/$18k/$22k; markets with JEV &gt; $8k clamp to the right edge.
+      <b>Sources &amp; caveats.</b> Rebate value (x) = <b>Panorama JEV $</b> (<code>jevDollars</code>) &mdash; the tool&rsquo;s risk-adjusted rebate a mid-AMI Jetson customer captures (utility + state, discounted for program status, funding risk and friction), pulled live from Panorama (<code>project-panorama</code>, monorepo <code>conductor-playground</code>, Panorama JEV model, 113 markets, last reviewed May 2026). Federal incentives contribute $0 &mdash; the 25C credit expired Dec 2025 and the remaining federal rebate program applies only to electric-to-electric conversions, which Jetson&rsquo;s gas-to-electric jobs don&rsquo;t qualify for. &nbsp;<span class="flag">Install cost (y) is MODELED, not a Panorama field</span> &mdash; Panorama stores no per-market install price; y = $19k national base &times; regional cost factor (from Panorama <code>warehouseCost</code>) + cold-climate adder (heating degree-days). Treat the vertical axis as directional, not quoted pricing. &nbsp;All 14 candidates are live Panorama markets. Diagonal bands mark net out-of-pocket at $14k/$18k/$22k; markets with JEV &gt; $8k clamp to the right edge. Jetson&rsquo;s existing markets are excluded from this view &mdash; the map is scoped to where we go next.
     </div>
   </section>
 
@@ -2249,9 +2248,10 @@ quads.forEach(q=>{
 });
 
 // ── markers ─────────────────────────────────────────────────
-const rows = DATA.all.filter(r=>r.x!=null);
+// existing Jetson markets are excluded from the plot — this deck is about where we go next
+const rows = DATA.all.filter(r=>r.x!=null && r.kind!=="existing");
 // draw order: modeled < existing < candidates & licensed (prominent, on top)
-const order = r => (r.candidate||r.licensed)?3 : r.kind==="existing"?2 : 1;
+const order = r => (r.candidate||r.licensed)?3 : 1;
 rows.sort((a,b)=>order(a)-order(b));
 
 // spread markers that land on the exact same pixel (e.g. Dallas+Austin, Raleigh+Charlotte)
@@ -2260,7 +2260,7 @@ rows.forEach(r=>{ const k=Math.round(sx(r.x))+"_"+Math.round(sy(r.y)); (groups[k
 Object.values(groups).forEach(g=>{ if(g.length>1){ g.forEach((r,i)=>{ const a=(i/g.length)*2*Math.PI - Math.PI/4; r._ox=Math.cos(a)*7.5; r._oy=Math.sin(a)*7.5; }); } });
 
 // nudge near-coincident PROMINENT markers apart (e.g. Providence + Hartford)
-const prom = rows.filter(r=>r.candidate||r.licensed||r.kind==="existing");
+const prom = rows.filter(r=>r.candidate||r.licensed);
 for(let i=0;i<prom.length;i++) for(let j=i+1;j<prom.length;j++){
   const a=prom[i], b=prom[j];
   const dx=Math.abs((sx(a.x)+(a._ox||0))-(sx(b.x)+(b._ox||0)));
@@ -2296,8 +2296,6 @@ rows.forEach(r=>{
     node=el("polygon",{points:dia(x,y,8),fill:C.green,stroke:C.forest,"stroke-width":1.5});
   } else if(r.candidate){
     node=el("circle",{cx:x,cy:y,r:7.5,fill:C.amber,stroke:C.amberDeep,"stroke-width":1.6});
-  } else if(r.kind==="existing"){
-    node=el("circle",{cx:x,cy:y,r:5,fill:C.fern,stroke:C.offwhite,"stroke-width":1.4});
   } else {
     node=el("circle",{cx:x,cy:y,r:4,fill:"none",stroke:C.midgray,"stroke-width":1.4,opacity:.75});
   }
@@ -2308,7 +2306,7 @@ rows.forEach(r=>{
   if(off){ // off-scale marker
     const a=el("text",{x:x+9,y:y+4,"font-size":11,fill:r.candidate?C.amberDeep:r.licensed?"#1f7a43":C.midgray,"font-weight":800}); a.textContent="›"; gDot.append(a);
   }
-  if(r.candidate || r.licensed || r.kind==="existing") labels.push({r,x,y});
+  if(r.candidate || r.licensed) labels.push({r,x,y});
 });
 
 // ── labels with simple vertical dodge ───────────────────────
@@ -2342,7 +2340,6 @@ document.querySelectorAll(".swatch").forEach(s=>{
   let c;
   if(k==="candP") c=el("circle",{cx:9,cy:9,r:6.5,fill:C.amber,stroke:C.amberDeep,"stroke-width":1.4});
   if(k==="lic") c=el("polygon",{points:[9+",2.2","15.8,9","9,15.8","2.2,9"].join(" "),fill:C.green,stroke:C.forest,"stroke-width":1.3});
-  if(k==="exist") c=el("circle",{cx:9,cy:9,r:5,fill:C.fern,stroke:"#ffffff","stroke-width":1});
   if(k==="model") c=el("circle",{cx:9,cy:9,r:5,fill:"none",stroke:C.midgray,"stroke-width":1.4});
   ns.append(c); s.append(ns);
 });
