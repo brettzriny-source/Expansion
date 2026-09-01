@@ -773,7 +773,11 @@ html{scroll-behavior:smooth}
     <div class="defs">
       <div class="def">
         <h4>Purchase &amp; operating cost &mdash; vertical</h4>
-        <p>Net purchase price after the rebate we expect to capture (more rebate = cheaper) weighted 75%, plus operating economics (SPARK) at 25%. Where a utility runs a heat-pump-friendly tariff, SPARK is discounted by that rate&rsquo;s modelled bill saving rather than left on the default rate. Indexed 0&ndash;100 across the 19; lower is cheaper to own.</p>
+        <p>Net purchase price after the rebate we expect to capture (more rebate = cheaper) weighted 75%, plus operating economics (SPARK) at 25%. Indexed 0&ndash;100 across the 19; lower is cheaper to own.</p>
+      </div>
+      <div class="def">
+        <h4>SPARK &mdash; what it actually measures</h4>
+        <p><b>The ratio of heat-pump running cost to gas-furnace running cost for the same delivered heat</b> &mdash; <span class="num">elec&cent;/kWh &divide; (gas$/therm &times; 10.05)</span>, at COP 2.8 and AFUE 0.95. <b>1.0 is breakeven.</b> Below it the heat pump is cheaper to run than the furnace it replaces; above it gas stays cheaper and the operating story becomes an objection rather than a pitch. There is <b>no heating load in it</b> &mdash; a cold market is not penalised for being cold. What decides SPARK is the local price of gas relative to electricity, which is why the coldest markets are not automatically the worst and cheap electricity does not save a market with cheap gas.</p>
       </div>
       <div class="def">
         <h4>Operational complexity &mdash; horizontal</h4>
@@ -1853,7 +1857,7 @@ function wireMarks(pos) {
       <span class="fx-w">Running cost &middot; 25%</span>
       <p class="fx-eq">( SPARK &minus; ${sMin.toFixed(2)} ) <span class="mu">&divide;</span> ${(sMax - sMin).toFixed(2)}
         <span class="mu">&mdash; the set's range, ${sMin.toFixed(2)} to ${sMax.toFixed(2)}</span></p>
-      <p class="fx-fine">Seven markets run a heat-pump-friendly tariff. SPARK there is discounted by that rate&rsquo;s modelled bill saving and marked &dagger;; hover for the as-scored figure. Source: RMI&rsquo;s rate tracker.</p>
+      <p class="fx-fine"><b>This axis departs from Panorama on one point.</b> Seven markets run a heat-pump-friendly tariff; SPARK here is discounted by that rate&rsquo;s modelled bill saving and marked &dagger;, with the as-scored figure on hover. Panorama surfaces those tariffs as a badge and deliberately does <em>not</em> score them, so the Market Score column and this cost axis will disagree for those seven. SPARK itself is a price ratio with no load term &mdash; see <em>How to read it</em>. Source: RMI&rsquo;s rate tracker.</p>
     </div>
     <div class="fx-result">
       <span class="fx-w">${esc(ex.name)}, ${ex.state}</span>
