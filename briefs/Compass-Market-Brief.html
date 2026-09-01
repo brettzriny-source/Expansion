@@ -534,6 +534,17 @@ td.nm button:hover{color:var(--accent); text-decoration:underline}
 .ramp-note .pn{font-family:var(--sub); font-weight:700; color:var(--accent)}
 .ramp-note.gate .pn{color:var(--warn)}
 .ramp-note span:last-child{color:var(--ink-2)}
+/* Sequencing: how launching another market first changes this ramp. */
+.ramp-seq{
+  border-top:1px solid var(--border); background:var(--accent-soft);
+  padding:12px 15px 14px; display:grid; gap:5px;
+}
+.ramp-seq .sq-k{
+  font-family:var(--sub); font-weight:700; font-size:.625rem; letter-spacing:.11em;
+  text-transform:uppercase; color:var(--accent);
+}
+.ramp-seq p{font-size:.8125rem; line-height:1.55; color:var(--ink-2); max-width:96ch}
+.ramp-seq p b{color:var(--ink)}
 
 /* ── phased launch: step chart + phase cards ────────────────────────── */
 .step-wrap{overflow-x:auto}
@@ -1398,7 +1409,7 @@ const DATA = [
   factors:[["W-TAM ceiling",30,30],["Rebate",5.2,30],["SPARK",6.4,15],["Competition",4.5,10],["Adoption",2.1,5]],
   rebateBasis:"A weighted blend across a two-state metro rather than a sum: the PA side banks about $950 (PECO plus EAP), the South Jersey slice about $6,000 (PSE&G Clean Heat). $2,325 is the figure Panorama carries; the exact PA/NJ weighting behind it is not documented in the source.",
   market:"Gas furnace → heat pump is the primary target. PA has thin state rebates, so the story is utility programs plus a favorable Zone 4A design temp. One of the biggest single-market TAMs in the set.",
-  carve:"NJ carve-out: about 100K of the 514K is the South Jersey slice — Camden and Gloucester, PSE&G electric, roughly 20% of the metro — where the PSE&G Clean Heat rebate applies at ~$6K typical against a $10K cap. If Westfield launches first, the NJ Master HVACR license is already in hand, so this carve-out opens concurrently with the PA metro instead of ~5 months later.",
+  carve:"NJ carve-out: about 100K of the 514K is the South Jersey slice — Camden and Gloucester, PSE&G electric, roughly 20% of the metro — where the PSE&G Clean Heat rebate applies at ~$6K typical against a $10K cap. If Newark launches first, the NJ Master HVACR license is already in hand, so this carve-out opens concurrently with the PA metro instead of ~5 months later.",
   energy:[["PECO Energy","18–20¢/kWh","Regulated, TOU available"]],
   incentives:[
     ["PECO Home Rebates (Act 129)","Up to $300","Ducted ASHP — PA side, dominant"],
@@ -1429,7 +1440,8 @@ const DATA = [
      note:"Camden, Gloucester and the lower-Burlington suburbs are PSE&G electric territory. The $10K is the program cap; realistic mid-tier capture is ~$6,000 (rebates-team deep-dive). Requires the NJ Master HVACR license."},
     {name:"NJ Whole Home Energy Solutions (statewide NJCEP)", bankable:0, headline:7500,
      note:"Not separately claimable on a bare furnace→HP swap — same PSE&G umbrella as Building Decarb (rebates-team deep-dive 2026-08-31)."}],
-  ramp:[{n:"PA metro (Philadelphia + collar)",cum:370,mo:3},{n:"+ South Jersey · Delaware",cum:514,mo:5}]
+  ramp:[{n:"PA metro (Philadelphia + collar)",cum:370,mo:3},{n:"+ South Jersey · Delaware",cum:514,mo:5}],
+  rampSeq:"<b>Launch Newark first and most of phase 2 stops being a ramp.</b> The South Jersey slice &mdash; about 100K of the 514K, in Camden, Gloucester and lower Burlington &mdash; is the same state and the same utility as Newark. The NJ Master HVACR license is statewide and preempts local licensing, the NJ Electrical Contractor license covers the hookup, and PSE&#38;G participating-contractor status and Clean Heat enrolment are already in hand. That slice then opens alongside the PA metro rather than five months behind it, with the ~$6,000 rebate live from the first job. Sequenced the other way, Philadelphia carries the NJ licensing clock and the enrolment lead time itself. What this does not cover is the Delaware remainder of phase 2, roughly 44K homes, which needs its own licensing either way."
 },
 {
   rank:17, code:"IL-CHI-1", name:"Chicago", state:"IL", quadrant:"Heavy Lift",
@@ -1962,7 +1974,10 @@ function rampBlock(d) {
     `<div class="ramp-chart">${bars}</div>` +
     `<div class="ramp-foot"><span class="tot">~${totalMo} mo to full footprint</span> &middot; ` +
     `${d.rampNote ? esc(d.rampNote) : "Each phase is application processing plus exam and test scheduling. Experienced staff are hired ahead, so that clock is scheduling, not ramp-up."}` +
-    `${notes}</div></div>`;
+    `${notes}</div>` +
+    /* rampSeq carries light markup (a <b>), so it is authored, not escaped. */
+    (d.rampSeq ? `<div class="ramp-seq"><span class="sq-k">Sequencing</span><p>${d.rampSeq}</p></div>` : "") +
+    `</div>`;
 }
 function cardHTML(d) {
   const qc = qtok(d.quadrant), q = QUADS[QI[d.quadrant]];
