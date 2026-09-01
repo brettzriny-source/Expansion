@@ -454,6 +454,42 @@ td.nm button:hover{color:var(--accent); text-decoration:underline}
 .reb .rnote{font-size:.8125rem; color:var(--ink-3); line-height:1.5; max-width:96ch}
 .reb.zero .rf{background:var(--ink-3)}
 .reb-scale{font-size:.75rem; color:var(--ink-3); line-height:1.5; margin-bottom:10px; max-width:96ch}
+/* Territory × fuel-path table, where one market figure hides several. */
+.seg{margin-bottom:14px}
+.seg-lead{font-size:.8125rem; color:var(--ink-2); line-height:1.55; max-width:96ch; margin-bottom:10px}
+.seg-lead b{color:var(--ink)}
+.seg-tbl{border:1px solid var(--border); border-radius:8px; overflow:hidden; background:var(--border)}
+.seg-hd,.seg-r{
+  display:grid; gap:1px; background:var(--border);
+  grid-template-columns:minmax(120px,1.1fr) minmax(110px,1fr) 68px 78px minmax(190px,2.2fr);
+}
+.seg-hd > span{
+  background:var(--surface-3); padding:8px 11px; font-family:var(--sub); font-weight:700;
+  font-size:.625rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3);
+}
+.seg-r > span{background:var(--surface); padding:10px 11px; font-size:.8125rem; line-height:1.45}
+.seg-hd .n,.seg-r .n{text-align:right}
+.seg-r .sa{font-family:var(--sub); font-weight:700; color:var(--ink)}
+.seg-r .sa em{display:block; font-style:normal; font-weight:400; font-size:.75rem; color:var(--ink-3); margin-top:2px}
+.seg-r .sj{color:var(--ink-2)}
+.seg-r .sv{font-family:var(--sub); font-weight:700; font-variant-numeric:tabular-nums; color:var(--ink-3)}
+.seg-r .sv.up{color:var(--accent)}
+.seg-r .sv.nil{color:var(--ink-3); opacity:.6}
+.seg-r .sg{color:var(--ink-3); font-size:.75rem; line-height:1.5}
+.seg-r.dead .sa{color:var(--ink-2)}
+@media (max-width:760px){
+  .seg-hd{display:none}
+  .seg-r{grid-template-columns:1fr 1fr}
+  /* Job and gate span; Now and Cleared pair on one row so no cell is left empty. */
+  .seg-r .sa,.seg-r .sj,.seg-r .sg{grid-column:1 / -1}
+  .seg-r .sa{padding-bottom:2px}
+  .seg-r .sj{padding-top:4px; font-family:var(--sub); font-weight:700; color:var(--ink)}
+  .seg-r .sv{display:flex; justify-content:space-between; align-items:baseline; gap:8px}
+  .seg-r .sv::before{
+    content:attr(data-k); font-weight:400; font-size:.6875rem;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3);
+  }
+}
 /* Narrow screens: the value label crowds the track out of existence,
    so stack it under the bar instead of beside it. */
 @media (max-width:620px){
@@ -1476,6 +1512,23 @@ const DATA = [
       "Seattle SDCI adds city Refrigeration/AC, Journey Refrigeration Mechanic and Gas Piping Mechanic licenses, each a city exam.",
       "Heaviest local layer in WA. ~3 months to first permit."]},
   rebateBasis:"Nothing reachable today. The money is here — this is the richest set of open programs in the brief — but every dollar of it sits behind a contractor enrolment Jetson does not yet hold, a fuel path we do not install, or an income test our customers do not meet. Seattle's rebate problem is an enrolment problem, not a programme shortage.",
+  segments:{
+    lead:"One number cannot describe this market, so here is the structure underneath it. A rebate reaches a job only when territory, fuel path, income tier and contractor enrolment all line up; these are the combinations that exist. <b>Now</b> is what a job banks today. <b>Cleared</b> is what the same job banks once the named gate is passed — earned, not assumed.",
+    rows:[
+      { area:"Seattle city", sub:"SCL electric · PSE gas", job:"Gas → full electric", now:0, then:600,
+        gate:"SCL Midstream, if procurement routes through a participating distributor. No registration, no income test — a purchasing decision." },
+      { area:"Seattle city", sub:"SCL / OSE", job:"Oil → electric", now:0, then:2000,
+        gate:"City participating-contractor list. The lightest gate in the market: no distributor channel, no tenure clock." },
+      { area:"Eastside", sub:"6 cities, PSE gas", job:"Gas, propane, oil, wood → HP", now:0, then:1000,
+        gate:"Energy Smart Eastside trusted-installer network plus its approved-equipment list. Application in progress." },
+      { area:"Tacoma", sub:"Tacoma Power, Pierce Co.", job:"Any → ducted HP", now:0, then:1238,
+        gate:"Tacoma Power contractor registration, and a trade-area decision — this is outside Seattle proper." },
+      { area:"Snohomish Co.", sub:"Snohomish PUD", job:"Any → ducted HP", now:0, then:1547,
+        gate:"SnoPUD contractor registration, and the same trade-area decision. Richest reachable programme in the region." },
+      { area:"Anywhere PSE gas", sub:"PSE", job:"Gas → full electric", now:0, then:0,
+        gate:"No route at any gate. Moderate Income is income-tested, Hybrid is dual-fuel, and both need Trade Ally — twelve months of L&I tenure." },
+    ],
+  },
   rebateNote:"Four gates decide every row below, and a rebate has to clear all four: the right utility and commodity (SCL is electric for nearly all of Seattle, PSE is gas for most of it, and each pays only on its own side); the right fuel path (gas→full-electric, dual-fuel, electric-resistance and oil are four different products to a programme); the income tier (most of the large money is capped at 150% AMI); and the contractor gate. The gate is what actually binds here. Every previous figure on this card failed a different one of the four.",
   warn:"PSE Trade Ally has been mandatory on every PSE rebate since 2 April 2026 — the old any-licensed-contractor pass-through is gone — and it requires an active L&I registration under the same business name for twelve consecutive months. If Jetson enters Washington on a newly registered entity, that is a twelve-month clock on PSE money that starts at registration, not at launch. It belongs in the market-entry sequence next to the licensing timeline, not in a rebate footnote. Application is $100, review 2–3 weeks, $1M/$2M liability with PSE as additional insured.",
   rebates:[
@@ -1891,9 +1944,22 @@ function rebateBlock(d) {
     ? `<p class="reb-scale">Each bar below is one program on its own scale: the full track is that ` +
       `program&rsquo;s advertised ceiling, and the green is how much of it a typical job actually banks.</p>`
     : "";
+  /* Territory × fuel-path breakdown, where one market figure hides several. */
+  const seg = d.segments ? `<div class="seg">` +
+    `<p class="seg-lead">${d.segments.lead}</p>` +
+    `<div class="seg-tbl"><div class="seg-hd"><span>Segment</span><span>Job</span>` +
+    `<span class="n">Now</span><span class="n">Cleared</span><span>What gates it</span></div>` +
+    d.segments.rows.map(r =>
+      `<div class="seg-r${r.then ? "" : " dead"}"><span class="sa">${esc(r.area)}` +
+      `<em>${esc(r.sub)}</em></span><span class="sj">${esc(r.job)}</span>` +
+      `<span class="sv n" data-k="Now">${money(r.now)}</span>` +
+      `<span class="sv n ${r.then ? "up" : "nil"}" data-k="Cleared">${r.then ? money(r.then) : "—"}</span>` +
+      `<span class="sg">${esc(r.gate)}</span></div>`).join("") +
+    `</div></div>` : "";
   return `<div class="reb-lead"><span class="rl-k">Market rebate</span>` +
     `<span class="rl-v">${money(d.rebate)}</span><span class="rl-n">${basis}</span></div>` +
     (d.rebateNote ? `<p class="reb-why">${esc(d.rebateNote)}</p>` : "") +
+    seg +
     scale +
     counted.map(row).join("") +
     (d.warn ? `<div class="warnline" style="margin-top:11px"><b>&#9888;</b><span>${esc(d.warn)}</span></div>` : "");
