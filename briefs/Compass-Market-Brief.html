@@ -425,6 +425,13 @@ td.nm button:hover{color:var(--accent); text-decoration:underline}
 .reb .rv s{color:var(--ink-3); font-weight:400; text-decoration:none; opacity:.85}
 .reb .rnote{font-size:.8125rem; color:var(--ink-3); line-height:1.5; max-width:96ch}
 .reb.zero .rf{background:var(--ink-3)}
+.reb.alt{background:transparent; border-style:dashed}
+.reb.alt .rn{color:var(--ink-2)}
+.reb.alt .rf{background:var(--ink-3); opacity:.55}
+.reb-sub{
+  font-family:var(--sub); font-weight:700; font-size:.625rem; letter-spacing:.11em;
+  text-transform:uppercase; color:var(--ink-3); margin:15px 0 9px;
+}
 .qnote{
   background:var(--warn-soft); border-left:3px solid var(--warn);
   border-radius:0 8px 8px 0; padding:13px 15px; font-size:.9375rem;
@@ -973,9 +980,9 @@ const DATA = [
   rebates:[
     {name:"Xcel Energy MN — cold-climate ASHP", bankable:2000, headline:2000,
      note:"Current Xcel schedule: $2,000 all-electric (Combo) / $1,500 electric-only ccASHP, plus a $600 insulation bonus. The old “$900 electric-only” figure was stale — Xcel raised it. Best single-utility bankable is $2,000 for a full all-electric conversion."},
-    {name:"CenterPoint Energy MN — dual-fuel ASHP", bankable:1100, headline:1100,
+    {name:"CenterPoint Energy MN — dual-fuel ASHP", bankable:1100, headline:1100, alt:true,
      note:"A separate gas-utility rebate that stacks with Xcel on a dual-fuel install (HP primary + gas backup). Independent program, so it adds to the Xcel amount."},
-    {name:"City of Minneapolis (CEE Green Cost Share)", bankable:1000, headline:5000,
+    {name:"City of Minneapolis (CEE Green Cost Share)", bankable:1000, headline:5000, alt:true,
      note:"City of Minneapolis 1–4 unit only — stacks on the utility rebates ($1,000 non-Green-Zone, up to $5,000 Green Zone). Similar city matches in Edina, St. Louis Park and Hopkins."}]
 },
 {
@@ -1008,8 +1015,10 @@ const DATA = [
   rebates:[
     {name:"Duke Energy Carolinas Smart $aver HVAC Install (ducted ASHP)", bankable:450, headline:900,
      note:"DEC is dominant in Mecklenburg and most of the metro. Union Power Coop and EnergyUnited serve fringe slices — a customer sits in exactly one territory, so values do not stack."},
-    {name:"EnergyUnited Residential Heat Pump Rebate (bill credit)", bankable:300, headline:300,
-     note:"Exurban EMC territory only — an alternative to Duke, not additive."}]
+    {name:"EnergyUnited Residential Heat Pump Rebate (bill credit)", bankable:300, headline:300, alt:true,
+     note:"Exurban EMC territory only — an alternative to Duke, not additive."},
+    {name:"Dominion Energy SC — new-equipment rebate", bankable:0, headline:750, alt:true,
+     note:"The SC fringe of the metro — York, Lancaster and Chester. Another territory a customer is in instead of Duke NC, so it does not add to the figure above."}]
 },
 {
   rank:5, code:"AZ-PHX-1", name:"Phoenix", state:"AZ", quadrant:"Easy In",
@@ -1041,7 +1050,11 @@ const DATA = [
       "Cities add only permits plus a TPT tax registration. ~3 months to first permit."]},
   rebates:[
     {name:"SRP Cool Cash Rebate (high-efficiency AC / heat pump)", bankable:900, headline:1125,
-     note:"SRP serves about half the metro — Tempe, Mesa, Chandler, Gilbert and much of Phoenix — at ~$900 typical against a $1,125 cap. APS, the other half, ended residential rebates 1/1/2026. Panorama's $5,400 was the income-qualified HEAR (≤150% AMI), which stops covering fuel-switching 9/1/26."}]
+     note:"SRP serves about half the metro — Tempe, Mesa, Chandler, Gilbert and much of Phoenix — at ~$900 typical against a $1,125 cap."},
+    {name:"APS — residential rebates", bankable:0, headline:0, alt:true,
+     note:"APS is the other half of the metro and ended residential rebates on 1/1/2026. A customer is in APS or SRP, never both, so roughly half of Phoenix banks nothing at all."},
+    {name:"Efficiency AZ (HEAR) — income-qualified", bankable:0, headline:8000, alt:true,
+     note:"≤150% AMI only, and it stops covering fuel-switching on 9/1/26. This was the $5,400 Panorama carried; it is not available to our customer base."}]
 },
 {
   rank:6, code:"NC-GSO-1", name:"Greensboro–Winston-Salem", state:"NC", quadrant:"Easy In",
@@ -1100,7 +1113,9 @@ const DATA = [
       "No GC license under $40K. ~3 months to first permit."]},
   rebates:[
     {name:"Duke Energy Progress / Carolinas Smart $aver HVAC Install (ducted ASHP)", bankable:450, headline:900,
-     note:"DEP serves Raleigh and most of Wake; DEC serves Durham–Chapel Hill. The ASHP schedule is identical, so the split does not change JEV. Wake Electric EMC is minor."}]
+     note:"DEP serves Raleigh and most of Wake; DEC serves Durham–Chapel Hill. The ASHP schedule is identical, so the split does not change JEV. Wake Electric EMC is minor."},
+    {name:"Piedmont EMC — ASHP rebate", bankable:0, headline:600, alt:true,
+     note:"Co-op fringe in Durham and Orange. A customer sits in exactly one territory, so this replaces the Duke rebate rather than adding to it."}]
 },
 {
   rank:8, code:"SC-GRV-1", name:"Greenville", state:"SC", quadrant:"Easy In",
@@ -1216,7 +1231,7 @@ const DATA = [
 {
   rank:12, code:"NV-LAS-1", name:"Las Vegas", state:"NV", quadrant:"Easy In",
   panorama:53, wtam:263, units:"~640K (est.) SF/townhome units",
-  spark:0.93, rebate:250, complexity:2, months:3,
+  spark:0.93, rebate:225, complexity:2, months:3,
   factors:[["W-TAM ceiling",17.5,30],["Rebate",5,30],["SPARK",13.4,15],["Competition",8,10],["Adoption",2.2,5]],
   market:"Cooling-dominant desert market. Many homes already run packaged heat pumps, so expect more HP-to-HP replacements alongside gas conversions. Off-peak TOU is a real savings lever.",
   energy:[["NV Energy (Nevada Power)","~14–15¢/kWh","Regulated, TOU available"]],
@@ -1267,7 +1282,9 @@ const DATA = [
       "One license covers the whole metro on day one. ~2 months to first permit."]},
   rebates:[
     {name:"No eligible gas→electric ASHP rebate found", bankable:0, headline:0,
-     note:"A fresh scrape found no active, funded gas-to-electric ducted-HP rebate for the Wasatch Front. Rocky Mountain Power and Dominion offerings do not qualify. The rebate is a non-lever here — the market carries on TAM plus operating economics."}]
+     note:"A fresh scrape found no active, funded gas-to-electric ducted-HP rebate for the Wasatch Front. Rocky Mountain Power's wattsmart is electric-to-electric only, so a gas conversion does not qualify. The rebate is a non-lever here — the market carries on TAM plus operating economics."},
+    {name:"Provo Power / UAMPS — municipal HP rebate", bankable:0, headline:1000, alt:true,
+     note:"$200–1,000 inside the municipal utility footprints only, which is a narrow slice of the Wasatch Front. Not available to Rocky Mountain Power customers, so it stays out of the figure above."}]
 },
 {
   rank:14, code:"TX-AUS-1", name:"Austin", state:"TX", quadrant:"Easy In",
@@ -1298,7 +1315,9 @@ const DATA = [
       "Fastest in the set — ~1.5 months to first permit."]},
   rebates:[
     {name:"Austin Energy Power Saver AC / Heat Pump Rebate", bankable:750, headline:950,
-     note:"Austin Energy serves the City of Austin; suburbs on Oncor, Pedernales or Bluebonnet co-ops differ."}]
+     note:"Austin Energy serves the City of Austin proper."},
+    {name:"Oncor HEESOP — Austin suburbs", bankable:0, headline:2295, alt:true,
+     note:"The suburbs sit on Oncor, with Pedernales and Bluebonnet co-ops beyond that. Richer on paper than Austin Energy, but a customer is on one utility or the other, so it does not add to the city figure. Worth revisiting if the trade area leans suburban."}]
 },
 {
   rank:15, code:"NY-LGI-1", name:"Long Island", state:"NY", quadrant:"Heavy Lift",
@@ -1328,7 +1347,9 @@ const DATA = [
       "Heaviest multi-layer market in the set. ~5 months to first permit."]},
   rebates:[
     {name:"PSEG Long Island Home Comfort — whole-house ccASHP", bankable:4000, headline:4000,
-     note:"PSEG LI serves essentially all of Nassau and Suffolk — LIPA is not in NYS Clean Heat, so the island runs its own program. HP sized to 100–120% of load plus fossil removal or integrated controls; +$250 to the contractor."}],
+     note:"PSEG LI serves essentially all of Nassau and Suffolk — LIPA is not in NYS Clean Heat, so the island runs its own program. HP sized to 100–120% of load plus fossil removal or integrated controls; +$250 to the contractor."},
+    {name:"PSEG Long Island — Disadvantaged-Community tier", bankable:0, headline:5000, alt:true,
+     note:"Geography-gated rather than income-tested, and many LI tracts qualify — an uplift on the $4,000 for those addresses rather than a separate rebate. Left out of the figure above because it does not apply island-wide."}],
   ramp:[{n:"Nassau County",cum:90,mo:3},{n:"+ Suffolk County",cum:188,mo:3}]
 },
 {
@@ -1336,6 +1357,7 @@ const DATA = [
   panorama:54, wtam:514, units:"~1.2M (est.) SF/townhome units",
   spark:1.28, rebate:2325, complexity:4, months:3,
   factors:[["W-TAM ceiling",30,30],["Rebate",5.2,30],["SPARK",6.4,15],["Competition",4.5,10],["Adoption",2.1,5]],
+  rebateBasis:"A weighted blend across a two-state metro rather than a sum: the PA side banks about $950 (PECO plus EAP), the South Jersey slice about $6,000 (PSE&G Clean Heat). $2,325 is the figure Panorama carries; the exact PA/NJ weighting behind it is not documented in the source.",
   market:"Gas furnace → heat pump is the primary target. PA has thin state rebates, so the story is utility programs plus a favorable Zone 4A design temp. One of the biggest single-market TAMs in the set.",
   carve:"NJ carve-out: about 100K of the 514K is the South Jersey slice — Camden and Gloucester, PSE&G electric, roughly 20% of the metro — where the PSE&G Clean Heat rebate applies at ~$6K typical against a $10K cap. If Westfield launches first, the NJ Master HVACR license is already in hand, so this carve-out opens concurrently with the PA metro instead of ~5 months later.",
   energy:[["PECO Energy","18–20¢/kWh","Regulated, TOU available"]],
@@ -1494,6 +1516,12 @@ const quadOf = d =>
     : (d.complexity < CPLX_SPLIT ? "Easy In"    : "Heavy Lift");
 const mismatch = DATA.filter(d => quadOf(d) !== d.quadrant);
 if (mismatch.length) console.warn("quadrant mismatch", mismatch.map(d => d.name));
+/* Every market figure must equal the sum of its stacking programmes, unless the
+   card documents a different basis. Keeps the table and the cards from drifting. */
+DATA.filter(d => !d.rebateBasis).forEach(d => {
+  const sum = d.rebates.filter(r => !r.alt).reduce((a, r) => a + r.bankable, 0);
+  if (sum !== d.rebate) console.warn("rebate mismatch", d.name, d.rebate, "vs", sum);
+});
 
 const QI = {}; QUADS.forEach((q, i) => QI[q.key] = i);
 const qtok = k => `var(${QUADS[QI[k]].token})`;
@@ -1821,20 +1849,28 @@ function factorBlock(d) {
     `<span class="fv">${v}/${m}</span></div>`).join("") + `</div>`;
 }
 function rebateBlock(d) {
+  const counted = d.rebates.filter(r => !r.alt), other = d.rebates.filter(r => r.alt);
   const top = Math.max(...d.rebates.map(r => Math.max(r.headline, r.bankable)), 1);
-  const lead = `<div class="reb-lead"><span class="rl-k">Market rebate</span>` +
-    `<span class="rl-v">${money(d.rebate)}</span>` +
-    `<span class="rl-n">what a typical job banks &mdash; the figure in the market table and the cost index. ` +
-    `The programs below don't all stack, and some cover only part of the metro, so this is not their sum.</span></div>` +
-    (d.rebateNote ? `<p class="reb-why">${esc(d.rebateNote)}</p>` : "");
-  return lead + d.rebates.map(r => {
+  const sum = counted.reduce((a, r) => a + r.bankable, 0);
+  const basis = d.rebateBasis || (sum === d.rebate
+    ? `The ${counted.length === 1 ? "one program below that applies" : counted.length + " programs below that stack"} &mdash; the figure in the market table and the cost index.`
+    : `The figure in the market table and the cost index.`);
+  const row = r => {
     const zero = r.bankable === 0;
-    return `<div class="reb${zero ? " zero" : ""}">` +
+    return `<div class="reb${zero ? " zero" : ""}${r.alt ? " alt" : ""}">` +
       `<p class="rn">${esc(r.name)}</p>` +
       `<div class="rbar"><span class="rt"><span class="rf" style="width:${(r.bankable / top * 100).toFixed(1)}%"></span></span>` +
-      `<span class="rv num">${money(r.bankable)} bankable${r.headline > r.bankable ? ` <s>of ${money(r.headline)} headline</s>` : ""}</span></div>` +
+      `<span class="rv num">${r.alt && !r.bankable
+          ? `<s>${money(r.headline)} headline</s>`
+          : `${money(r.bankable)} bankable${r.headline > r.bankable ? ` <s>of ${money(r.headline)} headline</s>` : ""}`}</span></div>` +
       `<p class="rnote">${esc(r.note)}</p></div>`;
-  }).join("");
+  };
+  return `<div class="reb-lead"><span class="rl-k">Market rebate</span>` +
+    `<span class="rl-v">${money(d.rebate)}</span><span class="rl-n">${basis}</span></div>` +
+    (d.rebateNote ? `<p class="reb-why">${esc(d.rebateNote)}</p>` : "") +
+    counted.map(row).join("") +
+    (other.length ? `<p class="reb-sub">Not in that figure &mdash; another territory, or a tier we can&rsquo;t claim</p>` + other.map(row).join("") : "") +
+    (d.warn ? `<div class="warnline" style="margin-top:11px"><b>&#9888;</b><span>${esc(d.warn)}</span></div>` : "");
 }
 function rampBlock(d) {
   const full = d.ramp[d.ramp.length - 1].cum;
@@ -1906,11 +1942,8 @@ function cardHTML(d) {
       <div class="blk"><h4>Climate &mdash; ${esc(d.climate.heat)} heating / ${esc(d.climate.cool)} cooling design</h4>
         <p>${esc(d.climate.text)}</p>
         <p style="margin-top:7px;color:var(--ink-3);font-size:.8125rem">Typical range ${esc(d.climate.range)}</p></div>
-      <div class="blk"><h4>Energy</h4><div class="kv">${d.energy.map(([n, r, note]) =>
+      <div class="blk wide"><h4>Energy</h4><div class="kv">${d.energy.map(([n, r, note]) =>
         `<div class="kv-row"><span class="kk">${esc(n)}</span><span class="vv num">${esc(r)}</span><span class="nn">${esc(note)}</span></div>`).join("")}</div></div>
-      <div class="blk"><h4>Incentives &mdash; headline amounts</h4><div class="kv">${d.incentives.map(([n, a, note]) =>
-        `<div class="kv-row"><span class="kk">${esc(n)}</span><span class="vv num">${esc(a)}</span><span class="nn">${esc(note)}</span></div>`).join("")}
-        ${d.warn ? `<div class="warnline"><b>&#9888;</b><span>${esc(d.warn)}</span></div>` : ""}</div></div>
       <div class="blk wide"><h4>Who we&rsquo;d be up against</h4><div class="comp">${d.competitors.map(([n, t, note]) =>
         `<p class="comp-i"><span class="cn">${esc(n)}</span> <span class="tagx${t === "hp" ? " hp" : ""}">${t === "hp" ? "Electric-only / HP-focused" : "General HVAC"}</span> <span class="cnote">&mdash; ${esc(note)}</span></p>`).join("")}</div></div>
       <div class="blk wide"><h4>Licensing &amp; operational lift &mdash; complexity ${d.complexity}/5, ~${d.months} months to first permit</h4>
