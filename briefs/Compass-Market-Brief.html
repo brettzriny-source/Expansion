@@ -255,6 +255,29 @@ section{padding:clamp(40px,6vw,72px) 0 0}
 .qcard li button:hover .st{color:var(--ink-2)}
 
 /* ── how to read ────────────────────────────────────────────────────── */
+/* Reference material, not a headline: a quiet rule-to-rule disclosure
+   that sits between the matrix and the table without competing. */
+.fold{border-top:1px solid var(--border); border-bottom:1px solid var(--border)}
+.fold > summary{
+  list-style:none; cursor:pointer; display:flex; flex-wrap:wrap;
+  align-items:baseline; gap:4px 14px; padding:13px 2px;
+}
+.fold > summary::-webkit-details-marker{display:none}
+.fold > summary:hover .fold-t{color:var(--ink)}
+.fold > summary:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:3px}
+.fold-t{
+  font-family:var(--sub); font-weight:700; font-size:.8125rem;
+  letter-spacing:.02em; color:var(--ink-2);
+}
+.fold-h{flex:1 1 28ch; min-width:0; font-size:.8125rem; color:var(--ink-3); line-height:1.5}
+.fold-x{
+  margin-left:auto; align-self:center; width:8px; height:8px; flex:none;
+  border-right:2px solid var(--ink-3); border-bottom:2px solid var(--ink-3);
+  transform:translateY(-2px) rotate(45deg); transition:transform .15s ease;
+}
+.fold[open] .fold-x{transform:translateY(1px) rotate(-135deg)}
+.fold-b{padding:6px 0 22px}
+@media (prefers-reduced-motion:reduce){ .fold-x{transition:none} }
 .defs{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(268px,1fr))}
 .def{background:var(--surface-2); border-radius:var(--radius); padding:17px 18px; border:1px solid var(--border)}
 .def h4{font-family:var(--sub); font-weight:700; font-size:.9375rem; margin-bottom:5px}
@@ -730,9 +753,14 @@ html{scroll-behavior:smooth}
     <div class="rail" id="rail"></div>
   </section>
 
-  <section id="howto">
-    <div class="sec-head"><h2>How to read it</h2></div>
-    <hr class="rule">
+  <section id="howto" style="padding-top:clamp(26px,3.5vw,40px)">
+    <details class="fold">
+      <summary>
+        <span class="fold-t">How to read it</span>
+        <span class="fold-h">What the two axes measure, how the cost index is built, and what &ldquo;time to first permit&rdquo; does and doesn&rsquo;t count.</span>
+        <span class="fold-x" aria-hidden="true"></span>
+      </summary>
+      <div class="fold-b">
     <div class="defs">
       <div class="def">
         <h4>Purchase &amp; operating cost &mdash; vertical</h4>
@@ -751,7 +779,9 @@ html{scroll-behavior:smooth}
         <p>The richest rebates cluster in Northeast programs &mdash; NY Clean Heat, NJ Building Decarb. Most Southeast and dual-load markets are thin-rebate, strong-SPARK plays, where the case rests on operating cost rather than incentives.</p>
       </div>
     </div>
-    <div class="formula" id="formula"></div>
+        <div class="formula" id="formula"></div>
+      </div>
+    </details>
   </section>
 
   <section id="table">
