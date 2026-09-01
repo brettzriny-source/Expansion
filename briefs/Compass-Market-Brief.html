@@ -425,13 +425,6 @@ td.nm button:hover{color:var(--accent); text-decoration:underline}
 .reb .rv s{color:var(--ink-3); font-weight:400; text-decoration:none; opacity:.85}
 .reb .rnote{font-size:.8125rem; color:var(--ink-3); line-height:1.5; max-width:96ch}
 .reb.zero .rf{background:var(--ink-3)}
-.reb.alt{background:transparent; border-style:dashed}
-.reb.alt .rn{color:var(--ink-2)}
-.reb.alt .rf{background:var(--ink-3); opacity:.55}
-.reb-sub{
-  font-family:var(--sub); font-weight:700; font-size:.625rem; letter-spacing:.11em;
-  text-transform:uppercase; color:var(--ink-3); margin:15px 0 9px;
-}
 .qnote{
   background:var(--warn-soft); border-left:3px solid var(--warn);
   border-radius:0 8px 8px 0; padding:13px 15px; font-size:.9375rem;
@@ -739,11 +732,11 @@ html{scroll-behavior:smooth}
       </div>
       <div class="def">
         <h4>Time to first permit</h4>
-        <p>Months from the day we start licensure paperwork to the day we can pull a permit &mdash; application processing, exams and board sittings. It is <b>not</b> time to first sale, and it isn&rsquo;t hiring time: experienced qualifiers are brought on ahead of filing, so the clock is scheduling, not ramp-up.</p>
+        <p><b>How long the licensing takes, and nothing else.</b> The clock starts the day we file the first application and stops the day we can legally pull a permit &mdash; application review, exam scheduling, board sittings. Siting, hiring and selling all run alongside it, and qualifiers are hired before we file, so none of that is in the number. It is not time to first sale.</p>
       </div>
       <div class="def">
         <h4>Rebate reality</h4>
-        <p>Federal HEAR is $0 for customers who aren&rsquo;t income-qualified. The richest rebates cluster in Northeast programs &mdash; NY Clean Heat, NJ Building Decarb. Most Southeast and dual-load markets are thin-rebate, strong-SPARK plays.</p>
+        <p>The richest rebates cluster in Northeast programs &mdash; NY Clean Heat, NJ Building Decarb. Most Southeast and dual-load markets are thin-rebate, strong-SPARK plays, where the case rests on operating cost rather than incentives.</p>
       </div>
     </div>
     <div class="formula" id="formula"></div>
@@ -763,7 +756,6 @@ html{scroll-behavior:smooth}
             <th scope="col" class="s" data-k="name">Market <span class="ar"></span></th>
             <th scope="col" class="s" data-k="quadrant">Quadrant <span class="ar"></span></th>
             <th scope="col" class="s" data-k="wtam" style="text-align:right">W-TAM <span class="ar"></span></th>
-            <th scope="col" class="s" data-k="panorama" style="text-align:right">Panorama <span class="ar"></span></th>
             <th scope="col" class="s" data-k="spark" style="text-align:right">SPARK <span class="ar"></span></th>
             <th scope="col" class="s" data-k="rebate" style="text-align:right">Rebate <span class="ar"></span></th>
             <th scope="col" class="s" data-k="complexity" style="text-align:center">Licensing <span class="ar"></span></th>
@@ -908,6 +900,7 @@ const DATA = [
     bullets:[
       "One statewide Master HVACR license covers every NJ city and county — P.L. 2007 c.211 preempts local licensing, so no city or county HVACR license, exam, or fee is allowed.",
       "Gas piping is included in the HVACR scope; one separate statewide NJ Electrical Contractor license (or a sub) covers all hookups. Trade area is 5 NJ counties — no New York, so no NY licensing.",
+      "NJ Home Improvement Contractor registration (Division of Consumer Affairs) is a separate obligation from the HVACR license. Trade-licensed work may sit outside it, but a whole-home conversion that touches panel or envelope work probably does not — confirm the scope before the first sale. Unconfirmed.",
       "Qualifier must be a bona-fide owner or officer; $3K bond + $500K GL.",
       "~5 months — the clock is state processing, not multiple jurisdictions."]},
   rebates:[
@@ -939,6 +932,7 @@ const DATA = [
     bullets:[
       "One statewide NJ Master HVACR license covers Monmouth + Ocean — statute preempts local licensing, same as Newark.",
       "Gas piping is included in the HVACR scope; one statewide NJ Electrical Contractor license (or a sub) covers hookups.",
+      "NJ Home Improvement Contractor registration (Division of Consumer Affairs) is a separate obligation from the HVACR license. Trade-licensed work may sit outside it, but a whole-home conversion that touches panel or envelope work probably does not — confirm the scope before the first sale. Unconfirmed.",
       "Qualifier must be a bona-fide owner or officer; $3K bond + $500K GL.",
       "~4 months — the clock is state processing, not multiple jurisdictions."]},
   rebates:[
@@ -980,10 +974,8 @@ const DATA = [
   rebates:[
     {name:"Xcel Energy MN — cold-climate ASHP", bankable:2000, headline:2000,
      note:"Current Xcel schedule: $2,000 all-electric (Combo) / $1,500 electric-only ccASHP, plus a $600 insulation bonus. The old “$900 electric-only” figure was stale — Xcel raised it. Best single-utility bankable is $2,000 for a full all-electric conversion."},
-    {name:"CenterPoint Energy MN — dual-fuel ASHP", bankable:1100, headline:1100, alt:true,
-     note:"A separate gas-utility rebate that stacks with Xcel on a dual-fuel install (HP primary + gas backup). Independent program, so it adds to the Xcel amount."},
-    {name:"City of Minneapolis (CEE Green Cost Share)", bankable:1000, headline:5000, alt:true,
-     note:"City of Minneapolis 1–4 unit only — stacks on the utility rebates ($1,000 non-Green-Zone, up to $5,000 Green Zone). Similar city matches in Edina, St. Louis Park and Hopkins."}]
+    
+   ]
 },
 {
   rank:4, code:"NC-CLT-1", name:"Charlotte Metro", state:"NC", quadrant:"Easy In",
@@ -1015,10 +1007,8 @@ const DATA = [
   rebates:[
     {name:"Duke Energy Carolinas Smart $aver HVAC Install (ducted ASHP)", bankable:450, headline:900,
      note:"DEC is dominant in Mecklenburg and most of the metro. Union Power Coop and EnergyUnited serve fringe slices — a customer sits in exactly one territory, so values do not stack."},
-    {name:"EnergyUnited Residential Heat Pump Rebate (bill credit)", bankable:300, headline:300, alt:true,
-     note:"Exurban EMC territory only — an alternative to Duke, not additive."},
-    {name:"Dominion Energy SC — new-equipment rebate", bankable:0, headline:750, alt:true,
-     note:"The SC fringe of the metro — York, Lancaster and Chester. Another territory a customer is in instead of Duke NC, so it does not add to the figure above."}]
+    
+   ]
 },
 {
   rank:5, code:"AZ-PHX-1", name:"Phoenix", state:"AZ", quadrant:"Easy In",
@@ -1051,10 +1041,8 @@ const DATA = [
   rebates:[
     {name:"SRP Cool Cash Rebate (high-efficiency AC / heat pump)", bankable:900, headline:1125,
      note:"SRP serves about half the metro — Tempe, Mesa, Chandler, Gilbert and much of Phoenix — at ~$900 typical against a $1,125 cap."},
-    {name:"APS — residential rebates", bankable:0, headline:0, alt:true,
-     note:"APS is the other half of the metro and ended residential rebates on 1/1/2026. A customer is in APS or SRP, never both, so roughly half of Phoenix banks nothing at all."},
-    {name:"Efficiency AZ (HEAR) — income-qualified", bankable:0, headline:8000, alt:true,
-     note:"≤150% AMI only, and it stops covering fuel-switching on 9/1/26. This was the $5,400 Panorama carried; it is not available to our customer base."}]
+    
+   ]
 },
 {
   rank:6, code:"NC-GSO-1", name:"Greensboro–Winston-Salem", state:"NC", quadrant:"Easy In",
@@ -1114,8 +1102,7 @@ const DATA = [
   rebates:[
     {name:"Duke Energy Progress / Carolinas Smart $aver HVAC Install (ducted ASHP)", bankable:450, headline:900,
      note:"DEP serves Raleigh and most of Wake; DEC serves Durham–Chapel Hill. The ASHP schedule is identical, so the split does not change JEV. Wake Electric EMC is minor."},
-    {name:"Piedmont EMC — ASHP rebate", bankable:0, headline:600, alt:true,
-     note:"Co-op fringe in Durham and Orange. A customer sits in exactly one territory, so this replaces the Duke rebate rather than adding to it."}]
+   ]
 },
 {
   rank:8, code:"SC-GRV-1", name:"Greenville", state:"SC", quadrant:"Easy In",
@@ -1283,8 +1270,7 @@ const DATA = [
   rebates:[
     {name:"No eligible gas→electric ASHP rebate found", bankable:0, headline:0,
      note:"A fresh scrape found no active, funded gas-to-electric ducted-HP rebate for the Wasatch Front. Rocky Mountain Power's wattsmart is electric-to-electric only, so a gas conversion does not qualify. The rebate is a non-lever here — the market carries on TAM plus operating economics."},
-    {name:"Provo Power / UAMPS — municipal HP rebate", bankable:0, headline:1000, alt:true,
-     note:"$200–1,000 inside the municipal utility footprints only, which is a narrow slice of the Wasatch Front. Not available to Rocky Mountain Power customers, so it stays out of the figure above."}]
+   ]
 },
 {
   rank:14, code:"TX-AUS-1", name:"Austin", state:"TX", quadrant:"Easy In",
@@ -1316,8 +1302,7 @@ const DATA = [
   rebates:[
     {name:"Austin Energy Power Saver AC / Heat Pump Rebate", bankable:750, headline:950,
      note:"Austin Energy serves the City of Austin proper."},
-    {name:"Oncor HEESOP — Austin suburbs", bankable:0, headline:2295, alt:true,
-     note:"The suburbs sit on Oncor, with Pedernales and Bluebonnet co-ops beyond that. Richer on paper than Austin Energy, but a customer is on one utility or the other, so it does not add to the city figure. Worth revisiting if the trade area leans suburban."}]
+   ]
 },
 {
   rank:15, code:"NY-LGI-1", name:"Long Island", state:"NY", quadrant:"Heavy Lift",
@@ -1348,8 +1333,7 @@ const DATA = [
   rebates:[
     {name:"PSEG Long Island Home Comfort — whole-house ccASHP", bankable:4000, headline:4000,
      note:"PSEG LI serves essentially all of Nassau and Suffolk — LIPA is not in NYS Clean Heat, so the island runs its own program. HP sized to 100–120% of load plus fossil removal or integrated controls; +$250 to the contractor."},
-    {name:"PSEG Long Island — Disadvantaged-Community tier", bankable:0, headline:5000, alt:true,
-     note:"Geography-gated rather than income-tested, and many LI tracts qualify — an uplift on the $4,000 for those addresses rather than a separate rebate. Left out of the figure above because it does not apply island-wide."}],
+   ],
   ramp:[{n:"Nassau County",cum:90,mo:3},{n:"+ Suffolk County",cum:188,mo:3}]
 },
 {
@@ -1519,7 +1503,7 @@ if (mismatch.length) console.warn("quadrant mismatch", mismatch.map(d => d.name)
 /* Every market figure must equal the sum of its stacking programmes, unless the
    card documents a different basis. Keeps the table and the cards from drifting. */
 DATA.filter(d => !d.rebateBasis).forEach(d => {
-  const sum = d.rebates.filter(r => !r.alt).reduce((a, r) => a + r.bankable, 0);
+  const sum = d.rebates.reduce((a, r) => a + r.bankable, 0);
   if (sum !== d.rebate) console.warn("rebate mismatch", d.name, d.rebate, "vs", sum);
 });
 
@@ -1544,7 +1528,7 @@ const visible = () => DATA.filter(d =>
   const best = DATA.reduce((a, d) => d.rebate > a.rebate ? d : a);
   const biggest = DATA.reduce((a, d) => d.wtam > a.wtam ? d : a);
   const rows = [
-    [(totalTam / 1000).toFixed(1) + "M", "Strong-fit prospects across all 19 candidates"],
+    [(totalTam / 1000).toFixed(1) + "M", "Total weighted TAM (W-TAM) across the 19 candidates"],
     [oneLicense + " of 19", "Open on a statewide license &mdash; complexity 1&ndash;2"],
     [money(best.rebate), "Best rebate in the set &mdash; " + best.name + ", " + best.state],
     [(biggest.wtam / 1000).toFixed(2) + "M", "Largest single W-TAM &mdash; " + biggest.name],
@@ -1818,7 +1802,6 @@ function renderTable() {
       `<td class="nm"><button type="button" data-goto="${d.code}">${esc(d.name)}, ${d.state}</button></td>` +
       `<td><span class="qtag"><span class="sw" style="background:${qc};${DOT}"></span>${esc(d.quadrant)}</span></td>` +
       `<td class="r">${tam(d.wtam)}</td>` +
-      `<td class="r">${d.panorama}</td>` +
       `<td class="r">${d.spark.toFixed(2)}</td>` +
       `<td class="r">${money(d.rebate)}</td>` +
       `<td class="c"><span class="lic" title="${d.complexity} of 5">${pips}</span></td>` +
@@ -1849,7 +1832,7 @@ function factorBlock(d) {
     `<span class="fv">${v}/${m}</span></div>`).join("") + `</div>`;
 }
 function rebateBlock(d) {
-  const counted = d.rebates.filter(r => !r.alt), other = d.rebates.filter(r => r.alt);
+  const counted = d.rebates;
   const top = Math.max(...d.rebates.map(r => Math.max(r.headline, r.bankable)), 1);
   const sum = counted.reduce((a, r) => a + r.bankable, 0);
   const basis = d.rebateBasis || (sum === d.rebate
@@ -1857,19 +1840,16 @@ function rebateBlock(d) {
     : `The figure in the market table and the cost index.`);
   const row = r => {
     const zero = r.bankable === 0;
-    return `<div class="reb${zero ? " zero" : ""}${r.alt ? " alt" : ""}">` +
+    return `<div class="reb${zero ? " zero" : ""}">` +
       `<p class="rn">${esc(r.name)}</p>` +
       `<div class="rbar"><span class="rt"><span class="rf" style="width:${(r.bankable / top * 100).toFixed(1)}%"></span></span>` +
-      `<span class="rv num">${r.alt && !r.bankable
-          ? `<s>${money(r.headline)} headline</s>`
-          : `${money(r.bankable)} bankable${r.headline > r.bankable ? ` <s>of ${money(r.headline)} headline</s>` : ""}`}</span></div>` +
+      `<span class="rv num">${money(r.bankable)} bankable${r.headline > r.bankable ? ` <s>of ${money(r.headline)} headline</s>` : ""}</span></div>` +
       `<p class="rnote">${esc(r.note)}</p></div>`;
   };
   return `<div class="reb-lead"><span class="rl-k">Market rebate</span>` +
     `<span class="rl-v">${money(d.rebate)}</span><span class="rl-n">${basis}</span></div>` +
     (d.rebateNote ? `<p class="reb-why">${esc(d.rebateNote)}</p>` : "") +
     counted.map(row).join("") +
-    (other.length ? `<p class="reb-sub">Not in that figure &mdash; another territory, or a tier we can&rsquo;t claim</p>` + other.map(row).join("") : "") +
     (d.warn ? `<div class="warnline" style="margin-top:11px"><b>&#9888;</b><span>${esc(d.warn)}</span></div>` : "");
 }
 function rampBlock(d) {
