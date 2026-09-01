@@ -1433,15 +1433,16 @@ const DATA = [
 {
   rank:19, code:"WA-SEA-1", name:"Seattle", state:"WA", quadrant:"Heavy Lift",
   panorama:55, wtam:315, units:"~1.1M (est.) SF/townhome units",
-  spark:0.76, rebate:600, complexity:3, months:3,
-  quadrantNote:"Rebuilt from Jetson's own Heat Pump Rebate Programs database in Notion. The source brief carried $3,500, $3,000 of which was WA State HEAR — income-qualified, so it banks nothing for our customer base. The replacement is Seattle City Light's Midstream HVAC+ at a $600 JEV: no income test, no contractor registration, and we can participate today. At $600 the cost index moves from 48.8 to 70.5, which puts Seattle in Heavy Lift rather than Worth the Paperwork. Nothing about the running-cost case changed — SPARK 0.76 is still the best in the set. This is a purchase-price call: the cheapest market to run is an expensive one to buy into until we enrol in more of the programs below.",
+  spark:0.76, rebate:844, complexity:3, months:3,
+  quadrantNote:"Rebuilt twice. The source brief carried $3,500, $3,000 of which was WA State HEAR — income-qualified, so it banks nothing for our customer base. The first rebuild replaced it with Seattle City Light's Midstream HVAC+ at $600. That was also wrong: SCL's midstream channel pays only on equipment bought through its participating distributors, and the qualifying line does not include what Jetson installs, so the one program the card called usable is the one program we cannot use. The figure is now PSE's dual-fuel rebate, which does reach a gas-furnace conversion, has no income test, and covers the largest residential territory in the metro. None of this touches the running-cost case — SPARK 0.76 is still the best in the set. Seattle stays in Heavy Lift, but on licensing, not on a rebate desert.",
   factors:[["W-TAM ceiling",21,30],["Rebate",5.7,30],["SPARK",15,15],["Competition",2,10],["Adoption",4.2,5]],
   market:"Gas furnace → heat pump is the primary target. Among the lowest (hydro) electric rates in the U.S. and a mild marine climate — an all-electric HP is genuinely the cheapest system to run, and no backup heat is needed.",
   energy:[["Seattle City Light","11–12¢/kWh","Hydro-based, TOU launched 2026"]],
   incentives:[
-    ["Seattle City Light Midstream HVAC+","$600","No income test, no registration — a midstream distributor discount passed through on the invoice"],
-    ["PSE Income-Qualified Gas-to-HP","$0 for us","Headline $4,000 on a gas furnace → ducted HP, but income-tested"],
-    ["WA State HEAR (CCA-funded)","$0 for us","Headline is $8,000, but capped at 150% AMI — not applicable to our customer base"]],
+    ["PSE — hybrid / dual-fuel HP","Up to $1,500","Largest residential territory in the metro; no income test; reaches a gas furnace"],
+    ["Tacoma Power — residential HP","Up to $2,000","Separate territory, open tier, we can participate"],
+    ["Snohomish County PUD — residential HP","$800–$2,500","Separate territory, richest open program in the metro"],
+    ["Seattle City Light Midstream HVAC+","$0 for us","Distributor-channel program — the qualifying equipment line is not ours"]],
   climate:{heat:"29°F", cool:"85°F", range:"37–79°F",
     text:"Mild marine (IECC 4C) with a design temp of only ~29°F — standard ASHPs carry the full load with no dual-fuel or electric-resistance backup. An ideal all-electric market."},
   competitors:[
@@ -1457,14 +1458,22 @@ const DATA = [
       "Techs need the 06A HVAC/R specialty electrician certificate (4,000 hrs plus exam).",
       "Seattle SDCI adds city Refrigeration/AC, Journey Refrigeration Mechanic and Gas Piping Mechanic licenses, each a city exam.",
       "Heaviest local layer in WA. ~3 months to first permit."]},
-  rebateNote:"Other programs in the region pay more but don't reach this job: Tacoma Power and Snohomish PUD are separate utility territories a Seattle customer is not in, PSE's open-to-all rebates need an electric-resistance or existing heat-pump starting point rather than a gas furnace, and Seattle Clean Heat is oil-only. Enrolling in those is live headroom, tracked separately.",
+  rebateBasis:"PSE's dual-fuel rebate, the open-to-all program covering the largest residential territory in this metro. Seattle is not one rebate market but four, split by which utility the meter belongs to, and a home is in exactly one of them — so this is the figure for the biggest slice, not a sum and not the best case.",
+  rebateNote:"An earlier pass on this card said PSE's open rebates all need an electric-resistance or existing heat-pump starting point. That is wrong — the dual-fuel tier is built for a gas furnace. The same pass called Snohomish PUD paused; the rebates team traced that to a stale note and confirmed the program active on 2026-07-10. Income-qualified programs do exist here and are excluded as everywhere else: PSE's income-tested gas-to-HP at $4,000 and WA State HEAR at $8,000, both capped at 150% AMI.",
+  warn:"The territory split is the whole story in Seattle and the figure is sensitive to it. Seattle city proper banks $0 for us; the Eastside and most suburbs bank $844; Tacoma banks up to $2,000 and Snohomish up to $2,500. A trade area weighted toward Seattle city would come in under $844, one weighted south or north would come in over. Nobody has weighted it.",
   rebates:[
-    {name:"Seattle City Light — Midstream HVAC+ (HP HVAC)", bankable:600, headline:600,
-     note:"The one program open to a standard customer that we can already use. Tiered on equipment rather than fuel, so a gas conversion qualifies: $300/unit at SEER2 15.2 / HSPF2 8.1, $400 at HSPF2 8.5, $600 at SEER2 16.0 / HSPF2 9.5. Administered by Energy Solutions for SCL through participating distributors — a midstream discount taken at purchase and passed through as an invoice line, so no registration and no waiting on reimbursement. One outdoor system per address."},
-    {name:"PSE — Income-Qualified Gas-to-HP", bankable:0, headline:4000,
-     note:"Income-tested against PSE's county and household-size table, so it banks nothing for our customer base. Requires both PSE electric and gas service, a PSE Trade Ally installer from 4/2/2026, and removal of the gas equipment. We are not enrolled."},
-    {name:"WA State HEAR (CCA-funded) — King County via United Hub", bankable:0, headline:8000,
-     note:"Capped at 150% AMI, and the 80–150% band only covers half of eligible cost — nothing for our customer base. Listed at $0 so the reasoning is on the record rather than rediscovered. United Hub is confirmed as the administrator for King County; there is no separate Seattle-specific administrator."}]
+    {name:"PSE — Hybrid (Dual-Fuel) Heat Pump", bankable:844, headline:1500,
+     note:"Heat pump paired with the existing gas furnace as backup — the configuration a Jetson conversion actually produces here. No income test, active, and PSE covers the Eastside and most of the metro outside Seattle city and Tacoma. Needs PSE Trade Ally registration, contractor-submitted, paid post-install; Jetson is not enrolled. Funding risk and data confidence are both Medium."},
+    {name:"Seattle City Light — Midstream HVAC+", bankable:0, headline:600,
+     note:"⚠ This is the correction. SCL pays midstream, through participating distributors, and the rebate rides on the equipment line those distributors carry — which is not what Jetson installs. On paper it is the easiest program in the metro: no income test, no registration, a discount taken at purchase. In practice it is unreachable without changing what we buy. Jetson's rebate database still lists it as $600 and Can Participate; that record needs correcting."},
+    {name:"Tacoma Power — Residential Heat Pump", bankable:0, headline:2000,
+     note:"Open tier, no income test, and the rebates team already marked it Can Participate at a $1,238 expected value — higher than the PSE figure this market is carried at. It is $0 here only because Tacoma Power is Pierce County and a Seattle-metro trade area may not reach it. If the trade area is drawn to include Tacoma, this is the richest reachable program in the market."},
+    {name:"Snohomish County PUD — Residential Heat Pump", bankable:0, headline:2500,
+     note:"$800–$2,500 by system type and efficiency tier, no income test, Can Participate, $1,547 expected value — the largest open program in the region. Separate territory again, so $0 against a Seattle-city job. Worth noting the earlier read that this program was paused was wrong; direct verification on 2026-07-10 confirmed it active."},
+    {name:"PSE — Electric Resistance to HP Conversion", bankable:0, headline:1500,
+     note:"$1,500 base with no income test, same PSE territory as the banked row — but it needs an electric-resistance starting point, so it is the alternative to the dual-fuel tier on a different house, not an addition to it. Whichever the home is, one of the two applies."},
+    {name:"Seattle Clean Heat — Oil-to-Electric", bankable:0, headline:2000,
+     note:"$2,000 base with no income test, which makes it the one City of Seattle program that is not blocked by the distributor channel. Oil-heated homes only, so it is off the main gas-conversion path, and Jetson is not enrolled. A real $1,800-expected-value pocket if oil conversions are worth chasing in Seattle."}]
 },
 ];
 </script>
