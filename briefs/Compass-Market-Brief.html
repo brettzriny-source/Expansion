@@ -575,6 +575,20 @@ td.nm button:hover{color:var(--accent); text-decoration:underline}
 .cad-tier span{font-family:var(--sub); font-size:.6875rem; opacity:.66; margin-top:5px}
 .cad-cell{padding:9px; display:flex; flex-direction:column; gap:5px; min-height:104px}
 .cad-cell.locked{background:var(--surface-2)}
+/* A month with no capacity at this tier — shut, not merely empty. */
+.cad-cell.shut{
+  background:repeating-linear-gradient(135deg,transparent 0 6px,var(--surface-2) 6px 12px);
+  align-items:center; justify-content:center;
+}
+.cad-cell .shut-k{
+  font-family:var(--sub); font-weight:700; font-size:.625rem; letter-spacing:.11em;
+  text-transform:uppercase; color:var(--ink-3);
+}
+.cad-cell .cap-n{
+  font-family:var(--sub); font-weight:700; font-size:.625rem; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--ink-3); text-align:center;
+}
+.cad-cell .cap-n.full{margin-top:auto; padding:6px 0; opacity:.7}
 .cad-total{
   background:var(--accent-soft); display:flex; flex-direction:column;
   align-items:center; justify-content:center; gap:3px;
@@ -785,7 +799,7 @@ html{scroll-behavior:smooth}
       <span class="spacer"></span>
       <button class="btn" id="cadReset" type="button">Clear plan</button>
     </div>
-    <p class="sec-sub">January is locked &mdash; Dallas and Portland, leases signed. Base is one launch a month; <b>+2</b> and <b>+6</b> are extra launches over base. Placements cascade upward: a market you add to Base also counts in +2 and +6. Click <b>+ add</b> to place one.</p>
+    <p class="sec-sub">January is locked &mdash; Dallas and Portland, leases signed. <b>Base</b> is one launch a month with February closed; <b>+2</b> opens a second slot in June; <b>+6</b> runs two a month across the board. Each tier shows only the slots it actually has, so a month that is shut reads <b>closed</b> and a full one stops offering <b>+ add</b>. Placements cascade upward: a market you add to Base also counts in +2 and +6.</p>
     <hr class="rule">
     <div class="card cad-card">
       <div class="cad-scroll">
@@ -838,10 +852,12 @@ const CADENCE = {
   year: 2027,
   months: ["Jan","Feb","Mar","Apr","May","Jun"],
   locked: ["Dallas","Portland"],
+  /* cap is the total number of markets a cell can hold at that tier,
+     inherited placements included. Jan is the signed lock, so cap 0. */
   tiers: [
-    { key:"base",  name:"Base",    sub:"1 launch / month" },
-    { key:"plus2", name:"Base +2", sub:"2 over base" },
-    { key:"plus6", name:"Base +6", sub:"6 over base" },
+    { key:"base",  name:"Base",    sub:"1 / month, Feb closed", cap:[0,0,1,1,1,1] },
+    { key:"plus2", name:"Base +2", sub:"second market in June",  cap:[0,0,1,1,1,2] },
+    { key:"plus6", name:"Base +6", sub:"2 / month, every month", cap:[0,2,2,2,2,2] },
   ],
 };
 
@@ -1460,10 +1476,10 @@ const DATA = [
       "Heaviest local layer in WA. ~3 months to first permit."]},
   rebateBasis:"Nothing confirmed reachable. Not a claim that the metro is short of money — it is the richest set of open programs in the brief — but that on today's facts none of it lands on a Jetson full-electric conversion for a non-income-qualified customer inside the core trade area. Treat this as a floor with one open question, not a settled figure.",
   rebateNote:"Two gates do the damage, and they are different. The manufacturer gate: Seattle City Light and Energy Smart Eastside both pay only on an approved equipment list installed by an approved contractor, and SCL's list does not include what we install. The configuration gate: PSE's three open tiers are each defined by a starting point that is not a gas furnace — dual-fuel keeps the furnace, and Jetson installs full conversions; the other two need electric resistance or an existing heat pump. Income-qualified money is plentiful and out of scope as everywhere else — PSE at $4,000, ESE's bonus at $5,000, WA HEAR at $8,000, all at or under 150% AMI.",
-  warn:"One fact decides whether this is $0 or $1,000: whether Jetson installs Bryant, Carrier or Day & Night. Energy Smart Eastside's approved list is Mitsubishi, Bryant/Carrier and Day & Night — three of the four are not Mitsubishi, so the SCL exclusion does not automatically carry over. If any of them is what we fit, ESE is $1,000 instant at point of sale across six Eastside cities with no income test, and this market is not a zero. Confirm the equipment line before anyone plans against this card.",
+  warn:"$0 is a floor with an application against it, not a verdict. Jetson is working to join the Energy Smart Eastside installer network; that one admission turns the market figure into $1,000 across six Eastside cities with no income test. It is a steep hurdle — a closed network on top of a closed equipment list — so plan the market as a zero and treat the admission as upside rather than schedule.",
   rebates:[
     {name:"Energy Smart Eastside — heat pump campaign", bankable:0, headline:1000,
-     note:"⚠ The open question. $1,000 applied instantly at point of sale, no income test, for a switch off gas, propane, oil or wood — Bellevue, Issaquah, Kirkland, Mercer Island, Redmond and Sammamish. The catch is a closed approved-equipment list (Mitsubishi, Bryant/Carrier, Day & Night) plus membership of the trusted-installer network. Carried at $0 because we are not in that network, not because the brand list is known to exclude us. This program is absent from Jetson's rebate database entirely."},
+     note:"⚠ The live one. $1,000 applied instantly at point of sale, no income test, for a switch off gas, propane, oil or wood — Bellevue, Issaquah, Kirkland, Mercer Island, Redmond and Sammamish. Gated on a closed approved-equipment list (Mitsubishi, Bryant/Carrier, Day & Night) and membership of the trusted-installer network. Jetson is working on admission to that network; until it lands this banks nothing, which is why the market reads $0. Absent from Jetson's rebate database entirely — it should be a record with the application tracked against it."},
     {name:"Seattle City Light — Midstream HVAC+", bankable:0, headline:600,
      note:"SCL pays midstream, through participating distributors, and the rebate rides on the equipment line those distributors carry — which is not what Jetson installs. On paper the easiest program in the metro: no income test, no registration, a discount taken at purchase. In practice unreachable without changing what we buy. Jetson's rebate database still lists it as $600 and Can Participate; that record needs correcting."},
     {name:"PSE — Hybrid (Dual-Fuel) Heat Pump", bankable:0, headline:1500,
@@ -2063,7 +2079,14 @@ function renderCadence() {
         return;
       }
       const rows = cellFor(t.key, m);
+      const cap = (t.cap && t.cap[m]) || 0;
       total += rows.length;
+      /* A cell with no capacity at this tier is shut, not merely empty. */
+      if (!cap && !rows.length) {
+        cells.push(`<div class="cad-cell shut"><span class="shut-k">closed</span></div>`);
+        return;
+      }
+      const free = cap - rows.length;
       cells.push(`<div class="cad-cell">` + rows.map(r => {
         const d = DATA.find(x => x.code === r.code);
         const nm = d ? `${d.name}, ${d.state}` : r.code;
@@ -2071,7 +2094,10 @@ function renderCadence() {
           ? `<button type="button" class="slot added" data-drop="${t.key}|${m}|${r.code}" title="Remove ${esc(nm)}">${esc(d ? d.name : r.code)}<span class="x">&times;</span></button>`
           : `<span class="slot inherit" title="Added in ${esc(r.from)} — remove it there">${esc(d ? d.name : r.code)}</span>`;
       }).join("") +
-        `<button type="button" class="slot-add" data-add="${t.key}|${m}">+ add</button></div>`);
+        (free > 0
+          ? `<button type="button" class="slot-add" data-add="${t.key}|${m}">+ add</button>` +
+            (free > 1 ? `<span class="cap-n">${free} slots</span>` : "")
+          : `<span class="cap-n full">full</span>`) + `</div>`);
     });
     cells.push(`<div class="cad-total"><b class="num">${total}</b><span>Markets</span></div>`);
   });
@@ -2133,6 +2159,10 @@ document.getElementById("pkList").addEventListener("click", e => {
   const b = e.target.closest("[data-pick]");
   if (!b || !pkCtx) return;
   const { tier, m } = pkCtx;
+  /* Re-check capacity at commit time — the button can only appear when a
+     slot is free, but a stored plan may already be over the cap. */
+  const t = CADENCE.tiers.find(x => x.key === tier);
+  if (cellFor(tier, m).length >= ((t.cap && t.cap[m]) || 0)) { closePicker(); return; }
   plan[tier][m] = at(tier, m).concat(b.dataset.pick);
   savePlan(); closePicker(); renderCadence();
 });
