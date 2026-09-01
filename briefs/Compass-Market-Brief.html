@@ -251,6 +251,8 @@ section{padding:clamp(40px,6vw,72px) 0 0}
   border-radius:5px; padding:3px 7px;
 }
 .qcard li button:hover{border-color:var(--qc); color:var(--ink)}
+.qcard li button .st{color:var(--ink-3)}
+.qcard li button:hover .st{color:var(--ink-2)}
 
 /* ── how to read ────────────────────────────────────────────────────── */
 .defs{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(268px,1fr))}
@@ -670,7 +672,6 @@ footer .fl{display:flex; flex-wrap:wrap; gap:6px 20px}
 }
 html{scroll-behavior:smooth}
 </style>
-
 <header class="masthead">
   <div class="shell mast-in">
     <div class="wordmark"><span class="dot"></span>Jetson &nbsp;·&nbsp; Project Compass</div>
@@ -838,7 +839,6 @@ html{scroll-behavior:smooth}
   <input class="pk-search" id="pkSearch" type="search" placeholder="Filter markets&hellip;" aria-label="Filter markets">
   <div class="pk-list" id="pkList" role="listbox"></div>
 </div>
-
 <script>
 /* Quadrant definitions — order is fixed and never cycled. */
 const QUADS = [
@@ -1493,7 +1493,6 @@ const DATA = [
 },
 ];
 </script>
-
 <script>
 "use strict";
 
@@ -1769,7 +1768,7 @@ function wireMarks(pos) {
       `<h3>${esc(q.key)}</h3>` +
       `<p class="qn num">${ms.length} market${ms.length === 1 ? "" : "s"} &middot; ${tam(ms.reduce((a, d) => a + d.wtam, 0))} W-TAM</p>` +
       `<p class="qd">${esc(q.desc)}</p>` +
-      `<ul>${ms.map(d => `<li><button type="button" data-goto="${d.code}">${esc(d.name)}</button></li>`).join("")}</ul>` +
+      `<ul>${ms.map(d => `<li><button type="button" data-goto="${d.code}">${esc(d.name)}<span class="st">,&nbsp;${esc(d.state)}</span></button></li>`).join("")}</ul>` +
       `</div>`;
   }).join("");
 })();
