@@ -258,6 +258,52 @@ section{padding:clamp(40px,6vw,72px) 0 0}
 .def h4{font-family:var(--sub); font-weight:700; font-size:.9375rem; margin-bottom:5px}
 .def p{font-size:.875rem; color:var(--ink-2); line-height:1.55}
 
+/* ── cost-index explainer ───────────────────────────────────────────── */
+.formula{
+  margin-top:14px; background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); overflow:hidden;
+}
+.fx-hd{
+  padding:15px 18px 13px; border-bottom:1px solid var(--border);
+  display:flex; flex-wrap:wrap; gap:6px 14px; align-items:baseline;
+}
+.fx-hd h4{font-family:var(--sub); font-weight:700; font-size:.9375rem}
+.fx-hd span{font-size:.8125rem; color:var(--ink-3)}
+.fx-body{display:grid; gap:1px; background:var(--border)}
+@media(min-width:780px){ .fx-body{grid-template-columns:1fr 1fr} }
+.fx-term{background:var(--surface); padding:15px 18px 17px}
+.fx-w{
+  font-family:var(--sub); font-weight:700; font-size:.625rem; letter-spacing:.11em;
+  text-transform:uppercase; color:var(--accent);
+}
+.fx-term h5{font-family:var(--sub); font-weight:700; font-size:.9375rem; margin:5px 0 7px}
+.fx-term p{font-size:.8125rem; color:var(--ink-2); line-height:1.5}
+.fx-eq{
+  font-family:var(--sub); font-size:.8125rem; font-variant-numeric:tabular-nums;
+  background:var(--surface-2); border:1px solid var(--border); border-radius:7px;
+  padding:9px 12px; margin-top:10px; color:var(--ink); line-height:1.65;
+  overflow-x:auto; white-space:nowrap;
+}
+.fx-eq b{color:var(--accent); font-weight:700}
+.fx-eq .mu{color:var(--ink-3); font-weight:400}
+.fx-result{
+  background:var(--surface-2); padding:15px 18px 17px; border-top:1px solid var(--border);
+  grid-column:1/-1;
+}
+.fx-result .fx-eq{background:var(--surface); font-size:.875rem}
+.fx-note{
+  background:var(--surface); border-top:1px solid var(--border);
+  padding:15px 18px 17px; grid-column:1/-1;
+}
+.fx-note h5{
+  font-family:var(--sub); font-weight:700; font-size:.625rem; letter-spacing:.11em;
+  text-transform:uppercase; color:var(--ink-3); margin-bottom:8px;
+}
+.fx-note ul{margin:0; padding-left:1.1em; font-size:.8125rem; line-height:1.55; color:var(--ink-2); max-width:92ch}
+.fx-note li{margin-bottom:6px}
+.fx-note li::marker{color:var(--ink-3)}
+.fx-note b{color:var(--ink)}
+
 /* ── table ──────────────────────────────────────────────────────────── */
 .tbl-scroll{overflow-x:auto; border-radius:var(--radius); border:1px solid var(--border); background:var(--surface)}
 table{border-collapse:collapse; width:100%; min-width:820px; font-size:.875rem}
@@ -616,7 +662,7 @@ html{scroll-behavior:smooth}
     <p class="eyebrow">Market expansion brief</p>
     <h1>Where Jetson<em>grows next</em></h1>
     <p class="deck">The full read on 19 candidate markets for the next wave of launches &mdash; how big each one is, what a system costs to own there, who we&rsquo;d be up against, and what it takes to open the doors.</p>
-    <p class="hero-note">Data: Panorama (Gravity / TAM v4.0) plus a fresh rebate &amp; licensing scrape. The <b>cost axis</b> is net purchase price (verified rebate) weighted 75% plus operating cost (SPARK) at 25%. The <b>complexity axis</b> is the licensing regime, from 1 (one statewide license) to 5 (county-by-county exams).</p>
+    <p class="hero-note">Data: Panorama (Gravity / TAM v4.0) plus a fresh rebate &amp; licensing scrape. The <b>cost axis</b> is net purchase price after rebate, weighted 75%, plus operating cost (SPARK) at 25%. The <b>complexity axis</b> is the licensing regime, from 1 (one statewide license) to 5 (county-by-county exams).</p>
     <div class="tiles" id="tiles"></div>
   </div>
 </div>
@@ -659,7 +705,7 @@ html{scroll-behavior:smooth}
     <div class="defs">
       <div class="def">
         <h4>Purchase &amp; operating cost &mdash; vertical</h4>
-        <p>Net purchase price after the verified rebate (more rebate = cheaper) weighted 75%, plus operating economics (SPARK) at 25%. Indexed 0&ndash;100 across the 19; lower is cheaper to own.</p>
+        <p>Net purchase price after the rebate we expect to capture (more rebate = cheaper) weighted 75%, plus operating economics (SPARK) at 25%. Indexed 0&ndash;100 across the 19; lower is cheaper to own. The arithmetic is spelled out below.</p>
       </div>
       <div class="def">
         <h4>Operational complexity &mdash; horizontal</h4>
@@ -670,6 +716,7 @@ html{scroll-behavior:smooth}
         <p>Federal HEAR is $0 for customers who aren&rsquo;t income-qualified. The richest rebates cluster in Northeast programs &mdash; NY Clean Heat, NJ Building Decarb. Most Southeast and dual-load markets are thin-rebate, strong-SPARK plays.</p>
       </div>
     </div>
+    <div class="formula" id="formula"></div>
   </section>
 
   <section id="table">
@@ -687,7 +734,7 @@ html{scroll-behavior:smooth}
             <th scope="col" class="s" data-k="wtam" style="text-align:right">W-TAM <span class="ar"></span></th>
             <th scope="col" class="s" data-k="panorama" style="text-align:right">Panorama <span class="ar"></span></th>
             <th scope="col" class="s" data-k="spark" style="text-align:right">SPARK <span class="ar"></span></th>
-            <th scope="col" class="s" data-k="rebate" style="text-align:right">Verified rebate <span class="ar"></span></th>
+            <th scope="col" class="s" data-k="rebate" style="text-align:right">Rebate <span class="ar"></span></th>
             <th scope="col" class="s" data-k="complexity" style="text-align:center">Licensing <span class="ar"></span></th>
             <th scope="col" class="s" data-k="cost" style="text-align:right">Cost index <span class="ar"></span></th>
           </tr>
@@ -1419,7 +1466,7 @@ const DATA = [
 "use strict";
 
 /* ═══ derived metrics ══════════════════════════════════════════════════
-   The brief defines the cost axis as net purchase price (verified rebate)
+   The brief defines the cost axis as net purchase price after rebate
    at 75% plus operating cost (SPARK) at 25%. We compute it rather than
    transcribe it, then check the result reproduces every quadrant label. */
 const rebates = DATA.map(d => d.rebate), sparks = DATA.map(d => d.spark);
@@ -1463,7 +1510,7 @@ const visible = () => DATA.filter(d =>
   const rows = [
     [(totalTam / 1000).toFixed(1) + "M", "Strong-fit prospects across all 19 candidates"],
     [oneLicense + " of 19", "Open on a statewide license &mdash; complexity 1&ndash;2"],
-    [money(best.rebate), "Best verified rebate &mdash; " + best.name + ", " + best.state],
+    [money(best.rebate), "Best rebate in the set &mdash; " + best.name + ", " + best.state],
     [(biggest.wtam / 1000).toFixed(2) + "M", "Largest single W-TAM &mdash; " + biggest.name],
   ];
   document.getElementById("tiles").innerHTML = rows.map(([v, k]) =>
@@ -1630,7 +1677,7 @@ function wireMarks(pos) {
         `<dl><dt>Cost index</dt><dd>${d.cost.toFixed(1)}</dd>` +
         `<dt>Licensing</dt><dd>${d.complexity} / 5</dd>` +
         `<dt>W-TAM</dt><dd>${tam(d.wtam)}</dd>` +
-        `<dt>Verified rebate</dt><dd>${money(d.rebate)}</dd>` +
+        `<dt>Rebate</dt><dd>${money(d.rebate)}</dd>` +
         `<dt>Panorama</dt><dd>${d.panorama} / 100</dd></dl>` +
         `<span class="t-hint">Click to open the market card</span>`;
       tip.classList.add("on");
@@ -1679,6 +1726,56 @@ function wireMarks(pos) {
       `<ul>${ms.map(d => `<li><button type="button" data-goto="${d.code}">${esc(d.name)}</button></li>`).join("")}</ul>` +
       `</div>`;
   }).join("");
+})();
+
+/* ═══ cost-index explainer ════════════════════════════════════════════
+   Rendered from the same constants the calculation uses, so the worked
+   example can never drift from the numbers in the table. */
+(function explainCost() {
+  const ex = DATA.find(d => d.code === "NJ-NWK-1");         // Newark, a mid-set case
+  const best = DATA.find(d => d.rebate === rMax);
+  const cheapRun = DATA.find(d => d.spark === sMin);
+  const dearRun = DATA.find(d => d.spark === sMax);
+  const price = 1 - ex.rebate / rMax;
+  const oper = (ex.spark - sMin) / (sMax - sMin);
+  const f = n => n.toFixed(2);
+
+  document.getElementById("formula").innerHTML = `
+  <div class="fx-hd">
+    <h4>How the cost index is built</h4>
+    <span>A derived figure, not one of Panorama&rsquo;s &mdash; worked through on ${esc(ex.name)}, ${ex.state}.</span>
+  </div>
+  <div class="fx-body">
+    <div class="fx-term">
+      <span class="fx-w">Weighted 75%</span>
+      <h5>What the system costs to buy</h5>
+      <p>Scored against the richest rebate in the set &mdash; ${money(rMax)} in ${esc(best.name)}. A market with no rebate scores 1.00; ${esc(best.name)} scores 0.00.</p>
+      <p class="fx-eq">1 &minus; ( rebate <span class="mu">&divide;</span> ${money(rMax)} ) &nbsp;<span class="mu">=</span>&nbsp;
+        1 &minus; ( ${money(ex.rebate)} <span class="mu">&divide;</span> ${money(rMax)} ) <span class="mu">=</span> <b>${f(price)}</b></p>
+    </div>
+    <div class="fx-term">
+      <span class="fx-w">Weighted 25%</span>
+      <h5>What it costs to run</h5>
+      <p>SPARK stretched across the set&rsquo;s range &mdash; ${sMin.toFixed(2)} in ${esc(cheapRun.name)} is the cheapest to run, ${sMax.toFixed(2)} in ${esc(dearRun.name)} the dearest.</p>
+      <p class="fx-eq">( SPARK &minus; ${sMin.toFixed(2)} ) <span class="mu">&divide;</span> ( ${sMax.toFixed(2)} &minus; ${sMin.toFixed(2)} ) <span class="mu">=</span>
+        ( ${ex.spark.toFixed(2)} &minus; ${sMin.toFixed(2)} ) <span class="mu">&divide;</span> ${(sMax - sMin).toFixed(2)} <span class="mu">=</span> <b>${f(oper)}</b></p>
+    </div>
+    <div class="fx-result">
+      <span class="fx-w">The index</span>
+      <p class="fx-eq">100 <span class="mu">&times;</span> ( 0.75 <span class="mu">&times;</span> ${f(price)}
+        <span class="mu">+</span> 0.25 <span class="mu">&times;</span> ${f(oper)} ) <span class="mu">=</span>
+        <b>${ex.cost.toFixed(1)}</b> &nbsp;<span class="mu">&mdash; ${esc(ex.name)}&rsquo;s cost index</span></p>
+    </div>
+    <div class="fx-note">
+      <h5>What it does and doesn&rsquo;t tell you</h5>
+      <ul>
+        <li><b>It ranks, it doesn&rsquo;t price.</b> 0 and 100 are the ends of <em>this</em> 19-market set, not dollars. Add a market with a richer rebate than ${esc(best.name)}&rsquo;s and every index rescales. Compare markets to each other, never read the number as a cost.</li>
+        <li><b>It assumes the same gross install price everywhere.</b> We don&rsquo;t hold per-market install costs, so the rebate carries the whole purchase-price term. Where labor and permitting genuinely run dearer &mdash; Long Island against Columbia, say &mdash; the index understates the gap.</li>
+        <li><b>The rebate figure is what we expect to bank, not the headline.</b> Each market card shows both; the bankable number is the one feeding this.</li>
+        <li><b>The quadrant split is the midpoint of the observed range</b> (${COST_SPLIT}), paired with a licensing split at ${CPLX_SPLIT}. Those two lines reproduce all ${DATA.length} quadrant labels in the source brief, which is the check that this reading of the formula is faithful to it.</li>
+      </ul>
+    </div>
+  </div>`;
 })();
 
 /* ═══ table ═══════════════════════════════════════════════════════════ */
@@ -1774,7 +1871,7 @@ function cardHTML(d) {
     ["Panorama", d.panorama + " / 100"],
     ["W-TAM", tam(d.wtam)],
     ["SPARK", d.spark.toFixed(2)],
-    ["Verified rebate", money(d.rebate)],
+    ["Rebate", money(d.rebate)],
     ["Licensing", d.complexity + " / 5"],
     ["To 1st permit", d.months + " mo"],
     ["Cost index", d.cost.toFixed(1)],
