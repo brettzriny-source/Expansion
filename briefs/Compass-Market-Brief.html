@@ -935,11 +935,11 @@ const DATA = [
      note:"Not separately claimable on a bare furnace→HP swap — sits under the same PSE&G umbrella as Building Decarb, so it does not stack on top (rebates-team deep-dive 2026-08-31)."}]
 },
 {
-  rank:2, code:"NJ-SHR-1", name:"Toms River", state:"NJ", quadrant:"Scale Fast",
-  boundaryNote:"Toms River clears the cost line by 0.4 points, against Newark's 3.6. Treat the Scale Fast label as a coin toss rather than a finding — any revision to the rebate figure or to SPARK moves it back. It sits here because the split is applied mechanically, not because it has earned the same standing as Newark.",
+  rank:2, code:"NJ-SHR-1", name:"Toms River", state:"NJ", quadrant:"Easy In",
+  boundaryNote:"Toms River has moved out of Scale Fast. It cleared the cost line by 0.4 points while SPARK carried a heat-pump-rate discount; removing that discount to match Panorama moved the line and Toms River is now 3.8 points the wrong side of it. The label was flagged as a coin toss and it has landed — treat Easy In the same way, since the margin is still small and the market is one rebate revision from crossing back. Newark is the only unambiguous Scale Fast market in the set.",
   panorama:33, wtam:149, units:"~400K (est.) SF/townhome units",
   spark:0.84, rebate:3000, complexity:2, months:4,
-  factors:[["W-TAM ceiling",10,30],["Rebate",3.7,30],["SPARK",6.4,15],["Competition",4.5,10],["Adoption",3,5]],
+  factors:[["W-TAM ceiling",10,30],["Rebate",3.7,30],["SPARK",15,15],["Competition",4.5,10],["Adoption",3,5]],
   market:"Oil, propane and gas furnace → heat pump across Monmouth + Ocean counties (the Jersey Shore). Same easy NJ statewide license as Newark, but this is JCP&L territory — the rich PSE&G Building Decarbonization ($6–10K) does not apply, so the realistic rebate is only ~$3,000 (NJ Whole Home + JCP&L EnergySaveNJ). Working the other way: JCP&L power at ~17–18¢ is much cheaper than PSE&G's ~26–27¢, so operating economics are better and partly offset the thinner rebate.",
   energy:[["JCP&L (FirstEnergy)","17–18¢/kWh","Regulated; price-to-compare 15.25¢ supply"]],
   incentives:[
@@ -1490,7 +1490,7 @@ const DATA = [
   rank:19, code:"WA-SEA-1", name:"Seattle", state:"WA", quadrant:"Heavy Lift",
   panorama:55, wtam:315, units:"~1.1M (est.) SF/townhome units",
   spark:0.76, rebate:600, complexity:3, months:3,
-  quadrantNote:"Rebuilt five times: $3,500 in the source brief (mostly income-qualified HEAR), $600 on SCL Midstream, $844 on PSE's dual-fuel tier, $0, and back to $600. The round trip was an attribution error worth naming. Seattle does carry a Mitsubishi-only equipment restriction, but it sits on Seattle Clean Heat, the oil-to-electric programme — not on SCL Midstream HVAC+, which has no manufacturer condition at all, is marked Can Participate at High confidence, needs no registration, and pays on any fuel path. Applying the restriction to the wrong programme took the market to zero. Two real corrections survive from those passes: Seattle proper is a split-utility market, with SCL electric and PSE gas both serving the city, and PSE's gas-side programmes are income-tested or dual-fuel so none of them lands. SPARK 0.76 remains the best in the set by a distance — Seattle is still the cheapest market in the country to run a heat pump in.",
+  quadrantNote:"Rebuilt repeatedly and still unsettled — this card is parked for a proper re-scrub, not finished. The figure is Seattle City Light's Midstream HVAC+: no income test, no registration, no manufacturer condition, and already marked Can Participate. Seattle proper is a split-utility market (SCL electric, PSE gas), and PSE's gas-side programmes are income-tested or dual-fuel, so none of them lands on a full electric conversion. SPARK 0.76 is the best in the set by a distance and has never been in question — Seattle is the cheapest market in the country to run a heat pump in.",
   factors:[["W-TAM ceiling",21,30],["Rebate",5.7,30],["SPARK",15,15],["Competition",2,10],["Adoption",4.2,5]],
   market:"Gas furnace → heat pump is the primary target. Among the lowest (hydro) electric rates in the U.S. and a mild marine climate — an all-electric HP is genuinely the cheapest system to run, and no backup heat is needed.",
   energy:[["Seattle City Light","11–12¢/kWh","Hydro-based, TOU launched 2026 — electric for nearly all of the city"],
@@ -1515,41 +1515,17 @@ const DATA = [
       "Techs need the 06A HVAC/R specialty electrician certificate (4,000 hrs plus exam).",
       "Seattle SDCI adds city Refrigeration/AC, Journey Refrigeration Mechanic and Gas Piping Mechanic licenses, each a city exam.",
       "Heaviest local layer in WA. ~3 months to first permit."]},
-  rebateBasis:"SCL Midstream HVAC+, the one programme reaching a standard Seattle job today: no income test, no registration, any fuel path, and already marked Can Participate. Everything larger in this market is behind an enrolment we do not hold, a fuel path we do not install, or an income test our customers do not meet.",
-  segments:{
-    lead:"One number cannot describe this market, so here is the structure underneath it. A rebate reaches a job only when territory, fuel path, income tier and contractor enrolment all line up; these are the combinations that exist. <b>Now</b> is what a job banks today. <b>Cleared</b> is what the same job banks once the named gate is passed — earned, not assumed.",
-    rows:[
-      { area:"Seattle city", sub:"SCL electric · PSE gas", job:"Gas → full electric", now:600, then:600,
-        gate:"None outstanding. Buy through a participating SCL distributor and the discount comes off at purchase — no registration, no income test, no manufacturer condition." },
-      { area:"Seattle city", sub:"SCL / OSE Clean Heat", job:"Oil → electric", now:0, then:0,
-        gate:"$2,000 with no income test, but two conditions we fail at once: oil-heated homes only, and Mitsubishi equipment only. This is where the Mitsubishi restriction actually sits." },
-      { area:"Eastside", sub:"6 cities, PSE gas", job:"Gas, propane, oil, wood → HP", now:0, then:1000,
-        gate:"Energy Smart Eastside trusted-installer network plus its approved-equipment list. Application in progress." },
-      { area:"Tacoma", sub:"Tacoma Power, Pierce Co.", job:"Any → ducted HP", now:0, then:1238,
-        gate:"Tacoma Power contractor registration, and a trade-area decision — this is outside Seattle proper." },
-      { area:"Snohomish Co.", sub:"Snohomish PUD", job:"Any → ducted HP", now:0, then:1547,
-        gate:"SnoPUD contractor registration, and the same trade-area decision. Richest reachable programme in the region." },
-      { area:"Anywhere PSE gas", sub:"PSE", job:"Gas → full electric", now:0, then:0,
-        gate:"No route at any gate. Moderate Income is income-tested, Hybrid is dual-fuel, and both need Trade Ally — twelve months of L&I tenure." },
-    ],
-  },
-  rebateNote:"Four gates decide every row below, and a rebate has to clear all four: the right utility and commodity (SCL is electric for nearly all of Seattle, PSE is gas for most of it, and each pays only on its own side); the right fuel path (gas→full-electric, dual-fuel, electric-resistance and oil are four different products to a programme); the income tier (most of the large money is capped at 150% AMI); and the contractor gate. Every superseded figure on this card failed a different one of the four — and one of them failed by pinning a restriction to the wrong programme, which is its own lesson about carrying a single number per market.",
-  warn:"PSE Trade Ally has been mandatory on every PSE rebate since 2 April 2026 — the old any-licensed-contractor pass-through is gone — and it requires an active L&I registration under the same business name for twelve consecutive months. If Jetson enters Washington on a newly registered entity, that is a twelve-month clock on PSE money that starts at registration, not at launch. It belongs in the market-entry sequence next to the licensing timeline, not in a rebate footnote. Application is $100, review 2–3 weeks, $1M/$2M liability with PSE as additional insured.",
+  rebateBasis:"Seattle City Light's Midstream HVAC+ — the one programme reaching a standard Seattle job today.",
   rebates:[
     {name:"Seattle City Light — Midstream HVAC+", bankable:600, headline:600,
-     note:"The one programme reaching a standard Seattle job today. $300/unit at SEER2 15.2 / HSPF2 8.1, $400 at HSPF2 8.5, $600 at SEER2 16.0 / HSPF2 9.5 — tiered on efficiency, not fuel, so a gas conversion qualifies. No income test, no contractor registration, no manufacturer condition; the discount is taken midstream at purchase and passed through on the invoice, so cash flow is favourable. Marked Can Participate at High confidence. The only condition is that equipment is bought through a participating SCL distributor — a procurement routing decision, not an eligibility barrier."},
+     note:"$300/$400/$600 per unit by efficiency tier, not by fuel, so a gas conversion qualifies. No income test, no registration, no manufacturer condition; taken as a midstream discount at purchase and passed through on the invoice. Requires buying through a participating SCL distributor."},
     {name:"Seattle Clean Heat — Oil-to-Electric", bankable:0, headline:2000,
-     note:"⚠ Where the Mitsubishi restriction actually sits. $2,000 base with no income test at all, plus $4,000 at 81–150% AMI, paid instantly at install — on paper the richest open programme in the city. Two conditions rule it out together: oil-heated homes only, and Mitsubishi equipment only. Also note a live discrepancy on the bonus deadline — seattle.gov says 30 May 2027, contractor sources say 30 Sept 2026."},
-    {name:"PSE — gas-side programmes (Seattle proper)", bankable:0, headline:4000,
-     note:"PSE is the gas utility for most of Seattle, and its gas-side rebates need only a PSE gas account — so these do reach inside the city, which an earlier pass on this card had wrong. Two exist and neither lands: Moderate Income Heat Pump pays up to $4,000 on exactly our conversion but is income-tested, and the Hybrid tier has no income test but pays for a heat pump kept alongside the furnace. Both also sit behind Trade Ally enrolment."},
-    {name:"PSE — electric-side programmes", bankable:0, headline:1500,
-     note:"Electric Resistance to HP ($1,500 base, no income test) and HP-to-HP Upgrade require PSE *electric* service, which almost no Seattle home has — SCL is the electric incumbent. Mostly irrelevant inside the city; both also require an electric-resistance or existing-heat-pump starting point, so they would not fit the job even where PSE is the electric utility."},
-    {name:"Energy Smart Eastside — heat pump campaign", bankable:0, headline:1000,
-     note:"$1,000 instant at point of sale, no income test, for a switch off gas, propane, oil or wood — Bellevue, Issaquah, Kirkland, Mercer Island, Redmond and Sammamish. Outside Seattle proper, so it is a different geography rather than a competing programme. Gated on a closed approved-equipment list (Mitsubishi, Bryant/Carrier, Day & Night) plus the trusted-installer network; Jetson is working on admission. Absent from Jetson's rebate database entirely."},
-    {name:"WA State HEAR (United Hub) and Seattle Office of Housing", bankable:0, headline:8000,
-     note:"The two largest numbers in the market and both income-capped: HEAR covers 50% of cost at ≤150% AMI or 100% at ≤80%, from a finite $103.6M state pool, and is already marked Can Participate at a $2,640 expected value — the gate here is the customer's income, not ours. The City Office of Housing funds a free gas-to-HP conversion at ≤80% AMI, capped at roughly fifty households. Out of scope for our customer base, listed so the size of what we are stepping past is on the record."},
-    {name:"Tacoma Power and Snohomish County PUD", bankable:0, headline:2500,
-     note:"Tacoma up to $2,000 ($1,238 expected value), Snohomish $800–$2,500 ($1,547) — both open, no income test, no equipment gate found, and both already marked Can Participate. They are the only unblocked open money in the region and they are $0 here purely because they sit outside Seattle proper. How the trade area is drawn is worth more to this market than any single programme on this card."}]
+     note:"$2,000 with no income test, but oil-heated homes only and Mitsubishi equipment only. This is where the Mitsubishi restriction sits."},
+    {name:"PSE — all open tiers", bankable:0, headline:4000,
+     note:"PSE is the gas utility for most of Seattle, so its gas-side programmes do reach here. None fits: Moderate Income ($4,000) is income-tested, Hybrid is dual-fuel, and the electric-side tiers need PSE electric service plus an electric-resistance or existing-HP starting point. All PSE rebates have required Trade Ally enrolment since 2 April 2026 — twelve months of L&I registration under the same business name."},
+    {name:"Energy Smart Eastside", bankable:0, headline:1000,
+     note:"$1,000 instant, no income test, six Eastside cities — outside Seattle proper. Gated on an approved-equipment list and the trusted-installer network; admission in progress."}]
+
 },
 ];
 </script>
@@ -1557,19 +1533,17 @@ const DATA = [
 "use strict";
 
 /* ═══ derived metrics ══════════════════════════════════════════════════
-   The brief defines the cost axis as net purchase price after rebate
-   at 75% plus operating cost (SPARK) at 25%. We compute it rather than
-   transcribe it, then check the result reproduces every quadrant label. */
-DATA.forEach(d => {
-  // Where a utility runs a heat-pump-friendly tariff, SPARK is discounted by
-  // that rate's modelled bill saving. d.spark stays the as-scored figure.
-  d.sparkEff = d.hpRate ? +(d.spark * (1 - d.hpRate.savings)).toFixed(2) : d.spark;
-});
-const rebates = DATA.map(d => d.rebate), sparks = DATA.map(d => d.sparkEff);
+   The brief defines the cost axis as net purchase price after rebate at 75%
+   plus operating cost (SPARK) at 25%. We compute it rather than transcribe it,
+   then check the result reproduces every quadrant label. SPARK is used exactly
+   as Panorama scores it: heat-pump-friendly tariffs are carried as an unscored
+   badge, matching Panorama v4.0, which surfaces them and keeps them out of the
+   score. */
+const rebates = DATA.map(d => d.rebate), sparks = DATA.map(d => d.spark);
 const rMax = Math.max(...rebates), sMin = Math.min(...sparks), sMax = Math.max(...sparks);
 DATA.forEach(d => {
-  const price = 1 - d.rebate / rMax;                  // 0 = richest rebate, 1 = none
-  const oper  = (d.sparkEff - sMin) / (sMax - sMin);  // 0 = best operating cost
+  const price = 1 - d.rebate / rMax;               // 0 = richest rebate, 1 = none
+  const oper  = (d.spark - sMin) / (sMax - sMin);  // 0 = best operating cost
   d.cost = +(100 * (0.75 * price + 0.25 * oper)).toFixed(1);
 });
 const cMin = Math.min(...DATA.map(d => d.cost)), cMax = Math.max(...DATA.map(d => d.cost));
@@ -1857,7 +1831,7 @@ function wireMarks(pos) {
       <span class="fx-w">Running cost &middot; 25%</span>
       <p class="fx-eq">( SPARK &minus; ${sMin.toFixed(2)} ) <span class="mu">&divide;</span> ${(sMax - sMin).toFixed(2)}
         <span class="mu">&mdash; the set's range, ${sMin.toFixed(2)} to ${sMax.toFixed(2)}</span></p>
-      <p class="fx-fine"><b>This axis departs from Panorama on one point.</b> Seven markets run a heat-pump-friendly tariff; SPARK here is discounted by that rate&rsquo;s modelled bill saving and marked &dagger;, with the as-scored figure on hover. Panorama surfaces those tariffs as a badge and deliberately does <em>not</em> score them, so the Market Score column and this cost axis will disagree for those seven. SPARK itself is a price ratio with no load term &mdash; see <em>How to read it</em>. Source: RMI&rsquo;s rate tracker.</p>
+      <p class="fx-fine">SPARK is a price ratio with no heating load in it &mdash; see <em>How to read it</em>. Two effects make some markets better than SPARK shows, and Panorama flags both without scoring them, as this brief does: <b>heat-pump-friendly tariffs</b> (seven markets here, marked &dagger;) and <b>delivered fuels</b> &mdash; propane and oil homes pay roughly 2&ndash;3&times; piped-gas cost per BTU, so SPARK understates those markets. The per-market delivered-fuel share is not yet imported from Panorama.</p>
     </div>
     <div class="fx-result">
       <span class="fx-w">${esc(ex.name)}, ${ex.state}</span>
@@ -1888,7 +1862,7 @@ function renderTable() {
       `<td class="nm"><button type="button" data-goto="${d.code}">${esc(d.name)}, ${d.state}</button></td>` +
       `<td><span class="qtag"><span class="sw" style="background:${qc};${DOT}"></span>${esc(d.quadrant)}</span></td>` +
       `<td class="r">${tam(d.wtam)}</td>` +
-      `<td class="r" title="${esc(d.hpRate ? `As scored ${d.spark.toFixed(2)}, discounted ${Math.round(d.hpRate.savings*100)}% for ${esc(d.hpRate.utility)}\u2019s ${esc(d.hpRate.tariff)} (${esc(d.hpRate.enrol)}).` : "Operating-cost ratio \u2014 lower means electric beats gas by more.")}">${d.sparkEff.toFixed(2)}${d.hpRate ? `<span class="adj">&dagger;</span>` : ""}</td>` +
+      `<td class="r" title="${esc(d.hpRate ? `HP-friendly tariff available \u2014 ${esc(d.hpRate.utility)}\u2019s ${esc(d.hpRate.tariff)}, ~${Math.round(d.hpRate.savings*100)}% modelled bill saving. Flagged, not scored, per Panorama.` : "HP-vs-gas running-cost ratio \u2014 1.0 is breakeven, lower is better.")}">${d.spark.toFixed(2)}${d.hpRate ? `<span class="adj">&dagger;</span>` : ""}</td>` +
       `<td class="r">${money(d.rebate)}</td>` +
       `<td class="c"><span class="lic" title="${d.complexity} of 5">${pips}</span></td>` +
       `<td class="r"><span class="bar-cell">${d.cost.toFixed(1)}<span class="bt"><span class="bf" style="width:${d.cost}%"></span></span></span></td>` +
@@ -2006,8 +1980,8 @@ function cardHTML(d) {
   const strip = [
     ["Panorama", d.panorama + " / 100"],
     ["W-TAM", tam(d.wtam)],
-    ["SPARK", d.sparkEff.toFixed(2) + (d.hpRate ? " &dagger;" : ""),
-      d.hpRate ? `As scored ${d.spark.toFixed(2)}, discounted ${Math.round(d.hpRate.savings*100)}% for ${esc(d.hpRate.utility)}\u2019s ${esc(d.hpRate.tariff)} (${esc(d.hpRate.enrol)}).` : "Operating-cost ratio \u2014 lower means electric beats gas by more."],
+    ["SPARK", d.spark.toFixed(2) + (d.hpRate ? " &dagger;" : ""),
+      d.hpRate ? `HP-friendly tariff available \u2014 ${esc(d.hpRate.utility)}\u2019s ${esc(d.hpRate.tariff)}, ~${Math.round(d.hpRate.savings*100)}% modelled bill saving. Flagged, not scored, per Panorama.` : "HP-vs-gas running-cost ratio \u2014 1.0 is breakeven, lower is better."],
     ["Rebate", money(d.rebate)],
     ["Licensing", d.complexity + " / 5"],
     ["To 1st permit", d.months + " mo",
@@ -2052,7 +2026,7 @@ function cardHTML(d) {
             : "the customer has to be enrolled — a sales-motion task, not automatic"}${d.hpRate.customers ? `, ${d.hpRate.customers.toLocaleString("en-US")} already on it` : ""}</span></div>
         </div>
         ${d.hpRate.note ? `<p style="font-size:.8125rem;color:var(--ink-3);line-height:1.5;margin-top:8px">${esc(d.hpRate.note)}</p>` : ""}
-        <p style="font-size:.75rem;color:var(--ink-3);margin-top:8px">SPARK as scored ${d.spark.toFixed(2)} &rarr; <b style="color:var(--ink)">${d.sparkEff.toFixed(2)}</b> used here. ${esc(RATE_SOURCE)}</p></div>` : ""}
+        <p style="font-size:.75rem;color:var(--ink-3);margin-top:8px"><b style="color:var(--ink)">Flagged, not scored.</b> SPARK stays at ${d.spark.toFixed(2)}, matching Panorama, which surfaces these tariffs as a badge and keeps them out of the score. Real upside the model does not credit. ${esc(RATE_SOURCE)}</p></div>` : ""}
       <div class="blk"><h4>Energy</h4><div class="kv">${d.energy.map(([n, r, note]) =>
         `<div class="kv-row"><span class="kk">${esc(n)}</span><span class="vv num">${esc(r)}</span><span class="nn">${esc(note)}</span></div>`).join("")}</div></div>
       <div class="blk wide"><h4>Who we&rsquo;d be up against</h4><div class="comp">${d.competitors.map(([n, t, note]) =>
