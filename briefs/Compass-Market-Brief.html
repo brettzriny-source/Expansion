@@ -469,6 +469,12 @@ td.nm button:hover{color:var(--accent); text-decoration:underline}
   font-family:var(--sub); font-weight:700; font-size:.5625rem; letter-spacing:.1em;
   text-transform:uppercase; color:var(--ink-3);
 }
+.sc-row.live{background:var(--accent-soft) !important}
+.sc-row.live .p3{color:var(--accent)}
+.scrub .sc-src{
+  font-size:.75rem; color:var(--ink-3); margin-top:9px;
+  font-family:var(--sub);
+}
 .scrub .sc-caveat{
   font-size:.8125rem; color:var(--ink-2); line-height:1.55; max-width:92ch;
   border-left:3px solid var(--warn); padding-left:11px;
@@ -1477,14 +1483,15 @@ const DATA = [
 {
   rank:19, code:"WA-SEA-1", name:"Seattle", state:"WA", quadrant:"Heavy Lift",
   panorama:55, wtam:315, units:"~1.1M (est.) SF/townhome units",
-  spark:0.76, rebate:500, complexity:3, months:3,
-  quadrantNote:"The source brief put Seattle in Worth the Paperwork on a $3,500 rebate, $3,000 of which was WA State HEAR. HEAR is income-qualified only, so it banks nothing for our customer base. At $500 the cost index moves from 48.8 to 71.2 and Seattle lands in Heavy Lift. Nothing about the running-cost case changed — SPARK 0.76 is still the best in the set. This is a purchase-price call: without a rebate we can actually claim, the cheapest market to run is an expensive one to buy into.",
+  spark:0.76, rebate:600, complexity:3, months:3,
+  quadrantNote:"Rebuilt from Jetson's own Heat Pump Rebate Programs database in Notion. The source brief carried $3,500, $3,000 of which was WA State HEAR — income-qualified, so it banks nothing for our customer base. The replacement is Seattle City Light's Midstream HVAC+ at a $600 JEV: no income test, no contractor registration, and we can participate today. At $600 the cost index moves from 48.8 to 70.5, which puts Seattle in Heavy Lift rather than Worth the Paperwork. Nothing about the running-cost case changed — SPARK 0.76 is still the best in the set. This is a purchase-price call: the cheapest market to run is an expensive one to buy into until we enrol in more of the programs below.",
   factors:[["W-TAM ceiling",21,30],["Rebate",5.7,30],["SPARK",15,15],["Competition",2,10],["Adoption",4.2,5]],
   market:"Gas furnace → heat pump is the primary target. Among the lowest (hydro) electric rates in the U.S. and a mild marine climate — an all-electric HP is genuinely the cheapest system to run, and no backup heat is needed.",
   energy:[["Seattle City Light","11–12¢/kWh","Hydro-based, TOU launched 2026"]],
   incentives:[
-    ["WA State HEAR (CCA-funded)","$0 for us","Headline is $8,000, but it is income-qualified only — not applicable to our customer base"],
-    ["PSE Income-Qualified","$500 typical","Headline $4,000 on a gas furnace → ducted HP, but most Jetson customers won't qualify"]],
+    ["Seattle City Light Midstream HVAC+","$600","No income test, no registration — a midstream distributor discount passed through on the invoice"],
+    ["PSE Income-Qualified Gas-to-HP","$0 for us","Headline $4,000 on a gas furnace → ducted HP, but income-tested"],
+    ["WA State HEAR (CCA-funded)","$0 for us","Headline is $8,000, but capped at 150% AMI — not applicable to our customer base"]],
   climate:{heat:"29°F", cool:"85°F", range:"37–79°F",
     text:"Mild marine (IECC 4C) with a design temp of only ~29°F — standard ASHPs carry the full load with no dual-fuel or electric-resistance backup. An ideal all-electric market."},
   competitors:[
@@ -1502,20 +1509,27 @@ const DATA = [
       "Heaviest local layer in WA. ~3 months to first permit."]},
   scrub:{
     date:"2026-09-01",
-    finding:"A re-scrub says $500 is about right for the path this card scores — a non-income-qualified gas furnace → ducted heat pump. Seattle's money sits on the other conversion paths, and on the income-qualified tiers we've ruled out. PSE's headline non-income-qualified rebate is for electric resistance → heat pump, not gas; its gas→HP and Efficiency Boost tiers are both income-tested; and Seattle City Light's instant rebate is for oil, not gas.",
-    paths:[
-      ["Oil → ducted HP","Seattle City Light","$2,000 instant","Rises to ~$6,000 income-qualified. Seattle proper only (SCL electric)."],
-      ["Electric resistance → HP","PSE","$1,500","No income test. PSE electric territory — the Eastside and most suburbs, not Seattle proper."],
-      ["HP → HP upgrade","PSE","$1,500","No income test. PSE electric territory."],
-      ["Ductless, any fuel","Seattle City Light","$1,200","Seattle proper."],
-      ["Gas furnace → ducted HP","PSE","$4,000","Income-qualified only — the tier this card carries at $500 typical."],
+    source:"Jetson's Heat Pump Rebate Programs database in Notion, last validated 2026-07-10",
+    finding:"$500 was too low, and the fix came from our own database rather than the open web. Seattle City Light runs a fuel-agnostic Midstream HVAC+ equipment rebate — a $600 JEV, no income test, no contractor registration, and we are already able to participate. That is now the market figure. The wider point is that most of this metro's rebate value sits in programs we have not enrolled in, or in territories outside Seattle City Light, so the $600 is a floor rather than a ceiling.",
+    rows:[
+      ["Seattle City Light — Midstream HVAC+","Seattle City Light",600,"None","Can participate today"],
+      ["Snohomish County PUD — Residential HP","Snohomish PUD",1547,"None","Can participate — north metro"],
+      ["Tacoma Power — Residential HP","Tacoma Power",1238,"Standard tier open to all","Can participate — south metro"],
+      ["Seattle Clean Heat — Oil-to-Electric","Seattle City Light",1800,"None on the $2,000 base","Not yet enrolled · oil homes, Mitsubishi only"],
+      ["PSE — Hybrid (dual-fuel) HP","PSE electric + gas",844,"None","Not yet enrolled · keeps gas backup"],
+      ["PSE — Heat pump → heat pump upgrade","PSE electric",844,"None","Not yet enrolled"],
+      ["PSE — Electric resistance → HP","PSE electric",675,"None on the $1,500 base","Not yet enrolled"],
+      ["PSE — Income-qualified gas → HP","PSE electric + gas",810,"Income-tested","Not yet enrolled · ruled out"],
+      ["WA State HEAR (CCA-funded)","Statewide via United Hub",2640,"≤150% AMI","Can participate, but income-tested · ruled out"],
     ],
-    caveat:"Amounts above are from secondary sources; pse.com, seattle.gov and wahear.com could not be opened directly during this scrub, so treat them as leads, not figures. None of them feed the market rebate or the cost index. Two things for the rebates team: confirm each amount at source, and decide whether Seattle should be scored on the gas path alone — the Puget Sound region carries a large electric-resistance and legacy-oil heating stock, and both of those paths pay better than gas does."},
+    caveat:"JEV is the database's expected per-job capture, not the program ceiling. Only the first three rows are both open to a standard customer and available to us today, and each sits in a different utility territory — so the right blended figure depends on where in the metro the trade area actually lands. Three unenrolled programs carry real no-income-test value: Clean Heat oil-to-electric at $1,800 JEV (registration required, Mitsubishi equipment, and the $4,000 income-qualified bonus expires 30 Sept 2026), and the two PSE $844 paths. Not shown: heat-pump water heater, EV-charger and weatherization records, the Duvall pilot, and the two federal programs that have not launched."},
   rebates:[
+    {name:"Seattle City Light — Midstream HVAC+ (HP HVAC)", bankable:600, headline:600,
+     note:"The one program open to a standard customer that we can already use. Tiered on equipment rather than fuel, so a gas conversion qualifies: $300/unit at SEER2 15.2 / HSPF2 8.1, $400 at HSPF2 8.5, $600 at SEER2 16.0 / HSPF2 9.5. Administered by Energy Solutions for SCL through participating distributors — a midstream discount taken at purchase and passed through as an invoice line, so no registration and no waiting on reimbursement. One outdoor system per address."},
+    {name:"PSE — Income-Qualified Gas-to-HP", bankable:0, headline:4000,
+     note:"Income-tested against PSE's county and household-size table, so it banks nothing for our customer base. Requires both PSE electric and gas service, a PSE Trade Ally installer from 4/2/2026, and removal of the gas equipment. We are not enrolled."},
     {name:"WA State HEAR (CCA-funded) — King County via United Hub", bankable:0, headline:8000,
-     note:"Income-qualified only, so it banks nothing for our customer base — carried here at $0 and listed so the reasoning is on the record rather than rediscovered. State CCA-funded and county-administered, unaffected by DOE Notice 26-2. King County is served by United Hub (wahear.com)."},
-    {name:"PSE Income-Qualified HP (gas furnace → ducted HP)", bankable:500, headline:4000,
-     note:"Requires a PSE Trade Ally installer, mandatory from 4/2/2026, and the gas equipment must be removed. Seattle-proper electric is SCL, which has no gas-conversion rebate."}]
+     note:"Capped at 150% AMI, and the 80–150% band only covers half of eligible cost — nothing for our customer base. Listed at $0 so the reasoning is on the record rather than rediscovered. United Hub is confirmed as the administrator for King County; there is no separate Seattle-specific administrator."}]
 },
 ];
 </script>
@@ -1885,17 +1899,21 @@ function factorBlock(d) {
 }
 function scrubBlock(d) {
   if (!d.scrub) return "";
-  const rows = d.scrub.paths.map(([p, who, amt, note]) =>
-    `<div class="sc-row"><span class="p1">${esc(p)}</span><span class="p2">${esc(who)}</span>` +
-    `<span class="p3">${esc(amt)}</span><span class="p4">${esc(note)}</span></div>`).join("");
+  const rows = d.scrub.rows.map(([p, terr, jev, inc, standing]) => {
+    const out = /^Can participate today/.test(standing);
+    return `<div class="sc-row${out ? " live" : ""}"><span class="p1">${esc(p)}</span>` +
+      `<span class="p2">${esc(terr)}</span><span class="p3">${money(jev)}</span>` +
+      `<span class="p4">${esc(inc)} &middot; ${esc(standing)}</span></div>`;
+  }).join("");
   return `<div class="scrub">
-    <p class="sc-hd">Rebate re-scrub &mdash; ${esc(d.scrub.date)} &middot; unconfirmed</p>
+    <p class="sc-hd">Rebate re-scrub &mdash; ${esc(d.scrub.date)}</p>
     <p>${esc(d.scrub.finding)}</p>
     <div class="sc-paths">
-      <div class="sc-row sc-head-row"><span>Conversion path</span><span>Payer</span><span>Amount</span><span>Notes</span></div>
+      <div class="sc-row sc-head-row"><span>Program</span><span>Territory</span><span>JEV</span><span>Income test &middot; our standing</span></div>
       ${rows}
     </div>
     <p class="sc-caveat">${esc(d.scrub.caveat)}</p>
+    <p class="sc-src">Source: ${esc(d.scrub.source)}</p>
   </div>`;
 }
 function rebateBlock(d) {
