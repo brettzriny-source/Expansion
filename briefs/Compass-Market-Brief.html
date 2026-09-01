@@ -935,8 +935,8 @@ const DATA = [
      note:"Not separately claimable on a bare furnace→HP swap — sits under the same PSE&G umbrella as Building Decarb, so it does not stack on top (rebates-team deep-dive 2026-08-31)."}]
 },
 {
-  rank:2, code:"NJ-SHR-1", name:"Toms River", state:"NJ", quadrant:"Easy In",
-  boundaryNote:"Toms River has moved out of Scale Fast. It cleared the cost line by 0.4 points while SPARK carried a heat-pump-rate discount; removing that discount to match Panorama moved the line and Toms River is now 3.8 points the wrong side of it. The label was flagged as a coin toss and it has landed — treat Easy In the same way, since the margin is still small and the market is one rebate revision from crossing back. Newark is the only unambiguous Scale Fast market in the set.",
+  rank:2, code:"NJ-SHR-1", name:"Toms River", state:"NJ", quadrant:"Scale Fast",
+  boundaryNote:"Toms River has crossed the cost line twice in one revision pass — out of Scale Fast when the heat-pump-rate discount was removed, back in when the rebate axis was re-anchored. Neither move involved new data about Toms River. Read the label as a statement about where the line happens to fall, not about the market: it sits close enough to the boundary that any further methodology change can move it again. Newark clears the same line by a wide margin and does not.",
   panorama:33, wtam:149, units:"~400K (est.) SF/townhome units",
   spark:0.84, rebate:3000, complexity:2, months:4,
   factors:[["W-TAM ceiling",10,30],["Rebate",3.7,30],["SPARK",15,15],["Competition",4.5,10],["Adoption",3,5]],
@@ -1348,7 +1348,8 @@ const DATA = [
    ]
 },
 {
-  rank:15, code:"NY-LGI-1", name:"Long Island", state:"NY", quadrant:"Heavy Lift",
+  rank:15, code:"NY-LGI-1", name:"Long Island", state:"NY", quadrant:"Worth the Paperwork",
+  quadrantNote:"Long Island moved out of Heavy Lift when the rebate axis stopped being anchored on Buffalo. Its $4,000 is the third-richest in the set and was being scored as though it were barely distinguishable from Richmond's $250; on a scale that runs to $4,400 it reads as what it is. The licensing is unchanged and still the hardest in the brief — no state HVAC licence, two county regimes, a town Master Plumber per town. That combination is exactly what Worth the Paperwork describes: economics good enough to justify the administrative load, rather than a market that is expensive and hard at once.",
   panorama:63, wtam:217, units:"~800K SF/townhome units",
   spark:1.18, rebate:4000, complexity:5, months:5,
   hpRate:{utility:"PSEG Long Island", tariff:"Residential Heating Service", savings:0.03, enrol:"Opt-in", customers:50000},
@@ -1540,9 +1541,21 @@ const DATA = [
    badge, matching Panorama v4.0, which surfaces them and keeps them out of the
    score. */
 const rebates = DATA.map(d => d.rebate), sparks = DATA.map(d => d.spark);
-const rMax = Math.max(...rebates), sMin = Math.min(...sparks), sMax = Math.max(...sparks);
+const sMin = Math.min(...sparks), sMax = Math.max(...sparks);
+/* The rebate distribution is skewed hard by one outlier: the top figure is well
+   above the next, and anchoring the axis to it compresses most of the set into
+   its bottom tenth, so a nominally 75%-weighted axis stops separating markets.
+   Anchor to the 90th percentile instead and clamp above it — past that point a
+   market's constraint is not its rebate. */
+function pct(arr, p) {
+  const a = [...arr].sort((x, y) => x - y), i = p * (a.length - 1);
+  const lo = Math.floor(i), hi = Math.ceil(i);
+  return a[lo] + (a[hi] - a[lo]) * (i - lo);
+}
+const rMax = Math.max(...rebates);              // still the real best, for copy
+const rCap = Math.round(pct(rebates, 0.90));    // the scale the axis runs to
 DATA.forEach(d => {
-  const price = 1 - d.rebate / rMax;               // 0 = richest rebate, 1 = none
+  const price = Math.max(0, 1 - d.rebate / rCap);  // 0 = at or above the cap
   const oper  = (d.spark - sMin) / (sMax - sMin);  // 0 = best operating cost
   d.cost = +(100 * (0.75 * price + 0.25 * oper)).toFixed(1);
 });
@@ -1810,9 +1823,10 @@ function wireMarks(pos) {
 /* ═══ cost-index explainer ════════════════════════════════════════════
    Rendered from the same constants the calculation uses. */
 (function explainCost() {
-  const ex = DATA.find(d => d.code === "NJ-NWK-1");
+  const ex = DATA.find(d => d.code === "MN-MSP-1");
   const best = DATA.find(d => d.rebate === rMax);
-  const price = 1 - ex.rebate / rMax;
+  const atCap = DATA.filter(d => d.rebate >= rCap).length;
+  const price = Math.max(0, 1 - ex.rebate / rCap);
   const oper = (ex.spark - sMin) / (sMax - sMin);
   const f = n => n.toFixed(2);
 
@@ -1824,8 +1838,9 @@ function wireMarks(pos) {
   <div class="fx-body">
     <div class="fx-term">
       <span class="fx-w">Rebate &middot; 75%</span>
-      <p class="fx-eq">1 &minus; ( rebate <span class="mu">&divide;</span> ${money(rMax)} )
-        <span class="mu">&mdash; the best in the set, ${esc(best.name)}</span></p>
+      <p class="fx-eq">1 &minus; ( rebate <span class="mu">&divide;</span> ${money(rCap)} )
+        <span class="mu">&mdash; the 90th percentile, floored at 0</span></p>
+      <p class="fx-fine">The axis runs to ${money(rCap)}, not to the best rebate in the set (${money(rMax)}, ${esc(best.name)}). Anchoring on that outlier put twelve of the nineteen markets inside the bottom tenth of a 75%-weighted axis, which stopped it separating them &mdash; the nominal weighting said rebate mattered three times as much as running cost while the arithmetic said the opposite. ${atCap === 1 ? "One market is" : atCap + " markets are"} at or above the cap and ${atCap === 1 ? "takes" : "take"} full credit: past that point a market&rsquo;s constraint is not its rebate.</p>
     </div>
     <div class="fx-term">
       <span class="fx-w">Running cost &middot; 25%</span>
