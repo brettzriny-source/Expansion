@@ -2131,7 +2131,9 @@ function renderCadence() {
 
   CADENCE.tiers.forEach(t => {
     cells.push(`<div class="cad-tier"><b>${esc(t.name)}</b><span>${esc(t.sub)}</span></div>`);
-    let total = CADENCE.locked.length;
+    /* What the scenario is worth at full cadence — the January lock plus every
+       slot the tier opens. Fixed by the plan, not by how much is placed yet. */
+    const total = CADENCE.locked.length + (t.cap || []).reduce((a, c) => a + c, 0);
     CADENCE.months.forEach((mo, m) => {
       if (m === 0) {
         cells.push(`<div class="cad-cell locked">` + CADENCE.locked.map(n =>
@@ -2140,7 +2142,6 @@ function renderCadence() {
       }
       const rows = cellFor(t.key, m);
       const cap = (t.cap && t.cap[m]) || 0;
-      total += rows.length;
       /* A cell with no capacity at this tier is shut, not merely empty. */
       if (!cap && !rows.length) {
         cells.push(`<div class="cad-cell shut"><span class="shut-k">closed</span></div>`);
@@ -2159,7 +2160,7 @@ function renderCadence() {
             (free > 1 ? `<span class="cap-n">${free} slots</span>` : "")
           : `<span class="cap-n full">full</span>`) + `</div>`);
     });
-    cells.push(`<div class="cad-total"><b class="num">${total}</b><span>Markets</span></div>`);
+    cells.push(`<div class="cad-total"><b class="num">${total}</b><span>At full cadence</span></div>`);
   });
   cad.innerHTML = cells.join("");
 
