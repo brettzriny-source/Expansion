@@ -444,6 +444,35 @@ td.nm button:hover{color:var(--accent); text-decoration:underline}
   font-variant-numeric:tabular-nums; color:var(--accent);
 }
 .reb-lead .rl-n{font-size:.8125rem; color:var(--ink-3); flex:1 1 22ch; min-width:0}
+.scrub{
+  border:1px dashed var(--border-2); border-radius:var(--radius);
+  padding:15px 17px 17px; margin-bottom:11px; background:var(--surface-2);
+}
+.scrub .sc-hd{
+  font-family:var(--sub); font-weight:700; font-size:.625rem; letter-spacing:.11em;
+  text-transform:uppercase; color:var(--warn); margin-bottom:8px;
+}
+.scrub > p{font-size:.875rem; color:var(--ink-2); line-height:1.55; max-width:92ch}
+.sc-paths{display:grid; gap:1px; background:var(--border); border:1px solid var(--border);
+  border-radius:8px; overflow:hidden; margin:12px 0}
+.sc-row{
+  background:var(--surface); padding:8px 12px; display:grid; gap:2px 12px;
+  grid-template-columns:1fr; font-size:.8125rem;
+}
+@media(min-width:720px){ .sc-row{grid-template-columns:15em 9em 6.5em 1fr; align-items:baseline} }
+.sc-row .p1{font-family:var(--sub); font-weight:700; color:var(--ink)}
+.sc-row .p2{color:var(--ink-2)}
+.sc-row .p3{font-family:var(--sub); font-weight:700; font-variant-numeric:tabular-nums; color:var(--ink)}
+.sc-row .p4{color:var(--ink-3); font-size:.78rem; line-height:1.45}
+.sc-head-row{background:var(--surface-3) !important}
+.sc-head-row span{
+  font-family:var(--sub); font-weight:700; font-size:.5625rem; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--ink-3);
+}
+.scrub .sc-caveat{
+  font-size:.8125rem; color:var(--ink-2); line-height:1.55; max-width:92ch;
+  border-left:3px solid var(--warn); padding-left:11px;
+}
 .comp{display:grid; gap:8px}
 .comp-i{font-size:.875rem; line-height:1.45}
 .comp-i .cn{font-family:var(--sub); font-weight:700; color:var(--ink)}
@@ -1057,8 +1086,7 @@ const DATA = [
   market:"Gas furnace → heat pump across the Piedmont Triad (Guilford + Forsyth). A true dual heating-and-cooling market with strong SPARK — Duke Energy Carolinas rates run below the national average, so electric beats gas on operating cost. Same easy statewide NC license as Charlotte and Raleigh, so the playbook is reusable. The rebate is modest at ~$500, making this a run-cheap, easy-entry play rather than a big-rebate one.",
   energy:[["Duke Energy Carolinas","13–15¢/kWh","Fully regulated, TOU available; DEC rate case pending ~Jan 2027"]],
   incentives:[
-    ["Duke Energy Carolinas Smart$aver","Up to $500","Ducted ASHP, raised to $500 effective 1/1/2025"],
-    ["Federal 25C tax credit","Up to $2,000","Up to $2,000 for a qualifying HP — a tax credit, not a check. Verify the 2026 sunset"]],
+    ["Duke Energy Carolinas Smart$aver","Up to $500","Ducted ASHP, raised to $500 effective 1/1/2025"]],
   climate:{heat:"22°F", cool:"94°F", range:"15–95°F",
     text:"Inland Piedmont mixed-humid (IECC 3A) — genuine cold snaps and hot humid summers, a true dual heating-and-cooling load. Size to the cooling load, verify heating capacity at ~22°F, variable-speed HP with modest strip backup."},
   competitors:[
@@ -1117,8 +1145,7 @@ const DATA = [
   market:"Gas furnace → heat pump across Upstate SC (Greenville–Anderson–Spartanburg). Below-average Duke Carolinas power makes electric beat gas on strong SPARK, and the Blue Ridge foothills give it real winters — a genuine dual load, colder than coastal SC. About 1.5 hours from Charlotte, so it reuses that NC/SC regional playbook. The rebate is modest at ~$500, making this a run-cheap adjacency play.",
   energy:[["Duke Energy Carolinas (Upstate SC)","13–15¢/kWh","Regulated, TOU available; below US average"]],
   incentives:[
-    ["Duke Energy Carolinas Smart$aver (SC)","Up to ~$900","Ducted ASHP plus a gas→electric conversion bonus"],
-    ["Federal 25C tax credit","Up to $2,000","Up to $2,000 for a qualifying HP — a credit, not a check"]],
+    ["Duke Energy Carolinas Smart$aver (SC)","Up to ~$900","Ducted ASHP plus a gas→electric conversion bonus"]],
   climate:{heat:"22°F", cool:"93°F", range:"20–95°F",
     text:"Warm-humid near the 3A/4A boundary — the Blue Ridge foothills push winters colder than coastal SC, so it's a true dual heating-and-cooling load, not a cooling afterthought."},
   competitors:[
@@ -1146,8 +1173,7 @@ const DATA = [
   market:"Gas furnace → heat pump across the SC Midlands (Richland + Lexington). Hot, humid and cooling-dominant with mild-but-real winters — a properly sized HP covers the season. Same easy SC statewide license and standardized business licenses as Greenville. Note that Dominion Energy SC territory at ~16¢ is pricier than Upstate Duke, so operating economics are a bit weaker here, and the rebate is thin at ~$450.",
   energy:[["Dominion Energy SC (former SCE&G)","~16¢/kWh","Regulated; ~7.6% increase settled May 2026"]],
   incentives:[
-    ["Dominion Energy SC — HP rebate","Up to $500","ENERGY STAR HP; a gas conversion gets the general tier"],
-    ["Federal 25C tax credit","Up to $2,000","Up to $2,000 for a qualifying HP — a credit, not a check"]],
+    ["Dominion Energy SC — HP rebate","Up to $500","ENERGY STAR HP; a gas conversion gets the general tier"]],
   climate:{heat:"24°F", cool:"95°F", range:"25–96°F",
     text:"Warm-humid (IECC 3A) — long hot summers with mild-but-real winters. Cooling-dominant, but a cold-capable HP carries the heating season without much resistance backup."},
   competitors:[
@@ -1175,8 +1201,7 @@ const DATA = [
   market:"Gas furnace → heat pump across the Louisville and Lexington corridor — two metros on I-64. The value story is SPARK: LG&E/KU power at ~11.5¢ is among the cheapest in the US, and the Feb-2026 rate case raised gas faster than electric, so electric beats gas on operating cost. Old, gas-heavy housing and no incumbent HP specialist. The rebate is thin at ~$400, so this is a run-cheap whitespace play, not a rebate play.",
   energy:[["LG&E (Louisville) / KU (Lexington)","~11.5¢/kWh","Regulated; gas rose faster than electric in the Feb-2026 rate case"]],
   incentives:[
-    ["LG&E/KU Residential Rebate","Up to $400","ENERGY STAR ducted HP, relaunched Apr 2025"],
-    ["Federal 25C tax credit","Up to $2,000","Up to $2,000 for a qualifying HP — a tax credit, not a check. Verify 2026 status"]],
+    ["LG&E/KU Residential Rebate","Up to $400","ENERGY STAR ducted HP, relaunched Apr 2025"]],
   climate:{heat:"13°F", cool:"91°F", range:"5–93°F",
     text:"Mixed-humid (IECC 4A) — cold-but-not-extreme winters plus hot humid summers, a genuine dual heating-and-cooling load. Furnaces here do real heating work; size to the cooling load and verify HP capacity at ~13°F with modest strip backup."},
   competitors:[
@@ -1204,8 +1229,7 @@ const DATA = [
   market:"Gas furnace → heat pump across metro Richmond (City + Henrico + Chesterfield + Hanover). A genuine 4A dual-load market and the fastest-growing region in Virginia, with a data-center and relocation boom concentrated in Henrico and Chesterfield — a real TAM tailwind. The rebate is thin at ~$250 with a moderate VA BPOL lift; the value is growth plus operating economics, not incentives.",
   energy:[["Dominion Energy Virginia","14–16¢/kWh","Regulated; data-center demand is a medium-term rate-pressure risk"]],
   incentives:[
-    ["Dominion Energy VA HP incentive","Up to ~$250","Small ducted-ASHP rebate; the menu leans toward HP water heaters and thermostats"],
-    ["Federal 25C tax credit","Up to $2,000","Up to $2,000 for a qualifying HP — a credit, not a check"]],
+    ["Dominion Energy VA HP incentive","Up to ~$250","Small ducted-ASHP rebate; the menu leans toward HP water heaters and thermostats"]],
   climate:{heat:"17°F", cool:"93°F", range:"20–95°F",
     text:"Mixed-humid (IECC 4A) — meaningful winter heating hours plus a long humid cooling season make a genuine dual load. Size a cold-capable HP to carry both without oversizing."},
   competitors:[
@@ -1476,6 +1500,17 @@ const DATA = [
       "Techs need the 06A HVAC/R specialty electrician certificate (4,000 hrs plus exam).",
       "Seattle SDCI adds city Refrigeration/AC, Journey Refrigeration Mechanic and Gas Piping Mechanic licenses, each a city exam.",
       "Heaviest local layer in WA. ~3 months to first permit."]},
+  scrub:{
+    date:"2026-09-01",
+    finding:"A re-scrub says $500 is about right for the path this card scores — a non-income-qualified gas furnace → ducted heat pump. Seattle's money sits on the other conversion paths, and on the income-qualified tiers we've ruled out. PSE's headline non-income-qualified rebate is for electric resistance → heat pump, not gas; its gas→HP and Efficiency Boost tiers are both income-tested; and Seattle City Light's instant rebate is for oil, not gas.",
+    paths:[
+      ["Oil → ducted HP","Seattle City Light","$2,000 instant","Rises to ~$6,000 income-qualified. Seattle proper only (SCL electric)."],
+      ["Electric resistance → HP","PSE","$1,500","No income test. PSE electric territory — the Eastside and most suburbs, not Seattle proper."],
+      ["HP → HP upgrade","PSE","$1,500","No income test. PSE electric territory."],
+      ["Ductless, any fuel","Seattle City Light","$1,200","Seattle proper."],
+      ["Gas furnace → ducted HP","PSE","$4,000","Income-qualified only — the tier this card carries at $500 typical."],
+    ],
+    caveat:"Amounts above are from secondary sources; pse.com, seattle.gov and wahear.com could not be opened directly during this scrub, so treat them as leads, not figures. None of them feed the market rebate or the cost index. Two things for the rebates team: confirm each amount at source, and decide whether Seattle should be scored on the gas path alone — the Puget Sound region carries a large electric-resistance and legacy-oil heating stock, and both of those paths pay better than gas does."},
   rebates:[
     {name:"WA State HEAR (CCA-funded) — King County via United Hub", bankable:0, headline:8000,
      note:"Income-qualified only, so it banks nothing for our customer base — carried here at $0 and listed so the reasoning is on the record rather than rediscovered. State CCA-funded and county-administered, unaffected by DOE Notice 26-2. King County is served by United Hub (wahear.com)."},
@@ -1848,13 +1883,28 @@ function factorBlock(d) {
     `<span class="ft"><span class="ff" style="width:${(v / m * 100).toFixed(1)}%"></span></span>` +
     `<span class="fv">${v}/${m}</span></div>`).join("") + `</div>`;
 }
+function scrubBlock(d) {
+  if (!d.scrub) return "";
+  const rows = d.scrub.paths.map(([p, who, amt, note]) =>
+    `<div class="sc-row"><span class="p1">${esc(p)}</span><span class="p2">${esc(who)}</span>` +
+    `<span class="p3">${esc(amt)}</span><span class="p4">${esc(note)}</span></div>`).join("");
+  return `<div class="scrub">
+    <p class="sc-hd">Rebate re-scrub &mdash; ${esc(d.scrub.date)} &middot; unconfirmed</p>
+    <p>${esc(d.scrub.finding)}</p>
+    <div class="sc-paths">
+      <div class="sc-row sc-head-row"><span>Conversion path</span><span>Payer</span><span>Amount</span><span>Notes</span></div>
+      ${rows}
+    </div>
+    <p class="sc-caveat">${esc(d.scrub.caveat)}</p>
+  </div>`;
+}
 function rebateBlock(d) {
   const top = Math.max(...d.rebates.map(r => Math.max(r.headline, r.bankable)), 1);
   const lead = `<div class="reb-lead"><span class="rl-k">Market rebate</span>` +
     `<span class="rl-v">${money(d.rebate)}</span>` +
     `<span class="rl-n">what a typical job banks &mdash; the figure in the market table and the cost index. ` +
     `The programs below don't all stack, and some cover only part of the metro, so this is not their sum.</span></div>`;
-  return lead + d.rebates.map(r => {
+  return lead + scrubBlock(d) + d.rebates.map(r => {
     const zero = r.bankable === 0;
     return `<div class="reb${zero ? " zero" : ""}">` +
       `<p class="rn">${esc(r.name)}</p>` +
