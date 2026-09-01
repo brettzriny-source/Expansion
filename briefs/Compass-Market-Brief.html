@@ -299,6 +299,8 @@ section{padding:clamp(40px,6vw,72px) 0 0}
   font-family:var(--sub); font-weight:700; font-size:.625rem; letter-spacing:.11em;
   text-transform:uppercase; color:var(--ink-3); margin-bottom:8px;
 }
+.adj{color:var(--warn); font-weight:700; margin-left:2px; cursor:help}
+.fx-fine{font-size:.75rem; color:var(--ink-3); line-height:1.5; margin-top:9px}
 .fx-note p{font-size:.8125rem; line-height:1.55; color:var(--ink-2); max-width:92ch}
 .fx-note b{color:var(--ink)}
 
@@ -724,7 +726,7 @@ html{scroll-behavior:smooth}
     <div class="defs">
       <div class="def">
         <h4>Purchase &amp; operating cost &mdash; vertical</h4>
-        <p>Net purchase price after the rebate we expect to capture (more rebate = cheaper) weighted 75%, plus operating economics (SPARK) at 25%. Indexed 0&ndash;100 across the 19; lower is cheaper to own. The arithmetic is spelled out below.</p>
+        <p>Net purchase price after the rebate we expect to capture (more rebate = cheaper) weighted 75%, plus operating economics (SPARK) at 25%. Where a utility runs a heat-pump-specific heating tariff, SPARK uses that rate, not the standard one. Indexed 0&ndash;100 across the 19; lower is cheaper to own.</p>
       </div>
       <div class="def">
         <h4>Operational complexity &mdash; horizontal</h4>
@@ -944,7 +946,8 @@ const DATA = [
 {
   rank:3, code:"MN-MSP-1", name:"Minneapolis", state:"MN", quadrant:"Easy In",
   panorama:59, wtam:464, units:"970K SF/townhome units",
-  spark:1.52, rebate:2000, complexity:2, months:3,
+  spark:0.82, sparkAsScored:1.52, rebate:2000, complexity:2, months:3,
+  sparkNote:"SPARK as scored was 1.52 — tied worst in the set — which only holds if a heat pump runs on Xcel's standard 11–13¢ residential rate. It doesn't: installing one auto-enrols the home on Xcel's electric space-heating rate at 6.5¢/kWh through the winter, roughly half. Scaling the electric side of the ratio by 6.5¢ against the 12¢ midpoint gives ~0.82, which is what this card and the cost index use. It moves Minneapolis from worst-in-set on running cost to mid-pack and drops the cost index from 85.0 to 62.0; the quadrant does not change. The adjustment assumes SPARK is linear in the electric rate, which is likely for a cost ratio but unverified — Panorama should re-score it properly, and every other market should be checked for heat-pump tariffs the same way.",
   factors:[["W-TAM ceiling",30,30],["Rebate",10.8,30],["SPARK",1.7,15],["Competition",6,10],["Adoption",2.7,5]],
   market:"Gas furnace → heat pump is the primary target, and this is the coldest market yet — the sale is proving a cold-climate HP handles sub-zero winters without a backup furnace. Most homes run gas from Xcel or CenterPoint.",
   energy:[
@@ -970,7 +973,8 @@ const DATA = [
       "No state HVAC contractor license — just a $25K state mechanical bond (DLI).",
       "The competency card reciprocates: one Minneapolis/St. Paul master card is accepted city-to-city (~$30 to reciprocate), with no re-testing per suburb.",
       "One state electrical contractor license covers the whole metro — cities can't charge a separate electrical fee (Minn. Stat. 326B.36).",
-      "Real friction is a per-city business registration and permit in each suburb — administrative volume, not exams. ~3 months to first permit."]},
+      "Real friction is a per-city business registration and permit in each suburb — administrative volume, not exams. ~3 months to first permit.",
+      "Confirm whether MN DLI residential building contractor / remodeler licensing applies. Single-skill specialty contractors are generally exempt, but a whole-home conversion may not read as single-skill. Unconfirmed."]},
   rebates:[
     {name:"Xcel Energy MN — cold-climate ASHP", bankable:2000, headline:2000,
      note:"Current Xcel schedule: $2,000 all-electric (Combo) / $1,500 electric-only ccASHP, plus a $600 insulation bonus. The old “$900 electric-only” figure was stale — Xcel raised it. Best single-utility bankable is $2,000 for a full all-electric conversion."},
@@ -1210,7 +1214,8 @@ const DATA = [
       "VA DPOR statewide licensing — a business Contractor license (Class A/B/C by project value) plus an individual HVAC Tradesman license. One state system, no per-county exams.",
       "Local layer is a per-locality BPOL business license plus permits: City of Richmond + Henrico + Chesterfield + Hanover, four jurisdictions.",
       "GL insurance; the DPOR class scales with project size.",
-      "Moderate lift — statewide license, but a four-jurisdiction BPOL and permit stack. ~2 months to first permit."]},
+      "Moderate lift — statewide license, but a four-jurisdiction BPOL and permit stack. ~2 months to first permit.",
+      "DPOR carries a separate Home Improvement Contracting classification on top of the HVAC trade designation — confirm whether our scope of work needs it. Unconfirmed."]},
   rebates:[
     {name:"Dominion Energy Virginia — residential HP incentive", bankable:250, headline:400,
      note:"Dominion's menu is strongest for HP water heaters and thermostats; the ducted ASHP incentive for standard customers is small at about $250. VA has no strong state HP rebate, HOMES/HEAR had not launched as of Aug 2026, and HEAR is $0 for non-income-qualified customers."}]
@@ -1398,7 +1403,8 @@ const DATA = [
       "No state HVAC license — Chicago pulls mechanical permits under a City General Contractor license (Class E/D, no exam).",
       "A separate Chicago Electrical Contractor license requires an exam-qualified Supervising Electrician on staff.",
       "Each suburb layers its own registration, several with mechanical or fuel-gas exams (Evanston, Skokie).",
-      "Fastest Northeast market to first permit at ~2 months, but heavy per-jurisdiction sprawl."]},
+      "Fastest Northeast market to first permit at ~2 months, but heavy per-jurisdiction sprawl.",
+      "Chicago also runs a separate Home Repair business-license category alongside the General Contractor license — confirm which one a residential HP changeout is pulled under. Unconfirmed."]},
   rebates:[
     {name:"ComEd Home Heating & Cooling Rebates (ducted ASHP instant discount)", bankable:1500, headline:2075,
      note:"Re-tiered by heating tonnage 3/1/2026. Watch municipal-electric towns — Winnetka, Naperville, St. Charles, Geneva, Batavia — which sit outside ComEd at $0."}],
@@ -1772,6 +1778,7 @@ function wireMarks(pos) {
       <span class="fx-w">Running cost &middot; 25%</span>
       <p class="fx-eq">( SPARK &minus; ${sMin.toFixed(2)} ) <span class="mu">&divide;</span> ${(sMax - sMin).toFixed(2)}
         <span class="mu">&mdash; the set's range, ${sMin.toFixed(2)} to ${sMax.toFixed(2)}</span></p>
+      <p class="fx-fine">Where a utility runs a heat-pump-specific heating tariff, SPARK is scaled to that rate rather than the standard residential one. Marked &dagger; wherever it appears.</p>
     </div>
     <div class="fx-result">
       <span class="fx-w">${esc(ex.name)}, ${ex.state}</span>
@@ -1802,7 +1809,7 @@ function renderTable() {
       `<td class="nm"><button type="button" data-goto="${d.code}">${esc(d.name)}, ${d.state}</button></td>` +
       `<td><span class="qtag"><span class="sw" style="background:${qc};${DOT}"></span>${esc(d.quadrant)}</span></td>` +
       `<td class="r">${tam(d.wtam)}</td>` +
-      `<td class="r">${d.spark.toFixed(2)}</td>` +
+      `<td class="r"${d.sparkNote ? ` title="${esc(d.sparkNote)}"` : ""}>${d.spark.toFixed(2)}${d.sparkNote ? `<span class="adj">&dagger;</span>` : ""}</td>` +
       `<td class="r">${money(d.rebate)}</td>` +
       `<td class="c"><span class="lic" title="${d.complexity} of 5">${pips}</span></td>` +
       `<td class="r"><span class="bar-cell">${d.cost.toFixed(1)}<span class="bt"><span class="bf" style="width:${d.cost}%"></span></span></span></td>` +
@@ -1887,7 +1894,8 @@ function cardHTML(d) {
   const strip = [
     ["Panorama", d.panorama + " / 100"],
     ["W-TAM", tam(d.wtam)],
-    ["SPARK", d.spark.toFixed(2)],
+    ["SPARK", d.spark.toFixed(2) + (d.sparkNote ? " &dagger;" : ""),
+      d.sparkNote || "Operating-cost ratio — lower means electric beats gas by more."],
     ["Rebate", money(d.rebate)],
     ["Licensing", d.complexity + " / 5"],
     ["To 1st permit", d.months + " mo",
@@ -1916,6 +1924,7 @@ function cardHTML(d) {
         ${d.carve ? `<div class="carve" style="margin-top:12px">${esc(d.carve)}</div>` : ""}
         ${d.quadrantNote ? `<div class="qnote" style="margin-top:12px"><b>Reclassified since the source brief.</b> ${esc(d.quadrantNote)}</div>` : ""}
         ${d.scopeNote ? `<div class="qnote" style="margin-top:12px"><b>Trade area re-scoped.</b> ${esc(d.scopeNote)}</div>` : ""}
+        ${d.sparkNote ? `<div class="qnote" style="margin-top:12px"><b>SPARK adjusted for the heat-pump tariff.</b> ${esc(d.sparkNote)}</div>` : ""}
       </div>
       <div class="blk wide"><div class="wedge"><h4 style="border:0;padding:0;margin-bottom:5px">Our wedge</h4><p>${esc(d.wedge)}</p></div></div>
       <div class="blk"><h4>Panorama factors &mdash; ${d.panorama}/100</h4>${factorBlock(d)}</div>
