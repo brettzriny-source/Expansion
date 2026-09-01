@@ -799,7 +799,7 @@ html{scroll-behavior:smooth}
       <span class="spacer"></span>
       <button class="btn" id="cadReset" type="button">Clear plan</button>
     </div>
-    <p class="sec-sub">January is locked &mdash; Dallas and Portland, leases signed. <b>Base</b> is one launch a month with February closed; <b>+2</b> opens a second slot in June; <b>+6</b> runs two a month across the board. Each tier shows only the slots it actually has, so a month that is shut reads <b>closed</b> and a full one stops offering <b>+ add</b>. Placements cascade upward: a market you add to Base also counts in +2 and +6.</p>
+    <p class="sec-sub">January is locked &mdash; Dallas and Portland, leases signed. <b>Base</b> is one launch a month with February closed; <b>+2</b> opens February and adds a second slot in June; <b>+6</b> runs two a month across the board. Each tier shows only the slots it actually has, so a month that is shut reads <b>closed</b> and a full one stops offering <b>+ add</b>. Placements cascade upward: a market you add to Base also counts in +2 and +6.</p>
     <hr class="rule">
     <div class="card cad-card">
       <div class="cad-scroll">
@@ -856,7 +856,7 @@ const CADENCE = {
      inherited placements included. Jan is the signed lock, so cap 0. */
   tiers: [
     { key:"base",  name:"Base",    sub:"1 / month, Feb closed", cap:[0,0,1,1,1,1] },
-    { key:"plus2", name:"Base +2", sub:"second market in June",  cap:[0,0,1,1,1,2] },
+    { key:"plus2", name:"Base +2", sub:"Feb opens, second in June", cap:[0,1,1,1,1,2] },
     { key:"plus6", name:"Base +6", sub:"2 / month, every month", cap:[0,2,2,2,2,2] },
   ],
 };
