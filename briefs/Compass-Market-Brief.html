@@ -427,6 +427,23 @@ td.nm button:hover{color:var(--accent); text-decoration:underline}
 .reb .rv s{color:var(--ink-3); font-weight:400; text-decoration:none; opacity:.85}
 .reb .rnote{font-size:.8125rem; color:var(--ink-3); line-height:1.5; max-width:96ch}
 .reb.zero .rf{background:var(--ink-3)}
+.qnote{
+  background:var(--warn-soft); border-left:3px solid var(--warn);
+  border-radius:0 8px 8px 0; padding:13px 15px; font-size:.9375rem;
+  line-height:1.55; color:var(--ink-2);
+}
+.qnote b{color:var(--ink)}
+.reb-lead{
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 10px;
+  background:var(--surface-2); border:1px solid var(--border);
+  border-radius:8px; padding:11px 14px; margin-bottom:11px;
+}
+.reb-lead .rl-k{font-family:var(--sub); font-weight:700; font-size:.8125rem}
+.reb-lead .rl-v{
+  font-family:var(--serif); font-weight:900; font-size:1.3rem; line-height:1;
+  font-variant-numeric:tabular-nums; color:var(--accent);
+}
+.reb-lead .rl-n{font-size:.8125rem; color:var(--ink-3); flex:1 1 22ch; min-width:0}
 .comp{display:grid; gap:8px}
 .comp-i{font-size:.875rem; line-height:1.45}
 .comp-i .cn{font-family:var(--sub); font-weight:700; color:var(--ink)}
@@ -712,6 +729,10 @@ html{scroll-behavior:smooth}
         <p>The licensing regime. 1 means one statewide license; 5 means every county runs its own exam and application. A local business-license or tax layer adds administrative lift, not licensing lift, where noted.</p>
       </div>
       <div class="def">
+        <h4>Time to first permit</h4>
+        <p>Months from the day we start licensure paperwork to the day we can pull a permit &mdash; application processing, exams and board sittings. It is <b>not</b> time to first sale, and it isn&rsquo;t hiring time: experienced qualifiers are brought on ahead of filing, so the clock is scheduling, not ramp-up.</p>
+      </div>
+      <div class="def">
         <h4>Rebate reality</h4>
         <p>Federal HEAR is $0 for customers who aren&rsquo;t income-qualified. The richest rebates cluster in Northeast programs &mdash; NY Clean Heat, NJ Building Decarb. Most Southeast and dual-load markets are thin-rebate, strong-SPARK plays.</p>
       </div>
@@ -724,6 +745,7 @@ html{scroll-behavior:smooth}
       <h2>Market table</h2>
       <span class="eyebrow">Click a column to sort</span>
     </div>
+    <p class="sec-sub"><b>Rebate</b> is what a typical job in that market actually banks, after stacking rules and territory splits &mdash; not the sum of the program ceilings. Each market card breaks it down program by program.</p>
     <hr class="rule">
     <div class="tbl-scroll">
       <table id="tbl">
@@ -1429,15 +1451,16 @@ const DATA = [
   rampNote:"Each phase is application processing plus exam and test scheduling — six months where the exam board only sits semi-annually. Experienced staff are hired ahead, so that clock is scheduling, not ramp-up."
 },
 {
-  rank:19, code:"WA-SEA-1", name:"Seattle", state:"WA", quadrant:"Worth the Paperwork",
+  rank:19, code:"WA-SEA-1", name:"Seattle", state:"WA", quadrant:"Heavy Lift",
   panorama:55, wtam:315, units:"~1.1M (est.) SF/townhome units",
-  spark:0.76, rebate:3500, complexity:3, months:3,
+  spark:0.76, rebate:500, complexity:3, months:3,
+  quadrantNote:"The source brief put Seattle in Worth the Paperwork on a $3,500 rebate, $3,000 of which was WA State HEAR. HEAR is income-qualified only, so it banks nothing for our customer base. At $500 the cost index moves from 48.8 to 71.2 and Seattle lands in Heavy Lift. Nothing about the running-cost case changed — SPARK 0.76 is still the best in the set. This is a purchase-price call: without a rebate we can actually claim, the cheapest market to run is an expensive one to buy into.",
   factors:[["W-TAM ceiling",21,30],["Rebate",5.7,30],["SPARK",15,15],["Competition",2,10],["Adoption",4.2,5]],
   market:"Gas furnace → heat pump is the primary target. Among the lowest (hydro) electric rates in the U.S. and a mild marine climate — an all-electric HP is genuinely the cheapest system to run, and no backup heat is needed.",
   energy:[["Seattle City Light","11–12¢/kWh","Hydro-based, TOU launched 2026"]],
   incentives:[
-    ["WA State HEAR (CCA-funded)","Up to $8,000","King Co. via United Hub; income-qualified"],
-    ["PSE Income-Qualified","Up to $4,000","Gas furnace → ducted HP; most Jetson customers won't qualify"]],
+    ["WA State HEAR (CCA-funded)","$0 for us","Headline is $8,000, but it is income-qualified only — not applicable to our customer base"],
+    ["PSE Income-Qualified","$500 typical","Headline $4,000 on a gas furnace → ducted HP, but most Jetson customers won't qualify"]],
   climate:{heat:"29°F", cool:"85°F", range:"37–79°F",
     text:"Mild marine (IECC 4C) with a design temp of only ~29°F — standard ASHPs carry the full load with no dual-fuel or electric-resistance backup. An ideal all-electric market."},
   competitors:[
@@ -1454,8 +1477,8 @@ const DATA = [
       "Seattle SDCI adds city Refrigeration/AC, Journey Refrigeration Mechanic and Gas Piping Mechanic licenses, each a city exam.",
       "Heaviest local layer in WA. ~3 months to first permit."]},
   rebates:[
-    {name:"WA State HEAR (CCA-funded) — King County via United Hub", bankable:3000, headline:8000,
-     note:"State CCA-funded and county-administered, unaffected by DOE Notice 26-2. King County is served by United Hub (wahear.com)."},
+    {name:"WA State HEAR (CCA-funded) — King County via United Hub", bankable:0, headline:8000,
+     note:"Income-qualified only, so it banks nothing for our customer base — carried here at $0 and listed so the reasoning is on the record rather than rediscovered. State CCA-funded and county-administered, unaffected by DOE Notice 26-2. King County is served by United Hub (wahear.com)."},
     {name:"PSE Income-Qualified HP (gas furnace → ducted HP)", bankable:500, headline:4000,
      note:"Requires a PSE Trade Ally installer, mandatory from 4/2/2026, and the gas equipment must be removed. Seattle-proper electric is SCL, which has no gas-conversion rebate."}]
 },
@@ -1739,6 +1762,7 @@ function wireMarks(pos) {
   const price = 1 - ex.rebate / rMax;
   const oper = (ex.spark - sMin) / (sMax - sMin);
   const f = n => n.toFixed(2);
+  const moved = DATA.filter(d => d.quadrantNote);   // differ from the source brief
 
   document.getElementById("formula").innerHTML = `
   <div class="fx-hd">
@@ -1772,7 +1796,7 @@ function wireMarks(pos) {
         <li><b>It ranks, it doesn&rsquo;t price.</b> 0 and 100 are the ends of <em>this</em> 19-market set, not dollars. Add a market with a richer rebate than ${esc(best.name)}&rsquo;s and every index rescales. Compare markets to each other, never read the number as a cost.</li>
         <li><b>It assumes the same gross install price everywhere.</b> We don&rsquo;t hold per-market install costs, so the rebate carries the whole purchase-price term. Where labor and permitting genuinely run dearer &mdash; Long Island against Columbia, say &mdash; the index understates the gap.</li>
         <li><b>The rebate figure is what we expect to bank, not the headline.</b> Each market card shows both; the bankable number is the one feeding this.</li>
-        <li><b>The quadrant split is the midpoint of the observed range</b> (${COST_SPLIT}), paired with a licensing split at ${CPLX_SPLIT}. Those two lines reproduce all ${DATA.length} quadrant labels in the source brief, which is the check that this reading of the formula is faithful to it.</li>
+        <li><b>The quadrant split is the midpoint of the observed range</b> (${COST_SPLIT}), paired with a licensing split at ${CPLX_SPLIT}. Those two lines reproduce every quadrant label in the source brief${moved.length ? ` except ${moved.map(m => esc(m.name)).join(" and ")}, reclassified here and flagged on ${moved.length > 1 ? "those cards" : "its card"}` : ""} &mdash; the check that this reading of the formula is faithful to it.</li>
       </ul>
     </div>
   </div>`;
@@ -1826,7 +1850,11 @@ function factorBlock(d) {
 }
 function rebateBlock(d) {
   const top = Math.max(...d.rebates.map(r => Math.max(r.headline, r.bankable)), 1);
-  return d.rebates.map(r => {
+  const lead = `<div class="reb-lead"><span class="rl-k">Market rebate</span>` +
+    `<span class="rl-v">${money(d.rebate)}</span>` +
+    `<span class="rl-n">what a typical job banks &mdash; the figure in the market table and the cost index. ` +
+    `The programs below don't all stack, and some cover only part of the metro, so this is not their sum.</span></div>`;
+  return lead + d.rebates.map(r => {
     const zero = r.bankable === 0;
     return `<div class="reb${zero ? " zero" : ""}">` +
       `<p class="rn">${esc(r.name)}</p>` +
@@ -1873,9 +1901,10 @@ function cardHTML(d) {
     ["SPARK", d.spark.toFixed(2)],
     ["Rebate", money(d.rebate)],
     ["Licensing", d.complexity + " / 5"],
-    ["To 1st permit", d.months + " mo"],
+    ["To 1st permit", d.months + " mo",
+      "Months from starting licensure paperwork to being able to pull a permit — application processing, exams and board sittings. Not time to first sale, and not hiring time."],
     ["Cost index", d.cost.toFixed(1)],
-  ].map(([k, v]) => `<div><span class="k">${esc(k)}</span><span class="v">${v}</span></div>`).join("");
+  ].map(([k, v, t]) => `<div${t ? ` title="${esc(t)}"` : ""}><span class="k">${esc(k)}</span><span class="v">${v}</span></div>`).join("");
 
   return `<article class="mkt" id="m-${d.code}" style="--qc:${qc}">
   <button class="mkt-hd" type="button" aria-expanded="false" aria-controls="b-${d.code}">
@@ -1896,6 +1925,7 @@ function cardHTML(d) {
     <div class="blocks">
       <div class="blk wide"><h4>The market</h4><p>${esc(d.market)}</p>
         ${d.carve ? `<div class="carve" style="margin-top:12px">${esc(d.carve)}</div>` : ""}
+        ${d.quadrantNote ? `<div class="qnote" style="margin-top:12px"><b>Reclassified since the source brief.</b> ${esc(d.quadrantNote)}</div>` : ""}
       </div>
       <div class="blk wide"><div class="wedge"><h4 style="border:0;padding:0;margin-bottom:5px">Our wedge</h4><p>${esc(d.wedge)}</p></div></div>
       <div class="blk"><h4>Panorama factors &mdash; ${d.panorama}/100</h4>${factorBlock(d)}</div>
@@ -1904,7 +1934,7 @@ function cardHTML(d) {
         <p style="margin-top:7px;color:var(--ink-3);font-size:.8125rem">Typical range ${esc(d.climate.range)}</p></div>
       <div class="blk"><h4>Energy</h4><div class="kv">${d.energy.map(([n, r, note]) =>
         `<div class="kv-row"><span class="kk">${esc(n)}</span><span class="vv num">${esc(r)}</span><span class="nn">${esc(note)}</span></div>`).join("")}</div></div>
-      <div class="blk"><h4>Incentives at a glance</h4><div class="kv">${d.incentives.map(([n, a, note]) =>
+      <div class="blk"><h4>Incentives &mdash; headline amounts</h4><div class="kv">${d.incentives.map(([n, a, note]) =>
         `<div class="kv-row"><span class="kk">${esc(n)}</span><span class="vv num">${esc(a)}</span><span class="nn">${esc(note)}</span></div>`).join("")}
         ${d.warn ? `<div class="warnline"><b>&#9888;</b><span>${esc(d.warn)}</span></div>` : ""}</div></div>
       <div class="blk wide"><h4>Who we&rsquo;d be up against</h4><div class="comp">${d.competitors.map(([n, t, note]) =>
