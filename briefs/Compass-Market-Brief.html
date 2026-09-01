@@ -726,7 +726,7 @@ html{scroll-behavior:smooth}
     <div class="defs">
       <div class="def">
         <h4>Purchase &amp; operating cost &mdash; vertical</h4>
-        <p>Net purchase price after the rebate we expect to capture (more rebate = cheaper) weighted 75%, plus operating economics (SPARK) at 25%. Where a utility runs a heat-pump-specific heating tariff, SPARK uses that rate, not the standard one. Indexed 0&ndash;100 across the 19; lower is cheaper to own.</p>
+        <p>Net purchase price after the rebate we expect to capture (more rebate = cheaper) weighted 75%, plus operating economics (SPARK) at 25%. Where a utility runs a heat-pump-friendly tariff, SPARK is discounted by that rate&rsquo;s modelled bill saving rather than left on the default rate. Indexed 0&ndash;100 across the 19; lower is cheaper to own.</p>
       </div>
       <div class="def">
         <h4>Operational complexity &mdash; horizontal</h4>
@@ -852,6 +852,8 @@ const QUADS = [
     desc:"Costly to own and hard to license. Big TAM is the only reason to be here." },
 ];
 
+const RATE_SOURCE = "RMI heat-pump-friendly rate tracker. Savings are the tracker's own bill-impact modelling for switching from the default residential rate to the heat-pump rate.";
+
 const PHASES = [
   { n:1, date:"Mar 1, 2027", ym:[2027,2], counties:"Erie", add:86, cum:86, mo:3,
     reqs:[
@@ -912,7 +914,8 @@ const DATA = [
      note:"Not separately claimable on a bare furnace→HP swap — sits under the same PSE&G umbrella as Building Decarb, so it does not stack on top (rebates-team deep-dive 2026-08-31)."}]
 },
 {
-  rank:2, code:"NJ-SHR-1", name:"Toms River", state:"NJ", quadrant:"Easy In",
+  rank:2, code:"NJ-SHR-1", name:"Toms River", state:"NJ", quadrant:"Scale Fast",
+  boundaryNote:"Toms River clears the cost line by 0.4 points, against Newark's 3.6. Treat the Scale Fast label as a coin toss rather than a finding — any revision to the rebate figure or to SPARK moves it back. It sits here because the split is applied mechanically, not because it has earned the same standing as Newark.",
   panorama:33, wtam:149, units:"~400K (est.) SF/townhome units",
   spark:0.84, rebate:3000, complexity:2, months:4,
   factors:[["W-TAM ceiling",10,30],["Rebate",3.7,30],["SPARK",6.4,15],["Competition",4.5,10],["Adoption",3,5]],
@@ -946,8 +949,9 @@ const DATA = [
 {
   rank:3, code:"MN-MSP-1", name:"Minneapolis", state:"MN", quadrant:"Easy In",
   panorama:59, wtam:464, units:"970K SF/townhome units",
-  spark:0.82, sparkAsScored:1.52, rebate:2000, complexity:2, months:3,
-  sparkNote:"SPARK as scored was 1.52 — tied worst in the set — which only holds if a heat pump runs on Xcel's standard 11–13¢ residential rate. It doesn't: installing one auto-enrols the home on Xcel's electric space-heating rate at 6.5¢/kWh through the winter, roughly half. Scaling the electric side of the ratio by 6.5¢ against the 12¢ midpoint gives ~0.82, which is what this card and the cost index use. It moves Minneapolis from worst-in-set on running cost to mid-pack and drops the cost index from 85.0 to 62.0; the quadrant does not change. The adjustment assumes SPARK is linear in the electric rate, which is likely for a cost ratio but unverified — Panorama should re-score it properly, and every other market should be checked for heat-pump tariffs the same way.",
+  spark:1.52, rebate:2000, complexity:2, months:3,
+  hpRate:{utility:"Xcel Energy (MN)", tariff:"Electric Space Heating Rate", savings:0.18, enrol:"Default", customers:85500,
+    note:"A second TOD version of the same rate is active as opt-in. The proposed replacement in docket 23-524 would cut the non-summer delivery rate further, to 6.5¢."},
   factors:[["W-TAM ceiling",30,30],["Rebate",10.8,30],["SPARK",1.7,15],["Competition",6,10],["Adoption",2.7,5]],
   market:"Gas furnace → heat pump is the primary target, and this is the coldest market yet — the sale is proving a cold-climate HP handles sub-zero winters without a backup furnace. Most homes run gas from Xcel or CenterPoint.",
   energy:[
@@ -985,6 +989,8 @@ const DATA = [
   rank:4, code:"NC-CLT-1", name:"Charlotte Metro", state:"NC", quadrant:"Easy In",
   panorama:59, wtam:369, units:"909K SF/townhome units",
   spark:0.83, rebate:450, complexity:2, months:3,
+  hpRate:{utility:"Duke Energy Carolinas", tariff:"Electric Water Heating and Space Conditioning", savings:0.07, enrol:"Opt-in", customers:187100,
+    note:"Duke also runs Residential Service for All Electric Customers (RETC), a time-varying all-electric rate the tracker has not yet bill-modelled."},
   factors:[["W-TAM ceiling",24.6,30],["Rebate",2.2,30],["SPARK",15,15],["Competition",8,10],["Adoption",2.4,5]],
   market:"Gas furnace → heat pump is the primary target. NC's electric-heat share is well above the national average, so many homes already run electric — Duke's below-average rates and HQ-market trust both work in our favor.",
   energy:[
@@ -1052,6 +1058,7 @@ const DATA = [
   rank:6, code:"NC-GSO-1", name:"Greensboro–Winston-Salem", state:"NC", quadrant:"Easy In",
   panorama:47, wtam:208, units:"~550K (est.) SF/townhome units",
   spark:0.83, rebate:500, complexity:2, months:3,
+  hpRate:{utility:"Duke Energy Carolinas", tariff:"Electric Water Heating and Space Conditioning", savings:0.07, enrol:"Opt-in", customers:187100},
   factors:[["W-TAM ceiling",13.8,30],["Rebate",2.2,30],["SPARK",15,15],["Competition",8,10],["Adoption",2.4,5]],
   market:"Gas furnace → heat pump across the Piedmont Triad (Guilford + Forsyth). A true dual heating-and-cooling market with strong SPARK — Duke Energy Carolinas rates run below the national average, so electric beats gas on operating cost. Same easy statewide NC license as Charlotte and Raleigh, so the playbook is reusable. The rebate is modest at ~$500, making this a run-cheap, easy-entry play rather than a big-rebate one.",
   energy:[["Duke Energy Carolinas","13–15¢/kWh","Fully regulated, TOU available; DEC rate case pending ~Jan 2027"]],
@@ -1112,6 +1119,7 @@ const DATA = [
   rank:8, code:"SC-GRV-1", name:"Greenville", state:"SC", quadrant:"Easy In",
   panorama:42, wtam:136, units:"~330K (est.) SF/townhome units",
   spark:0.90, rebate:500, complexity:2, months:2,
+  hpRate:{utility:"Duke Energy Carolinas (SC)", tariff:"Electric Water Heating and Space Conditioning", savings:0.11, enrol:"Opt-in", customers:68000},
   factors:[["W-TAM ceiling",9.1,30],["Rebate",1.8,30],["SPARK",14,15],["Competition",8,10],["Adoption",2.2,5]],
   market:"Gas furnace → heat pump across Upstate SC (Greenville–Anderson–Spartanburg). Below-average Duke Carolinas power makes electric beat gas on strong SPARK, and the Blue Ridge foothills give it real winters — a genuine dual load, colder than coastal SC. About 1.5 hours from Charlotte, so it reuses that NC/SC regional playbook. The rebate is modest at ~$500, making this a run-cheap adjacency play.",
   energy:[["Duke Energy Carolinas (Upstate SC)","13–15¢/kWh","Regulated, TOU available; below US average"]],
@@ -1313,6 +1321,7 @@ const DATA = [
   rank:15, code:"NY-LGI-1", name:"Long Island", state:"NY", quadrant:"Heavy Lift",
   panorama:63, wtam:217, units:"~800K SF/townhome units",
   spark:1.18, rebate:4000, complexity:5, months:5,
+  hpRate:{utility:"PSEG Long Island", tariff:"Residential Heating Service", savings:0.03, enrol:"Opt-in", customers:50000},
   factors:[["W-TAM ceiling",14.5,30],["Rebate",30,30],["SPARK",8.3,15],["Competition",2,10],["Adoption",3.4,5]],
   market:"Gas furnace → heat pump is the primary target. PSEG-LI moved to a flat $4,000 whole-home rebate in Jan 2026, retiring per-ton — roughly half what Con Ed pays in our existing White Plains market (~$7,000). Among the highest electric rates in the country, so lead with rebates plus off-peak TOU.",
   energy:[["PSEG Long Island","23–24¢/kWh","Regulated, TOU available"]],
@@ -1345,6 +1354,8 @@ const DATA = [
   rank:16, code:"PA-PHL-1", name:"Philadelphia", state:"PA", quadrant:"Heavy Lift",
   panorama:54, wtam:514, units:"~1.2M (est.) SF/townhome units",
   spark:1.28, rebate:2325, complexity:4, months:3,
+  hpRate:{utility:"PECO Energy", tariff:"Residential Heating Service", savings:0.07, enrol:"Opt-in", customers:156200,
+    note:"PA side only. The South Jersey slice runs on PSE&G, which the tracker does not list."},
   factors:[["W-TAM ceiling",30,30],["Rebate",5.2,30],["SPARK",6.4,15],["Competition",4.5,10],["Adoption",2.1,5]],
   rebateBasis:"A weighted blend across a two-state metro rather than a sum: the PA side banks about $950 (PECO plus EAP), the South Jersey slice about $6,000 (PSE&G Clean Heat). $2,325 is the figure Panorama carries; the exact PA/NJ weighting behind it is not documented in the source.",
   market:"Gas furnace → heat pump is the primary target. PA has thin state rebates, so the story is utility programs plus a favorable Zone 4A design temp. One of the biggest single-market TAMs in the set.",
@@ -1385,6 +1396,7 @@ const DATA = [
   rank:17, code:"IL-CHI-1", name:"Chicago", state:"IL", quadrant:"Heavy Lift",
   panorama:52, wtam:1009, units:"~2.4M (est.) SF/townhome units",
   spark:1.52, rebate:1500, complexity:4, months:2,
+  hpRate:{utility:"Commonwealth Edison", tariff:"Electric Heating Rate", savings:0.14, enrol:"Default", customers:122500},
   factors:[["W-TAM ceiling",30,30],["Rebate",8,30],["SPARK",1.7,15],["Competition",4.5,10],["Adoption",2.3,5]],
   market:"Gas furnace → heat pump is the primary target across the whole Chicago–Naperville–Elgin MSA (IL + IN + WI); the north/south warehouse split is a Territory-Builder siting decision. Gas is king and winters are brutal, so the sale is proving a cold-climate HP handles sub-zero design temps. Largest W-TAM in the set.",
   energy:[["ComEd","15–16¢/kWh","Regulated, TOU available"]],
@@ -1489,11 +1501,16 @@ const DATA = [
    The brief defines the cost axis as net purchase price after rebate
    at 75% plus operating cost (SPARK) at 25%. We compute it rather than
    transcribe it, then check the result reproduces every quadrant label. */
-const rebates = DATA.map(d => d.rebate), sparks = DATA.map(d => d.spark);
+DATA.forEach(d => {
+  // Where a utility runs a heat-pump-friendly tariff, SPARK is discounted by
+  // that rate's modelled bill saving. d.spark stays the as-scored figure.
+  d.sparkEff = d.hpRate ? +(d.spark * (1 - d.hpRate.savings)).toFixed(2) : d.spark;
+});
+const rebates = DATA.map(d => d.rebate), sparks = DATA.map(d => d.sparkEff);
 const rMax = Math.max(...rebates), sMin = Math.min(...sparks), sMax = Math.max(...sparks);
 DATA.forEach(d => {
-  const price = 1 - d.rebate / rMax;              // 0 = richest rebate, 1 = none
-  const oper  = (d.spark - sMin) / (sMax - sMin);  // 0 = best operating cost
+  const price = 1 - d.rebate / rMax;                  // 0 = richest rebate, 1 = none
+  const oper  = (d.sparkEff - sMin) / (sMax - sMin);  // 0 = best operating cost
   d.cost = +(100 * (0.75 * price + 0.25 * oper)).toFixed(1);
 });
 const cMin = Math.min(...DATA.map(d => d.cost)), cMax = Math.max(...DATA.map(d => d.cost));
@@ -1652,10 +1669,13 @@ function renderMatrix() {
     `<text class="tick" x="${MX.l - 10}" y="${MX.b + 22}" text-anchor="end">cheaper</text>`);
 
   // the near-empty low-cost band is itself the finding — annotate it in place
+  const cheapSimple = DATA.filter(d => d.quadrant === "Scale Fast")
+    .sort((a, b) => a.cost - b.cost)
+    .map(d => `${d.name} by ${(COST_SPLIT - d.cost).toFixed(1)}`);
   parts.push(
-    `<text class="annot" x="${sx(0.62)}" y="${sy(30)}"><tspan class="em">Almost nothing is both cheap and simple.</tspan></text>`,
-    `<text class="annot" x="${sx(0.62)}" y="${sy(30) + 17}">Newark clears the cost line by 4 points; no other</text>`,
-    `<text class="annot" x="${sx(0.62)}" y="${sy(30) + 33}">low-complexity market gets near it.</text>`);
+    `<text class="annot" x="${sx(0.62)}" y="${sy(30)}"><tspan class="em">Little is both cheap and simple.</tspan></text>`,
+    `<text class="annot" x="${sx(0.62)}" y="${sy(30) + 17}">${cheapSimple.length} of ${DATA.length} clear the cost line: ${esc(cheapSimple.join(", "))}</text>`,
+    `<text class="annot" x="${sx(0.62)}" y="${sy(30) + 33}">points. Anything under a point or so is a coin toss.</text>`);
 
   // marks
   const pos = layout(shown);
@@ -1778,7 +1798,7 @@ function wireMarks(pos) {
       <span class="fx-w">Running cost &middot; 25%</span>
       <p class="fx-eq">( SPARK &minus; ${sMin.toFixed(2)} ) <span class="mu">&divide;</span> ${(sMax - sMin).toFixed(2)}
         <span class="mu">&mdash; the set's range, ${sMin.toFixed(2)} to ${sMax.toFixed(2)}</span></p>
-      <p class="fx-fine">Where a utility runs a heat-pump-specific heating tariff, SPARK is scaled to that rate rather than the standard residential one. Marked &dagger; wherever it appears.</p>
+      <p class="fx-fine">Seven markets run a heat-pump-friendly tariff. SPARK there is discounted by that rate&rsquo;s modelled bill saving and marked &dagger;; hover for the as-scored figure. Source: RMI&rsquo;s rate tracker.</p>
     </div>
     <div class="fx-result">
       <span class="fx-w">${esc(ex.name)}, ${ex.state}</span>
@@ -1809,7 +1829,7 @@ function renderTable() {
       `<td class="nm"><button type="button" data-goto="${d.code}">${esc(d.name)}, ${d.state}</button></td>` +
       `<td><span class="qtag"><span class="sw" style="background:${qc};${DOT}"></span>${esc(d.quadrant)}</span></td>` +
       `<td class="r">${tam(d.wtam)}</td>` +
-      `<td class="r"${d.sparkNote ? ` title="${esc(d.sparkNote)}"` : ""}>${d.spark.toFixed(2)}${d.sparkNote ? `<span class="adj">&dagger;</span>` : ""}</td>` +
+      `<td class="r" title="${esc(d.hpRate ? `As scored ${d.spark.toFixed(2)}, discounted ${Math.round(d.hpRate.savings*100)}% for ${esc(d.hpRate.utility)}\u2019s ${esc(d.hpRate.tariff)} (${esc(d.hpRate.enrol)}).` : "Operating-cost ratio \u2014 lower means electric beats gas by more.")}">${d.sparkEff.toFixed(2)}${d.hpRate ? `<span class="adj">&dagger;</span>` : ""}</td>` +
       `<td class="r">${money(d.rebate)}</td>` +
       `<td class="c"><span class="lic" title="${d.complexity} of 5">${pips}</span></td>` +
       `<td class="r"><span class="bar-cell">${d.cost.toFixed(1)}<span class="bt"><span class="bf" style="width:${d.cost}%"></span></span></span></td>` +
@@ -1894,8 +1914,8 @@ function cardHTML(d) {
   const strip = [
     ["Panorama", d.panorama + " / 100"],
     ["W-TAM", tam(d.wtam)],
-    ["SPARK", d.spark.toFixed(2) + (d.sparkNote ? " &dagger;" : ""),
-      d.sparkNote || "Operating-cost ratio — lower means electric beats gas by more."],
+    ["SPARK", d.sparkEff.toFixed(2) + (d.hpRate ? " &dagger;" : ""),
+      d.hpRate ? `As scored ${d.spark.toFixed(2)}, discounted ${Math.round(d.hpRate.savings*100)}% for ${esc(d.hpRate.utility)}\u2019s ${esc(d.hpRate.tariff)} (${esc(d.hpRate.enrol)}).` : "Operating-cost ratio \u2014 lower means electric beats gas by more."],
     ["Rebate", money(d.rebate)],
     ["Licensing", d.complexity + " / 5"],
     ["To 1st permit", d.months + " mo",
@@ -1924,14 +1944,24 @@ function cardHTML(d) {
         ${d.carve ? `<div class="carve" style="margin-top:12px">${esc(d.carve)}</div>` : ""}
         ${d.quadrantNote ? `<div class="qnote" style="margin-top:12px"><b>Reclassified since the source brief.</b> ${esc(d.quadrantNote)}</div>` : ""}
         ${d.scopeNote ? `<div class="qnote" style="margin-top:12px"><b>Trade area re-scoped.</b> ${esc(d.scopeNote)}</div>` : ""}
-        ${d.sparkNote ? `<div class="qnote" style="margin-top:12px"><b>SPARK adjusted for the heat-pump tariff.</b> ${esc(d.sparkNote)}</div>` : ""}
+        ${d.boundaryNote ? `<div class="qnote" style="margin-top:12px"><b>On the quadrant line.</b> ${esc(d.boundaryNote)}</div>` : ""}
+
       </div>
       <div class="blk wide"><div class="wedge"><h4 style="border:0;padding:0;margin-bottom:5px">Our wedge</h4><p>${esc(d.wedge)}</p></div></div>
       <div class="blk"><h4>Panorama factors &mdash; ${d.panorama}/100</h4>${factorBlock(d)}</div>
       <div class="blk"><h4>Climate &mdash; ${esc(d.climate.heat)} heating / ${esc(d.climate.cool)} cooling design</h4>
         <p>${esc(d.climate.text)}</p>
         <p style="margin-top:7px;color:var(--ink-3);font-size:.8125rem">Typical range ${esc(d.climate.range)}</p></div>
-      <div class="blk wide"><h4>Energy</h4><div class="kv">${d.energy.map(([n, r, note]) =>
+      ${d.hpRate ? `<div class="blk"><h4>Heat-pump rate &mdash; ${Math.round(d.hpRate.savings * 100)}% off the default bill</h4>
+        <div class="kv">
+          <div class="kv-row"><span class="kk">${esc(d.hpRate.utility)}</span><span class="vv">${esc(d.hpRate.tariff)}</span></div>
+          <div class="kv-row"><span class="kk">${esc(d.hpRate.enrol)}</span><span class="nn">${d.hpRate.enrol === "Default"
+            ? "the customer lands on it automatically — no sales step"
+            : "the customer has to be enrolled — a sales-motion task, not automatic"}${d.hpRate.customers ? `, ${d.hpRate.customers.toLocaleString("en-US")} already on it` : ""}</span></div>
+        </div>
+        ${d.hpRate.note ? `<p style="font-size:.8125rem;color:var(--ink-3);line-height:1.5;margin-top:8px">${esc(d.hpRate.note)}</p>` : ""}
+        <p style="font-size:.75rem;color:var(--ink-3);margin-top:8px">SPARK as scored ${d.spark.toFixed(2)} &rarr; <b style="color:var(--ink)">${d.sparkEff.toFixed(2)}</b> used here. ${esc(RATE_SOURCE)}</p></div>` : ""}
+      <div class="blk"><h4>Energy</h4><div class="kv">${d.energy.map(([n, r, note]) =>
         `<div class="kv-row"><span class="kk">${esc(n)}</span><span class="vv num">${esc(r)}</span><span class="nn">${esc(note)}</span></div>`).join("")}</div></div>
       <div class="blk wide"><h4>Who we&rsquo;d be up against</h4><div class="comp">${d.competitors.map(([n, t, note]) =>
         `<p class="comp-i"><span class="cn">${esc(n)}</span> <span class="tagx${t === "hp" ? " hp" : ""}">${t === "hp" ? "Electric-only / HP-focused" : "General HVAC"}</span> <span class="cnote">&mdash; ${esc(note)}</span></p>`).join("")}</div></div>
