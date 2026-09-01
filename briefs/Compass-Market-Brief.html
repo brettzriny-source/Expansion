@@ -15,6 +15,8 @@
   --ink:#0F1F0D; --ink-2:#454E3E; --ink-3:#6E7061;
   --accent:#0F7A3C; --accent-soft:#E6F4E9;
   --q1:#146B39; --q2:#3C7FD0; --q3:#A8388A; --q4:#E06552;
+  --warn:#9A6407; --warn-soft:#FBF0D9;
+  --lock:#B0472C; --lock-soft:#FBE7E0;
   --q-tint:.085;
   --track:#E8E6D8;
   --shadow:0 1px 2px rgba(15,31,13,.05), 0 10px 28px -16px rgba(15,31,13,.20);
@@ -30,6 +32,8 @@
     --ink:#FBFAF1; --ink-2:#C3CBB6; --ink-3:#8E9880;
     --accent:#3CD567; --accent-soft:rgba(60,213,103,.14);
     --q1:#42AF4D; --q2:#377EE3; --q3:#B654B0; --q4:#B3543B;
+    --warn:#E0A93F; --warn-soft:rgba(224,169,63,.13);
+    --lock:#E08163; --lock-soft:rgba(224,129,99,.15);
     --q-tint:.10;
     --track:#233D26;
     --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 30px -16px rgba(0,0,0,.6);
@@ -41,6 +45,8 @@
   --ink:#FBFAF1; --ink-2:#C3CBB6; --ink-3:#8E9880;
   --accent:#3CD567; --accent-soft:rgba(60,213,103,.14);
   --q1:#42AF4D; --q2:#377EE3; --q3:#B654B0; --q4:#B3543B;
+  --warn:#E0A93F; --warn-soft:rgba(224,169,63,.13);
+  --lock:#E08163; --lock-soft:rgba(224,129,99,.15);
   --q-tint:.10;
   --track:#233D26;
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 30px -16px rgba(0,0,0,.6);
@@ -297,15 +303,11 @@ td.nm button:hover{color:var(--accent); text-decoration:underline}
 }
 .mkt.flash{border-color:var(--qc); box-shadow:0 0 0 3px color-mix(in srgb, var(--qc) 22%, transparent)}
 .mkt-hd{
-  display:grid; grid-template-columns:auto 1fr auto; gap:6px 16px; align-items:center;
+  display:grid; grid-template-columns:1fr auto; gap:6px 16px; align-items:center;
   width:100%; text-align:left; padding:15px 18px; cursor:pointer;
   background:none; border:0; font-family:inherit; color:inherit;
 }
 .mkt-hd:hover{background:var(--surface-2)}
-.mkt-rank{
-  font-family:var(--serif); font-weight:900; font-size:1.35rem; line-height:1;
-  color:var(--ink-3); font-variant-numeric:tabular-nums; width:1.9ch; text-align:right;
-}
 .mkt-id{min-width:0}
 .mkt-id h3{
   font-family:var(--serif); font-weight:900; text-transform:uppercase;
@@ -389,19 +391,204 @@ td.nm button:hover{color:var(--accent); text-decoration:underline}
   background:var(--surface-3); color:var(--ink-3); border:1px solid var(--border);
 }
 .tagx.hp{background:var(--accent-soft); color:var(--accent); border-color:transparent}
-.ramp{display:flex; flex-wrap:wrap; gap:7px; align-items:center; font-size:.8125rem; font-family:var(--sub)}
-.ramp span{background:var(--surface-3); border:1px solid var(--border); border-radius:5px; padding:4px 8px}
-.ramp span b{font-weight:700}
-.ramp i{color:var(--ink-3); font-style:normal}
+/* ── rollout ramp (in-card) ─────────────────────────────────────────── */
+.ramp{border:1px solid var(--border); border-radius:var(--radius); overflow:hidden}
+.ramp-top{
+  display:grid; gap:1px; background:var(--border);
+  grid-template-columns:repeat(var(--cols),minmax(0,1fr));
+}
+.ramp-top > div{background:var(--surface-2); padding:12px 14px 10px; text-align:center}
+.ramp-cum{
+  font-family:var(--serif); font-weight:900; font-size:1.75rem; line-height:1;
+  font-variant-numeric:tabular-nums; display:block;
+}
+.ramp-delta{
+  font-family:var(--sub); font-weight:700; font-size:.75rem; margin-top:5px;
+  color:var(--accent); font-variant-numeric:tabular-nums;
+}
+.ramp-delta .pc{color:var(--ink-3)}
+.ramp-delta .first{color:var(--ink-3)}
+.ramp-chart{
+  display:grid; gap:1px; background:var(--border);
+  grid-template-columns:repeat(var(--cols),minmax(0,1fr));
+}
+.ramp-chart > div{
+  background:var(--surface); padding:10px 12px 12px;
+  display:flex; flex-direction:column; justify-content:flex-end; gap:9px;
+}
+.ramp-bar{border-radius:4px 4px 0 0; background:var(--accent); min-height:5px}
+.ramp-bar.first{background:var(--ink-3)}
+.ramp-bar.gate{background:var(--warn)}
+.ramp-meta{text-align:center; font-family:var(--sub); font-size:.75rem; line-height:1.35}
+.ramp-mo{font-weight:700; display:block; font-variant-numeric:tabular-nums}
+.ramp-mo.gate{color:var(--warn)}
+.ramp-nm{color:var(--ink-3); display:block; margin-top:1px}
+.ramp-foot{
+  border-top:1px solid var(--border); background:var(--surface-2);
+  padding:12px 15px 14px; font-size:.8125rem; line-height:1.55; color:var(--ink-3);
+}
+.ramp-foot .tot{font-family:var(--sub); font-weight:700; color:var(--ink)}
+.ramp-notes{display:grid; gap:5px; margin-top:9px}
+.ramp-note{display:grid; grid-template-columns:2.1em 1fr; gap:6px; font-size:.8125rem; line-height:1.45}
+.ramp-note .pn{font-family:var(--sub); font-weight:700; color:var(--accent)}
+.ramp-note.gate .pn{color:var(--warn)}
+.ramp-note span:last-child{color:var(--ink-2)}
+
+/* ── phased launch: step chart + phase cards ────────────────────────── */
+.step-wrap{overflow-x:auto}
+.step-wrap svg{display:block; width:100%; min-width:640px; height:auto; overflow:visible}
+.step-area{fill:var(--accent); opacity:.13}
+.step-line{fill:none; stroke:var(--accent); stroke-width:2.5; stroke-linejoin:round}
+.step-drop{stroke:var(--ink-3); stroke-width:1; stroke-dasharray:3 4; opacity:.55}
+.step-dot{fill:var(--ink); stroke:var(--surface); stroke-width:2}
+.step-dot.gate{fill:var(--warn)}
+.step-cum{font-family:var(--serif); font-weight:900; font-size:16px; fill:var(--ink)}
+.step-add{font-family:var(--sub); font-weight:700; font-size:11px; fill:var(--ink-3)}
+.step-date{font-family:var(--sub); font-weight:700; font-size:12px; fill:var(--ink)}
+.step-ph{font-family:var(--sub); font-size:10.5px; fill:var(--ink-3)}
+
+.phase-grid{
+  display:grid; gap:14px; margin-top:16px;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+}
+.ph{
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); border-top:3px solid var(--accent);
+  padding:15px 16px 17px;
+}
+.ph.gate{border-top-color:var(--warn)}
+.ph-hd{display:flex; justify-content:space-between; align-items:baseline; gap:10px}
+.ph-n{
+  font-family:var(--sub); font-weight:700; font-size:.6875rem; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--accent);
+}
+.ph.gate .ph-n{color:var(--warn)}
+.ph-date{font-family:var(--sub); font-size:.75rem; color:var(--ink-3); font-variant-numeric:tabular-nums}
+.ph-co{font-family:var(--sub); font-weight:700; font-size:1rem; line-height:1.25; margin-top:6px}
+.ph-nums{display:flex; gap:20px; margin:11px 0 12px}
+.ph-nums div{display:flex; flex-direction:column}
+.ph-nums b{
+  font-family:var(--serif); font-weight:900; font-size:1.3rem; line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.ph-nums .add b{color:var(--accent)}
+.ph.gate .ph-nums .add b{color:var(--warn)}
+.ph-nums span{
+  font-family:var(--sub); font-weight:700; font-size:.5625rem; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--ink-3); margin-top:4px;
+}
+.ph h5{
+  font-family:var(--sub); font-weight:700; font-size:.625rem; letter-spacing:.11em;
+  text-transform:uppercase; color:var(--ink-3); margin:0 0 7px;
+  padding-top:11px; border-top:1px solid var(--border);
+}
+.ph ul{margin:0; padding-left:1.05em; font-size:.8125rem; line-height:1.5; color:var(--ink-2)}
+.ph li{margin-bottom:5px}
+.ph li::marker{color:var(--ink-3)}
+
+/* ── launch-cadence planner ─────────────────────────────────────────── */
+.cad-card{padding:0; overflow:hidden}
+.cad-scroll{overflow-x:auto}
+.cad{
+  display:grid; gap:1px; background:var(--border); min-width:900px;
+  grid-template-columns:132px repeat(6,minmax(120px,1fr)) 104px;
+}
+.cad > *{background:var(--surface)}
+.cad-h{
+  font-family:var(--sub); font-weight:700; font-size:.75rem; color:var(--ink);
+  padding:11px 12px 10px; text-align:center; background:var(--surface-2);
+}
+.cad-h .yr{color:var(--ink-3); font-weight:400}
+.cad-h .lk{
+  display:block; font-size:.5625rem; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--lock); margin-top:2px;
+}
+.cad-h.tot{color:var(--accent)}
+.cad-tier{
+  background:var(--ink); color:var(--ground); padding:15px 14px;
+  display:flex; flex-direction:column; justify-content:center;
+}
+.cad-tier b{
+  font-family:var(--serif); font-weight:900; font-size:1.15rem; line-height:1;
+  text-transform:uppercase; color:var(--accent);
+}
+.cad-tier span{font-family:var(--sub); font-size:.6875rem; opacity:.66; margin-top:5px}
+.cad-cell{padding:9px; display:flex; flex-direction:column; gap:5px; min-height:104px}
+.cad-cell.locked{background:var(--surface-2)}
+.cad-total{
+  background:var(--accent-soft); display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:3px;
+}
+.cad-total b{
+  font-family:var(--serif); font-weight:900; font-size:2rem; line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.cad-total span{
+  font-family:var(--sub); font-weight:700; font-size:.5625rem;
+  letter-spacing:.11em; text-transform:uppercase; color:var(--ink-3);
+}
+.slot{
+  font-family:var(--sub); font-weight:700; font-size:.75rem; line-height:1.2;
+  border-radius:6px; padding:6px 9px; text-align:left; border:1px solid transparent;
+  display:flex; align-items:center; gap:6px;
+}
+.slot.locked{background:var(--lock-soft); color:var(--lock); border-color:var(--lock)}
+.slot.added{
+  background:color-mix(in srgb, var(--accent) 16%, var(--surface));
+  color:var(--ink); border-color:color-mix(in srgb, var(--accent) 55%, transparent);
+  cursor:pointer;
+}
+.slot.added:hover{background:color-mix(in srgb, var(--accent) 26%, var(--surface))}
+.slot.added .x{margin-left:auto; color:var(--ink-3); font-weight:400}
+.slot.added:hover .x{color:var(--ink)}
+.slot.inherit{background:var(--surface-3); color:var(--ink-3); border-color:var(--border)}
+.slot-add{
+  font-family:var(--sub); font-weight:700; font-size:.75rem; color:var(--ink-3);
+  background:none; border:1px dashed var(--border-2); border-radius:6px;
+  padding:6px 9px; cursor:pointer; margin-top:auto;
+}
+.slot-add:hover{border-color:var(--accent); color:var(--accent); border-style:solid}
+.cad-foot{
+  display:flex; flex-wrap:wrap; gap:10px 20px; align-items:center;
+  padding:13px 18px; border-top:1px solid var(--border); font-size:.8125rem; color:var(--ink-2);
+}
+.cad-key{width:13px; height:13px; border-radius:4px; flex:none; border:1px solid transparent}
+.cad-key.locked{background:var(--lock-soft); border-color:var(--lock)}
+.cad-key.added{background:color-mix(in srgb, var(--accent) 34%, var(--surface)); border-color:var(--accent)}
+.cad-key.inherit{background:var(--surface-3); border-color:var(--border)}
+.cad-count{font-family:var(--sub); font-weight:700; color:var(--ink-3)}
+
+/* ── market picker ──────────────────────────────────────────────────── */
+.picker{
+  position:fixed; z-index:60; width:270px; max-height:330px;
+  display:flex; flex-direction:column;
+  background:var(--surface); border:1px solid var(--border-2);
+  border-radius:10px; box-shadow:0 18px 44px -14px rgba(0,0,0,.42);
+}
+.pk-hd{display:flex; align-items:center; gap:8px; padding:11px 12px 7px}
+.pk-x{
+  margin-left:auto; background:none; border:0; cursor:pointer; line-height:1;
+  font-size:1.15rem; color:var(--ink-3); padding:0 3px;
+}
+.pk-x:hover{color:var(--ink)}
+.pk-search{
+  font-family:var(--body); font-size:.8125rem; color:var(--ink); margin:0 12px 8px;
+  background:var(--surface-2); border:1px solid var(--border); border-radius:7px; padding:6px 10px;
+}
+.pk-list{overflow-y:auto; padding:0 8px 9px; display:flex; flex-direction:column; gap:2px}
+.pk-list button{
+  font-family:var(--body); font-size:.8125rem; text-align:left; cursor:pointer;
+  background:none; border:0; border-radius:6px; padding:6px 8px; color:var(--ink);
+  display:flex; align-items:center; gap:8px;
+}
+.pk-list button:hover{background:var(--surface-2)}
+.pk-list button .qd{width:8px; height:8px; border-radius:50%; flex:none}
+.pk-list button .st{margin-left:auto; color:var(--ink-3); font-size:.75rem}
+.pk-none{padding:14px 10px; color:var(--ink-3); font-size:.8125rem; text-align:center}
 .warnline{color:var(--ink-2); font-size:.875rem; display:flex; gap:8px; align-items:flex-start; margin-top:8px}
 .warnline b{color:var(--ink)}
 
 .empty{padding:34px 20px; text-align:center; color:var(--ink-3); font-size:.9375rem}
-
-/* ── phase table ────────────────────────────────────────────────────── */
-.phase-bar{display:flex; align-items:center; gap:9px; justify-content:flex-end}
-.phase-bar .pt{width:96px; height:8px; border-radius:4px; background:var(--track); overflow:hidden; flex:none}
-.phase-bar .pf{display:block; height:100%; border-radius:4px; background:var(--q3)}
 
 /* ── footer ─────────────────────────────────────────────────────────── */
 footer{
@@ -427,8 +614,8 @@ html{scroll-behavior:smooth}
 <div class="shell">
   <div class="hero">
     <p class="eyebrow">Market expansion brief</p>
-    <h1>Where to expand<em>and how hard it&rsquo;ll be</em></h1>
-    <p class="deck">A market-positioning read for the next wave of Jetson launches &mdash; 19 candidates scored on what a system costs to own and what it takes to get licensed.</p>
+    <h1>Where Jetson<em>grows next</em></h1>
+    <p class="deck">The full read on 19 candidate markets for the next wave of launches &mdash; how big each one is, what a system costs to own there, who we&rsquo;d be up against, and what it takes to open the doors.</p>
     <p class="hero-note">Data: Panorama (Gravity / TAM v4.0) plus a fresh rebate &amp; licensing scrape. The <b>cost axis</b> is net purchase price (verified rebate) weighted 75% plus operating cost (SPARK) at 25%. The <b>complexity axis</b> is the licensing regime, from 1 (one statewide license) to 5 (county-by-county exams).</p>
     <div class="tiles" id="tiles"></div>
   </div>
@@ -455,7 +642,7 @@ html{scroll-behavior:smooth}
     <hr class="rule">
     <div class="card">
       <div class="matrix-wrap" id="matrixWrap">
-        <svg id="matrixSvg" viewBox="0 0 920 600" role="img" aria-labelledby="mxTitle mxDesc">
+        <svg id="matrixSvg" viewBox="0 0 920 580" role="img" aria-labelledby="mxTitle mxDesc">
           <title id="mxTitle">Positioning matrix: purchase and operating cost against licensing complexity</title>
           <desc id="mxDesc">Nineteen candidate markets plotted with licensing complexity on the horizontal axis and a purchase-plus-operating cost index on the vertical axis, split into four quadrants. Exact values for every market are in the market table below.</desc>
         </svg>
@@ -495,7 +682,6 @@ html{scroll-behavior:smooth}
       <table id="tbl">
         <thead>
           <tr>
-            <th scope="col">#</th>
             <th scope="col" class="s" data-k="name">Market <span class="ar"></span></th>
             <th scope="col" class="s" data-k="quadrant">Quadrant <span class="ar"></span></th>
             <th scope="col" class="s" data-k="wtam" style="text-align:right">W-TAM <span class="ar"></span></th>
@@ -523,30 +709,42 @@ html{scroll-behavior:smooth}
   </section>
 
   <section id="phased">
-    <div class="sec-head"><h2>Buffalo&ndash;Rochester &mdash; phased county launch</h2></div>
-    <p class="sec-sub">Start March 1, 2027, reaching ~227K homes at full footprint. Addressable homes grow as counties enter the trade area; the binding gates are city licensing exams &mdash; Buffalo and Niagara Falls, the latter offered only once a year.</p>
-    <hr class="rule">
-    <div class="tbl-scroll">
-      <table style="min-width:620px">
-        <thead>
-          <tr>
-            <th scope="col">Phase</th>
-            <th scope="col">Date</th>
-            <th scope="col">Counties added</th>
-            <th scope="col" style="text-align:right">Added</th>
-            <th scope="col" style="text-align:right">Cumulative</th>
-          </tr>
-        </thead>
-        <tbody id="phaseBody"></tbody>
-      </table>
+    <div class="sec-head">
+      <h2>Buffalo&ndash;Rochester &mdash; phased county launch</h2>
+      <span class="eyebrow num">Start March 1, 2027 &nbsp;·&nbsp; ~227K homes at full footprint</span>
     </div>
+    <p class="sec-sub" id="phaseLead"></p>
+    <hr class="rule">
+    <div class="card" style="padding:22px 24px 8px">
+      <div class="step-wrap">
+        <svg id="stepSvg" viewBox="0 0 1120 330" role="img" aria-labelledby="stTitle stDesc">
+          <title id="stTitle">Addressable homes by phase, March 2027 to August 2028</title>
+          <desc id="stDesc">A step chart rising from 86 thousand homes at launch to 227 thousand at full footprint across four county phases. The same figures appear in the phase cards below.</desc>
+        </svg>
+      </div>
+    </div>
+    <div class="phase-grid" id="phaseGrid"></div>
   </section>
 
   <section id="cadence">
-    <div class="sec-head"><h2>Market growth &mdash; launch cadence</h2></div>
+    <div class="sec-head">
+      <h2>Market growth &mdash; launch cadence</h2>
+      <span class="spacer"></span>
+      <button class="btn" id="cadReset" type="button">Clear plan</button>
+    </div>
+    <p class="sec-sub">January is locked &mdash; Dallas and Portland, leases signed. Base is one launch a month; <b>+2</b> and <b>+6</b> are extra launches over base. Placements cascade upward: a market you add to Base also counts in +2 and +6. Click <b>+ add</b> to place one.</p>
     <hr class="rule">
-    <div class="card" style="padding:20px 22px">
-      <p class="prose" style="font-size:.9375rem; color:var(--ink-2)">January is locked &mdash; Dallas and Portland, leases signed. The base case is one launch a month. The <b style="color:var(--ink)">+2</b> and <b style="color:var(--ink)">+6</b> scenarios add that many launches over base and cascade upward, so a market added to +2 also counts in +6. The live deck runs this as an interactive planner across Jan&ndash;Jun 2027; here it&rsquo;s a reference note.</p>
+    <div class="card cad-card">
+      <div class="cad-scroll">
+        <div class="cad" id="cad"></div>
+      </div>
+      <div class="cad-foot">
+        <span class="lg"><span class="cad-key locked"></span>January lock (signed)</span>
+        <span class="lg"><span class="cad-key added"></span>added in this scenario</span>
+        <span class="lg"><span class="cad-key inherit"></span>inherited from a lower scenario</span>
+        <span class="spacer"></span>
+        <span class="cad-count num" id="cadCount"></span>
+      </div>
     </div>
   </section>
 
@@ -560,25 +758,61 @@ html{scroll-behavior:smooth}
   </footer>
 </div>
 
+<div class="picker" id="picker" hidden>
+  <div class="pk-hd">
+    <span class="eyebrow" id="pkTitle"></span>
+    <button class="pk-x" id="pkClose" type="button" aria-label="Close">&times;</button>
+  </div>
+  <input class="pk-search" id="pkSearch" type="search" placeholder="Filter markets&hellip;" aria-label="Filter markets">
+  <div class="pk-list" id="pkList" role="listbox"></div>
+</div>
+
 <script>
 /* Quadrant definitions — order is fixed and never cycled. */
 const QUADS = [
-  { key:"Scale Fast", token:"--q1", shape:"circle",
+  { key:"Scale Fast", token:"--q1",
     desc:"Cheap to own and simple to license. Everything lines up; go now." },
-  { key:"Easy In", token:"--q2", shape:"square",
+  { key:"Easy In", token:"--q2",
     desc:"Simple to license, but the economics rest on operating cost rather than rebates." },
-  { key:"Worth the Paperwork", token:"--q3", shape:"diamond",
+  { key:"Worth the Paperwork", token:"--q3",
     desc:"Best-in-set economics behind a county-by-county licensing wall. The rebate pays for the lift." },
-  { key:"Heavy Lift", token:"--q4", shape:"triangle",
+  { key:"Heavy Lift", token:"--q4",
     desc:"Costly to own and hard to license. Big TAM is the only reason to be here." },
 ];
 
 const PHASES = [
-  { n:1, date:"Mar 1, 2027", counties:"Erie", add:86,  cum:86  },
-  { n:2, date:"Aug 1, 2027", counties:"Niagara, Genesee", add:29, cum:116 },
-  { n:3, date:"Feb 1, 2028", counties:"Monroe", add:73, cum:189 },
-  { n:4, date:"Aug 1, 2028", counties:"Ontario, Wayne, Livingston, Wyoming, Orleans", add:38, cum:227 },
+  { n:1, date:"Mar 1, 2027", ym:[2027,2], counties:"Erie", add:86, cum:86, mo:3,
+    reqs:[
+      "City of Buffalo Heating Contractor license — a board-administered written exam (Office of Fuel Devices); confirm the exam calendar.",
+      "Erie County itself doesn't license HVAC; some towns register contractors."] },
+  { n:2, date:"Aug 1, 2027", ym:[2027,7], counties:"Niagara · Genesee", add:29, cum:116, mo:6, gate:true,
+    reqs:[
+      "⚠ City of Niagara Falls Mechanical Contractor license — the written exam runs ONCE A YEAR, application due June 30 (≥90 days prior). This is the binding entry gate.",
+      "Genesee Co. / City of Batavia: no HVAC license required — permits only.",
+      "Other Niagara towns (Lockport and the rest): registration + permits, no exam."] },
+  { n:3, date:"Feb 1, 2028", ym:[2028,1], counties:"Monroe", add:73, cum:189, mo:2,
+    reqs:[
+      "Rochester does NOT license HVAC as a trade — permits only.",
+      "Monroe County: no county HVAC license."] },
+  { n:4, date:"Aug 1, 2028", ym:[2028,7], counties:"Ontario · Wayne · Livingston · Wyoming · Orleans", add:38, cum:227, mo:2,
+    reqs:[
+      "Outer counties don't license HVAC — per-town registration and permits only.",
+      "Verify each town before dispatching crews."] },
 ];
+const PHASE_LEAD = "Addressable homes grow as counties enter the trade area. The binding entry gates are city licensing exams — Buffalo and Niagara Falls each require a written test, and Niagara Falls' is offered only once a year, with a June 30 application deadline. Rochester and the outer counties don't license HVAC at all: permits only.";
+
+/* ── launch-cadence planner ─────────────────────────────────────────────
+   January is signed. Placing a market in a lower tier cascades it upward. */
+const CADENCE = {
+  year: 2027,
+  months: ["Jan","Feb","Mar","Apr","May","Jun"],
+  locked: ["Dallas","Portland"],
+  tiers: [
+    { key:"base",  name:"Base",    sub:"1 launch / month" },
+    { key:"plus2", name:"Base +2", sub:"2 over base" },
+    { key:"plus6", name:"Base +6", sub:"6 over base" },
+  ],
+};
 
 const DATA = [
 {
@@ -1038,7 +1272,7 @@ const DATA = [
   rebates:[
     {name:"PSEG Long Island Home Comfort — whole-house ccASHP", bankable:4000, headline:4000,
      note:"PSEG LI serves essentially all of Nassau and Suffolk — LIPA is not in NYS Clean Heat, so the island runs its own program. HP sized to 100–120% of load plus fossil removal or integrated controls; +$250 to the contractor."}],
-  ramp:[["Nassau County","90K","~3mo"],["+ Suffolk County","188K","~3mo"]]
+  ramp:[{n:"Nassau County",cum:90,mo:3},{n:"+ Suffolk County",cum:188,mo:3}]
 },
 {
   rank:16, code:"PA-PHL-1", name:"Philadelphia", state:"PA", quadrant:"Heavy Lift",
@@ -1077,7 +1311,7 @@ const DATA = [
      note:"Camden, Gloucester and the lower-Burlington suburbs are PSE&G electric territory. The $10K is the program cap; realistic mid-tier capture is ~$6,000 (rebates-team deep-dive). Requires the NJ Master HVACR license."},
     {name:"NJ Whole Home Energy Solutions (statewide NJCEP)", bankable:0, headline:7500,
      note:"Not separately claimable on a bare furnace→HP swap — same PSE&G umbrella as Building Decarb (rebates-team deep-dive 2026-08-31)."}],
-  ramp:[["PA metro (Philadelphia + collar)","370K","~3mo"],["+ South Jersey · Delaware","514K","~5mo"]]
+  ramp:[{n:"PA metro (Philadelphia + collar)",cum:370,mo:3},{n:"+ South Jersey · Delaware",cum:514,mo:5}]
 },
 {
   rank:17, code:"IL-CHI-1", name:"Chicago", state:"IL", quadrant:"Heavy Lift",
@@ -1105,7 +1339,7 @@ const DATA = [
   rebates:[
     {name:"ComEd Home Heating & Cooling Rebates (ducted ASHP instant discount)", bankable:1500, headline:2075,
      note:"Re-tiered by heating tonnage 3/1/2026. Watch municipal-electric towns — Winnetka, Naperville, St. Charles, Geneva, Batavia — which sit outside ComEd at $0."}],
-  ramp:[["Chicago (city license)","173K","~3mo"],["+ suburban Cook","492K","~2mo"],["+ DuPage · Lake","736K","~2mo"],["+ Will · Kane · NW IN · SE WI","1009K","~3mo"]]
+  ramp:[{n:"Chicago (city license)",cum:173,mo:3},{n:"+ suburban Cook",cum:492,mo:2},{n:"+ DuPage · Lake",cum:736,mo:2},{n:"+ Will · Kane · NW IN · SE WI",cum:1009,mo:3}]
 },
 {
   rank:18, code:"NY-BUF-1", name:"Buffalo–Rochester", state:"NY", quadrant:"Worth the Paperwork",
@@ -1136,7 +1370,16 @@ const DATA = [
      note:"National Grid is dominant in Erie and Niagara. Full-load HP plus gas decommissioning, with a 70%-of-cost cap. Funded 2026–2030."},
     {name:"NYS Clean Heat — RG&E (Rochester), Cat 2b ccASHP full-load + decommission", bankable:10000, headline:10000,
      note:"RG&E is dominant in Monroe County, and NYSEG pockets also pay $10,000. Utilities do not stack, but all three pay $10,000, so market value is uniform."}],
-  ramp:[["Erie (Buffalo)","86K","~3mo"],["+ Niagara · Genesee","116K","~6mo"],["+ Monroe (Rochester)","189K","~2mo"],["+ outer ring","227K","~2mo"]]
+  ramp:[
+    {n:"Erie (Buffalo)",cum:86,add:86,mo:3,
+     note:"Buffalo Heating license = application review plus a board-administered written exam. The exam calendar is unpublished — confirm it; an infrequent sitting makes this the longer pole."},
+    {n:"+ Niagara · Genesee",cum:116,add:29,mo:6,gate:true,
+     note:"⚠ The Niagara Falls exam runs once a year — apply by June 30 or wait roughly a year. Genesee and Batavia require no HVAC license."},
+    {n:"+ Monroe (Rochester)",cum:189,add:73,mo:2,
+     note:"Rochester does not license HVAC — permits only."},
+    {n:"+ outer ring",cum:227,add:38,mo:2,
+     note:"Outer counties don't license HVAC — permits only."}],
+  rampNote:"Each phase is application processing plus exam and test scheduling — six months where the exam board only sits semi-annually. Experienced staff are hired ahead, so that clock is scheduling, not ramp-up."
 },
 {
   rank:19, code:"WA-SEA-1", name:"Seattle", state:"WA", quadrant:"Worth the Paperwork",
@@ -1202,6 +1445,7 @@ const qtok = k => `var(${QUADS[QI[k]].token})`;
 const money = n => n === 0 ? "$0" : "$" + n.toLocaleString("en-US");
 const tam = n => n >= 1000 ? (n / 1000).toFixed(2) + "M" : n + "K";
 const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const DOT = "border-radius:50%";   // every mark is a circle; colour carries identity
 
 /* ═══ state ═══════════════════════════════════════════════════════════ */
 const state = { quads: new Set(QUADS.map(q => q.key)), q: "", sort: "rank", dir: 1 };
@@ -1235,7 +1479,7 @@ const visible = () => DATA.filter(d =>
     const b = document.createElement("button");
     b.type = "button"; b.className = "chip"; b.setAttribute("aria-pressed", "true");
     b.dataset.q = q.key; b.style.setProperty("--qc", qtok(q.key));
-    b.innerHTML = `<span class="sw" style="background:${qtok(q.key)};${shapeCss(q.shape)}"></span>${esc(q.key)} <span class="ct num">${n}</span>`;
+    b.innerHTML = `<span class="sw" style="background:${qtok(q.key)};${DOT}"></span>${esc(q.key)} <span class="ct num">${n}</span>`;
     b.addEventListener("click", () => {
       const on = b.getAttribute("aria-pressed") === "true";
       // never allow an all-off state — clicking the last one on re-selects everything
@@ -1247,12 +1491,6 @@ const visible = () => DATA.filter(d =>
     host.insertBefore(b, anchor);
   });
 })();
-function shapeCss(shape) {
-  if (shape === "circle") return "border-radius:50%";
-  if (shape === "square") return "border-radius:2px";
-  if (shape === "diamond") return "border-radius:1px;transform:rotate(45deg)";
-  return "clip-path:polygon(50% 0,100% 100%,0 100%)";
-}
 function syncChips() {
   document.querySelectorAll(".chip[data-q]").forEach(b =>
     b.setAttribute("aria-pressed", state.quads.has(b.dataset.q) ? "true" : "false"));
@@ -1266,15 +1504,7 @@ const RS = 0.75;                          // bubble radius per sqrt(W-TAM)
 const LABELLED = new Set(["Newark", "Long Island", "Philadelphia", "Chicago",
                           "Buffalo–Rochester", "Seattle"]);
 
-function markShape(shape, x, y, r) {
-  if (shape === "circle") return `<circle class="shape" cx="${x}" cy="${y}" r="${r}"/>`;
-  if (shape === "square") { const s = r * 1.7725;
-    return `<rect class="shape" x="${x - s / 2}" y="${y - s / 2}" width="${s}" height="${s}" rx="2.5"/>`; }
-  if (shape === "diamond") { const d = r * 1.2533;
-    return `<polygon class="shape" points="${x},${y - d} ${x + d},${y} ${x},${y + d} ${x - d},${y}"/>`; }
-  const a = r * 2.694, hh = a * 0.866;
-  return `<polygon class="shape" points="${x},${y - hh * 0.62} ${x + a / 2},${y + hh * 0.38} ${x - a / 2},${y + hh * 0.38}"/>`;
-}
+const markShape = (x, y, r) => `<circle class="shape" cx="${x}" cy="${y}" r="${r}"/>`;
 
 /* Relax overlapping marks: x moves freely inside its licensing band, y only
    a hair, so a mark never leaves the band its real value puts it in. */
@@ -1359,7 +1589,7 @@ function renderMatrix() {
   const dimmed = DATA.filter(d => !shown.includes(d));
   dimmed.forEach(d => {
     const x = sx(d.complexity), y = sy(d.cost), r = Math.sqrt(d.wtam) * RS;
-    parts.push(`<g class="mk dim" aria-hidden="true" style="fill:${qtok(d.quadrant)};fill-opacity:.5">${markShape(QUADS[QI[d.quadrant]].shape, x, y, r)}</g>`);
+    parts.push(`<g class="mk dim" aria-hidden="true" style="fill:${qtok(d.quadrant)};fill-opacity:.5">${markShape(x, y, r)}</g>`);
   });
   // Labels live outside the interactive groups so a mark's hit area stays the
   // mark itself, not the whole mark-plus-label bounding box.
@@ -1371,7 +1601,7 @@ function renderMatrix() {
       ` aria-label="${esc(d.name)}, ${d.state}. ${esc(d.quadrant)}. Cost index ${d.cost.toFixed(1)}, licensing ${d.complexity} of 5, weighted TAM ${tam(d.wtam)}. Open market card."` +
       ` style="fill:${qtok(d.quadrant)};fill-opacity:.62">` +
       `<circle class="hit" cx="${p.x}" cy="${p.y}" r="${Math.max(p.r + 9, 16)}" fill="none" pointer-events="all"/>` +
-      markShape(q.shape, p.x, p.y, p.r) +
+      markShape(p.x, p.y, p.r) +
       `</g>`);
     if (LABELLED.has(d.name) && shown.length > 3) {
       const right = p.x < MX.r - 190;
@@ -1427,7 +1657,7 @@ function wireMarks(pos) {
 (function legend() {
   const items = QUADS.map(q => {
     const n = DATA.filter(d => d.quadrant === q.key).length;
-    return `<span class="lg"><span class="sw" style="width:12px;height:12px;background:${qtok(q.key)};${shapeCss(q.shape)}"></span>` +
+    return `<span class="lg"><span class="sw" style="width:12px;height:12px;background:${qtok(q.key)};${DOT}"></span>` +
            `<b style="color:${qtok(q.key)}">${esc(q.key)}</b> <span class="n">${n}</span></span>`;
   }).join("");
   const key = `<span class="size-key"><svg width="86" height="30" aria-hidden="true">` +
@@ -1464,9 +1694,8 @@ function renderTable() {
     const qc = qtok(d.quadrant), q = QUADS[QI[d.quadrant]];
     const pips = [1, 2, 3, 4, 5].map(i => `<i class="${i <= d.complexity ? "on" : ""}"></i>`).join("");
     return `<tr style="--qc:${qc}">` +
-      `<td class="idx num">${d.rank}</td>` +
       `<td class="nm"><button type="button" data-goto="${d.code}">${esc(d.name)}, ${d.state}</button></td>` +
-      `<td><span class="qtag"><span class="sw" style="background:${qc};${shapeCss(q.shape)}"></span>${esc(d.quadrant)}</span></td>` +
+      `<td><span class="qtag"><span class="sw" style="background:${qc};${DOT}"></span>${esc(d.quadrant)}</span></td>` +
       `<td class="r">${tam(d.wtam)}</td>` +
       `<td class="r">${d.panorama}</td>` +
       `<td class="r">${d.spark.toFixed(2)}</td>` +
@@ -1509,6 +1738,36 @@ function rebateBlock(d) {
       `<p class="rnote">${esc(r.note)}</p></div>`;
   }).join("");
 }
+function rampBlock(d) {
+  const full = d.ramp[d.ramp.length - 1].cum;
+  const totalMo = d.ramp.reduce((a, p) => a + p.mo, 0);
+  const cols = d.ramp.length;
+  const tops = d.ramp.map((p, i) => {
+    const add = p.add ?? (i ? p.cum - d.ramp[i - 1].cum : p.cum);
+    const pct = Math.round(p.cum / full * 100);
+    return `<div><span class="ramp-cum">${tam(p.cum)}</span>` +
+      `<span class="ramp-delta">${i ? `+${tam(add)}` : `<span class="first">launch</span>`}` +
+      ` <span class="pc">&middot; ${pct}%</span></span></div>`;
+  }).join("");
+  const bars = d.ramp.map((p, i) => {
+    const hgt = 16 + (p.cum / full) * 62;   // px, inside a fixed-height cell
+    const cls = p.gate ? "gate" : i === 0 ? "first" : "";
+    return `<div><span class="ramp-bar ${cls}" style="height:${hgt.toFixed(0)}px"></span>` +
+      `<span class="ramp-meta"><span class="ramp-mo${p.gate ? " gate" : ""}">~${p.mo} mo</span>` +
+      `<span class="ramp-nm">${i + 1} &middot; ${esc(p.n)}</span></span></div>`;
+  }).join("");
+  const notes = d.ramp.some(p => p.note)
+    ? `<div class="ramp-notes">` + d.ramp.map((p, i) => p.note
+        ? `<div class="ramp-note${p.gate ? " gate" : ""}"><span class="pn">P${i + 1}</span><span>${esc(p.note)}</span></div>`
+        : "").join("") + `</div>`
+    : "";
+  return `<div class="ramp" style="--cols:${cols}">` +
+    `<div class="ramp-top">${tops}</div>` +
+    `<div class="ramp-chart">${bars}</div>` +
+    `<div class="ramp-foot"><span class="tot">~${totalMo} mo to full footprint</span> &middot; ` +
+    `${d.rampNote ? esc(d.rampNote) : "Each phase is application processing plus exam and test scheduling. Experienced staff are hired ahead, so that clock is scheduling, not ramp-up."}` +
+    `${notes}</div></div>`;
+}
 function cardHTML(d) {
   const qc = qtok(d.quadrant), q = QUADS[QI[d.quadrant]];
   const strip = [
@@ -1523,12 +1782,11 @@ function cardHTML(d) {
 
   return `<article class="mkt" id="m-${d.code}" style="--qc:${qc}">
   <button class="mkt-hd" type="button" aria-expanded="false" aria-controls="b-${d.code}">
-    <span class="mkt-rank num">${d.rank}</span>
     <span class="mkt-id">
       <h3>${esc(d.name)}, ${d.state}</h3>
       <span class="sub">
         <code>${esc(d.code)}</code>
-        <span class="qtag" style="--qc:${qc}"><span class="sw" style="background:${qc};${shapeCss(q.shape)}"></span>${esc(d.quadrant)}</span>
+        <span class="qtag" style="--qc:${qc}"><span class="sw" style="background:${qc};${DOT}"></span>${esc(d.quadrant)}</span>
         <span>${esc(d.units)}</span>
       </span>
     </span>
@@ -1558,8 +1816,7 @@ function cardHTML(d) {
         <p>${esc(d.licensing.summary)}</p>
         <ul style="margin-top:10px">${d.licensing.bullets.map(b => `<li>${esc(b)}</li>`).join("")}</ul></div>
       <div class="blk wide"><h4>Rebate programs &mdash; bankable vs. headline</h4>${rebateBlock(d)}</div>
-      ${d.ramp ? `<div class="blk wide"><h4>Rollout ramp</h4><div class="ramp">${d.ramp.map(([n, h, t], i) =>
-        `${i ? '<i>&#8594;</i>' : ''}<span>${esc(n)} <b class="num">${esc(h)}</b> <i>${esc(t)}</i></span>`).join("")}</div></div>` : ""}
+      ${d.ramp ? `<div class="blk wide"><h4>Ramp to full TAM</h4>${rampBlock(d)}</div>` : ""}
     </div>
   </div>
 </article>`;
@@ -1598,14 +1855,195 @@ document.addEventListener("click", e => {
   if (t) openMarket(t.dataset.goto);
 });
 
-/* ═══ phased launch table ═════════════════════════════════════════════ */
-(function phases() {
-  const top = PHASES[PHASES.length - 1].cum;
-  document.getElementById("phaseBody").innerHTML = PHASES.map(p =>
-    `<tr><td class="idx num">${p.n}</td><td style="white-space:nowrap">${p.date}</td>` +
-    `<td>${esc(p.counties)}</td><td class="r">+${p.add}K</td>` +
-    `<td class="r"><span class="phase-bar">${p.cum}K<span class="pt"><span class="pf" style="width:${(p.cum / top * 100).toFixed(1)}%"></span></span></span></td></tr>`).join("");
+/* ═══ Buffalo–Rochester: step chart + phase cards ═════════════════════ */
+(function phased() {
+  document.getElementById("phaseLead").textContent = PHASE_LEAD;
+
+  const S = { w: 1120, h: 330, l: 62, r: 1088, t: 46, b: 266 };
+  const base = PHASES[0].ym;
+  const mOf = ym => (ym[0] - base[0]) * 12 + (ym[1] - base[1]);
+  const END = mOf(PHASES[PHASES.length - 1].ym) + 2;   // tail so the last step reads
+  const yMax = 240;
+  const px = m => S.l + m / END * (S.r - S.l);
+  const py = v => S.b - v / yMax * (S.b - S.t);
+
+  const g = [];
+  for (let v = 0; v <= 200; v += 50) {
+    g.push(`<line class="grid-line" x1="${S.l}" y1="${py(v)}" x2="${S.r}" y2="${py(v)}"/>`,
+      `<text class="tick" x="${S.l - 9}" y="${py(v) + 4}" text-anchor="end">${v ? v + "K" : "0"}</text>`);
+  }
+  g.push(`<text class="axis-title" transform="translate(20,${(S.t + S.b) / 2}) rotate(-90)" text-anchor="middle">Addressable homes</text>`);
+
+  // step path — the line only moves up on a phase date
+  let d = `M ${px(0)},${py(0)}`;
+  PHASES.forEach((p, i) => {
+    const m = mOf(p.ym);
+    if (i) d += ` L ${px(m)},${py(PHASES[i - 1].cum)}`;
+    d += ` L ${px(m)},${py(p.cum)}`;
+  });
+  d += ` L ${px(END)},${py(PHASES[PHASES.length - 1].cum)}`;
+  g.push(`<path class="step-area" d="${d} L ${px(END)},${py(0)} Z"/>`, `<path class="step-line" d="${d}"/>`);
+
+  PHASES.forEach((p, i) => {
+    const m = mOf(p.ym), x = px(m), y = py(p.cum);
+    // the first point sits on the axis — anchor its labels right so they clear the ticks
+    const an = i === 0 ? "start" : "middle", lx = i === 0 ? x + 10 : x;
+    g.push(
+      `<line class="step-drop" x1="${x}" y1="${y}" x2="${x}" y2="${S.b}"/>`,
+      `<circle class="step-dot${p.gate ? " gate" : ""}" cx="${x}" cy="${y}" r="5"/>`,
+      `<text class="step-cum" x="${lx}" y="${y - 26}" text-anchor="${an}">${p.cum}K</text>`,
+      `<text class="step-add" x="${lx}" y="${y - 12}" text-anchor="${an}">+${p.add}K &middot; ${esc(p.counties)}</text>`,
+      `<text class="step-date" x="${lx}" y="${S.b + 22}" text-anchor="${an}">${esc(p.date)}</text>`,
+      `<text class="step-ph" x="${lx}" y="${S.b + 38}" text-anchor="${an}">Phase ${p.n} &middot; ~${p.mo} mo to open</text>`);
+  });
+  g.push(`<line class="axis-line" x1="${S.l}" y1="${S.b}" x2="${S.r}" y2="${S.b}"/>`);
+
+  const svg = document.getElementById("stepSvg");
+  svg.setAttribute("viewBox", `0 0 ${S.w} ${S.h}`);
+  svg.innerHTML = svg.querySelector("title").outerHTML + svg.querySelector("desc").outerHTML + g.join("");
+
+  document.getElementById("phaseGrid").innerHTML = PHASES.map(p =>
+    `<div class="ph${p.gate ? " gate" : ""}">
+      <div class="ph-hd"><span class="ph-n">Phase ${p.n}</span><span class="ph-date">${esc(p.date)}</span></div>
+      <p class="ph-co">${esc(p.counties)}</p>
+      <div class="ph-nums">
+        <div class="add"><b>+${p.add}K</b><span>Added</span></div>
+        <div><b>${p.cum}K</b><span>Cumulative</span></div>
+        <div><b>~${p.mo} mo</b><span>To open</span></div>
+      </div>
+      <h5>Requirements to open</h5>
+      <ul>${p.reqs.map(r => `<li>${esc(r)}</li>`).join("")}</ul>
+    </div>`).join("");
 })();
+
+/* ═══ launch-cadence planner ══════════════════════════════════════════ */
+const CAD_KEY = "compass-cadence-v1";
+const plan = (() => {
+  const empty = () => ({ base: {}, plus2: {}, plus6: {} });
+  try {
+    const raw = localStorage.getItem(CAD_KEY);
+    if (raw) {
+      const p = JSON.parse(raw), out = empty();
+      for (const t of CADENCE.tiers) if (p && p[t.key]) out[t.key] = p[t.key];
+      return out;
+    }
+  } catch (e) { /* private window, blocked storage — start empty */ }
+  return empty();
+})();
+function savePlan() {
+  try { localStorage.setItem(CAD_KEY, JSON.stringify(plan)); } catch (e) { /* non-fatal */ }
+}
+const tierIdx = k => CADENCE.tiers.findIndex(t => t.key === k);
+const at = (tier, m) => (plan[tier][m] || []);
+const placedCodes = () => {
+  const out = new Set();
+  for (const t of CADENCE.tiers) for (const m in plan[t.key]) plan[t.key][m].forEach(c => out.add(c));
+  return out;
+};
+/* Everything placed in a lower tier also runs in the higher ones. */
+function cellFor(tier, m) {
+  const i = tierIdx(tier), rows = [];
+  CADENCE.tiers.slice(0, i).forEach(lower =>
+    at(lower.key, m).forEach(c => rows.push({ code: c, kind: "inherit", from: lower.name })));
+  at(tier, m).forEach(c => rows.push({ code: c, kind: "added", tier }));
+  return rows;
+}
+function renderCadence() {
+  const cad = document.getElementById("cad");
+  const cells = [`<div class="cad-h"></div>`];
+  CADENCE.months.forEach((mo, i) => cells.push(
+    `<div class="cad-h">${mo} <span class="yr num">${CADENCE.year}</span>` +
+    (i === 0 ? `<span class="lk">Locked</span>` : "") + `</div>`));
+  cells.push(`<div class="cad-h tot">Total</div>`);
+
+  CADENCE.tiers.forEach(t => {
+    cells.push(`<div class="cad-tier"><b>${esc(t.name)}</b><span>${esc(t.sub)}</span></div>`);
+    let total = CADENCE.locked.length;
+    CADENCE.months.forEach((mo, m) => {
+      if (m === 0) {
+        cells.push(`<div class="cad-cell locked">` + CADENCE.locked.map(n =>
+          `<span class="slot locked">${esc(n)}</span>`).join("") + `</div>`);
+        return;
+      }
+      const rows = cellFor(t.key, m);
+      total += rows.length;
+      cells.push(`<div class="cad-cell">` + rows.map(r => {
+        const d = DATA.find(x => x.code === r.code);
+        const nm = d ? `${d.name}, ${d.state}` : r.code;
+        return r.kind === "added"
+          ? `<button type="button" class="slot added" data-drop="${t.key}|${m}|${r.code}" title="Remove ${esc(nm)}">${esc(d ? d.name : r.code)}<span class="x">&times;</span></button>`
+          : `<span class="slot inherit" title="Added in ${esc(r.from)} — remove it there">${esc(d ? d.name : r.code)}</span>`;
+      }).join("") +
+        `<button type="button" class="slot-add" data-add="${t.key}|${m}">+ add</button></div>`);
+    });
+    cells.push(`<div class="cad-total"><b class="num">${total}</b><span>Markets</span></div>`);
+  });
+  cad.innerHTML = cells.join("");
+
+  const left = DATA.length - placedCodes().size;
+  document.getElementById("cadCount").textContent =
+    `${left} of ${DATA.length} candidates unplaced`;
+}
+document.addEventListener("click", e => {
+  const drop = e.target.closest("[data-drop]");
+  if (drop) {
+    const [tier, m, code] = drop.dataset.drop.split("|");
+    plan[tier][m] = at(tier, m).filter(c => c !== code);
+    if (!plan[tier][m].length) delete plan[tier][m];
+    savePlan(); renderCadence(); return;
+  }
+  const add = e.target.closest("[data-add]");
+  if (add) { const [tier, m] = add.dataset.add.split("|"); openPicker(add, tier, +m); }
+});
+document.getElementById("cadReset").addEventListener("click", () => {
+  for (const t of CADENCE.tiers) plan[t.key] = {};
+  savePlan(); renderCadence();
+});
+
+/* ── market picker ─────────────────────────────────────────────────── */
+const picker = document.getElementById("picker");
+const pkSearch = document.getElementById("pkSearch");
+let pkCtx = null;
+function openPicker(btn, tier, m) {
+  pkCtx = { tier, m };
+  const t = CADENCE.tiers.find(x => x.key === tier);
+  document.getElementById("pkTitle").textContent =
+    `${t.name} &middot; ${CADENCE.months[m]}`.replace("&middot;", "·");
+  pkSearch.value = "";
+  picker.hidden = false;
+  fillPicker();
+  const r = btn.getBoundingClientRect();
+  const w = 270, h = picker.offsetHeight;
+  picker.style.left = Math.max(10, Math.min(innerWidth - w - 10, r.left)) + "px";
+  picker.style.top = (r.bottom + h + 10 > innerHeight ? Math.max(10, r.top - h - 6) : r.bottom + 6) + "px";
+  pkSearch.focus();
+}
+function closePicker() { picker.hidden = true; pkCtx = null; }
+function fillPicker() {
+  const q = pkSearch.value.trim().toLowerCase();
+  const taken = placedCodes();
+  const list = DATA.filter(d => !taken.has(d.code) &&
+    (!q || (d.name + " " + d.state).toLowerCase().includes(q)));
+  document.getElementById("pkList").innerHTML = list.length
+    ? list.map(d => `<button type="button" data-pick="${d.code}">` +
+        `<span class="qd" style="background:${qtok(d.quadrant)}"></span>${esc(d.name)}` +
+        `<span class="st">${esc(d.state)}</span></button>`).join("")
+    : `<p class="pk-none">${taken.size === DATA.length ? "Every candidate is placed." : "No match."}</p>`;
+}
+pkSearch.addEventListener("input", fillPicker);
+document.getElementById("pkClose").addEventListener("click", closePicker);
+document.getElementById("pkList").addEventListener("click", e => {
+  const b = e.target.closest("[data-pick]");
+  if (!b || !pkCtx) return;
+  const { tier, m } = pkCtx;
+  plan[tier][m] = at(tier, m).concat(b.dataset.pick);
+  savePlan(); closePicker(); renderCadence();
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") closePicker(); });
+document.addEventListener("mousedown", e => {
+  if (!picker.hidden && !picker.contains(e.target) && !e.target.closest("[data-add]")) closePicker();
+});
+renderCadence();
 
 /* ═══ controls ════════════════════════════════════════════════════════ */
 const search = document.getElementById("search");
