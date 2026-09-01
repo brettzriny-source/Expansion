@@ -299,9 +299,7 @@ section{padding:clamp(40px,6vw,72px) 0 0}
   font-family:var(--sub); font-weight:700; font-size:.625rem; letter-spacing:.11em;
   text-transform:uppercase; color:var(--ink-3); margin-bottom:8px;
 }
-.fx-note ul{margin:0; padding-left:1.1em; font-size:.8125rem; line-height:1.55; color:var(--ink-2); max-width:92ch}
-.fx-note li{margin-bottom:6px}
-.fx-note li::marker{color:var(--ink-3)}
+.fx-note p{font-size:.8125rem; line-height:1.55; color:var(--ink-2); max-width:92ch}
 .fx-note b{color:var(--ink)}
 
 /* ── table ──────────────────────────────────────────────────────────── */
@@ -814,16 +812,16 @@ html{scroll-behavior:smooth}
 
   <section id="phased">
     <div class="sec-head">
-      <h2>Buffalo&ndash;Rochester &mdash; phased county launch</h2>
-      <span class="eyebrow num">Start March 1, 2027 &nbsp;·&nbsp; ~227K homes at full footprint</span>
+      <h2>Buffalo &mdash; phased county launch</h2>
+      <span class="eyebrow num">Start March 1, 2027 &nbsp;·&nbsp; ~116K homes at full footprint</span>
     </div>
     <p class="sec-sub" id="phaseLead"></p>
     <hr class="rule">
     <div class="card" style="padding:22px 24px 8px">
       <div class="step-wrap">
         <svg id="stepSvg" viewBox="0 0 1120 330" role="img" aria-labelledby="stTitle stDesc">
-          <title id="stTitle">Addressable homes by phase, March 2027 to August 2028</title>
-          <desc id="stDesc">A step chart rising from 86 thousand homes at launch to 227 thousand at full footprint across four county phases. The same figures appear in the phase cards below.</desc>
+          <title id="stTitle">Addressable homes by phase, March 2027 to August 2027</title>
+          <desc id="stDesc">A step chart rising from 86 thousand homes at launch to 116 thousand at full footprint across two county phases. The same figures appear in the phase cards below.</desc>
         </svg>
       </div>
     </div>
@@ -894,16 +892,8 @@ const PHASES = [
       "⚠ City of Niagara Falls Mechanical Contractor license — the written exam runs ONCE A YEAR, application due June 30 (≥90 days prior). This is the binding entry gate.",
       "Genesee Co. / City of Batavia: no HVAC license required — permits only.",
       "Other Niagara towns (Lockport and the rest): registration + permits, no exam."] },
-  { n:3, date:"Feb 1, 2028", ym:[2028,1], counties:"Monroe", add:73, cum:189, mo:2,
-    reqs:[
-      "Rochester does NOT license HVAC as a trade — permits only.",
-      "Monroe County: no county HVAC license."] },
-  { n:4, date:"Aug 1, 2028", ym:[2028,7], counties:"Ontario · Wayne · Livingston · Wyoming · Orleans", add:38, cum:227, mo:2,
-    reqs:[
-      "Outer counties don't license HVAC — per-town registration and permits only.",
-      "Verify each town before dispatching crews."] },
 ];
-const PHASE_LEAD = "Addressable homes grow as counties enter the trade area. The binding entry gates are city licensing exams — Buffalo and Niagara Falls each require a written test, and Niagara Falls' is offered only once a year, with a June 30 application deadline. Rochester and the outer counties don't license HVAC at all: permits only.";
+const PHASE_LEAD = "Addressable homes grow as counties enter the trade area. The binding entry gates are city licensing exams — Buffalo and Niagara Falls each require a written test, and Niagara Falls' is offered only once a year, with a June 30 application deadline. Monroe and the outer ring have left this footprint — Rochester will be scored as its own candidate.";
 
 /* ── launch-cadence planner ─────────────────────────────────────────────
    January is signed. Placing a market in a lower tier cascades it upward. */
@@ -1200,32 +1190,31 @@ const DATA = [
      note:"Dominion SC pays roughly $400–500 for a qualifying new HP; the $650 tier is electric-furnace→HP only, so a gas conversion gets the general tier. SC has no state rebate, and HEAR is $0 for non-income-qualified customers. Dominion SC power at ~16¢ is pricier than Upstate Duke."}]
 },
 {
-  rank:10, code:"KY-LOU-1", name:"Louisville–Lexington", state:"KY", quadrant:"Easy In",
+  rank:10, code:"KY-LOU-1", name:"Louisville", state:"KY", quadrant:"Easy In",
   panorama:43, wtam:207, units:"~600K (est.) SF/townhome units",
   spark:0.92, rebate:400, complexity:2, months:2,
   factors:[["W-TAM ceiling",13.8,30],["Rebate",0.8,30],["SPARK",13.6,15],["Competition",8,10],["Adoption",1.1,5]],
-  market:"Gas furnace → heat pump across the Louisville and Lexington corridor — two metros on I-64. The value story is SPARK: LG&E/KU power at ~11.5¢ is among the cheapest in the US, and the Feb-2026 rate case raised gas faster than electric, so electric beats gas on operating cost. Old, gas-heavy housing and no incumbent HP specialist. The rebate is thin at ~$400, so this is a run-cheap whitespace play, not a rebate play.",
-  energy:[["LG&E (Louisville) / KU (Lexington)","~11.5¢/kWh","Regulated; gas rose faster than electric in the Feb-2026 rate case"]],
+  market:"Gas furnace → heat pump across metro Louisville — Jefferson County and the surrounding ring. The value story is SPARK: LG&E power at ~11.5¢ is among the cheapest in the US, and the Feb-2026 rate case raised gas faster than electric, so electric beats gas on operating cost. Old, gas-heavy housing and no incumbent HP specialist. The rebate is thin at ~$400, so this is a run-cheap whitespace play, not a rebate play.",
+  scopeNote:"Split out from the old Louisville–Lexington pairing: 75 miles of I-64 is too far for one trade area to serve, so Lexington is dropped here and will be scored as its own candidate. W-TAM, the Panorama score and its factor breakdown are still the two-metro corridor figures — Panorama has not been re-run on Louisville alone, so read them as an upper bound. Nothing else on this card depends on Lexington: the rebate, the utility, the climate and the licensing regime are all Louisville's.",
+  energy:[["LG&E (Louisville)","~11.5¢/kWh","Regulated; gas rose faster than electric in the Feb-2026 rate case"]],
   incentives:[
-    ["LG&E/KU Residential Rebate","Up to $400","ENERGY STAR ducted HP, relaunched Apr 2025"]],
+    ["LG&E Residential Rebate","Up to $400","ENERGY STAR ducted HP, relaunched Apr 2025"]],
   climate:{heat:"13°F", cool:"91°F", range:"5–93°F",
     text:"Mixed-humid (IECC 4A) — cold-but-not-extreme winters plus hot humid summers, a genuine dual heating-and-cooling load. Furnaces here do real heating work; size to the cooling load and verify HP capacity at ~13°F with modest strip backup."},
   competitors:[
     ["Allgeier Air","g","established Louisville brand; full-service install and repair reputation"],
-    ["Stivers / Absolute Services","g","scale + brand; Absolute bundles plumbing and electrical"],
-    ["Quantum Comfort (Lexington)","g","24/7 service; inverter/SEER2 heat pumps, 0% financing"],
-    ["REF-CON Heating & Air (Lexington)","g","“best warranty in the area”; premier residential positioning"]],
-  wedge:"The corridor is dominated by traditional gas-furnace-and-AC generalists — no prominent heat-pump specialist. With KY's dirt-cheap power making electric operating costs credible, Jetson wins on standardized fixed pricing, consistent install quality and an electrification-first brand across both metros.",
+    ["Stivers / Absolute Services","g","scale + brand; Absolute bundles plumbing and electrical"]],
+  wedge:"Louisville is dominated by traditional gas-furnace-and-AC generalists — no prominent heat-pump specialist. With KY's dirt-cheap power making electric operating costs credible, Jetson wins on standardized fixed pricing, consistent install quality and an electrification-first brand.",
   licensing:{
-    summary:"KY licenses HVAC at the state level (Dept of Housing, Buildings & Construction) — one Master HVAC Contractor license covers both metros with no per-jurisdiction exams. The real friction is KY's local occupational-tax layer: Louisville Metro at 2.2% and Lexington-Fayette at 2.25% payroll, with ~15–25 jurisdictions to fully cover the corridor. That's administrative and cost drag, not a licensing barrier — closer to Minneapolis than to NY or IL.",
+    summary:"KY licenses HVAC at the state level (Dept of Housing, Buildings & Construction) — one Master HVAC Contractor license, no per-jurisdiction exams. The real friction is KY's local occupational-tax layer: Louisville Metro levies 2.2% on payroll, and the surrounding ring counties each run their own. That's administrative and cost drag, not a licensing barrier — closer to Minneapolis than to NY or IL.",
     bullets:[
-      "One statewide KY Master HVAC license (Dept of Housing, Buildings & Construction, Frankfort) covers both metros — no per-jurisdiction exams.",
-      "Real friction is KY local occupational-license taxes: Louisville Metro 2.2% plus Lexington-Fayette 2.25% payroll, plus ~15–25 jurisdictions to blanket the full corridor. The two merged cores capture most households.",
+      "One statewide KY Master HVAC license (Dept of Housing, Buildings & Construction, Frankfort) — no per-jurisdiction exams.",
+      "Real friction is KY local occupational-license taxes: Louisville Metro at 2.2% of payroll, plus the ring counties. The merged Louisville Metro core captures most households in one filing.",
       "Separate electrical credential for hookups.",
-      "Fast to license (~2 months); the lift is ongoing multi-jurisdiction tax compliance, not exams."]},
+      "Fast to license (~2 months); the lift is ongoing tax compliance, not exams."]},
   rebates:[
-    {name:"LG&E/KU Residential Rebate — ENERGY STAR heat pump", bankable:400, headline:400,
-     note:"Relaunched Apr 2025 at about $400 for a qualifying HP ($300 central AC). KY has no state HP rebate, and federal HEAR is $0 for non-income-qualified customers. Value rests on cheap-power operating economics, not incentives."}]
+    {name:"LG&E Residential Rebate — ENERGY STAR heat pump", bankable:400, headline:400,
+     note:"Relaunched Apr 2025 at about $400 for a qualifying HP ($300 central AC). The same schedule runs on KU in Lexington, so splitting the corridor does not change the figure. KY has no state HP rebate, and federal HEAR is $0 for non-income-qualified customers. Value rests on cheap-power operating economics, not incentives."}]
 },
 {
   rank:11, code:"VA-RIC-1", name:"Richmond", state:"VA", quadrant:"Easy In",
@@ -1441,43 +1430,36 @@ const DATA = [
   ramp:[{n:"Chicago (city license)",cum:173,mo:3},{n:"+ suburban Cook",cum:492,mo:2},{n:"+ DuPage · Lake",cum:736,mo:2},{n:"+ Will · Kane · NW IN · SE WI",cum:1009,mo:3}]
 },
 {
-  rank:18, code:"NY-BUF-1", name:"Buffalo–Rochester", state:"NY", quadrant:"Worth the Paperwork",
-  panorama:54, wtam:227, units:"~700K SF/townhome units",
+  rank:18, code:"NY-BUF-1", name:"Buffalo", state:"NY", quadrant:"Worth the Paperwork",
+  panorama:54, wtam:116, units:"~350K (est.) SF/townhome units",
   spark:1.18, rebate:10000, complexity:5, months:5,
   factors:[["W-TAM ceiling",15.2,30],["Rebate",17.2,30],["SPARK",8.3,15],["Competition",4.5,10],["Adoption",3.4,5]],
-  market:"Gas furnace → heat pump is the primary target. NYS Clean Heat pays a flat $10K across National Grid (Erie / Niagara) and RG&E (Monroe), so rebate strength is uniform across the corridor — the constraint is county-by-county licensing, not demand.",
-  energy:[["National Grid / RG&E","21–22¢/kWh","Regulated, TOU available"]],
-  incentives:[["NYS Clean Heat (Nat'l Grid / RG&E)","Up to $10,000","Cat 2b ccASHP, full-load plus gas decommission"]],
+  market:"Gas furnace → heat pump is the primary target across Erie, Niagara and Genesee. NYS Clean Heat pays a flat $10K on National Grid — the richest rebate in the whole set — so the constraint here is county-by-county licensing, not demand.",
+  scopeNote:"Split out from the old Buffalo–Rochester pairing: 75 miles of I-90 is too far for one trade area to serve, so Monroe and the outer ring leave and Rochester will be scored as its own candidate. W-TAM is re-derived from the phase table below — Erie 86K plus Niagara and Genesee 29K — rather than carried over, so 116K is a real Buffalo figure. The Panorama score and its factor breakdown are still the two-metro numbers and have not been re-run, so read those as an upper bound. The rebate is unaffected: NYS Clean Heat pays the same $10,000 on National Grid as it does on RG&E.",
+  energy:[["National Grid","21–22¢/kWh","Regulated, TOU available"]],
+  incentives:[["NYS Clean Heat (National Grid)","Up to $10,000","Cat 2b ccASHP, full-load plus gas decommission"]],
   warn:"NY “Efficiency First”: weatherization becomes a required prerequisite for the rebate by roughly Mar 2028 (a bonus tier until then); full-load HP sizing is already required.",
   climate:{heat:"7°F", cool:"85°F", range:"8–81°F",
     text:"Cold humid-continental (IECC 5A) with a single-digit design low — a cold-climate ccASHP with capacity to ~5°F plus modest electric-resistance or dual-fuel backup is required."},
   competitors:[
     ["Zenner & Ritter","g","scale + longest local track record (since ~1930)"],
-    ["Isaac Heating & Air","g","scale + longevity on the Rochester side (since 1945)"],
-    ["Belknap Heating & Cooling","g","longevity + reputation (since 1967)"],
-    ["John Betlem Heating & Cooling","g","deep local history + repeat-customer trust"]],
-  wedge:"None of Buffalo–Rochester's leaders is a true electrification specialist — they're full-line furnace and AC shops, some with oil and geothermal, that treat HPs as an upsell. Jetson wins on standardized pricing, W-2 crews and cold-climate HP expertise for the Zone 5A design low.",
+    ["Belknap Heating & Cooling","g","longevity + reputation (since 1967)"]],
+  wedge:"Neither of Buffalo's leaders is a true electrification specialist — they're full-line furnace and AC shops, some with oil and geothermal, that treat HPs as an upsell. Jetson wins on standardized pricing, W-2 crews and cold-climate HP expertise for the Zone 5A design low.",
   licensing:{
-    summary:"NY has no state HVAC license — Buffalo, Rochester and every county run their own boards, applications, exams and fees. Scaling across the corridor means a separate license per jurisdiction. Top of the complexity scale.",
+    summary:"NY has no state HVAC license — Buffalo, Niagara Falls and every county run their own boards, applications, exams and fees. Scaling means a separate license per jurisdiction. Top of the complexity scale.",
     bullets:[
-      "No state license — a separate credential per city and county (Buffalo, Rochester, each suburb).",
+      "No state license — a separate credential per city and county (Buffalo, Niagara Falls, each suburb).",
       "City of Buffalo Heating Contractor license: $50 exam plus $500 license, bond and insurance.",
       "Gas-line work needs a locally-issued Master Plumber license, with each town running its own exam. We hire the experienced qualifier ahead of launch, so the gate is applications and exams, not experience.",
       "EPA 608 per tech (federal). ~5 months to first permit."]},
   rebates:[
-    {name:"NYS Clean Heat — National Grid (Buffalo), Cat 2b ccASHP full-load + decommission", bankable:10000, headline:10000,
-     note:"National Grid is dominant in Erie and Niagara. Full-load HP plus gas decommissioning, with a 70%-of-cost cap. Funded 2026–2030."},
-    {name:"NYS Clean Heat — RG&E (Rochester), Cat 2b ccASHP full-load + decommission", bankable:10000, headline:10000,
-     note:"RG&E is dominant in Monroe County, and NYSEG pockets also pay $10,000. Utilities do not stack, but all three pay $10,000, so market value is uniform."}],
+    {name:"NYS Clean Heat — National Grid, Cat 2b ccASHP full-load + decommission", bankable:10000, headline:10000,
+     note:"National Grid is dominant across Erie and Niagara, with NYSEG pockets on the Genesee fringe paying the same $10,000. Full-load HP plus gas decommissioning, with a 70%-of-cost cap. Funded 2026–2030 — the richest rebate in the set, and what makes the county-by-county licensing worth doing."}],
   ramp:[
     {n:"Erie (Buffalo)",cum:86,add:86,mo:3,
      note:"Buffalo Heating license = application review plus a board-administered written exam. The exam calendar is unpublished — confirm it; an infrequent sitting makes this the longer pole."},
     {n:"+ Niagara · Genesee",cum:116,add:29,mo:6,gate:true,
-     note:"⚠ The Niagara Falls exam runs once a year — apply by June 30 or wait roughly a year. Genesee and Batavia require no HVAC license."},
-    {n:"+ Monroe (Rochester)",cum:189,add:73,mo:2,
-     note:"Rochester does not license HVAC — permits only."},
-    {n:"+ outer ring",cum:227,add:38,mo:2,
-     note:"Outer counties don't license HVAC — permits only."}],
+     note:"⚠ The Niagara Falls exam runs once a year — apply by June 30 or wait roughly a year. Genesee and Batavia require no HVAC license."}],
   rampNote:"Each phase is application processing plus exam and test scheduling — six months where the exam board only sits semi-annually. Experienced staff are hired ahead, so that clock is scheduling, not ramp-up."
 },
 {
@@ -1621,7 +1603,7 @@ const sx = c => MX.l + (c - 0.52) / (5.48 - 0.52) * (MX.r - MX.l);
 const sy = v => MX.b - (v / 100) * (MX.b - MX.t);
 const RS = 0.75;                          // bubble radius per sqrt(W-TAM)
 const LABELLED = new Set(["Newark", "Long Island", "Philadelphia", "Chicago",
-                          "Buffalo–Rochester", "Seattle"]);
+                          "Buffalo", "Seattle"]);
 
 const markShape = (x, y, r) => `<circle class="shape" cx="${x}" cy="${y}" r="${r}"/>`;
 
@@ -1801,52 +1783,39 @@ function wireMarks(pos) {
 })();
 
 /* ═══ cost-index explainer ════════════════════════════════════════════
-   Rendered from the same constants the calculation uses, so the worked
-   example can never drift from the numbers in the table. */
+   Rendered from the same constants the calculation uses. */
 (function explainCost() {
-  const ex = DATA.find(d => d.code === "NJ-NWK-1");         // Newark, a mid-set case
+  const ex = DATA.find(d => d.code === "NJ-NWK-1");
   const best = DATA.find(d => d.rebate === rMax);
-  const cheapRun = DATA.find(d => d.spark === sMin);
-  const dearRun = DATA.find(d => d.spark === sMax);
   const price = 1 - ex.rebate / rMax;
   const oper = (ex.spark - sMin) / (sMax - sMin);
   const f = n => n.toFixed(2);
-  const moved = DATA.filter(d => d.quadrantNote);   // differ from the source brief
 
   document.getElementById("formula").innerHTML = `
   <div class="fx-hd">
     <h4>How the cost index is built</h4>
-    <span>A derived figure, not one of Panorama&rsquo;s &mdash; worked through on ${esc(ex.name)}, ${ex.state}.</span>
+    <span>Two numbers, each scored 0&ndash;1 across the 19 markets, then weighted.</span>
   </div>
   <div class="fx-body">
     <div class="fx-term">
-      <span class="fx-w">Weighted 75%</span>
-      <h5>What the system costs to buy</h5>
-      <p>Scored against the richest rebate in the set &mdash; ${money(rMax)} in ${esc(best.name)}. A market with no rebate scores 1.00; ${esc(best.name)} scores 0.00.</p>
-      <p class="fx-eq">1 &minus; ( rebate <span class="mu">&divide;</span> ${money(rMax)} ) &nbsp;<span class="mu">=</span>&nbsp;
-        1 &minus; ( ${money(ex.rebate)} <span class="mu">&divide;</span> ${money(rMax)} ) <span class="mu">=</span> <b>${f(price)}</b></p>
+      <span class="fx-w">Rebate &middot; 75%</span>
+      <p class="fx-eq">1 &minus; ( rebate <span class="mu">&divide;</span> ${money(rMax)} )
+        <span class="mu">&mdash; the best in the set, ${esc(best.name)}</span></p>
     </div>
     <div class="fx-term">
-      <span class="fx-w">Weighted 25%</span>
-      <h5>What it costs to run</h5>
-      <p>SPARK stretched across the set&rsquo;s range &mdash; ${sMin.toFixed(2)} in ${esc(cheapRun.name)} is the cheapest to run, ${sMax.toFixed(2)} in ${esc(dearRun.name)} the dearest.</p>
-      <p class="fx-eq">( SPARK &minus; ${sMin.toFixed(2)} ) <span class="mu">&divide;</span> ( ${sMax.toFixed(2)} &minus; ${sMin.toFixed(2)} ) <span class="mu">=</span>
-        ( ${ex.spark.toFixed(2)} &minus; ${sMin.toFixed(2)} ) <span class="mu">&divide;</span> ${(sMax - sMin).toFixed(2)} <span class="mu">=</span> <b>${f(oper)}</b></p>
+      <span class="fx-w">Running cost &middot; 25%</span>
+      <p class="fx-eq">( SPARK &minus; ${sMin.toFixed(2)} ) <span class="mu">&divide;</span> ${(sMax - sMin).toFixed(2)}
+        <span class="mu">&mdash; the set's range, ${sMin.toFixed(2)} to ${sMax.toFixed(2)}</span></p>
     </div>
     <div class="fx-result">
-      <span class="fx-w">The index</span>
-      <p class="fx-eq">100 <span class="mu">&times;</span> ( 0.75 <span class="mu">&times;</span> ${f(price)}
-        <span class="mu">+</span> 0.25 <span class="mu">&times;</span> ${f(oper)} ) <span class="mu">=</span>
-        <b>${ex.cost.toFixed(1)}</b> &nbsp;<span class="mu">&mdash; ${esc(ex.name)}&rsquo;s cost index</span></p>
+      <span class="fx-w">${esc(ex.name)}, ${ex.state}</span>
+      <p class="fx-eq">${money(ex.rebate)} rebate <span class="mu">&rarr;</span> <b>${f(price)}</b>
+        &nbsp;&middot;&nbsp; SPARK ${ex.spark.toFixed(2)} <span class="mu">&rarr;</span> <b>${f(oper)}</b>
+        &nbsp;&middot;&nbsp; 100 <span class="mu">&times;</span> ( .75<span class="mu">&times;</span>${f(price)}
+        <span class="mu">+</span> .25<span class="mu">&times;</span>${f(oper)} ) <span class="mu">=</span> <b>${ex.cost.toFixed(1)}</b></p>
     </div>
     <div class="fx-note">
-      <h5>What it does and doesn&rsquo;t tell you</h5>
-      <ul>
-        <li><b>It ranks, it doesn&rsquo;t price.</b> 0 and 100 are the ends of <em>this</em> 19-market set, not dollars. Add a market with a richer rebate than ${esc(best.name)}&rsquo;s and every index rescales. Compare markets to each other, never read the number as a cost.</li>
-        <li><b>It assumes the same gross install price everywhere.</b> We don&rsquo;t hold per-market install costs, so the rebate carries the whole purchase-price term. Where labor and permitting genuinely run dearer &mdash; Long Island against Columbia, say &mdash; the index understates the gap.</li>
-        <li><b>The rebate figure is what we expect to bank, not the headline.</b> Each market card shows both; the bankable number is the one feeding this.</li>
-        <li><b>The quadrant split is the midpoint of the observed range</b> (${COST_SPLIT}), paired with a licensing split at ${CPLX_SPLIT}. Those two lines reproduce every quadrant label in the source brief${moved.length ? ` except ${moved.map(m => esc(m.name)).join(" and ")}, reclassified here and flagged on ${moved.length > 1 ? "those cards" : "its card"}` : ""} &mdash; the check that this reading of the formula is faithful to it.</li>
-      </ul>
+      <p>It ranks markets against each other &mdash; it is not a dollar figure, and it assumes the same gross install price everywhere. Lower is cheaper to own; the quadrant line sits at ${COST_SPLIT}.</p>
     </div>
   </div>`;
 })();
@@ -1994,6 +1963,7 @@ function cardHTML(d) {
       <div class="blk wide"><h4>The market</h4><p>${esc(d.market)}</p>
         ${d.carve ? `<div class="carve" style="margin-top:12px">${esc(d.carve)}</div>` : ""}
         ${d.quadrantNote ? `<div class="qnote" style="margin-top:12px"><b>Reclassified since the source brief.</b> ${esc(d.quadrantNote)}</div>` : ""}
+        ${d.scopeNote ? `<div class="qnote" style="margin-top:12px"><b>Trade area re-scoped.</b> ${esc(d.scopeNote)}</div>` : ""}
       </div>
       <div class="blk wide"><div class="wedge"><h4 style="border:0;padding:0;margin-bottom:5px">Our wedge</h4><p>${esc(d.wedge)}</p></div></div>
       <div class="blk"><h4>Panorama factors &mdash; ${d.panorama}/100</h4>${factorBlock(d)}</div>
@@ -2058,12 +2028,14 @@ document.addEventListener("click", e => {
   const base = PHASES[0].ym;
   const mOf = ym => (ym[0] - base[0]) * 12 + (ym[1] - base[1]);
   const END = mOf(PHASES[PHASES.length - 1].ym) + 2;   // tail so the last step reads
-  const yMax = 240;
+  const peak = PHASES[PHASES.length - 1].cum;
+  const step = peak > 400 ? 100 : 50;                  // scale to the footprint we actually have
+  const yMax = Math.ceil(peak * 1.15 / step) * step;
   const px = m => S.l + m / END * (S.r - S.l);
   const py = v => S.b - v / yMax * (S.b - S.t);
 
   const g = [];
-  for (let v = 0; v <= 200; v += 50) {
+  for (let v = 0; v <= yMax; v += step) {
     g.push(`<line class="grid-line" x1="${S.l}" y1="${py(v)}" x2="${S.r}" y2="${py(v)}"/>`,
       `<text class="tick" x="${S.l - 9}" y="${py(v) + 4}" text-anchor="end">${v ? v + "K" : "0"}</text>`);
   }
