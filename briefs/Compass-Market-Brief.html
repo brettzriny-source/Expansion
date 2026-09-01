@@ -424,31 +424,19 @@ td.nm button:hover{color:var(--accent); text-decoration:underline}
 .reb .rn{font-family:var(--sub); font-weight:700; font-size:.875rem; line-height:1.35}
 .reb .rbar{display:flex; align-items:center; gap:10px; margin:9px 0 7px}
 .reb .rt{flex:1; height:9px; border-radius:5px; background:var(--track); overflow:hidden; position:relative}
-.reb .rh{
-  display:block; position:absolute; left:0; top:0; height:100%;
-  border-radius:5px; background:var(--accent); opacity:.24;
-}
-.reb .rf{display:block; position:relative; height:100%; border-radius:5px; background:var(--accent)}
-.reb .rv{font-family:var(--sub); font-weight:700; font-size:.8125rem; font-variant-numeric:tabular-nums; white-space:nowrap}
-.reb .rv s{color:var(--ink-3); font-weight:400; text-decoration:none; opacity:.85}
+.reb .rf{display:block; height:100%; border-radius:5px; background:var(--accent)}
+.reb .rv{font-family:var(--sub); font-weight:400; font-size:.8125rem; font-variant-numeric:tabular-nums; white-space:nowrap; color:var(--ink-3)}
+.reb .rv b{font-weight:700; color:var(--ink)}
+.reb .rv.solo{display:block; white-space:normal; margin:8px 0 7px}
 .reb .rnote{font-size:.8125rem; color:var(--ink-3); line-height:1.5; max-width:96ch}
 .reb.zero .rf{background:var(--ink-3)}
-.reb.zero .rh{background:var(--ink-3); opacity:.22}
-.reb-scale{
-  display:flex; flex-wrap:wrap; align-items:center; gap:5px 14px;
-  font-size:.75rem; color:var(--ink-3); line-height:1.5; margin-bottom:10px;
-}
-.reb-scale .k{display:inline-flex; align-items:center; gap:6px; white-space:nowrap}
-.reb-scale .sw{width:22px; height:9px; border-radius:5px; background:var(--accent)}
-.reb-scale .sw.ghost{background:var(--accent); opacity:.24}
-.reb-scale .lead{flex:1 1 26ch; min-width:0}
+.reb-scale{font-size:.75rem; color:var(--ink-3); line-height:1.5; margin-bottom:10px; max-width:96ch}
 /* Narrow screens: the value label crowds the track out of existence,
    so stack it under the bar instead of beside it. */
 @media (max-width:620px){
   .reb .rbar{flex-direction:column; align-items:stretch; gap:6px}
   .reb .rt{flex:none; width:100%}  /* flex:1 would zero the height in a column */
   .reb .rv{white-space:normal}
-  .reb-scale .lead{flex:1 1 100%}
 }
 .qnote{
   background:var(--warn-soft); border-left:3px solid var(--warn);
@@ -1880,33 +1868,35 @@ function factorBlock(d) {
 }
 function rebateBlock(d) {
   const counted = d.rebates;
-  const top = Math.max(...d.rebates.map(r => Math.max(r.headline, r.bankable)), 1);
   const sum = counted.reduce((a, r) => a + r.bankable, 0);
   const basis = d.rebateBasis || (sum === d.rebate
     ? `The ${counted.length === 1 ? "one program below that applies" : counted.length + " programs below that stack"} &mdash; the figure in the market table and the cost index.`
     : `The figure in the market table and the cost index.`);
+  /* Each bar is scaled to its OWN program: the track is that program's
+     advertised ceiling and the fill is what a typical job actually banks,
+     so the bar always reads as a share of the number beside it. */
   const row = r => {
     const zero = r.bankable === 0;
-    const head = Math.max(r.headline, r.bankable);
+    const cap = Math.max(r.headline, r.bankable);
+    /* A "no program found" placeholder has no ceiling to draw against. */
+    if (!cap) return `<div class="reb zero"><p class="rn">${esc(r.name)}</p>` +
+      `<p class="rv num solo"><b>$0</b> &middot; nothing to bank here</p>` +
+      `<p class="rnote">${esc(r.note)}</p></div>`;
+    const pct = Math.round(r.bankable / cap * 100);
+    const label = r.headline > r.bankable
+      ? `<b>${money(r.bankable)}</b> of the ${money(r.headline)} headline <b>&middot; ${pct}%</b>`
+      : `<b>${money(r.bankable)}</b> &middot; the full headline`;
     return `<div class="reb${zero ? " zero" : ""}">` +
       `<p class="rn">${esc(r.name)}</p>` +
       `<div class="rbar"><span class="rt">` +
-      `<span class="rh" style="width:${(head / top * 100).toFixed(1)}%"></span>` +
-      `<span class="rf" style="width:${(r.bankable / top * 100).toFixed(1)}%"></span></span>` +
-      `<span class="rv num">${money(r.bankable)} bankable${r.headline > r.bankable ? ` <s>of ${money(r.headline)} headline</s>` : ""}</span></div>` +
+      `<span class="rf" style="width:${pct}%"></span></span>` +
+      `<span class="rv num">${label}</span></div>` +
       `<p class="rnote">${esc(r.note)}</p></div>`;
   };
-  /* One scale for every bar in the market, so program sizes are comparable
-     to each other rather than each bar filling its own headline. */
-  const anyGhost = counted.some(r => r.headline > r.bankable);
-  const scale = `<div class="reb-scale"><span class="lead">` +
-    (counted.length === 1
-      ? `The track below runs to ${money(top)}, this program&rsquo;s headline.`
-      : `All bars below share one scale &mdash; the full track is ${money(top)}, the largest headline in this market, so program sizes are comparable to each other.`) +
-    `</span>` +
-    `<span class="k"><span class="sw"></span>what we bank</span>` +
-    (anyGhost ? `<span class="k"><span class="sw ghost"></span>rest of the headline</span>` : "") +
-    `</div>`;
+  const scale = counted.some(r => Math.max(r.headline, r.bankable) > 0)
+    ? `<p class="reb-scale">Each bar below is one program on its own scale: the full track is that ` +
+      `program&rsquo;s advertised ceiling, and the green is how much of it a typical job actually banks.</p>`
+    : "";
   return `<div class="reb-lead"><span class="rl-k">Market rebate</span>` +
     `<span class="rl-v">${money(d.rebate)}</span><span class="rl-n">${basis}</span></div>` +
     (d.rebateNote ? `<p class="reb-why">${esc(d.rebateNote)}</p>` : "") +
