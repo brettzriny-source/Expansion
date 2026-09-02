@@ -504,12 +504,6 @@ td.nm button:hover{color:var(--accent); text-decoration:underline}
   .reb .rt{flex:none; width:100%}  /* flex:1 would zero the height in a column */
   .reb .rv{white-space:normal}
 }
-.qnote{
-  background:var(--warn-soft); border-left:3px solid var(--warn);
-  border-radius:0 8px 8px 0; padding:13px 15px; font-size:.9375rem;
-  line-height:1.55; color:var(--ink-2);
-}
-.qnote b{color:var(--ink)}
 .reb-lead{
   display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 10px;
   background:var(--surface-2); border:1px solid var(--border);
@@ -1322,7 +1316,6 @@ const DATA = [
 },
 {
   rank:14, code:"NY-LGI-1", name:"Long Island", state:"NY", quadrant:"Worth the Paperwork",
-  quadrantNote:"Long Island moved out of Heavy Lift when the rebate axis stopped being anchored on Buffalo. Its $4,000 is the third-richest in the set and was being scored as though it were barely distinguishable from Richmond's $250; on a scale that runs to $4,400 it reads as what it is. The licensing is unchanged and still the hardest in the brief — no state HVAC licence, two county regimes, a town Master Plumber per town. That combination is exactly what Worth the Paperwork describes: economics good enough to justify the administrative load, rather than a market that is expensive and hard at once.",
   panorama:63, wtam:217, units:"~800K SF/townhome units",
   spark:1.18, rebate:4000, complexity:5, months:5,
   hpRate:{utility:"PSEG Long Island", tariff:"Residential Heating Service", savings:0.03, enrol:"Opt-in", customers:50000},
@@ -2021,8 +2014,6 @@ function cardHTML(d) {
     <div class="blocks">
       <div class="blk wide"><h4>The market</h4><p>${esc(d.market)}</p>
         ${d.carve ? `<div class="carve" style="margin-top:12px">${esc(d.carve)}</div>` : ""}
-        ${d.quadrantNote ? `<div class="qnote" style="margin-top:12px"><b>Reclassified since the source brief.</b> ${esc(d.quadrantNote)}</div>` : ""}
-        ${d.boundaryNote ? `<div class="qnote" style="margin-top:12px"><b>On the quadrant line.</b> ${esc(d.boundaryNote)}</div>` : ""}
 
       </div>
       <div class="blk wide"><div class="wedge"><h4 style="border:0;padding:0;margin-bottom:5px">Our wedge</h4><p>${esc(d.wedge)}</p></div></div>
