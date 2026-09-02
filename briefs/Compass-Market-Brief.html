@@ -1206,7 +1206,6 @@ const DATA = [
   spark:0.92, rebate:400, complexity:2, months:2,
   factors:[["W-TAM ceiling",13.8,30],["Rebate",0.8,30],["SPARK",13.6,15],["Competition",8,10],["Adoption",1.1,5]],
   market:"Gas furnace → heat pump across metro Louisville — Jefferson County and the surrounding ring. The value story is SPARK: LG&E power at ~11.5¢ is among the cheapest in the US, and the Feb-2026 rate case raised gas faster than electric, so electric beats gas on operating cost. Old, gas-heavy housing and no incumbent HP specialist. The rebate is thin at ~$400, so this is a run-cheap whitespace play, not a rebate play.",
-  scopeNote:"Split out from the old Louisville–Lexington pairing: 75 miles of I-64 is too far for one trade area to serve, so Lexington is dropped here and will be scored as its own candidate. W-TAM, the Panorama score and its factor breakdown are still the two-metro corridor figures — Panorama has not been re-run on Louisville alone, so read them as an upper bound. Nothing else on this card depends on Lexington: the rebate, the utility, the climate and the licensing regime are all Louisville's.",
   energy:[["LG&E (Louisville)","~11.5¢/kWh","Regulated; gas rose faster than electric in the Feb-2026 rate case"]],
   incentives:[
     ["LG&E Residential Rebate","Up to $400","ENERGY STAR ducted HP, relaunched Apr 2025"]],
@@ -1467,7 +1466,6 @@ const DATA = [
   spark:1.18, rebate:10000, complexity:5, months:5,
   factors:[["W-TAM ceiling",15.2,30],["Rebate",17.2,30],["SPARK",8.3,15],["Competition",4.5,10],["Adoption",3.4,5]],
   market:"Gas furnace → heat pump is the primary target across Erie, Niagara and Genesee. NYS Clean Heat pays a flat $10K on National Grid — the richest rebate in the whole set — so the constraint here is county-by-county licensing, not demand.",
-  scopeNote:"Split out from the old Buffalo–Rochester pairing: 75 miles of I-90 is too far for one trade area to serve, so Monroe and the outer ring leave and Rochester will be scored as its own candidate. W-TAM is re-derived from the phase table below — Erie 86K plus Niagara and Genesee 29K — rather than carried over, so 116K is a real Buffalo figure. The Panorama score and its factor breakdown are still the two-metro numbers and have not been re-run, so read those as an upper bound. The rebate is unaffected: NYS Clean Heat pays the same $10,000 on National Grid as it does on RG&E.",
   energy:[["National Grid","21–22¢/kWh","Regulated, TOU available"]],
   incentives:[["NYS Clean Heat (National Grid)","Up to $10,000","Cat 2b ccASHP, full-load plus gas decommission"]],
   warn:"NY “Efficiency First”: weatherization becomes a required prerequisite for the rebate by roughly Mar 2028 (a bonus tier until then); full-load HP sizing is already required.",
@@ -2050,7 +2048,6 @@ function cardHTML(d) {
       <div class="blk wide"><h4>The market</h4><p>${esc(d.market)}</p>
         ${d.carve ? `<div class="carve" style="margin-top:12px">${esc(d.carve)}</div>` : ""}
         ${d.quadrantNote ? `<div class="qnote" style="margin-top:12px"><b>Reclassified since the source brief.</b> ${esc(d.quadrantNote)}</div>` : ""}
-        ${d.scopeNote ? `<div class="qnote" style="margin-top:12px"><b>Trade area re-scoped.</b> ${esc(d.scopeNote)}</div>` : ""}
         ${d.boundaryNote ? `<div class="qnote" style="margin-top:12px"><b>On the quadrant line.</b> ${esc(d.boundaryNote)}</div>` : ""}
 
       </div>
