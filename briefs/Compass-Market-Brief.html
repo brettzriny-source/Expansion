@@ -723,7 +723,7 @@ html{scroll-behavior:smooth}
 <header class="masthead">
   <div class="shell mast-in">
     <div class="wordmark"><span class="dot"></span>Jetson &nbsp;·&nbsp; Project Compass</div>
-    <div class="mast-meta num">19 candidate markets &nbsp;·&nbsp; generated 2026-09-01</div>
+    <div class="mast-meta num"><span id="mastCount">18</span> candidate markets &nbsp;·&nbsp; generated 2026-09-01</div>
   </div>
 </header>
 
@@ -731,7 +731,7 @@ html{scroll-behavior:smooth}
   <div class="hero">
     <p class="eyebrow">Market expansion brief</p>
     <h1>Where Jetson<em>grows next</em></h1>
-    <p class="deck">The full read on 19 candidate markets for the next wave of launches &mdash; how big each one is, what a system costs to own there, who we&rsquo;d be up against, and what it takes to open the doors.</p>
+    <p class="deck">The full read on <span id="deckCount">18</span> candidate markets for the next wave of launches &mdash; how big each one is, what a system costs to own there, who we&rsquo;d be up against, and what it takes to open the doors.</p>
     <p class="hero-note">Data: Panorama (Gravity / TAM v4.0) plus a fresh rebate &amp; licensing scrape. The <b>cost axis</b> is net purchase price after rebate, weighted 75%, plus operating cost (SPARK) at 25%. The <b>complexity axis</b> is the licensing regime, from 1 (one statewide license) to 5 (county-by-county exams).</p>
     <div class="tiles" id="tiles"></div>
   </div>
@@ -760,7 +760,7 @@ html{scroll-behavior:smooth}
       <div class="matrix-wrap" id="matrixWrap">
         <svg id="matrixSvg" viewBox="0 0 920 580" role="img" aria-labelledby="mxTitle mxDesc">
           <title id="mxTitle">Positioning matrix: purchase and operating cost against licensing complexity</title>
-          <desc id="mxDesc">Nineteen candidate markets plotted with licensing complexity on the horizontal axis and a purchase-plus-operating cost index on the vertical axis, split into four quadrants. Exact values for every market are in the market table below.</desc>
+          <desc id="mxDesc">Candidate markets plotted with licensing complexity on the horizontal axis and a purchase-plus-operating cost index on the vertical axis, split into four quadrants. Exact values for every market are in the market table below.</desc>
         </svg>
         <div class="tip" id="tip" role="status" aria-live="polite"></div>
       </div>
@@ -780,7 +780,7 @@ html{scroll-behavior:smooth}
     <div class="defs">
       <div class="def">
         <h4>Purchase &amp; operating cost &mdash; vertical</h4>
-        <p>Net purchase price after the rebate we expect to capture (more rebate = cheaper) weighted 75%, plus operating economics (SPARK) at 25%. Indexed 0&ndash;100 across the 19; lower is cheaper to own.</p>
+        <p>Net purchase price after the rebate we expect to capture (more rebate = cheaper) weighted 75%, plus operating economics (SPARK) at 25%. Indexed 0&ndash;100 across the set; lower is cheaper to own.</p>
       </div>
       <div class="def">
         <h4>SPARK &mdash; what it actually measures</h4>
@@ -942,40 +942,7 @@ const DATA = [
      note:"Not separately claimable on a bare furnace→HP swap — sits under the same PSE&G umbrella as Building Decarb, so it does not stack on top (rebates-team deep-dive 2026-08-31)."}]
 },
 {
-  rank:2, code:"NJ-SHR-1", name:"Toms River", state:"NJ", quadrant:"Scale Fast",
-  boundaryNote:"Toms River has crossed the cost line twice in one revision pass — out of Scale Fast when the heat-pump-rate discount was removed, back in when the rebate axis was re-anchored. Neither move involved new data about Toms River. Read the label as a statement about where the line happens to fall, not about the market: it sits close enough to the boundary that any further methodology change can move it again. Newark clears the same line by a wide margin and does not.",
-  panorama:33, wtam:149, units:"~400K (est.) SF/townhome units",
-  spark:0.84, rebate:3000, complexity:2, months:4,
-  factors:[["W-TAM ceiling",10,30],["Rebate",3.7,30],["SPARK",15,15],["Competition",4.5,10],["Adoption",3,5]],
-  market:"Oil, propane and gas furnace → heat pump across Monmouth + Ocean counties (the Jersey Shore). Same easy NJ statewide license as Newark, but this is JCP&L territory — the rich PSE&G Building Decarbonization ($6–10K) does not apply, so the realistic rebate is only ~$3,000 (NJ Whole Home + JCP&L EnergySaveNJ). Working the other way: JCP&L power at ~17–18¢ is much cheaper than PSE&G's ~26–27¢, so operating economics are better and partly offset the thinner rebate.",
-  energy:[["JCP&L (FirstEnergy)","17–18¢/kWh","Regulated; price-to-compare 15.25¢ supply"]],
-  incentives:[
-    ["NJ Whole Home (NJCEP)","Up to $7,500","Statewide; HP conversion ≈ $2,500, tiered by modeled savings"],
-    ["JCP&L EnergySaveNJ HVAC","Up to $1,000","Equipment rebate, not PSE&G decarb — $500 ASHP / $1,000 cold-climate"]],
-  climate:{heat:"15°F", cool:"90°F", range:"20–91°F",
-    text:"Mild coastal humid-transitional (IECC 4A) — Atlantic moderation keeps the shore a few degrees warmer than inland NJ. A standard (non-cold-climate) ducted ASHP carries nearly the full heating season with little or no strip-heat backup."},
-  competitors:[
-    ["A.J. Perri","g","scale + brand — ~50 yrs, dominant multi-trade Carrier dealer, heaviest ad presence"],
-    ["All Systems Mechanical","g","local longevity + top aggregator rankings across Ocean County"],
-    ["J.H. Roberts Inc.","g","longevity + local trust (since 1979); classic oil/gas + AC shop"],
-    ["Reed's Sales & Service","g","strong reviews + established residential base"]],
-  wedge:"The Shore is saturated with legacy oil and propane heat and general-contractor incumbents who treat heat pumps as one SKU among many; none is an electrification specialist. Jetson wins with standardized fixed pricing and W-2 crews — a single transparent path off oil and propane that the mild Zone 4A coastal climate makes technically easy.",
-  licensing:{
-    summary:"Same NJ statewide regime as Newark — one Master HVACR Contractor license (Board of Examiners) valid statewide, with the statute preempting local licensing. Low complexity; the ~4-month clock is state processing, not multiple jurisdictions.",
-    bullets:[
-      "One statewide NJ Master HVACR license covers Monmouth + Ocean — statute preempts local licensing, same as Newark.",
-      "Gas piping is included in the HVACR scope; one statewide NJ Electrical Contractor license (or a sub) covers hookups.",
-      "NJ Home Improvement Contractor registration (Division of Consumer Affairs) is a separate obligation from the HVACR license. Trade-licensed work may sit outside it, but a whole-home conversion that touches panel or envelope work probably does not — confirm the scope before the first sale. Unconfirmed.",
-      "Qualifier must be a bona-fide owner or officer; $3K bond + $500K GL.",
-      "~4 months — the clock is state processing, not multiple jurisdictions."]},
-  rebates:[
-    {name:"NJ Whole Home Energy Solutions (statewide NJCEP)", bankable:2500, headline:7500,
-     note:"Statewide NJCEP; a HP conversion lands near $2,500. The $7,500 headline needs 33% total-energy savings plus a BPI audit."},
-    {name:"JCP&L HVAC Equipment Rebate (EnergySaveNJ)", bankable:500, headline:1000,
-     note:"JCP&L (FirstEnergy) serves Ocean County and Toms River — not PSE&G, so the rich $10K Building Decarbonization Clean Heat does not apply. This thin rebate is what separates the Shore from Newark."}]
-},
-{
-  rank:3, code:"MN-MSP-1", name:"Minneapolis", state:"MN", quadrant:"Easy In",
+  rank:2, code:"MN-MSP-1", name:"Minneapolis", state:"MN", quadrant:"Easy In",
   panorama:59, wtam:464, units:"970K SF/townhome units",
   spark:1.52, rebate:2000, complexity:2, months:3,
   hpRate:{utility:"Xcel Energy (MN)", tariff:"Electric Space Heating Rate", savings:0.18, enrol:"Default", customers:85500,
@@ -1014,7 +981,7 @@ const DATA = [
    ]
 },
 {
-  rank:4, code:"NC-CLT-1", name:"Charlotte Metro", state:"NC", quadrant:"Easy In",
+  rank:3, code:"NC-CLT-1", name:"Charlotte Metro", state:"NC", quadrant:"Easy In",
   panorama:59, wtam:369, units:"909K SF/townhome units",
   spark:0.83, rebate:450, complexity:2, months:3,
   hpRate:{utility:"Duke Energy Carolinas", tariff:"Electric Water Heating and Space Conditioning", savings:0.07, enrol:"Opt-in", customers:187100,
@@ -1049,7 +1016,7 @@ const DATA = [
    ]
 },
 {
-  rank:5, code:"AZ-PHX-1", name:"Phoenix", state:"AZ", quadrant:"Easy In",
+  rank:4, code:"AZ-PHX-1", name:"Phoenix", state:"AZ", quadrant:"Easy In",
   panorama:78, wtam:693, units:"~1.4M (est.) SF/townhome units",
   spark:0.90, rebate:900, complexity:2, months:3,
   factors:[["W-TAM ceiling",30,30],["Rebate",16.2,30],["SPARK",14,15],["Competition",8,10],["Adoption",2,5]],
@@ -1083,7 +1050,7 @@ const DATA = [
    ]
 },
 {
-  rank:6, code:"NC-GSO-1", name:"Greensboro–Winston-Salem", state:"NC", quadrant:"Easy In",
+  rank:5, code:"NC-GSO-1", name:"Greensboro–Winston-Salem", state:"NC", quadrant:"Easy In",
   panorama:47, wtam:208, units:"~550K (est.) SF/townhome units",
   spark:0.83, rebate:500, complexity:2, months:3,
   hpRate:{utility:"Duke Energy Carolinas", tariff:"Electric Water Heating and Space Conditioning", savings:0.07, enrol:"Opt-in", customers:187100},
@@ -1112,7 +1079,7 @@ const DATA = [
      note:"Duke Energy Carolinas is dominant in the Triad (Guilford / Forsyth). Smart$aver was raised to $500, NCUC-approved, effective 1/1/2025. NC has no state-funded HP rebate, and federal HEAR is $0 for non-income-qualified customers. Note: the Charlotte and Raleigh cards still show $450 for the same Duke program — worth reconciling."}]
 },
 {
-  rank:7, code:"NC-RDU-1", name:"Raleigh–Durham", state:"NC", quadrant:"Easy In",
+  rank:6, code:"NC-RDU-1", name:"Raleigh–Durham", state:"NC", quadrant:"Easy In",
   panorama:50, wtam:257, units:"762K SF/townhome units",
   spark:0.83, rebate:450, complexity:2, months:3,
   factors:[["W-TAM ceiling",17.2,30],["Rebate",2.2,30],["SPARK",15,15],["Competition",6,10],["Adoption",2.4,5]],
@@ -1144,7 +1111,7 @@ const DATA = [
    ]
 },
 {
-  rank:8, code:"SC-GRV-1", name:"Greenville", state:"SC", quadrant:"Easy In",
+  rank:7, code:"SC-GRV-1", name:"Greenville", state:"SC", quadrant:"Easy In",
   panorama:42, wtam:136, units:"~330K (est.) SF/townhome units",
   spark:0.90, rebate:500, complexity:2, months:2,
   hpRate:{utility:"Duke Energy Carolinas (SC)", tariff:"Electric Water Heating and Space Conditioning", savings:0.11, enrol:"Opt-in", customers:68000},
@@ -1173,7 +1140,7 @@ const DATA = [
      note:"Duke SC pays roughly $300–500 per ton by tier plus a gas→electric conversion bonus, landing around $500 realistic. Blue Ridge Electric Co-op covers the rural fringe. SC has no state rebate, and HEAR is $0 for non-income-qualified customers."}]
 },
 {
-  rank:9, code:"SC-COL-1", name:"Columbia", state:"SC", quadrant:"Easy In",
+  rank:8, code:"SC-COL-1", name:"Columbia", state:"SC", quadrant:"Easy In",
   panorama:38, wtam:122, units:"~290K (est.) SF/townhome units",
   spark:0.90, rebate:450, complexity:2, months:2,
   factors:[["W-TAM ceiling",8.1,30],["Rebate",1.1,30],["SPARK",14,15],["Competition",8,10],["Adoption",2.2,5]],
@@ -1201,7 +1168,7 @@ const DATA = [
      note:"Dominion SC pays roughly $400–500 for a qualifying new HP; the $650 tier is electric-furnace→HP only, so a gas conversion gets the general tier. SC has no state rebate, and HEAR is $0 for non-income-qualified customers. Dominion SC power at ~16¢ is pricier than Upstate Duke."}]
 },
 {
-  rank:10, code:"KY-LOU-1", name:"Louisville", state:"KY", quadrant:"Easy In",
+  rank:9, code:"KY-LOU-1", name:"Louisville", state:"KY", quadrant:"Easy In",
   panorama:43, wtam:207, units:"~600K (est.) SF/townhome units",
   spark:0.92, rebate:400, complexity:2, months:2,
   factors:[["W-TAM ceiling",13.8,30],["Rebate",0.8,30],["SPARK",13.6,15],["Competition",8,10],["Adoption",1.1,5]],
@@ -1227,7 +1194,7 @@ const DATA = [
      note:"Relaunched Apr 2025 at about $400 for a qualifying HP ($300 central AC). The same schedule runs on KU in Lexington, so splitting the corridor does not change the figure. KY has no state HP rebate, and federal HEAR is $0 for non-income-qualified customers. Value rests on cheap-power operating economics, not incentives."}]
 },
 {
-  rank:11, code:"VA-RIC-1", name:"Richmond", state:"VA", quadrant:"Easy In",
+  rank:10, code:"VA-RIC-1", name:"Richmond", state:"VA", quadrant:"Easy In",
   panorama:42, wtam:190, units:"~450K (est.) SF/townhome units",
   spark:0.90, rebate:250, complexity:2, months:2,
   factors:[["W-TAM ceiling",12.7,30],["Rebate",0.7,30],["SPARK",14,15],["Competition",6,10],["Adoption",2.5,5]],
@@ -1256,7 +1223,7 @@ const DATA = [
      note:"Dominion's menu is strongest for HP water heaters and thermostats; the ducted ASHP incentive for standard customers is small at about $250. VA has no strong state HP rebate, HOMES/HEAR had not launched as of Aug 2026, and HEAR is $0 for non-income-qualified customers."}]
 },
 {
-  rank:12, code:"NV-LAS-1", name:"Las Vegas", state:"NV", quadrant:"Easy In",
+  rank:11, code:"NV-LAS-1", name:"Las Vegas", state:"NV", quadrant:"Easy In",
   panorama:53, wtam:263, units:"~640K (est.) SF/townhome units",
   spark:0.93, rebate:225, complexity:2, months:3,
   factors:[["W-TAM ceiling",17.5,30],["Rebate",5,30],["SPARK",13.4,15],["Competition",8,10],["Adoption",2.2,5]],
@@ -1283,7 +1250,7 @@ const DATA = [
      note:"NV Energy dominates Clark County. Boulder City and Overton Power serve edge pockets with no HP rebate. The cold-climate HP measure is not offered in Southern NV."}]
 },
 {
-  rank:13, code:"UT-SLC-1", name:"Salt Lake–Ogden–Provo", state:"UT", quadrant:"Easy In",
+  rank:12, code:"UT-SLC-1", name:"Salt Lake–Ogden–Provo", state:"UT", quadrant:"Easy In",
   panorama:47, wtam:241, units:"~750K (est.) SF/townhome units",
   spark:1.04, rebate:842, complexity:1, months:2,
   factors:[["W-TAM ceiling",16.1,30],["Rebate",3.4,30],["SPARK",11.2,15],["Competition",6,10],["Adoption",1.7,5]],
@@ -1322,7 +1289,7 @@ const DATA = [
      note:"A historical $1,000 gas-side rebate that secondary sources say pairs with the wattsmart dual-fuel tier for ~$2,450 combined. The rebates team could not confirm it against a live source post-Enbridge rebranding and marked it do-not-quote, so it is carried at $0. Real headroom if it verifies."}]
 },
 {
-  rank:14, code:"TX-AUS-1", name:"Austin", state:"TX", quadrant:"Easy In",
+  rank:13, code:"TX-AUS-1", name:"Austin", state:"TX", quadrant:"Easy In",
   panorama:47, wtam:305, units:"~700K (est.) SF/townhome units",
   spark:1.33, rebate:750, complexity:1, months:1.5,
   factors:[["W-TAM ceiling",20.3,30],["Rebate",3.4,30],["SPARK",5.5,15],["Competition",8,10],["Adoption",1.5,5]],
@@ -1354,7 +1321,7 @@ const DATA = [
    ]
 },
 {
-  rank:15, code:"NY-LGI-1", name:"Long Island", state:"NY", quadrant:"Worth the Paperwork",
+  rank:14, code:"NY-LGI-1", name:"Long Island", state:"NY", quadrant:"Worth the Paperwork",
   quadrantNote:"Long Island moved out of Heavy Lift when the rebate axis stopped being anchored on Buffalo. Its $4,000 is the third-richest in the set and was being scored as though it were barely distinguishable from Richmond's $250; on a scale that runs to $4,400 it reads as what it is. The licensing is unchanged and still the hardest in the brief — no state HVAC licence, two county regimes, a town Master Plumber per town. That combination is exactly what Worth the Paperwork describes: economics good enough to justify the administrative load, rather than a market that is expensive and hard at once.",
   panorama:63, wtam:217, units:"~800K SF/townhome units",
   spark:1.18, rebate:4000, complexity:5, months:5,
@@ -1388,7 +1355,7 @@ const DATA = [
   ramp:[{n:"Nassau County",cum:90,mo:3},{n:"+ Suffolk County",cum:188,mo:3}]
 },
 {
-  rank:16, code:"PA-PHL-1", name:"Philadelphia", state:"PA", quadrant:"Heavy Lift",
+  rank:15, code:"PA-PHL-1", name:"Philadelphia", state:"PA", quadrant:"Heavy Lift",
   panorama:54, wtam:514, units:"~1.2M (est.) SF/townhome units",
   spark:1.28, rebate:2325, complexity:4, months:3,
   hpRate:{utility:"PECO Energy", tariff:"Residential Heating Service", savings:0.07, enrol:"Opt-in", customers:156200,
@@ -1431,7 +1398,7 @@ const DATA = [
   rampSeq:"<b>Launch Newark first and most of phase 2 stops being a ramp.</b> The South Jersey slice &mdash; about 100K of the 514K, in Camden, Gloucester and lower Burlington &mdash; is the same state and the same utility as Newark. The NJ Master HVACR license is statewide and preempts local licensing, the NJ Electrical Contractor license covers the hookup, and PSE&#38;G participating-contractor status and Clean Heat enrolment are already in hand. That slice then opens alongside the PA metro rather than five months behind it, with the ~$6,000 rebate live from the first job. Sequenced the other way, Philadelphia carries the NJ licensing clock and the enrolment lead time itself. What this does not cover is the Delaware remainder of phase 2, roughly 44K homes, which needs its own licensing either way."
 },
 {
-  rank:17, code:"IL-CHI-1", name:"Chicago", state:"IL", quadrant:"Heavy Lift",
+  rank:16, code:"IL-CHI-1", name:"Chicago", state:"IL", quadrant:"Heavy Lift",
   panorama:52, wtam:1009, units:"~2.4M (est.) SF/townhome units",
   spark:1.52, rebate:1500, complexity:4, months:2,
   hpRate:{utility:"Commonwealth Edison", tariff:"Electric Heating Rate", savings:0.14, enrol:"Default", customers:122500},
@@ -1461,7 +1428,7 @@ const DATA = [
   ramp:[{n:"Chicago (city license)",cum:173,mo:3},{n:"+ suburban Cook",cum:492,mo:2},{n:"+ DuPage · Lake",cum:736,mo:2},{n:"+ Will · Kane · NW IN · SE WI",cum:1009,mo:3}]
 },
 {
-  rank:18, code:"NY-BUF-1", name:"Buffalo", state:"NY", quadrant:"Worth the Paperwork",
+  rank:17, code:"NY-BUF-1", name:"Buffalo", state:"NY", quadrant:"Worth the Paperwork",
   panorama:54, wtam:116, units:"~350K (est.) SF/townhome units",
   spark:1.18, rebate:10000, complexity:5, months:5,
   factors:[["W-TAM ceiling",15.2,30],["Rebate",17.2,30],["SPARK",8.3,15],["Competition",4.5,10],["Adoption",3.4,5]],
@@ -1493,7 +1460,7 @@ const DATA = [
   rampNote:"Each phase is application processing plus exam and test scheduling — six months where the exam board only sits semi-annually. Experienced staff are hired ahead, so that clock is scheduling, not ramp-up."
 },
 {
-  rank:19, code:"WA-SEA-1", name:"Seattle", state:"WA", quadrant:"Heavy Lift",
+  rank:18, code:"WA-SEA-1", name:"Seattle", state:"WA", quadrant:"Heavy Lift",
   panorama:55, wtam:315, units:"~1.1M (est.) SF/townhome units",
   spark:0.76, rebate:600, complexity:3, months:3,
   factors:[["W-TAM ceiling",21,30],["Rebate",5.7,30],["SPARK",15,15],["Competition",2,10],["Adoption",4.2,5]],
@@ -1603,6 +1570,13 @@ const visible = () => DATA.filter(d =>
   (!state.q || (d.name + " " + d.state + " " + d.code).toLowerCase().includes(state.q))
 );
 
+/* Counts in the masthead and deck follow the data, so removing or adding a
+   market never leaves a stale number in the copy. */
+["mastCount", "deckCount"].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.textContent = DATA.length;
+});
+
 /* ═══ headline tiles ══════════════════════════════════════════════════ */
 (function tiles() {
   const totalTam = DATA.reduce((a, d) => a + d.wtam, 0);
@@ -1610,8 +1584,8 @@ const visible = () => DATA.filter(d =>
   const best = DATA.reduce((a, d) => d.rebate > a.rebate ? d : a);
   const biggest = DATA.reduce((a, d) => d.wtam > a.wtam ? d : a);
   const rows = [
-    [(totalTam / 1000).toFixed(1) + "M", "Total weighted TAM (W-TAM) across the 19 candidates"],
-    [oneLicense + " of 19", "Open on a statewide license &mdash; complexity 1&ndash;2"],
+    [(totalTam / 1000).toFixed(1) + "M", `Total weighted TAM (W-TAM) across the ${DATA.length} candidates`],
+    [`${oneLicense} of ${DATA.length}`, "Open on a statewide license &mdash; complexity 1&ndash;2"],
     [money(best.rebate), "Best rebate in the set &mdash; " + best.name + ", " + best.state],
     [(biggest.wtam / 1000).toFixed(2) + "M", "Largest single W-TAM &mdash; " + biggest.name],
   ];
@@ -1766,7 +1740,7 @@ function renderMatrix() {
   svg.innerHTML = svg.querySelector("title").outerHTML + svg.querySelector("desc").outerHTML + parts.join("");
   wireMarks(pos);
   document.getElementById("matrixCount").textContent =
-    shown.length === DATA.length ? "all 19 shown" : shown.length + " of 19 shown";
+    shown.length === DATA.length ? `all ${DATA.length} shown` : `${shown.length} of ${DATA.length} shown`;
 }
 
 function wireMarks(pos) {
@@ -1846,14 +1820,14 @@ function wireMarks(pos) {
   document.getElementById("formula").innerHTML = `
   <div class="fx-hd">
     <h4>How the cost index is built</h4>
-    <span>Two numbers, each scored 0&ndash;1 across the 19 markets, then weighted.</span>
+    <span>Two numbers, each scored 0&ndash;1 across the ${DATA.length} markets, then weighted.</span>
   </div>
   <div class="fx-body">
     <div class="fx-term">
       <span class="fx-w">Rebate &middot; 75%</span>
       <p class="fx-eq">1 &minus; ( rebate <span class="mu">&divide;</span> ${money(rCap)} )
         <span class="mu">&mdash; the 90th percentile, floored at 0</span></p>
-      <p class="fx-fine">The axis runs to ${money(rCap)}, not to the best rebate in the set (${money(rMax)}, ${esc(best.name)}). Anchoring on that outlier put twelve of the nineteen markets inside the bottom tenth of a 75%-weighted axis, which stopped it separating them &mdash; the nominal weighting said rebate mattered three times as much as running cost while the arithmetic said the opposite. ${atCap === 1 ? "One market is" : atCap + " markets are"} at or above the cap and ${atCap === 1 ? "takes" : "take"} full credit: past that point a market&rsquo;s constraint is not its rebate.</p>
+      <p class="fx-fine">The axis runs to ${money(rCap)}, not to the best rebate in the set (${money(rMax)}, ${esc(best.name)}). Anchoring on that outlier put most of the set inside the bottom tenth of a 75%-weighted axis, which stopped it separating them &mdash; the nominal weighting said rebate mattered three times as much as running cost while the arithmetic said the opposite. ${atCap === 1 ? "One market is" : atCap + " markets are"} at or above the cap and ${atCap === 1 ? "takes" : "take"} full credit: past that point a market&rsquo;s constraint is not its rebate.</p>
     </div>
     <div class="fx-term">
       <span class="fx-w">Running cost &middot; 25%</span>
@@ -2083,7 +2057,7 @@ function renderCards() {
   document.getElementById("mkts").innerHTML = list.map(cardHTML).join("");
   document.getElementById("empty").hidden = list.length > 0;
   document.getElementById("cardCount").textContent =
-    list.length === DATA.length ? "all 19" : list.length + " of 19";
+    list.length === DATA.length ? `all ${DATA.length}` : `${list.length} of ${DATA.length}`;
   document.querySelectorAll(".mkt-hd").forEach(btn => {
     btn.addEventListener("click", () => {
       const art = btn.closest(".mkt"), open = art.classList.toggle("open");
@@ -2120,7 +2094,15 @@ const plan = (() => {
     const raw = localStorage.getItem(CAD_KEY);
     if (raw) {
       const p = JSON.parse(raw), out = empty();
-      for (const t of CADENCE.tiers) if (p && p[t.key]) out[t.key] = p[t.key];
+      const live = new Set(DATA.map(d => d.code));
+      for (const t of CADENCE.tiers) {
+        if (!p || !p[t.key]) continue;
+        // a plan saved before a market was dropped must not resurrect it
+        for (const m in p[t.key]) {
+          const keep = (p[t.key][m] || []).filter(c => live.has(c));
+          if (keep.length) out[t.key][m] = keep;
+        }
+      }
       return out;
     }
   } catch (e) { /* private window, blocked storage — start empty */ }
