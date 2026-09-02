@@ -454,6 +454,13 @@ td.nm button:hover{color:var(--accent); text-decoration:underline}
 .reb .rnote{font-size:.8125rem; color:var(--ink-3); line-height:1.5; max-width:96ch}
 .reb.zero .rf{background:var(--ink-3)}
 .reb-scale{font-size:.75rem; color:var(--ink-3); line-height:1.5; margin-bottom:10px; max-width:96ch}
+/* Programmes that reach nothing — on the record, folded out of the way. */
+.reb-fold{border-top:1px solid var(--border); border-bottom:0; margin-top:2px}
+.reb-fold > summary{padding:11px 2px}
+.reb-fold .fold-t{font-size:.75rem}
+.reb-fold .fold-h{font-size:.75rem; flex:1 1 24ch}
+.reb-fold .fold-b{padding:4px 0 2px}
+.reb-fold .fold-b .reb:last-child{margin-bottom:0}
 /* Territory × fuel-path table, where one market figure hides several. */
 .seg{margin-bottom:14px}
 .seg-lead{font-size:.8125rem; color:var(--ink-2); line-height:1.55; max-width:96ch; margin-bottom:10px}
@@ -1516,16 +1523,25 @@ const DATA = [
       "Techs need the 06A HVAC/R specialty electrician certificate (4,000 hrs plus exam).",
       "Seattle SDCI adds city Refrigeration/AC, Journey Refrigeration Mechanic and Gas Piping Mechanic licenses, each a city exam.",
       "Heaviest local layer in WA. ~3 months to first permit."]},
-  rebateBasis:"Seattle City Light's Midstream HVAC+ — the one programme reaching a standard Seattle job today.",
+  rebateBasis:"Seattle City Light's Midstream HVAC+ — the one programme that pays on a gas-to-full-electric job here.",
+  rebateNote:"The pattern across this metro is that gas-start conversions are paid far less than electric-start ones, or not at all. PSE ended general fuel-switching on 1 August 2024 and its 2026–27 conservation plan keeps it out; Snohomish PUD requires electric heat as the primary source; Tacoma pays $1,000 on a gas job against $2,000 on electric forced air; the Pierce municipals pay $200–$400 on gas against $1,000–$1,200 on electric. Energy Smart Eastside is the only programme in the region that pays the same on either starting fuel, and it is brand- and network-gated. That is the market's real shape, not a rebate shortage.",
   rebates:[
     {name:"Seattle City Light — Midstream HVAC+", bankable:600, headline:600,
      note:"$300/$400/$600 per unit by efficiency tier, not by fuel, so a gas conversion qualifies. No income test, no registration, no manufacturer condition; taken as a midstream discount at purchase and passed through on the invoice. Requires buying through a participating SCL distributor."},
-    {name:"Seattle Clean Heat — Oil-to-Electric", bankable:0, headline:2000,
-     note:"$2,000 with no income test, but oil-heated homes only and Mitsubishi equipment only. This is where the Mitsubishi restriction sits."},
-    {name:"PSE — all open tiers", bankable:0, headline:4000,
-     note:"PSE is the gas utility for most of Seattle, so its gas-side programmes do reach here. None fits: Moderate Income ($4,000) is income-tested, Hybrid is dual-fuel, and the electric-side tiers need PSE electric service plus an electric-resistance or existing-HP starting point. All PSE rebates have required Trade Ally enrolment since 2 April 2026 — twelve months of L&I registration under the same business name."},
     {name:"Energy Smart Eastside", bankable:0, headline:1000,
-     note:"$1,000 instant, no income test, six Eastside cities — outside Seattle proper. Gated on an approved-equipment list and the trusted-installer network; admission in progress."}]
+     note:"⚠ The highest-priority call in this market. $1,000 at point of sale, no income test, and — uniquely here — it pays the same on a gas or an electric start, across six Eastside cities. Gated on approved brands (Mitsubishi, Bryant/Carrier, Day & Night) and a curated installer network with no published application process, which is why admission has to be chased rather than applied for. Still absent from Jetson's rebate database."},
+    {name:"PSE — gas-to-electric", bankable:0, headline:4000,
+     note:"PSE ended general fuel-switching on 1 August 2024 and its 2026–27 conservation plan keeps it out, so a non-income-qualified gas-to-full-electric job earns $0 from PSE permanently — not a timing problem. Only the income-tested Moderate Income tier still pays, at $4,000."},
+    {name:"PSE — electric resistance to heat pump", bankable:0, headline:1500,
+     note:"$1,500, no income test, and real at metro scope even though it is close to irrelevant inside Seattle city: PSE is the electric utility across the whole Eastside and most of suburban King and Pierce. It needs an electric-resistance starting point, so it is an adjacent product line rather than a gas-conversion rebate."},
+    {name:"Tacoma Power", bankable:0, headline:2000,
+     note:"$1,000 on a gas conversion and only on variable-speed equipment — single- and two-stage on a gas job pay nothing. Electric forced air pays $2,000. Pierce County, so outside Seattle proper, and the earlier $1,238 'any fuel path' figure on this card was wrong on both counts."},
+    {name:"Snohomish County PUD", bankable:0, headline:2500,
+     note:"$0 on a gas conversion — SnoPUD requires electric heat as the primary heating source. Live tiers are $1,800 ducted conversion and $2,500 inverter, both electric-start only, and there is no ductless tier. The earlier $1,547 'richest reachable programme in the region' figure on this card was wrong: it does not reach our job at all."},
+    {name:"Seattle Clean Heat — Oil-to-Electric", bankable:0, headline:2000,
+     note:"$2,000 base with no income test, plus a $4,000 moderate-income bonus, but limited by funds rather than by a date and currently running through distributors only. Oil-heated homes and Mitsubishi equipment only."},
+    {name:"Lakeview Light & Power and Peninsula Light", bankable:0, headline:1200,
+     note:"Pierce County municipals, relevant only if the trade area reaches Pierce. Lakeview pays $200 on a gas start against $1,200 on electric; Peninsula $400 against $1,000. Small, and they follow the same gas penalty as the rest of the region."}]
 
 },
 ];
@@ -1949,12 +1965,23 @@ function rebateBlock(d) {
       `<span class="sv n ${r.then ? "up" : "nil"}" data-k="Cleared">${r.then ? money(r.then) : "—"}</span>` +
       `<span class="sg">${esc(r.gate)}</span></div>`).join("") +
     `</div></div>` : "";
+  /* Programmes that pay stay open; the ones that reach nothing collapse behind a
+     disclosure — still on the record, out of the way of the number that matters. */
+  const pays = counted.filter(r => r.bankable > 0);
+  const nil  = counted.filter(r => r.bankable === 0);
+  const body = pays.map(row).join("") + (nil.length
+    ? `<details class="fold reb-fold"><summary>` +
+      `<span class="fold-t">${nil.length} programme${nil.length === 1 ? "" : "s"} that pay${nil.length === 1 ? "s" : ""} nothing here</span>` +
+      `<span class="fold-h">${esc([...new Set(nil.map(r => r.name.split(" — ")[0]))].join(", "))}</span>` +
+      `<span class="fold-x" aria-hidden="true"></span></summary>` +
+      `<div class="fold-b">${nil.map(row).join("")}</div></details>`
+    : "");
   return `<div class="reb-lead"><span class="rl-k">Market rebate</span>` +
     `<span class="rl-v">${money(d.rebate)}</span><span class="rl-n">${basis}</span></div>` +
     (d.rebateNote ? `<p class="reb-why">${esc(d.rebateNote)}</p>` : "") +
     seg +
-    scale +
-    counted.map(row).join("") +
+    (pays.length ? scale : "") +
+    body +
     (d.warn ? `<div class="warnline" style="margin-top:11px"><b>&#9888;</b><span>${esc(d.warn)}</span></div>` : "");
 }
 function rampBlock(d) {
