@@ -356,6 +356,23 @@
     padding: 9px 14px; cursor: pointer;
   }
   .reset:hover { border-color: var(--bad); color: var(--bad); }
+  input[type="text"] {
+    width:100%; font-family:var(--sans); font-weight:600; font-size:15px; color:var(--ink);
+    background:var(--surface-2); border:1px solid var(--line-strong); border-radius:10px; padding:10px 12px;
+  }
+  input[type="text"]:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent); background:var(--surface); }
+  .caserow { display:flex; gap:10px; align-items:center; }
+  .btn { flex:none; border:0; background:var(--accent); color:var(--accent-ink); font-family:var(--sans); font-weight:800; font-size:14px; border-radius:10px; padding:11px 16px; cursor:pointer; }
+  .btn:hover { filter:brightness(1.06); }
+  .btn:focus-visible, .mini:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  .caselist { margin-top:12px; display:flex; flex-direction:column; gap:8px; }
+  .caseitem { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; border:1px solid var(--line); border-radius:12px; background:var(--surface-2); }
+  .ci-name { font-weight:700; font-size:14px; }
+  .ci-meta { font-size:12px; color:var(--ink-mute); margin-top:2px; }
+  .ci-actions { display:flex; gap:6px; flex:none; }
+  .mini { border:1px solid var(--line-strong); background:var(--surface); color:var(--ink); font-family:var(--sans); font-weight:700; font-size:12px; border-radius:8px; padding:6px 10px; cursor:pointer; }
+  .mini:hover { border-color:var(--accent); }
+  .mini.danger:hover, .mini.danger.arm { border-color:var(--bad); color:var(--bad); }
   .section-note { font-size: 12.5px; color: var(--ink-mute); margin: -4px 0 12px; }
   a { color: var(--accent); }
 </style>
@@ -382,6 +399,18 @@
   <div class="grid">
     <!-- ============ INPUTS ============ -->
     <div class="col-inputs">
+
+      <section class="card">
+        <div class="card-h"><span class="n">&#9873;</span><h2>Saved Cases</h2><span class="hint" id="casesHint">on this device</span></div>
+        <div class="card-b">
+          <div class="caserow">
+            <div class="input-wrap" style="flex:1"><input id="caseName" type="text" maxlength="80" placeholder="Name this case — e.g. Denver · 10 trucks · R1T" autocomplete="off"></div>
+            <button class="btn" id="saveCaseBtn" type="button">Save case</button>
+          </div>
+          <div class="small" id="caseStatus" style="margin-top:8px;min-height:1.2em"></div>
+          <div class="caselist" id="caseList"></div>
+        </div>
+      </section>
 
       <section class="card">
         <div class="card-h"><span class="n">1</span><h2>Operations</h2><span class="hint">per electrician</span></div>
@@ -962,6 +991,136 @@
     $("directWrap").style.display = "none";
     render();
   });
+
+  // ---- Saved cases: shared via the db capability when this view grants it,
+  //      otherwise kept on this device in localStorage ----
+  var INPUT_SEL = '.col-inputs input[id], .col-inputs select[id]';
+  var LS_KEY = "r1t-fleet-cases-v1";
+  var caseDb = null;
+
+  function setMilesMode(m){
+    state.milesMode = m;
+    Array.prototype.forEach.call($("milesMode").querySelectorAll("button"), function(x){ x.classList.toggle("on", x.dataset.m === m); });
+    $("directWrap").style.display = m === "direct" ? "" : "none";
+  }
+  function esc(str){ return String(str).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+  function slugId(name){
+    var t = String(name).toLowerCase().replace(/[^a-z0-9_\-.~:@+]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60);
+    return t || ("case-" + Date.now());
+  }
+  function setStatus(msg, bad){ var el = $("caseStatus"); el.textContent = msg || ""; el.style.color = bad ? "var(--bad)" : "var(--ink-mute)"; }
+  function snapshotInputs(){
+    var o = {};
+    Array.prototype.forEach.call(document.querySelectorAll(INPUT_SEL), function(el){ if (el.id !== "caseName") o[el.id] = el.value; });
+    return o;
+  }
+  function buildCase(name){
+    var r = compute();
+    return {
+      name: name,
+      savedAt: new Date().toISOString(),
+      inputs: snapshotInputs(),
+      state: { vehicle: state.vehicle, acqMode: state.acqMode, milesMode: state.milesMode, leaseEstimated: !!state.leaseEstimated, fleet: $("fleetHint").dataset.fleet === "1" },
+      summary: { vehicle: VEHICLES[state.vehicle].name, milesMo: Math.round(r.miles), acqMode: state.acqMode, deltaMo: Math.round(r.delta), vehicleMo: Math.round(r.rTotal), personalMo: Math.round(r.pTotal) }
+    };
+  }
+  function applyCase(c){
+    if (!c || !c.inputs) return;
+    var st = c.state || {};
+    applyVehicle(VEHICLES[st.vehicle] ? st.vehicle : "r1t");
+    Object.keys(c.inputs).forEach(function(id){ var el = $(id); if (el && id !== "vehicle") el.value = c.inputs[id]; });
+    state.leaseEstimated = !!st.leaseEstimated;
+    setAcqUI(st.acqMode === "purchase" ? "purchase" : "lease");
+    setMilesMode(st.milesMode === "direct" ? "direct" : "perday");
+    var fh = $("fleetHint"); fh.dataset.fleet = st.fleet ? "1" : "0"; fh.textContent = st.fleet ? "whole fleet / mo" : "per truck / mo";
+    $("caseName").value = c.name || "";
+    render();
+  }
+  function lsLoad(){ try { return JSON.parse(localStorage.getItem(LS_KEY) || "{}") || {}; } catch(e){ return {}; } }
+  function lsSave(all){ try { localStorage.setItem(LS_KEY, JSON.stringify(all)); } catch(e){} }
+  function renderCaseList(items){
+    var list = $("caseList");
+    if (!items.length){ list.innerHTML = '<div class="small" style="padding:4px 0">No saved cases yet — set up a scenario above and save it here.</div>'; return; }
+    list.innerHTML = items.map(function(it){
+      var d = it.data || {}, sm = d.summary || {};
+      var when = d.savedAt ? new Date(d.savedAt).toLocaleDateString(undefined, {month:"short", day:"numeric", year:"numeric"}) : "";
+      var delta = (typeof sm.deltaMo === "number") ? ((sm.deltaMo < 0 ? "−" : "+") + "$" + Math.abs(sm.deltaMo).toLocaleString("en-US") + "/mo vs personal") : "";
+      var meta = [sm.vehicle || "", sm.acqMode ? (sm.acqMode === "purchase" ? "buy" : "lease-to-own") : "", sm.milesMo ? sm.milesMo.toLocaleString("en-US") + " mi/mo" : "", delta, when].filter(Boolean).join(" · ");
+      return '<div class="caseitem" data-id="' + esc(it.id) + '">' +
+        '<div class="ci-main"><div class="ci-name">' + esc(d.name || it.id) + '</div><div class="ci-meta">' + esc(meta) + '</div></div>' +
+        '<div class="ci-actions"><button type="button" class="mini" data-act="load">Load</button><button type="button" class="mini danger" data-act="del">Delete</button></div>' +
+      '</div>';
+    }).join("");
+  }
+  function refreshLocalList(){
+    var all = lsLoad();
+    var items = Object.keys(all).map(function(k){ return {id:k, data:all[k]}; })
+      .sort(function(a,b){ return String(b.data.savedAt || "").localeCompare(String(a.data.savedAt || "")); });
+    renderCaseList(items);
+  }
+  function errText(e){ return (e && (e.message || e.code)) || "unknown error"; }
+
+  $("saveCaseBtn").addEventListener("click", function(){
+    var name = $("caseName").value.trim();
+    if (!name){ setStatus("Give the case a name first.", true); $("caseName").focus(); return; }
+    var c = buildCase(name), id = slugId(name);
+    if (caseDb){
+      caseDb.collection("cases").doc(id).set(c)
+        .then(function(){ setStatus("Saved \u201c" + name + "\u201d \u2014 everyone with this page can load it."); })
+        .catch(function(e){ setStatus("Couldn\u2019t save: " + errText(e), true); });
+    } else {
+      var all = lsLoad(); all[id] = c; lsSave(all); refreshLocalList();
+      setStatus("Saved \u201c" + name + "\u201d on this device.");
+    }
+  });
+  $("caseName").addEventListener("keydown", function(e){ if (e.key === "Enter") $("saveCaseBtn").click(); });
+
+  $("caseList").addEventListener("click", function(e){
+    var b = e.target.closest("button[data-act]"); if (!b) return;
+    var item = b.closest(".caseitem"); var id = item && item.dataset.id; if (!id) return;
+    var nm = item.querySelector(".ci-name").textContent;
+    if (b.dataset.act === "load"){
+      if (caseDb){
+        caseDb.collection("cases").doc(id).get()
+          .then(function(snap){ if (snap.exists){ applyCase(snap.data()); setStatus("Loaded \u201c" + nm + "\u201d."); } else { setStatus("That case is no longer available.", true); } })
+          .catch(function(err){ setStatus("Couldn\u2019t load: " + errText(err), true); });
+      } else {
+        var all = lsLoad(); if (all[id]){ applyCase(all[id]); setStatus("Loaded \u201c" + nm + "\u201d."); }
+      }
+    } else if (b.dataset.act === "del"){
+      // two-step delete: first click arms, second within 4s confirms
+      if (!b.classList.contains("arm")){
+        b.classList.add("arm"); b.textContent = "Confirm delete";
+        setTimeout(function(){ b.classList.remove("arm"); b.textContent = "Delete"; }, 4000);
+        return;
+      }
+      if (caseDb){
+        caseDb.collection("cases").doc(id).delete()
+          .then(function(){ setStatus("Deleted \u201c" + nm + "\u201d."); })
+          .catch(function(err){ setStatus("Couldn\u2019t delete: " + errText(err), true); });
+      } else {
+        var all2 = lsLoad(); delete all2[id]; lsSave(all2); refreshLocalList(); setStatus("Deleted \u201c" + nm + "\u201d.");
+      }
+    }
+  });
+
+  // Start local; light up shared storage when the viewer resolves the capability.
+  refreshLocalList();
+  (function(){
+    var p;
+    try { p = (window.claude && typeof window.claude.use === "function") ? window.claude.use("db") : Promise.resolve(null); }
+    catch(e){ p = Promise.resolve(null); }
+    p.then(function(db){
+      if (!db) return;
+      caseDb = db;
+      $("casesHint").textContent = "shared with your team";
+      db.collection("cases").orderBy("savedAt", "desc").limit(200).onSnapshot(function(snap){
+        renderCaseList(snap.docs.map(function(d){ return {id: d.id, data: d.data() || {}}; }));
+      }, function(){
+        caseDb = null; $("casesHint").textContent = "on this device"; refreshLocalList();
+      });
+    }).catch(function(){ /* stay local */ });
+  })();
 
   state.milesMode = "perday";
   applyVehicle("r1t");
