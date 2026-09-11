@@ -339,6 +339,8 @@
   table.detail th:first-child, table.detail td:first-child { text-align: left; font-variant-numeric: normal; }
   table.detail thead th { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-mute); font-weight: 700; border-bottom-color: var(--line-strong); }
   table.detail tr.sum td { font-weight: 800; border-top: 2px solid var(--line-strong); border-bottom: none; padding-top: 11px; }
+  .card.compact table.detail { font-size: 13px; }
+  .card.compact table.detail th, .card.compact table.detail td { padding: 6px 6px; }
   table.detail td.pos { color: var(--bad); } table.detail td.neg { color: var(--good); }
   table.detail tr.muted td { color: var(--ink-mute); }
 
@@ -725,25 +727,7 @@
           </div>
         </div>
       </section>
-      <section class="card" style="margin-top:22px">
-        <div class="card-h"><span class="n">∞</span><h2 id="horizonTitle">The 3-Year Horizon</h2><span class="hint" id="horizonHint">end of term</span></div>
-        <div class="card-b">
-          <p class="section-note" id="horizonLead"></p>
-          <div class="tiles" style="grid-template-columns:1fr 1fr">
-            <div class="tile"><div class="k">Personal — net cost</div><div class="v bad" id="hNetP">—</div><div class="cap">no asset · meter runs on</div></div>
-            <div class="tile"><div class="k" id="hNetVLabel">Vehicle — net cost</div><div class="v good" id="hNetV">—</div><div class="cap">after equity retained</div></div>
-          </div>
-          <div style="overflow-x:auto"><table class="detail" style="margin-top:14px">
-            <thead><tr><th>At end of term</th><th>Personal</th><th id="hVHead">Vehicle</th></tr></thead>
-            <tbody id="horizonBody"></tbody>
-          </table></div>
-          <div class="banner" id="horizonCallout" style="margin:14px 0 0; background:var(--good-bg); border-color:color-mix(in srgb, var(--good) 35%, transparent)"></div>
-        </div>
-      </section>
-    </div>
-  </div>
-
-  <section class="card" style="margin-top:22px">
+      <section class="card compact" style="margin-top:22px">
         <div class="card-h"><span class="n">≡</span><h2>Cost Breakdown</h2><span class="hint" id="fleetHint">per truck / mo</span></div>
         <div class="card-b" style="overflow-x:auto">
           <table class="detail" id="detail">
@@ -752,6 +736,9 @@
           </table>
         </div>
       </section>
+    </div>
+  </div>
+
 
   <section class="card" style="margin-top:22px">
     <div class="card-h"><span class="n">⊞</span><h2>EV Models Under Consideration</h2><span class="hint">fleet dashboard · future · for management review</span></div>
@@ -798,6 +785,7 @@
         <div class="it"><span class="m">+</span><span><b>Recruiting &amp; retention.</b> A company truck is a real perk; techs stop putting wear on their own cars.</span></div>
         <div class="it"><span class="m">+</span><span><b>Tool security &amp; readiness.</b> Standardized, locked upfit means every truck is job-ready.</span></div>
         <div class="it"><span class="m">+</span><span><b>Telematics &amp; control.</b> Routing, safety, and utilization data you can't get from personal cars.</span></div>
+        <div class="it"><span class="m">+</span><span><b>Equity rolls forward.</b> Reimbursement is pure expense forever; once a truck is paid off its cost drops to operating only, and the resale value plus reusable racking rolls into the next truck.</span></div>
         <div class="it"><span class="m">+</span><span><b>Reliability.</b> An unreliable employee vehicle is a real cost: a breakdown, a car in the shop, or a tech who sold their truck means a missed morning and installs that slip &mdash; and Jetson eats it. A company-maintained vehicle on a known service cadence shows up.</span></div>
         <div class="it"><span class="m">−</span><span><b>Repair downtime varies by brand.</b> R1T body work goes only to Rivian-certified shops, so a fender-bender can mean weeks in a rental; Kia, Hyundai, GM and Toyota repair almost anywhere. The Total Cost of Ownership card prices this downtime and flags vehicles above the fleet-median lead time.</span></div>
         <div class="it"><span class="m">−</span><span><b>Fleet overhead.</b> Titling, registration, and admin the personal-vehicle model avoids.</span></div>
@@ -1032,40 +1020,8 @@
       '<tr class="sum"><td>Total / year'+(fleetOn?' · fleet':'')+'</td><td>'+fmt(r.pTotal*k*12)+'</td><td>'+fmt(r.rTotal*k*12)+'</td></tr>' +
       '<tr class="muted"><td>' + (state.chargerMode === "home" ? "Home" : "Warehouse") + ' charger install · <b>cash up front, not financed</b></td><td>—</td><td>' + fmt(Math.max(0, num("chargerCost"))*k) + ' one-time</td></tr>';
 
-    // ---- Horizon: cash out over the term vs. equity owned at the end ----
-    var termH = Math.max(1, num("term"));
-    var yrs = Math.round(termH/12*10)/10;
-    var upfitLife = Math.max(1, num("upfitLife"));
-    var transferUpfit = Math.max(0, upfitTotal() - num("upfitWrap")) * Math.max(0, upfitLife - termH) / upfitLife;
-    var residualAsset = num("price") * num("residualPct") / 100;
-    var terminalAsset = residualAsset + transferUpfit;
-    var operMo = r.ins + r.teleSub + r.maint + r.chargeM;
-    var downH = r.acqMode === "purchase" ? 0 : downAmt();
-    var acqCash = r.acqMode === "purchase" ? num("price") : num("lease") * termH + downH;
-    var capH = upfrontCash() * capRate() * termH / 12;
-    var cashV = acqCash + upfitTotal() + num("teleInstall") + Math.max(0, num("chargerCost")) + capH + operMo * termH;
-    var cashP = r.pTotal * termH;
-    var netP = cashP, netV = cashV - terminalAsset;
-    var y4P = r.pTotal, y4V = operMo;
-    $("horizonTitle").textContent = "The " + yrs + "-Year Horizon";
-    $("horizonHint").textContent = "end of " + termH + " mo";
-    $("hNetVLabel").textContent = vName + " — net cost";
-    $("hVHead").textContent = vName;
-    $("hNetP").textContent = fmt(netP);
-    $("hNetV").textContent = fmt(netV);
-    var ownLine = r.acqMode === "purchase"
-      ? "we own the " + vName + " outright, worth about " + fmt(residualAsset) + " at resale"
-      : "the lease fully pays the " + vName + " off (" + (downH > 0 ? fmt(downH) + " down + " : "") + fmt(num("lease")) + " &times; " + termH + " = " + fmt(acqCash) + "), so we own it outright &mdash; worth about " + fmt(residualAsset) + " at resale";
-    $("horizonLead").innerHTML = "Two very different places to stand after <b>" + termH + " months</b>: reimbursement is pure expense with nothing owned, while " + ownLine + ", plus reusable racking and cap. Upfitting is counted up front and its reusable portion credited back as equity.";
-    function hrow(label, pv, vv, opts){ opts = opts || {}; var c = opts.sum ? ' class="sum"' : (opts.muted ? ' class="muted"' : ''); return '<tr'+c+'><td>'+label+'</td><td>'+pv+'</td><td>'+vv+'</td></tr>'; }
-    $("horizonBody").innerHTML =
-      hrow("Cash out over term", fmt(cashP), fmt(cashV - capH)) +
-      hrow("Cost of capital on cash tied up", "$0", fmt(capH), {muted:capH===0}) +
-      hrow("Truck resale (owned at end)", "$0", fmt(residualAsset)) +
-      hrow("Reusable racking + cap", "$0", fmt(transferUpfit)) +
-      hrow("Net " + yrs + "-yr cost", fmt(netP), fmt(netV), {sum:true}) +
-      hrow("Run-rate, following year", fmt(y4P) + "/mo", fmt(y4V) + "/mo");
-    $("horizonCallout").innerHTML = '<span class="ic" style="color:var(--good)">&rarr;</span><div>After the term, reimbursement keeps costing <b>' + fmt(y4P) + '/mo</b> indefinitely with nothing owned. We own the ' + vName + ' outright &mdash; so cost drops to about <b>' + fmt(y4V) + '/mo</b> operating-only (no lease payment), and we can roll <b>' + fmt(terminalAsset) + '</b> of truck + racking/cap equity into the next truck.</div>';
+    // run-rate once the vehicle is paid off (operating only) vs. reimbursement, used by the executive summary
+    var y4P = r.pTotal, y4V = r.ins + r.teleSub + r.maint + r.chargeM;
 
     // ---- Total cost of ownership by years owned ----
     var operMoT = r.ins + r.teleSub + r.maint + r.chargeM;
