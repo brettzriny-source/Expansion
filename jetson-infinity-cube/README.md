@@ -7,6 +7,10 @@ The Jetson wordmark is engraved 0.4 mm deep into one hinge-free face of every cu
 |---|---|
 | `CE3E3V2_infinity_cube_jetson_horizontal.gcode` | Wordmark reads left-to-right on the side faces |
 | `CE3E3V2_infinity_cube_jetson_vertical.gcode` | Wordmark rotated 90° (reads bottom-to-top) on the side faces; better letterforms |
+| `CE3E3V2_infinity_cube_jetson_allfaces.gcode` | **Checkerboard of wordmarks and lightning bolts on all four side faces + top of every cube (40 faces)** |
+| `build_all.py` | Generator for the all-faces file (surveys every face, picks per-face orientation) |
+| `survey.py` | Stand-alone face survey: largest hinge-free rectangle on each vertical face |
+| `verify_all.py` | Verification and elevation renders for the all-faces file |
 | `build_gcode.py` | Generator. Edit `SRC` to point at the original G-code, run `python3 build_gcode.py` |
 | `logo_geom.py` | Traces the brand-kit wordmark PNG into vector geometry |
 | `verify.py` | Re-parses the output, checks extrusion continuity, renders the modified layers |
@@ -24,3 +28,11 @@ Wordmark size: 13.4 mm on side faces, 11.8 mm on top faces. Strokes are widened 
 at least 0.5 mm so a 0.4 mm nozzle can resolve it.
 
 Dependencies for the scripts: `shapely`, `scikit-image`, `pillow`, `matplotlib`.
+
+## All-faces version
+
+`build_all.py` surveys all 32 vertical faces from the outer-wall paths and finds the largest flat, hinge-free
+rectangle on each (13.8 × 14 mm on most, 13.8 × 10 where a hinge knuckle sits above or below, 9.7 × 14 on the
+middle cubes' slotted long sides). Cubes alternate in a checkerboard: wordmark on (0,0), (2,0), (1,1), (3,1);
+bolt on the rest. Each face gets the largest design that fits, the wordmark choosing horizontal, vertical or
+diagonal (15.3 mm on the big faces). Top faces are clipped the same way; bottoms are untouched.
