@@ -724,12 +724,6 @@
         <div class="field"><label for="battRepairPct">Battery-pack failures <span class="note">incidence / 10k mi, after its warranty</span></label><div class="input-wrap"><input id="battRepairPct" type="number" min="0" max="100" step="0.25" value="0.5" class="has-suf"><span class="aff suf">%</span></div></div>
         <div class="field"><label for="battRepairCost">Avg battery-pack repair / replacement</label><div class="input-wrap"><span class="aff pre">$</span><input id="battRepairCost" type="number" min="0" step="1000" value="25000" class="has-pre"></div></div>
       </div>
-      <p class="section-note" style="margin:14px 0 8px"><b style="color:var(--ink)">Extended warranty</b> <span class="note">optional — one-time cost that extends basic coverage; enter the FMC / OEM quote</span></p>
-      <div class="grid2">
-        <div class="field"><label for="extWarrCost">Extended warranty cost <span class="note">one-time</span></label><div class="input-wrap"><span class="aff pre">$</span><input id="extWarrCost" type="number" min="0" step="100" value="0" class="has-pre"></div></div>
-        <div class="field"><label for="extWarrYrs">Extends basic coverage to <span class="note">years</span></label><div class="input-wrap"><input id="extWarrYrs" type="number" min="0" step="1" value="0" class="has-suf"><span class="aff suf">yr</span></div></div>
-        <div class="field"><label for="extWarrMi">Extends basic coverage to <span class="note">miles</span></label><div class="input-wrap"><input id="extWarrMi" type="number" min="0" step="5000" value="0" class="has-suf"><span class="aff suf">mi</span></div></div>
-      </div>
       <p class="section-note" style="margin:14px 0 8px"><b style="color:var(--ink)">Repair downtime</b> <span class="note">body damage is an insurance claim, but the truck is off the road while it is fixed &mdash; repair networks and lead times differ sharply by brand</span></p>
       <div class="grid2">
         <div class="field"><label for="bodyLeadWk">Body-shop lead time <span class="note">weeks per incident · per vehicle</span></label><div class="input-wrap"><input id="bodyLeadWk" type="number" min="0" step="0.5" value="6" class="has-suf"><span class="aff suf">wk</span></div><div class="fieldcap" id="bodyNetCap"></div></div>
@@ -738,7 +732,7 @@
       </div>
         </div>
       </details>
-      <p class="small" style="margin:10px 0 0">Cost per year = (acquisition + upfitting + telematics install + charger + extended warranty + operating + expected repairs + repair downtime &minus; resale value &minus; reusable racking) &divide; years owned. Repair downtime = body-shop visits (incidence per 10k miles, from day one) &times; the brand&rsquo;s typical lead time &times; replacement rental per day; vehicles above the fleet-median lead time are flagged. Acquisition is the down payment plus full lease payoff, or the purchase price; resale decays each year from your term residual. Coverage ends at the <em>earlier</em> of its year or mileage limit &mdash; at fleet mileage the mileage cap almost always governs, which is why basic coverage lapses in years 1&ndash;2. Repairs accrue in three tiers: once basic (or extended) coverage lapses, non-powertrain repairs accrue at incidence &times; cost per 10k miles driven; once the drive-unit warranty lapses, drive-unit failures accrue on top; and once the high-voltage battery warranty lapses, battery-pack failures (rare, but the single most expensive EV repair) accrue as well. Drive-unit and battery terms are tracked separately because they differ by brand. Defaults are vehicle-specific starting estimates from reliability-survey patterns, not fleet data &mdash; replace them with FMC or maintenance records as they come in. <b style="color:var(--ink)">Fleet caveat:</b> Hyundai and Kia&rsquo;s 10-yr / 100k powertrain warranty applies to original retail owners only; commercial-use vehicles get 5 yr / 60k, so for our fleet it adds nothing beyond bumper-to-bumper.</p>
+      <p class="small" style="margin:10px 0 0">Cost per year = (acquisition + upfitting + telematics install + charger + operating + expected repairs + repair downtime &minus; resale value &minus; reusable racking) &divide; years owned. Repair downtime = body-shop visits (incidence per 10k miles, from day one) &times; the brand&rsquo;s typical lead time &times; replacement rental per day; vehicles above the fleet-median lead time are flagged. Acquisition is the down payment plus full lease payoff, or the purchase price; resale decays each year from your term residual. Coverage ends at the <em>earlier</em> of its year or mileage limit &mdash; at fleet mileage the mileage cap almost always governs, which is why basic coverage lapses in years 1&ndash;2. Repairs accrue in three tiers: once basic coverage lapses, non-powertrain repairs accrue at incidence &times; cost per 10k miles driven; once the drive-unit warranty lapses, drive-unit failures accrue on top; and once the high-voltage battery warranty lapses, battery-pack failures (rare, but the single most expensive EV repair) accrue as well. Drive-unit and battery terms are tracked separately because they differ by brand. Defaults are vehicle-specific starting estimates from reliability-survey patterns, not fleet data &mdash; replace them with FMC or maintenance records as they come in. <b style="color:var(--ink)">Fleet caveat:</b> Hyundai and Kia&rsquo;s 10-yr / 100k powertrain warranty applies to original retail owners only; commercial-use vehicles get 5 yr / 60k, so for our fleet it adds nothing beyond bumper-to-bumper.</p>
     </div>
   </section>
 
@@ -869,7 +863,7 @@
     techs:1, days:21, milesMode:"perday", milesDay:100, milesDirect:2100,
     reimb:0.76, stipend:0, downPct:10, chargerCost:3500, rentalDay:95, bodyPct:8, bodyLeadWk:6,
     installsDay:2, upfitBase:9185, upfitWrap:3500, upfitTopper:6250, upfitBott:8000, upfitLife:84, ins:375, teleSub:40, teleInstall:107, maint:60, kwh:0.16,
-    repairPct:22, repairCost:3500, ptWarrYrs:8, ptWarrMi:175000, ptRepairPct:1.5, ptRepairCost:10000, battWarrYrs:8, battWarrMi:175000, battRepairPct:0.5, battRepairCost:25000, extWarrCost:0, extWarrYrs:0, extWarrMi:0, tcoYears:3
+    repairPct:22, repairCost:3500, ptWarrYrs:8, ptWarrMi:175000, ptRepairPct:1.5, ptRepairCost:10000, battWarrYrs:8, battWarrMi:175000, battRepairPct:0.5, battRepairCost:25000, tcoYears:3
   };
   var state = {};
   var CHARGER = { warehouse:3500, home:2000 };
@@ -910,7 +904,7 @@
     var kwh     = num("kwh");
     var chargeM = (miles / eff) * kwh;
 
-    var rFixed  = acq + upfitM + teleHwM + chargerM + ins + teleSub + maint;
+    var rFixed  = acq + upfitM + teleHwM + ins + teleSub + maint;   // charger is cash up front, not financed
     var rTotal  = rFixed + chargeM;
 
     var perMileVar = kwh / eff;           // R1T variable $/mi
@@ -977,7 +971,7 @@
     var resVal = num("price") * num("residualPct") / 100;
     $("residualCap").innerHTML = "≈ <b style=\'color:var(--ink)\'>" + fmt(resVal) + "</b> resale value, owned outright at term end · edit % to taste";
     $("downCap").innerHTML = downAmt() > 0 ? "≈ <b style=\'color:var(--ink)\'>" + fmt(downAmt()) + "</b> up front on a " + fmt(capCost()) + " cap cost · " + fmt(downAmt() / Math.max(1, num("term"))) + "/mo over the term" : "no money down";
-    $("chargerCap").innerHTML = "one-time per truck · " + fmt(r.chargerM) + "/mo over " + Math.max(1, num("term")) + " mo" + (state.chargerMode === "home" ? " · stays with the tech's home if they leave" : " · shared-site hardware, stays with Jetson");
+    $("chargerCap").innerHTML = "cash up front, per truck — <b>not financeable</b>; counted in the horizon and TCO, not the monthly run-rate" + (state.chargerMode === "home" ? " · stays with the tech's home if they leave" : " · shared-site hardware, stays with Jetson");
     $("upfitTotalCap").innerHTML = "Upfitting total <b style=\'color:var(--ink)\'>" + fmt(upfitTotal()) + "</b> · " + fmt(r.upfitM) + "/mo over " + Math.max(1, num("upfitLife")) + " mo";
     var modelKey = ({r1t:"r1t", silv_ext:"silv", silv_std:"silv", f150:"f150"})[state.vehicle] || state.vehicle;
     Array.prototype.forEach.call(document.querySelectorAll("#modelsTable tr[data-veh]"), function(tr){ tr.classList.toggle("sel", tr.dataset.veh === modelKey); });
@@ -990,7 +984,7 @@
       (r.stipend>0 ? seg(r.stipend, maxTot, "#b8a684") : "");
     var rSegs = [
       [r.acqMode==="purchase"?"Financing (amortized)":"Lease", r.acq, COST_COLORS.lease],
-      ["Setup (amortized)", r.upfitM + r.teleHwM + r.chargerM, COST_COLORS.upfit],
+      ["Setup (amortized)", r.upfitM + r.teleHwM, COST_COLORS.upfit],
       ["Charging", r.chargeM, COST_COLORS.charge],
       ["Insurance", r.ins, COST_COLORS.insurance],
       ["Telematics sub", r.teleSub, COST_COLORS.telematics],
@@ -1018,13 +1012,13 @@
       (r.acqMode==="purchase" ? "" : row("Down payment (amortized over term)", null, r.downM*k, {muted:r.downM===0})) +
       row("Upfitting (amortized)", null, r.upfitM*k) +
       row("Telematics install (amortized)", null, r.teleHwM*k, {muted:r.teleHwM===0}) +
-      row((state.chargerMode === "home" ? "Home" : "Warehouse") + " charger (amortized)", null, r.chargerM*k, {muted:r.chargerM===0}) +
       row("Insurance", null, r.ins*k) +
       row("Telematics subscription", null, r.teleSub*k) +
       row("Maintenance", null, r.maint*k) +
       row("Charging (energy)", null, r.chargeM*k) +
       '<tr class="sum"><td>Total / month'+(fleetOn?' · fleet':'')+'</td><td>'+fmt(r.pTotal*k)+'</td><td>'+fmt(r.rTotal*k)+'</td></tr>' +
-      '<tr class="sum"><td>Total / year'+(fleetOn?' · fleet':'')+'</td><td>'+fmt(r.pTotal*k*12)+'</td><td>'+fmt(r.rTotal*k*12)+'</td></tr>';
+      '<tr class="sum"><td>Total / year'+(fleetOn?' · fleet':'')+'</td><td>'+fmt(r.pTotal*k*12)+'</td><td>'+fmt(r.rTotal*k*12)+'</td></tr>' +
+      '<tr class="muted"><td>' + (state.chargerMode === "home" ? "Home" : "Warehouse") + ' charger install · <b>cash up front, not financed</b></td><td>—</td><td>' + fmt(Math.max(0, num("chargerCost"))*k) + ' one-time</td></tr>';
 
     // ---- Horizon: cash out over the term vs. equity owned at the end ----
     var termH = Math.max(1, num("term"));
@@ -1072,15 +1066,13 @@
       if (milesMo === undefined) milesMo = r.miles;
       var months = N * 12, milesYr = milesMo * 12, per10k = milesYr / 10000;
       var operMoN = r.ins + r.teleSub + r.maint + (milesMo / Math.max(0.1, num("eff"))) * num("kwh");
-      var extCost = Math.max(0, num("extWarrCost"));
-      var basicEnd = Math.max(coverageEnd(num("warrYrs"), num("warrMi"), milesYr),
-                              extCost > 0 ? coverageEnd(num("extWarrYrs"), num("extWarrMi"), milesYr) : 0);
+      var basicEnd = coverageEnd(num("warrYrs"), num("warrMi"), milesYr);
       var ptEnd = Math.max(basicEnd, coverageEnd(num("ptWarrYrs"), num("ptWarrMi"), milesYr));       // basic covers the drive unit too
       var battEnd = Math.max(basicEnd, coverageEnd(num("battWarrYrs"), num("battWarrMi"), milesYr)); // ...and the battery
       var wExp = basicEnd;
       var termM = Math.max(1, num("term"));
       var acqCashT = r.acqMode === "purchase" ? num("price") : num("lease") * termM + downAmt();   // down + full payoff / price
-      var upfront = upfitTotal() + num("teleInstall") + Math.max(0, num("chargerCost")) + extCost;
+      var upfront = upfitTotal() + num("teleInstall") + Math.max(0, num("chargerCost"));
       var operating = operMoN * months;
       var oow = Math.max(0, N - basicEnd), oow2 = Math.max(0, N - ptEnd), oow3 = Math.max(0, N - battEnd);
       var rep1 = oow  * per10k * (num("repairPct") / 100) * num("repairCost");          // non-powertrain, after basic
@@ -1094,18 +1086,18 @@
       var life = Math.max(1, num("upfitLife"));
       var transfer = Math.max(0, upfitTotal() - num("upfitWrap")) * Math.max(0, life - months) / life;
       var net = acqCashT + upfront + operating + repairs + downtime - residual - transfer;
-      return { net:net, perYr:net / N, repairs:repairs, downtime:downtime, visits:visits, rep1:rep1, rep2:rep2, rep3:rep3, residual:residual, transfer:transfer, wExp:wExp, ptExp:ptEnd, battExp:battEnd, oow:oow, oow2:oow2, oow3:oow3, extCost:extCost, personalYr:r.pTotal * 12 };
+      return { net:net, perYr:net / N, repairs:repairs, downtime:downtime, visits:visits, rep1:rep1, rep2:rep2, rep3:rep3, residual:residual, transfer:transfer, wExp:wExp, ptExp:ptEnd, battExp:battEnd, oow:oow, oow2:oow2, oow3:oow3, personalYr:r.pTotal * 12 };
     }
     var N = Math.max(1, Math.min(10, Math.round((num("tcoYears") || 3) * 2) / 2));   // half-year steps
     var t = tcoAt(N);
     $("tcoYearsVal").textContent = N;
     $("tcoVehK").textContent = vName + " — cost / yr";
     $("tcoVeh").textContent = fmt(t.perYr);
-    $("tcoVeh").className = "v " + (t.perYr <= t.personalYr ? "good" : "bad");
+    $("tcoVeh").className = "v";
     $("tcoVehCap").textContent = "net of " + fmt(t.residual) + " resale + " + fmt(t.transfer) + " reusable racking at yr " + N;
     $("tcoPer").textContent = fmt(t.personalYr);
     $("tcoRep").textContent = fmt(t.repairs);
-    $("tcoRep").className = "v " + (t.repairs > 0 ? "warn" : "");
+    $("tcoRep").className = "v";
     var r1 = function(x){ return Math.round(x * 10) / 10; };
     var capParts = [];
     if (t.oow > 0)  capParts.push(r1(t.oow) + " yr past basic: " + fmt(t.rep1));
@@ -1114,12 +1106,15 @@
     $("tcoRepCap").textContent = capParts.length ? capParts.join(" · ") : "fully covered through year " + N;
     var vp = VEHICLES[state.vehicle] || {}, wk = Math.max(0, num("bodyLeadWk")), medWk = medianLeadWk(), slow = wk > medWk;
     $("tcoDown").textContent = fmt(t.downtime);
-    $("tcoDown").className = "v " + (slow ? "bad" : (t.downtime > 0 ? "warn" : ""));
-    $("tcoDownCap").innerHTML = (slow ? '<b style="color:var(--bad)">&#9888; above fleet median</b> · ' : '') + r1(t.visits) + " body-shop visits × " + wk + " wk × " + fmt(num("rentalDay")) + "/day" + (slow ? " · median " + medWk + " wk" : "");
+    $("tcoDown").className = "v " + (slow ? "bad" : "");
+    var oos10k = (Math.max(0, num("bodyPct")) / 100) * wk * 7;   // expected days out of service per 10k miles driven
+    $("tcoDownCap").innerHTML = (slow ? '<b style="color:var(--bad)">&#9888; above fleet median</b> · ' : '') + r1(t.visits) + " body-shop visits × " + wk + " wk × " + fmt(num("rentalDay")) + "/day" + (slow ? " · median " + medWk + " wk" : "") + " · <b>≈ " + r1(oos10k) + " days out of service per 10k mi</b>";
     $("tcoDownTile").style.borderColor = slow ? "color-mix(in srgb, var(--bad) 45%, transparent)" : "";
-    $("bodyNetCap").innerHTML = (vp.netNote ? vp.netNote.charAt(0).toUpperCase() + vp.netNote.slice(1) + ". " : "") + "Fleet median " + medWk + " wk" + (slow ? ' · <b style="color:var(--bad)">this vehicle is above it</b>' : "");
+    $("bodyNetCap").innerHTML = "<b>U.S. average ≈ 2 wk</b> keys-to-keys (CCC Crash Course 2025: 13 days with no ADAS calibration, 15.5 with one, 17+ with several; EVs run longer). "
+      + (vp.netNote ? vp.netNote.charAt(0).toUpperCase() + vp.netNote.slice(1) + ". " : "") + "Fleet median " + medWk + " wk" + (slow ? ' · <b style="color:var(--bad)">this vehicle is above it</b>' : "")
+      + " · ≈ " + r1(oos10k) + " days out of service per 10k mi at " + num("bodyPct") + "% incidence";
     $("warrSummary").textContent = num("warrYrs") + " yr / " + fmtN(num("warrMi")) + " mi basic · drive unit " + num("ptWarrYrs") + " yr / " + fmtN(num("ptWarrMi")) + " · battery " + num("battWarrYrs") + " yr / " + fmtN(num("battWarrMi")) + " · body shop " + num("bodyLeadWk") + " wk";
-    var wY = num("warrYrs"), basicYrLimit = Math.max(wY, t.extCost > 0 ? num("extWarrYrs") : 0);
+    var basicYrLimit = num("warrYrs");
     $("tcoWarrNote").textContent = (t.wExp <= 0 ? "no basic warranty" : "basic ends ≈ " + r1(t.wExp) + " yr" + (basicYrLimit > 0 && t.wExp < basicYrLimit - 0.05 ? " (mileage cap)" : ""))
       + (Math.abs(t.ptExp - t.battExp) < 0.05
           ? " · powertrain / battery ≈ " + r1(t.ptExp) + " yr"
@@ -1212,7 +1207,7 @@
     var bullets = [];
     bullets.push("<b>All-in at " + N + " years:</b> the " + vName + " costs " + fmt(perTruckN) + "/mo " + (dMo < 0 ? "less" : "more") + " than reimbursing " + fmtN(r.miles) + " mi/mo at " + fmt2(num("reimb")) + "/mi" + (cpiVN !== null ? " — " + fmt(cpiVN) + " per install vs " + fmt(r.cpiP) : "") + (t.repairs > 0 ? ", including " + fmt(t.repairs) + " of expected repairs" : "") + ".");
     bullets.push("<b>What you hold at year " + N + ":</b> reimbursement leaves nothing owned; the " + vName + " leaves " + fmt(equityN) + " of equity (truck " + fmt(t.residual) + " + reusable racking " + fmt(t.transfer) + "), and once paid off the run-rate drops to " + fmt(y4V) + "/mo.");
-    bullets.push("<b>Coverage at this mileage:</b> basic warranty " + (t.wExp <= 0 ? "is already gone" : "ends ≈" + r1(t.wExp) + " yr") + ", powertrain ≈" + r1(t.ptExp) + " yr" + (Math.abs(t.ptExp - t.battExp) < 0.05 ? " (battery on the same term)" : ", battery ≈" + r1(t.battExp) + " yr") + " — longer ownership spreads the upfront cost but adds out-of-warranty exposure." + (t.downtime > 0 ? " Repair downtime adds " + fmt(t.downtime / N) + "/yr in rental" + (slow ? " — <b>flag:</b> " + vName + " body work runs ≈" + wk + " wk against a " + medWk + "-wk fleet median (" + (vp.netNote || "limited repair network") + ")" : "") + "." : ""));
+    bullets.push("<b>Coverage at this mileage:</b> basic warranty " + (t.wExp <= 0 ? "is already gone" : "ends ≈" + r1(t.wExp) + " yr") + ", powertrain ≈" + r1(t.ptExp) + " yr" + (Math.abs(t.ptExp - t.battExp) < 0.05 ? " (battery on the same term)" : ", battery ≈" + r1(t.battExp) + " yr") + " — longer ownership spreads the upfront cost but adds out-of-warranty exposure." + (t.downtime > 0 ? " Repair downtime adds " + fmt(t.downtime / N) + "/yr in rental (≈" + r1(oos10k) + " days off the road per 10k mi)" + (slow ? " — <b>flag:</b> " + vName + " body work runs ≈" + wk + " wk against a " + medWk + "-wk fleet median (" + (vp.netNote || "limited repair network") + ")" : "") + "." : ""));
     if (beN !== null && beN > 0) bullets.push("<b>Break-even:</b> at " + N + " years owned the " + vName + " is cheaper than reimbursement above " + fmtN(beN) + " mi/mo; below that the case rests on equity, brand control, and the paid-off run-rate.");
     else if (beN === 0) bullets.push("<b>Break-even:</b> at " + N + " years owned the " + vName + " is cheaper than reimbursement at any mileage.");
     $("execBullets").innerHTML = bullets.map(function(b){ return "<li>" + b + "</li>"; }).join("");
@@ -1265,7 +1260,6 @@
     $("ptRepairPct").value = v.ptRepairPct; $("ptRepairCost").value = v.ptRepairCost;
     $("battWarrYrs").value = v.battWarrYrs; $("battWarrMi").value = v.battWarrMi;
     $("battRepairPct").value = v.battRepairPct; $("battRepairCost").value = v.battRepairCost;
-    $("extWarrCost").value = 0; $("extWarrYrs").value = 0; $("extWarrMi").value = 0;
     $("bodyLeadWk").value = v.bodyLeadWk || 2;
     // bed topper / cap only makes sense on a pickup bed
     var isPickup = v.type === "pickup";
@@ -1371,7 +1365,7 @@
       name: name,
       savedAt: new Date().toISOString(),
       inputs: snapshotInputs(),
-      state: { vehicle: state.vehicle, acqMode: state.acqMode, milesMode: state.milesMode, leaseEstimated: !!state.leaseEstimated, chargerMode: state.chargerMode, fleet: $("fleetHint").dataset.fleet === "1" },
+      state: { vehicle: state.vehicle, acqMode: state.acqMode, milesMode: state.milesMode, leaseEstimated: !!state.leaseEstimated, chargerMode: state.chargerMode, upfitRule: 2, fleet: $("fleetHint").dataset.fleet === "1" },
       summary: { vehicle: VEHICLES[state.vehicle].name, milesMo: Math.round(r.miles), acqMode: state.acqMode, deltaMo: Math.round(r.delta), vehicleMo: Math.round(r.rTotal), personalMo: Math.round(r.pTotal) }
     };
   }
@@ -1380,6 +1374,11 @@
     var st = c.state || {};
     applyVehicle(VEHICLES[st.vehicle] ? st.vehicle : "r1t");
     Object.keys(c.inputs).forEach(function(id){ var el = $(id); if (el && id !== "vehicle") el.value = c.inputs[id]; });
+    if (st.upfitRule !== 2) {   // case saved before the SUV / non-pickup upfit rule: re-apply it
+      var pv = VEHICLES[state.vehicle], sc = pv.type === "SUV" ? 0.6 : 1;
+      if (pv.type !== "pickup") $("upfitTopper").value = 0;
+      if (sc < 1) { $("upfitBase").value = Math.round(DEFAULTS.upfitBase * sc); $("upfitBott").value = Math.round(DEFAULTS.upfitBott * sc); }
+    }
     state.leaseEstimated = !!st.leaseEstimated;
     setAcqUI(st.acqMode === "purchase" ? "purchase" : "lease");
     setMilesMode(st.milesMode === "direct" ? "direct" : "perday");
