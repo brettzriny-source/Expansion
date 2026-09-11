@@ -414,15 +414,6 @@
     <button class="theme-toggle" id="themeBtn" type="button">◐ Theme</button>
   </header>
 
-  <div class="banner">
-    <span class="ic">i</span>
-    <div>
-      <b>Every assumption is editable.</b> Cost inputs reflect confirmed quotes; operating assumptions (job mix, mileage, energy) draw on the
-      <a href="https://apps.jetsoncorp.com/fleet-dashboard#/future" target="_blank" rel="noopener">Fleet Dashboard</a>
-      future scenario. Adjust any field and the verdict updates live.
-    </div>
-  </div>
-
   <section class="card exec" id="execCard">
     <div class="card-h"><span class="n">&#9733;</span><h2>Executive Summary</h2><span class="hint" id="execCase">current model</span></div>
     <div class="card-b">
@@ -469,7 +460,7 @@
       </section>
 
       <section class="card">
-        <div class="card-h"><span class="n">1</span><h2>Operations</h2><span class="hint">per electrician</span></div>
+        <div class="card-h"><span class="n">1</span><h2>Operations &amp; Reimbursement</h2><span class="hint">per electrician</span></div>
         <div class="card-b">
           <div class="grid2">
             <div class="field">
@@ -484,29 +475,33 @@
               <label for="installsDay">Installs / day <span class="note">per truck</span></label>
               <div class="input-wrap"><input id="installsDay" type="number" min="0" step="0.5" value="2"></div>
             </div>
+            <div class="field">
+              <label for="reimb">Mileage reimbursement <span class="note">status quo</span></label>
+              <div class="input-wrap"><span class="aff pre">$</span><input id="reimb" type="number" min="0" step="0.005" value="0.76" class="has-pre has-suf"><span class="aff suf">/mi</span></div>
+            </div>
+            <div class="field">
+              <label for="stipend">Monthly stipend <span class="note">optional</span></label>
+              <div class="input-wrap"><span class="aff pre">$</span><input id="stipend" type="number" min="0" step="10" value="0" class="has-pre has-suf"><span class="aff suf">/mo</span></div>
+            </div>
           </div>
+          <p class="small" style="margin:2px 0 0">IRS 2026 business rate rose to 76¢/mi on July 1 (72.5¢ Jan–Jun). Reimbursement is the company's only direct cost on the personal-vehicle path — the employee absorbs the vehicle.</p>
         </div>
       </section>
 
       <section class="card">
-        <div class="card-h"><span class="n">2</span><h2>Daily Driving</h2><span class="hint">per truck</span></div>
+        <div class="card-h"><span class="n">2</span><h2>Mileage</h2><span class="hint">per truck</span></div>
         <div class="card-b">
-          <div class="field">
-            <label for="milesDay">Miles driven per day</label>
-            <div class="input-wrap"><input id="milesDay" type="number" min="0" step="5" value="100" class="has-suf"><span class="aff suf">mi/day</span></div>
-          </div>
-          <p class="small" style="margin:6px 0 0">Typical miles a truck covers on a working day — drive time to sites plus between-job travel. Rolls up to monthly mileage below.</p>
-        </div>
-      </section>
-
-      <section class="card">
-        <div class="card-h"><span class="n">3</span><h2>Monthly Mileage</h2></div>
-        <div class="card-b">
-          <div class="field">
-            <label>Mileage basis</label>
-            <div class="seg" id="milesMode">
-              <button type="button" data-m="perday" class="on">From miles / day</button>
-              <button type="button" data-m="direct">Enter monthly</button>
+          <div class="grid2">
+            <div class="field">
+              <label for="milesDay">Miles driven per day</label>
+              <div class="input-wrap"><input id="milesDay" type="number" min="0" step="5" value="100" class="has-suf"><span class="aff suf">mi/day</span></div>
+            </div>
+            <div class="field">
+              <label>Mileage basis</label>
+              <div class="seg" id="milesMode">
+                <button type="button" data-m="perday" class="on">From miles / day</button>
+                <button type="button" data-m="direct">Enter monthly</button>
+              </div>
             </div>
           </div>
           <div class="field" id="directWrap" style="display:none">
@@ -521,24 +516,7 @@
       </section>
 
       <section class="card">
-        <div class="card-h"><span class="n">4</span><h2>Personal Vehicle</h2><span class="hint">status quo</span></div>
-        <div class="card-b">
-          <div class="grid2">
-            <div class="field">
-              <label for="reimb">Mileage reimbursement</label>
-              <div class="input-wrap"><span class="aff pre">$</span><input id="reimb" type="number" min="0" step="0.005" value="0.76" class="has-pre has-suf"><span class="aff suf">/mi</span></div>
-            </div>
-            <div class="field">
-              <label for="stipend">Monthly stipend <span class="note">optional</span></label>
-              <div class="input-wrap"><span class="aff pre">$</span><input id="stipend" type="number" min="0" step="10" value="0" class="has-pre has-suf"><span class="aff suf">/mo</span></div>
-            </div>
-          </div>
-          <p class="small" style="margin:2px 0 0">IRS 2026 business rate rose to 76¢/mi on July 1 (72.5¢ Jan–Jun). Reimbursement is the company's only direct cost here — the employee absorbs the vehicle.</p>
-        </div>
-      </section>
-
-      <section class="card">
-        <div class="card-h"><span class="n">5</span><h2>Vehicle — Fully-Loaded Cost</h2><span class="hint">per truck / month</span></div>
+        <div class="card-h"><span class="n">3</span><h2>Vehicle — Fully-Loaded Cost</h2><span class="hint">per truck / month</span></div>
         <div class="card-b">
           <div class="field">
             <label for="vehicle">Vehicle</label>
