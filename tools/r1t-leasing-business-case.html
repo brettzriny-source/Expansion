@@ -521,6 +521,15 @@
               <div class="fieldcap" id="downCap"></div>
             </div>
             <div class="field">
+              <label for="chargerCost">Charger install <span class="note" id="chargerNote">Level 2 at the warehouse</span></label>
+              <div class="seg" id="chargerMode" style="margin-bottom:8px">
+                <button type="button" data-c="warehouse" class="on">Warehouse · $3,500</button>
+                <button type="button" data-c="home" style="">Home · $2,000</button>
+              </div>
+              <div class="input-wrap"><span class="aff pre">$</span><input id="chargerCost" type="number" min="0" step="100" value="3500" class="has-pre"></div>
+              <div class="fieldcap" id="chargerCap"></div>
+            </div>
+            <div class="field">
               <label for="upfitBase">Upfit: base build <span class="note" id="baseNote">shelving, electrical</span> <sup style="color:var(--accent);font-weight:700">*</sup></label>
               <div class="input-wrap"><span class="aff pre">$</span><input id="upfitBase" type="number" min="0" step="100" value="9185" class="has-pre"></div>
             </div>
@@ -729,7 +738,7 @@
       </div>
         </div>
       </details>
-      <p class="small" style="margin:10px 0 0">Cost per year = (acquisition + upfitting + telematics install + extended warranty + operating + expected repairs + repair downtime &minus; resale value &minus; reusable racking) &divide; years owned. Repair downtime = body-shop visits (incidence per 10k miles, from day one) &times; the brand&rsquo;s typical lead time &times; replacement rental per day; vehicles above the fleet-median lead time are flagged. Acquisition is the down payment plus full lease payoff, or the purchase price; resale decays each year from your term residual. Coverage ends at the <em>earlier</em> of its year or mileage limit &mdash; at fleet mileage the mileage cap almost always governs, which is why basic coverage lapses in years 1&ndash;2. Repairs accrue in three tiers: once basic (or extended) coverage lapses, non-powertrain repairs accrue at incidence &times; cost per 10k miles driven; once the drive-unit warranty lapses, drive-unit failures accrue on top; and once the high-voltage battery warranty lapses, battery-pack failures (rare, but the single most expensive EV repair) accrue as well. Drive-unit and battery terms are tracked separately because they differ by brand. Defaults are vehicle-specific starting estimates from reliability-survey patterns, not fleet data &mdash; replace them with FMC or maintenance records as they come in. <b style="color:var(--ink)">Fleet caveat:</b> Hyundai and Kia&rsquo;s 10-yr / 100k powertrain warranty applies to original retail owners only; commercial-use vehicles get 5 yr / 60k, so for our fleet it adds nothing beyond bumper-to-bumper.</p>
+      <p class="small" style="margin:10px 0 0">Cost per year = (acquisition + upfitting + telematics install + charger + extended warranty + operating + expected repairs + repair downtime &minus; resale value &minus; reusable racking) &divide; years owned. Repair downtime = body-shop visits (incidence per 10k miles, from day one) &times; the brand&rsquo;s typical lead time &times; replacement rental per day; vehicles above the fleet-median lead time are flagged. Acquisition is the down payment plus full lease payoff, or the purchase price; resale decays each year from your term residual. Coverage ends at the <em>earlier</em> of its year or mileage limit &mdash; at fleet mileage the mileage cap almost always governs, which is why basic coverage lapses in years 1&ndash;2. Repairs accrue in three tiers: once basic (or extended) coverage lapses, non-powertrain repairs accrue at incidence &times; cost per 10k miles driven; once the drive-unit warranty lapses, drive-unit failures accrue on top; and once the high-voltage battery warranty lapses, battery-pack failures (rare, but the single most expensive EV repair) accrue as well. Drive-unit and battery terms are tracked separately because they differ by brand. Defaults are vehicle-specific starting estimates from reliability-survey patterns, not fleet data &mdash; replace them with FMC or maintenance records as they come in. <b style="color:var(--ink)">Fleet caveat:</b> Hyundai and Kia&rsquo;s 10-yr / 100k powertrain warranty applies to original retail owners only; commercial-use vehicles get 5 yr / 60k, so for our fleet it adds nothing beyond bumper-to-bumper.</p>
     </div>
   </section>
 
@@ -858,11 +867,12 @@
 
   var DEFAULTS = {
     techs:1, days:21, milesMode:"perday", milesDay:100, milesDirect:2100,
-    reimb:0.76, stipend:0, downPct:10, rentalDay:95, bodyPct:8, bodyLeadWk:6,
+    reimb:0.76, stipend:0, downPct:10, chargerCost:3500, rentalDay:95, bodyPct:8, bodyLeadWk:6,
     installsDay:2, upfitBase:9185, upfitWrap:3500, upfitTopper:6250, upfitBott:8000, upfitLife:84, ins:375, teleSub:40, teleInstall:107, maint:60, kwh:0.16,
     repairPct:22, repairCost:3500, ptWarrYrs:8, ptWarrMi:175000, ptRepairPct:1.5, ptRepairCost:10000, battWarrYrs:8, battWarrMi:175000, battRepairPct:0.5, battRepairCost:25000, extWarrCost:0, extWarrYrs:0, extWarrMi:0, tcoYears:3
   };
   var state = {};
+  var CHARGER = { warehouse:3500, home:2000 };
 
 
   function num(id){ var v = parseFloat($(id).value); return isFinite(v) ? v : 0; }
@@ -892,6 +902,7 @@
                     : num("lease") + downM;
     var upfitM  = upfitTotal() / Math.max(1, num("upfitLife"));
     var teleHwM = num("teleInstall") / term;
+    var chargerM = Math.max(0, num("chargerCost")) / term;
     var ins     = num("ins");
     var teleSub = num("teleSub");
     var maint   = num("maint");
@@ -899,7 +910,7 @@
     var kwh     = num("kwh");
     var chargeM = (miles / eff) * kwh;
 
-    var rFixed  = acq + upfitM + teleHwM + ins + teleSub + maint;
+    var rFixed  = acq + upfitM + teleHwM + chargerM + ins + teleSub + maint;
     var rTotal  = rFixed + chargeM;
 
     var perMileVar = kwh / eff;           // R1T variable $/mi
@@ -915,7 +926,7 @@
       installsMo:installsMo, cpiV: installsMo > 0 ? rTotal/installsMo : null, cpiP: installsMo > 0 ? pTotal/installsMo : null,
       techs:techs, miles:miles, mode:mode,
       pReimb:pReimb, stipend:stipend, pTotal:pTotal,
-      acq:acq, downM:downM, lease:num("lease"), acqMode:acqMode, upfitM:upfitM, teleHwM:teleHwM, ins:ins, teleSub:teleSub, maint:maint,
+      acq:acq, downM:downM, lease:num("lease"), acqMode:acqMode, upfitM:upfitM, teleHwM:teleHwM, chargerM:chargerM, ins:ins, teleSub:teleSub, maint:maint,
       chargeM:chargeM, rTotal:rTotal, rFixed:rFixed,
       perMilePersonal: miles>0 ? pTotal/miles : reimb,
       perMileR1T: miles>0 ? rTotal/miles : null,
@@ -966,6 +977,7 @@
     var resVal = num("price") * num("residualPct") / 100;
     $("residualCap").innerHTML = "≈ <b style=\'color:var(--ink)\'>" + fmt(resVal) + "</b> resale value, owned outright at term end · edit % to taste";
     $("downCap").innerHTML = downAmt() > 0 ? "≈ <b style=\'color:var(--ink)\'>" + fmt(downAmt()) + "</b> up front on a " + fmt(capCost()) + " cap cost · " + fmt(downAmt() / Math.max(1, num("term"))) + "/mo over the term" : "no money down";
+    $("chargerCap").innerHTML = "one-time per truck · " + fmt(r.chargerM) + "/mo over " + Math.max(1, num("term")) + " mo" + (state.chargerMode === "home" ? " · stays with the tech's home if they leave" : " · shared-site hardware, stays with Jetson");
     $("upfitTotalCap").innerHTML = "Upfitting total <b style=\'color:var(--ink)\'>" + fmt(upfitTotal()) + "</b> · " + fmt(r.upfitM) + "/mo over " + Math.max(1, num("upfitLife")) + " mo";
     var modelKey = ({r1t:"r1t", silv_ext:"silv", silv_std:"silv", f150:"f150"})[state.vehicle] || state.vehicle;
     Array.prototype.forEach.call(document.querySelectorAll("#modelsTable tr[data-veh]"), function(tr){ tr.classList.toggle("sel", tr.dataset.veh === modelKey); });
@@ -978,7 +990,7 @@
       (r.stipend>0 ? seg(r.stipend, maxTot, "#b8a684") : "");
     var rSegs = [
       [r.acqMode==="purchase"?"Financing (amortized)":"Lease", r.acq, COST_COLORS.lease],
-      ["Setup (amortized)", r.upfitM + r.teleHwM, COST_COLORS.upfit],
+      ["Setup (amortized)", r.upfitM + r.teleHwM + r.chargerM, COST_COLORS.upfit],
       ["Charging", r.chargeM, COST_COLORS.charge],
       ["Insurance", r.ins, COST_COLORS.insurance],
       ["Telematics sub", r.teleSub, COST_COLORS.telematics],
@@ -1006,6 +1018,7 @@
       (r.acqMode==="purchase" ? "" : row("Down payment (amortized over term)", null, r.downM*k, {muted:r.downM===0})) +
       row("Upfitting (amortized)", null, r.upfitM*k) +
       row("Telematics install (amortized)", null, r.teleHwM*k, {muted:r.teleHwM===0}) +
+      row((state.chargerMode === "home" ? "Home" : "Warehouse") + " charger (amortized)", null, r.chargerM*k, {muted:r.chargerM===0}) +
       row("Insurance", null, r.ins*k) +
       row("Telematics subscription", null, r.teleSub*k) +
       row("Maintenance", null, r.maint*k) +
@@ -1023,7 +1036,7 @@
     var operMo = r.ins + r.teleSub + r.maint + r.chargeM;
     var downH = r.acqMode === "purchase" ? 0 : downAmt();
     var acqCash = r.acqMode === "purchase" ? num("price") : num("lease") * termH + downH;
-    var cashV = acqCash + upfitTotal() + num("teleInstall") + operMo * termH;
+    var cashV = acqCash + upfitTotal() + num("teleInstall") + Math.max(0, num("chargerCost")) + operMo * termH;
     var cashP = r.pTotal * termH;
     var netP = cashP, netV = cashV - terminalAsset;
     var y4P = r.pTotal, y4V = operMo;
@@ -1067,7 +1080,7 @@
       var wExp = basicEnd;
       var termM = Math.max(1, num("term"));
       var acqCashT = r.acqMode === "purchase" ? num("price") : num("lease") * termM + downAmt();   // down + full payoff / price
-      var upfront = upfitTotal() + num("teleInstall") + extCost;
+      var upfront = upfitTotal() + num("teleInstall") + Math.max(0, num("chargerCost")) + extCost;
       var operating = operMoN * months;
       var oow = Math.max(0, N - basicEnd), oow2 = Math.max(0, N - ptEnd), oow3 = Math.max(0, N - battEnd);
       var rep1 = oow  * per10k * (num("repairPct") / 100) * num("repairCost");          // non-powertrain, after basic
@@ -1278,6 +1291,17 @@
     $(id).addEventListener("input", function(){ if (state.leaseEstimated) $("lease").value = estLease(); updateLeaseTag(); });
   });
   $("vehicle").addEventListener("change", function(){ applyVehicle(this.value); render(); });
+  function setChargerUI(mode, keepCost){
+    state.chargerMode = mode === "home" ? "home" : "warehouse";
+    Array.prototype.forEach.call($("chargerMode").querySelectorAll("button"), function(x){ x.classList.toggle("on", x.dataset.c === state.chargerMode); });
+    if (!keepCost) $("chargerCost").value = CHARGER[state.chargerMode];
+    $("chargerNote").textContent = state.chargerMode === "home" ? "Level 2 at the tech's home" : "Level 2 at the warehouse";
+  }
+  $("chargerMode").addEventListener("click", function(e){
+    var b = e.target.closest("button"); if (!b) return;
+    setChargerUI(b.dataset.c); render();
+  });
+  setChargerUI("warehouse");
   $("acqMode").addEventListener("click", function(e){
     var b = e.target.closest("button"); if (!b) return;
     setAcqUI(b.dataset.a); render();
@@ -1311,6 +1335,7 @@
       if ($(key)) $(key).value = DEFAULTS[key];
     });
     applyVehicle("r1t");
+    setChargerUI("warehouse");
     $("execCase").textContent = "current model";
     state.milesMode = "perday";
     Array.prototype.forEach.call($("milesMode").querySelectorAll("button"), function(x){ x.classList.toggle("on", x.dataset.m==="perday"); });
@@ -1346,7 +1371,7 @@
       name: name,
       savedAt: new Date().toISOString(),
       inputs: snapshotInputs(),
-      state: { vehicle: state.vehicle, acqMode: state.acqMode, milesMode: state.milesMode, leaseEstimated: !!state.leaseEstimated, fleet: $("fleetHint").dataset.fleet === "1" },
+      state: { vehicle: state.vehicle, acqMode: state.acqMode, milesMode: state.milesMode, leaseEstimated: !!state.leaseEstimated, chargerMode: state.chargerMode, fleet: $("fleetHint").dataset.fleet === "1" },
       summary: { vehicle: VEHICLES[state.vehicle].name, milesMo: Math.round(r.miles), acqMode: state.acqMode, deltaMo: Math.round(r.delta), vehicleMo: Math.round(r.rTotal), personalMo: Math.round(r.pTotal) }
     };
   }
@@ -1358,6 +1383,7 @@
     state.leaseEstimated = !!st.leaseEstimated;
     setAcqUI(st.acqMode === "purchase" ? "purchase" : "lease");
     setMilesMode(st.milesMode === "direct" ? "direct" : "perday");
+    setChargerUI(st.chargerMode === "home" ? "home" : "warehouse", true);
     var fh = $("fleetHint"); fh.dataset.fleet = st.fleet ? "1" : "0"; fh.textContent = st.fleet ? "whole fleet / mo" : "per truck / mo";
     $("caseName").value = c.name || "";
     render();
