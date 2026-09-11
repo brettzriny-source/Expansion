@@ -421,7 +421,7 @@
         <div style="min-width:0">
           <div class="eyebrow" id="execEyebrow">&nbsp;</div>
           <div class="exec-verdict" id="execVerdict">&mdash;</div>
-          <p class="sub" id="execLine" style="margin:0"></p>
+          <p class="sub" id="execLine" style="margin:0;display:none"></p>
         </div>
         <div class="exec-actions">
           <button class="btn" id="execEditBtn" type="button">Edit assumptions &darr;</button>
@@ -490,7 +490,6 @@
             <span class="chip" id="spDaily">—</span>
           </div>
           <p class="section-note" id="configNote" style="margin-top:0"><b style="color:var(--ink)">Modeled configuration:</b> R1T Premium with all-season wheels.</p>
-          <div class="banner" id="downtimeNote" style="margin:0 0 14px; background:var(--warn-bg, var(--surface-2)); border-color:color-mix(in srgb, var(--warn) 35%, transparent)"><span class="ic" style="color:var(--warn)">&#9201;</span><div></div></div>
           <div class="field">
             <label>Acquisition</label>
             <div class="seg" id="acqMode">
@@ -520,10 +519,6 @@
               <label for="downPct">Down payment <span class="note">% of cap cost, paid up front</span></label>
               <div class="input-wrap"><input id="downPct" type="number" min="0" max="100" step="1" value="10" class="has-suf"><span class="aff suf">%</span></div>
               <div class="fieldcap" id="downCap"></div>
-            </div>
-            <div class="field">
-              <label for="rentalDay">Replacement rental <span class="note">$/day while in the shop</span></label>
-              <div class="input-wrap"><span class="aff pre">$</span><input id="rentalDay" type="number" min="0" step="5" value="95" class="has-pre has-suf"><span class="aff suf">/day</span></div>
             </div>
             <div class="field">
               <label for="upfitBase">Upfit: base build <span class="note" id="baseNote">shelving, electrical</span> <sup style="color:var(--accent);font-weight:700">*</sup></label>
@@ -699,6 +694,7 @@
         <div class="tile"><div class="k" id="tcoVehK">Vehicle &mdash; cost / yr</div><div class="v" id="tcoVeh">&mdash;</div><div class="cap" id="tcoVehCap"></div></div>
         <div class="tile"><div class="k">Personal &mdash; cost / yr</div><div class="v" id="tcoPer">&mdash;</div><div class="cap">reimbursement · no equity, never ends</div></div>
         <div class="tile"><div class="k">Post-warranty repairs</div><div class="v" id="tcoRep">&mdash;</div><div class="cap" id="tcoRepCap"></div></div>
+        <div class="tile" id="tcoDownTile"><div class="k">Repair downtime</div><div class="v" id="tcoDown">&mdash;</div><div class="cap" id="tcoDownCap"></div></div>
       </div>
       <div id="tcoChart"></div>
       <details class="adv" id="warrDetails">
@@ -725,9 +721,15 @@
         <div class="field"><label for="extWarrYrs">Extends basic coverage to <span class="note">years</span></label><div class="input-wrap"><input id="extWarrYrs" type="number" min="0" step="1" value="0" class="has-suf"><span class="aff suf">yr</span></div></div>
         <div class="field"><label for="extWarrMi">Extends basic coverage to <span class="note">miles</span></label><div class="input-wrap"><input id="extWarrMi" type="number" min="0" step="5000" value="0" class="has-suf"><span class="aff suf">mi</span></div></div>
       </div>
+      <p class="section-note" style="margin:14px 0 8px"><b style="color:var(--ink)">Repair downtime</b> <span class="note">body damage is an insurance claim, but the truck is off the road while it is fixed &mdash; repair networks and lead times differ sharply by brand</span></p>
+      <div class="grid2">
+        <div class="field"><label for="bodyLeadWk">Body-shop lead time <span class="note">weeks per incident · per vehicle</span></label><div class="input-wrap"><input id="bodyLeadWk" type="number" min="0" step="0.5" value="6" class="has-suf"><span class="aff suf">wk</span></div><div class="fieldcap" id="bodyNetCap"></div></div>
+        <div class="field"><label for="bodyPct">Body-shop visits <span class="note">incidence / 10k mi · any year</span></label><div class="input-wrap"><input id="bodyPct" type="number" min="0" max="100" step="1" value="8" class="has-suf"><span class="aff suf">%</span></div><div class="fieldcap">&asymp; 20% of fleet vehicles a year at 25k mi/yr</div></div>
+        <div class="field"><label for="rentalDay">Replacement rental <span class="note">$/day while in the shop</span></label><div class="input-wrap"><span class="aff pre">$</span><input id="rentalDay" type="number" min="0" step="5" value="95" class="has-pre has-suf"><span class="aff suf">/day</span></div></div>
+      </div>
         </div>
       </details>
-      <p class="small" style="margin:10px 0 0">Cost per year = (acquisition + upfitting + telematics install + extended warranty + operating + expected repairs &minus; resale value &minus; reusable racking) &divide; years owned. Acquisition is the full lease payoff or purchase price; resale decays each year from your term residual. Coverage ends at the <em>earlier</em> of its year or mileage limit &mdash; at fleet mileage the mileage cap almost always governs, which is why basic coverage lapses in years 1&ndash;2. Repairs accrue in three tiers: once basic (or extended) coverage lapses, non-powertrain repairs accrue at incidence &times; cost per 10k miles driven; once the drive-unit warranty lapses, drive-unit failures accrue on top; and once the high-voltage battery warranty lapses, battery-pack failures (rare, but the single most expensive EV repair) accrue as well. Drive-unit and battery terms are tracked separately because they differ by brand. Defaults are vehicle-specific starting estimates from reliability-survey patterns, not fleet data &mdash; replace them with FMC or maintenance records as they come in. <b style="color:var(--ink)">Fleet caveat:</b> Hyundai and Kia&rsquo;s 10-yr / 100k powertrain warranty applies to original retail owners only; commercial-use vehicles get 5 yr / 60k, so for our fleet it adds nothing beyond bumper-to-bumper.</p>
+      <p class="small" style="margin:10px 0 0">Cost per year = (acquisition + upfitting + telematics install + extended warranty + operating + expected repairs + repair downtime &minus; resale value &minus; reusable racking) &divide; years owned. Repair downtime = body-shop visits (incidence per 10k miles, from day one) &times; the brand&rsquo;s typical lead time &times; replacement rental per day; vehicles above the fleet-median lead time are flagged. Acquisition is the down payment plus full lease payoff, or the purchase price; resale decays each year from your term residual. Coverage ends at the <em>earlier</em> of its year or mileage limit &mdash; at fleet mileage the mileage cap almost always governs, which is why basic coverage lapses in years 1&ndash;2. Repairs accrue in three tiers: once basic (or extended) coverage lapses, non-powertrain repairs accrue at incidence &times; cost per 10k miles driven; once the drive-unit warranty lapses, drive-unit failures accrue on top; and once the high-voltage battery warranty lapses, battery-pack failures (rare, but the single most expensive EV repair) accrue as well. Drive-unit and battery terms are tracked separately because they differ by brand. Defaults are vehicle-specific starting estimates from reliability-survey patterns, not fleet data &mdash; replace them with FMC or maintenance records as they come in. <b style="color:var(--ink)">Fleet caveat:</b> Hyundai and Kia&rsquo;s 10-yr / 100k powertrain warranty applies to original retail owners only; commercial-use vehicles get 5 yr / 60k, so for our fleet it adds nothing beyond bumper-to-bumper.</p>
     </div>
   </section>
 
@@ -737,21 +739,21 @@
       <table class="detail models" id="modelsTable">
         <thead><tr><th>Model</th><th>Type</th><th>Range</th><th>MSRP</th><th>Est. lease /mo <sup style="color:var(--accent)">&dagger;</sup></th><th>Payload</th><th>Cargo</th><th>Towing</th><th>Eff.</th><th>DC charge</th><th>Plug</th><th>Warranty</th><th>Body repair</th><th>Cancel risk</th></tr></thead>
         <tbody>
-              <tr><td>Rivian RCV500</td><td>Van</td><td>~150 mi</td><td>$71,900</td><td>~$2,063</td><td>~2,600 lbs</td><td>500 cu ft</td><td>N/A</td><td>1.8</td><td>~150 kW</td><td>CCS1</td><td>5 yr / 60k mi<span class="mkt">powertrain / battery 8 yr / 175k</span></td><td>Rivian-certified only<span class="mkt">few hundred shops · ~4–8 wk</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
-              <tr><td>Rivian RCV700</td><td>Van</td><td>~150 mi</td><td>$75,900</td><td>~$2,178</td><td>~2,600 lbs</td><td>700 cu ft</td><td>N/A</td><td>1.6</td><td>~150 kW</td><td>CCS1</td><td>5 yr / 60k mi<span class="mkt">powertrain / battery 8 yr / 175k</span></td><td>Rivian-certified only<span class="mkt">few hundred shops · ~4–8 wk</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
-              <tr data-veh="r1t"><td>Rivian R1T</td><td>Pickup</td><td>~314 mi</td><td>$72,000</td><td>~$2,066</td><td>~1,760 lbs</td><td>~77 cu ft</td><td>11,000 lbs</td><td>2.4</td><td>~215 kW</td><td>NACS</td><td>5 yr / 60k mi<span class="mkt">powertrain / battery 8 yr / 175k</span></td><td>Rivian-certified only<span class="mkt">few hundred shops · ~4–8 wk</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
-              <tr><td>Rivian R1S</td><td>SUV</td><td>~303 mi</td><td>$76,000</td><td>~$2,181</td><td>~900 lbs</td><td>104 cu ft</td><td>7,700 lbs</td><td>2.2</td><td>~215 kW</td><td>NACS</td><td>5 yr / 60k mi<span class="mkt">powertrain / battery 8 yr / 175k</span></td><td>Rivian-certified only<span class="mkt">few hundred shops · ~4–8 wk</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr><td>Rivian RCV500</td><td>Van</td><td>~150 mi</td><td>$71,900</td><td>~$2,063</td><td>~2,600 lbs</td><td>500 cu ft</td><td>N/A</td><td>1.8</td><td>~150 kW</td><td>CCS1</td><td>5 yr / 60k mi<span class="mkt">powertrain / battery 8 yr / 175k</span></td><td><span style="color:var(--bad);font-weight:700">&#9888; Rivian-certified only</span><span class="mkt">few hundred shops · ~4–8 wk</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr><td>Rivian RCV700</td><td>Van</td><td>~150 mi</td><td>$75,900</td><td>~$2,178</td><td>~2,600 lbs</td><td>700 cu ft</td><td>N/A</td><td>1.6</td><td>~150 kW</td><td>CCS1</td><td>5 yr / 60k mi<span class="mkt">powertrain / battery 8 yr / 175k</span></td><td><span style="color:var(--bad);font-weight:700">&#9888; Rivian-certified only</span><span class="mkt">few hundred shops · ~4–8 wk</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr data-veh="r1t"><td>Rivian R1T</td><td>Pickup</td><td>~314 mi</td><td>$72,000</td><td>~$2,066</td><td>~1,760 lbs</td><td>~77 cu ft</td><td>11,000 lbs</td><td>2.4</td><td>~215 kW</td><td>NACS</td><td>5 yr / 60k mi<span class="mkt">powertrain / battery 8 yr / 175k</span></td><td><span style="color:var(--bad);font-weight:700">&#9888; Rivian-certified only</span><span class="mkt">few hundred shops · ~4–8 wk</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr><td>Rivian R1S</td><td>SUV</td><td>~303 mi</td><td>$76,000</td><td>~$2,181</td><td>~900 lbs</td><td>104 cu ft</td><td>7,700 lbs</td><td>2.2</td><td>~215 kW</td><td>NACS</td><td>5 yr / 60k mi<span class="mkt">powertrain / battery 8 yr / 175k</span></td><td><span style="color:var(--bad);font-weight:700">&#9888; Rivian-certified only</span><span class="mkt">few hundred shops · ~4–8 wk</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
               <tr data-veh="ev9"><td>Kia EV9 Light LR</td><td>SUV</td><td>~304 mi</td><td>$57,900<span class="mkt">Light Long Range RWD · dashboard base $56,395+</span></td><td>$1,357<span class="mkt">negotiated · FMC quote · $944 at 48 mo / 20% down</span></td><td>~1,200 lbs</td><td>82 cu ft</td><td>5,000 lbs</td><td>2.8</td><td>~236 kW</td><td>NACS</td><td>5 yr / 60k mi<span class="mkt">powertrain 10 yr / 100k retail · <b>5 yr / 60k fleet</b> · battery 10 yr / 100k</span></td><td>Any dealer / indie<span class="mkt">EV-certified for battery · ~1–3 wk</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
               <tr data-veh="ev9wind"><td>Kia EV9 Wind</td><td>SUV</td><td>~280 mi</td><td>$63,900<span class="mkt">Wind AWD</span></td><td>$1,522<span class="mkt">negotiated · FMC quote · $1,059 at 48 mo / 20% down</span></td><td>~1,200 lbs</td><td>82 cu ft</td><td>5,000 lbs</td><td>2.7</td><td>~236 kW</td><td>NACS</td><td>5 yr / 60k mi<span class="mkt">powertrain 10 yr / 100k retail · <b>5 yr / 60k fleet</b> · battery 10 yr / 100k</span></td><td>Any dealer / indie<span class="mkt">EV-certified for battery · ~1–3 wk</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
               <tr data-veh="ev6"><td>Kia EV6</td><td>Crossover</td><td>~310 mi</td><td>$45,200<span class="mkt">Light Long Range · dashboard base $42,600+</span></td><td>$1,134<span class="mkt">negotiated · FMC quote</span></td><td>~1,000 lbs</td><td>50 cu ft</td><td>2,300 lbs</td><td>3.5</td><td>~236 kW</td><td>NACS</td><td>5 yr / 60k mi<span class="mkt">powertrain 10 yr / 100k retail · <b>5 yr / 60k fleet</b> · battery 10 yr / 100k</span></td><td>Any dealer / indie<span class="mkt">EV-certified for battery · ~1–3 wk</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
               <tr><td>Hyundai Ioniq 5</td><td>Crossover</td><td>~303 mi</td><td>$44,745+</td><td>~$1,284</td><td>~1,000 lbs</td><td>59 cu ft</td><td>3,500 lbs</td><td>3.5</td><td>~350 kW</td><td>NACS</td><td>5 yr / 60k mi<span class="mkt">powertrain 10 yr / 100k retail · <b>5 yr / 60k fleet</b> · battery 10 yr / 100k</span></td><td>Any dealer / indie<span class="mkt">EV-certified for battery · ~1–3 wk</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
               <tr data-veh="ioniq9"><td>Hyundai Ioniq 9</td><td>SUV</td><td>~350 mi</td><td>$56,175+</td><td>~$1,612</td><td>~1,300 lbs</td><td>87 cu ft</td><td>5,000 lbs</td><td>2.8</td><td>~350 kW</td><td>NACS</td><td>5 yr / 60k mi<span class="mkt">powertrain 10 yr / 100k retail · <b>5 yr / 60k fleet</b> · battery 10 yr / 100k</span></td><td>Any dealer / indie<span class="mkt">EV-certified for battery · ~1–3 wk</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
               <tr data-veh="ioniq6"><td>Hyundai Ioniq 6 <span class="mkt">added</span></td><td>Sedan</td><td>~342 mi</td><td>$37,850+</td><td>~$1,086</td><td>~900 lbs</td><td>11 cu ft</td><td>N/A</td><td>3.8</td><td>~350 kW</td><td>NACS</td><td>5 yr / 60k mi<span class="mkt">powertrain 10 yr / 100k retail · <b>5 yr / 60k fleet</b> · battery 10 yr / 100k</span></td><td>Any dealer / indie<span class="mkt">EV-certified for battery · ~1–3 wk</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
-              <tr><td>Slate EV Truck</td><td>Pickup</td><td>~150 mi</td><td>$34,900+</td><td>~$1,001</td><td>~2,500 lbs</td><td>75 cu ft</td><td>5,000 lbs</td><td>2.5</td><td>~150 kW</td><td>CCS1</td><td>TBD</td><td>Unproven<span class="mkt">no network yet · ~4–6 wk</span></td><td><span style="color:var(--warn);font-weight:700">Medium</span></td></tr>
+              <tr><td>Slate EV Truck</td><td>Pickup</td><td>~150 mi</td><td>$34,900+</td><td>~$1,001</td><td>~2,500 lbs</td><td>75 cu ft</td><td>5,000 lbs</td><td>2.5</td><td>~150 kW</td><td>CCS1</td><td>TBD</td><td><span style="color:var(--bad);font-weight:700">&#9888; Unproven</span><span class="mkt">no network yet · ~4–6 wk</span></td><td><span style="color:var(--warn);font-weight:700">Medium</span></td></tr>
               <tr><td>VW ID.Buzz</td><td>Van</td><td>~234 mi</td><td>$59,995+</td><td>~$1,721</td><td>~1,100 lbs</td><td>117 cu ft</td><td>N/A</td><td>2.6</td><td>~200 kW</td><td>CCS1</td><td>4 yr / 50k mi<span class="mkt">powertrain 4 yr / 50k · battery 8 yr / 100k</span></td><td>VW dealers<span class="mkt">~2–4 wk</span></td><td><span style="color:var(--warn);font-weight:700">Medium</span></td></tr>
-              <tr><td>Tesla Model 3</td><td>Sedan</td><td>~341 mi</td><td>$42,490+</td><td>~$1,219</td><td>~900 lbs</td><td>23 cu ft</td><td>N/A</td><td>4.0</td><td>~250 kW</td><td>NACS</td><td>4 yr / 50k mi<span class="mkt">drive unit / battery 8 yr / 100&ndash;120k</span></td><td>Tesla-approved shops<span class="mkt">parts backlogs · ~3–6 wk</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
-              <tr><td>Tesla Model Y</td><td>Crossover</td><td>~310 mi</td><td>$44,990+</td><td>~$1,291</td><td>~1,000 lbs</td><td>76 cu ft</td><td>3,500 lbs</td><td>3.5</td><td>~250 kW</td><td>NACS</td><td>4 yr / 50k mi<span class="mkt">drive unit / battery 8 yr / 100&ndash;120k</span></td><td>Tesla-approved shops<span class="mkt">parts backlogs · ~3–6 wk</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
-              <tr><td>Tesla Cybertruck</td><td>Pickup</td><td>~325 mi</td><td>$79,990+</td><td>~$2,295</td><td>~2,500 lbs</td><td>68 cu ft</td><td>11,000 lbs</td><td>2.2</td><td>~250 kW</td><td>NACS</td><td>4 yr / 50k mi<span class="mkt">drive unit / battery 8 yr / 100&ndash;120k</span></td><td>Tesla-approved shops<span class="mkt">parts backlogs · ~3–6 wk</span></td><td><span style="color:var(--warn);font-weight:700">Medium</span></td></tr>
+              <tr><td>Tesla Model 3</td><td>Sedan</td><td>~341 mi</td><td>$42,490+</td><td>~$1,219</td><td>~900 lbs</td><td>23 cu ft</td><td>N/A</td><td>4.0</td><td>~250 kW</td><td>NACS</td><td>4 yr / 50k mi<span class="mkt">drive unit / battery 8 yr / 100&ndash;120k</span></td><td><span style="color:var(--bad);font-weight:700">&#9888; Tesla-approved shops</span><span class="mkt">parts backlogs · ~3–6 wk</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr><td>Tesla Model Y</td><td>Crossover</td><td>~310 mi</td><td>$44,990+</td><td>~$1,291</td><td>~1,000 lbs</td><td>76 cu ft</td><td>3,500 lbs</td><td>3.5</td><td>~250 kW</td><td>NACS</td><td>4 yr / 50k mi<span class="mkt">drive unit / battery 8 yr / 100&ndash;120k</span></td><td><span style="color:var(--bad);font-weight:700">&#9888; Tesla-approved shops</span><span class="mkt">parts backlogs · ~3–6 wk</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr><td>Tesla Cybertruck</td><td>Pickup</td><td>~325 mi</td><td>$79,990+</td><td>~$2,295</td><td>~2,500 lbs</td><td>68 cu ft</td><td>11,000 lbs</td><td>2.2</td><td>~250 kW</td><td>NACS</td><td>4 yr / 50k mi<span class="mkt">drive unit / battery 8 yr / 100&ndash;120k</span></td><td><span style="color:var(--bad);font-weight:700">&#9888; Tesla-approved shops</span><span class="mkt">parts backlogs · ~3–6 wk</span></td><td><span style="color:var(--warn);font-weight:700">Medium</span></td></tr>
               <tr><td>Ford Mustang Mach-E</td><td>Crossover</td><td>~312 mi</td><td>$42,995+</td><td>~$1,234</td><td>~1,000 lbs</td><td>60 cu ft</td><td>N/A</td><td>3.2</td><td>~150 kW</td><td>NACS</td><td>3 yr / 36k mi<span class="mkt">EV components / battery 8 yr / 100k</span></td><td>Any dealer / indie<span class="mkt">broad network · ~1–3 wk</span></td><td><span style="color:var(--warn);font-weight:700">Medium</span></td></tr>
               <tr data-veh="bz"><td>Toyota bZ <span class="mkt">formerly bZ4X</span></td><td>Crossover</td><td>~252 mi</td><td>$37,070+</td><td>~$1,064</td><td>~1,000 lbs</td><td>28 cu ft</td><td>N/A</td><td>3.3</td><td>~150 kW</td><td>CCS1</td><td>3 yr / 36k mi<span class="mkt">powertrain 5 yr / 60k · battery 8 yr / 100k</span></td><td>Any dealer / indie<span class="mkt">broad network · ~1–3 wk</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
               <tr data-veh="bzwood"><td>Toyota bZ Woodland <span class="mkt">added</span></td><td>Crossover (AWD)</td><td>~281 mi</td><td>$45,300+</td><td>~$1,300</td><td>~1,000 lbs</td><td>74 cu ft</td><td>3,500 lbs</td><td>3.0</td><td>~150 kW</td><td>NACS</td><td>3 yr / 36k mi<span class="mkt">powertrain 5 yr / 60k · battery 8 yr / 100k</span></td><td>Any dealer / indie<span class="mkt">broad network · ~1–3 wk</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
@@ -777,7 +779,7 @@
         <div class="it"><span class="m">+</span><span><b>Tool security &amp; readiness.</b> Standardized, locked upfit means every truck is job-ready.</span></div>
         <div class="it"><span class="m">+</span><span><b>Telematics &amp; control.</b> Routing, safety, and utilization data you can't get from personal cars.</span></div>
         <div class="it"><span class="m">+</span><span><b>Reliability.</b> An unreliable employee vehicle is a real cost: a breakdown, a car in the shop, or a tech who sold their truck means a missed morning and installs that slip &mdash; and Jetson eats it. A company-maintained vehicle on a known service cadence shows up.</span></div>
-        <div class="it"><span class="m">−</span><span><b>Repair downtime varies by brand.</b> R1T body work goes only to Rivian-certified shops, so a fender-bender can mean weeks in a rental; Kia, Hyundai, GM and Toyota repair almost anywhere. The Vehicle card prices this exposure per incident.</span></div>
+        <div class="it"><span class="m">−</span><span><b>Repair downtime varies by brand.</b> R1T body work goes only to Rivian-certified shops, so a fender-bender can mean weeks in a rental; Kia, Hyundai, GM and Toyota repair almost anywhere. The Total Cost of Ownership card prices this downtime and flags vehicles above the fleet-median lead time.</span></div>
         <div class="it"><span class="m">−</span><span><b>Fleet overhead.</b> Titling, registration, and admin the personal-vehicle model avoids.</span></div>
         <div class="it"><span class="m">−</span><span><b>Utilization risk.</b> Fixed vehicle cost is largely sunk whether or not the truck is driven.</span></div>
       </div>
@@ -827,6 +829,10 @@
     t.classList.toggle("neg", q);
     t.style.display = "";
   }
+  function medianLeadWk(){
+    var a = Object.keys(VEHICLES).map(function(k){ return VEHICLES[k].bodyLeadWk || 2; }).sort(function(x, y){ return x - y; });
+    var m = a.length >> 1; return a.length % 2 ? a[m] : (a[m - 1] + a[m]) / 2;
+  }
   function upfitTotal(){ return num("upfitBase") + num("upfitWrap") + num("upfitTopper") + num("upfitBott"); }
 
   // Vehicle presets. Pickup prices per confirmed quotes; others at starting MSRP
@@ -852,7 +858,7 @@
 
   var DEFAULTS = {
     techs:1, days:21, milesMode:"perday", milesDay:100, milesDirect:2100,
-    reimb:0.76, stipend:0, downPct:10, rentalDay:95,
+    reimb:0.76, stipend:0, downPct:10, rentalDay:95, bodyPct:8, bodyLeadWk:6,
     installsDay:2, upfitBase:9185, upfitWrap:3500, upfitTopper:6250, upfitBott:8000, upfitLife:84, ins:375, teleSub:40, teleInstall:107, maint:60, kwh:0.16,
     repairPct:22, repairCost:3500, ptWarrYrs:8, ptWarrMi:175000, ptRepairPct:1.5, ptRepairCost:10000, battWarrYrs:8, battWarrMi:175000, battRepairPct:0.5, battRepairCost:25000, extWarrCost:0, extWarrYrs:0, extWarrMi:0, tcoYears:3
   };
@@ -959,15 +965,6 @@
     $("detailVHead").textContent = vName;
     var resVal = num("price") * num("residualPct") / 100;
     $("residualCap").innerHTML = "≈ <b style=\'color:var(--ink)\'>" + fmt(resVal) + "</b> resale value, owned outright at term end · edit % to taste";
-    (function(){
-      var v = VEHICLES[state.vehicle] || {}; var wk = v.bodyLeadWk || 2; var perDay = Math.max(0, num("rentalDay"));
-      var days = wk * 7, rental = days * perDay;
-      var lostDays = wk * 5 * Math.max(0, num("installsDay"));
-      $("downtimeNote").lastElementChild.innerHTML = "<b>Repair downtime exposure &mdash; " + vName + ":</b> body work goes to " + (v.netNote || "the brand's dealer network") +
-        ". Typical collision lead time &asymp; <b>" + wk + " wk</b> &rarr; about <b>" + fmt(rental) + "</b> of replacement rental per incident at " + fmt(perDay) + "/day" +
-        (wk >= 4 ? ", and a real risk of the rental running longer while parts arrive" : "") +
-        ". If no fitted rental is available, that is &asymp; " + lostDays + " installs a tech can&rsquo;t run.";
-    })();
     $("downCap").innerHTML = downAmt() > 0 ? "≈ <b style=\'color:var(--ink)\'>" + fmt(downAmt()) + "</b> up front on a " + fmt(capCost()) + " cap cost · " + fmt(downAmt() / Math.max(1, num("term"))) + "/mo over the term" : "no money down";
     $("upfitTotalCap").innerHTML = "Upfitting total <b style=\'color:var(--ink)\'>" + fmt(upfitTotal()) + "</b> · " + fmt(r.upfitM) + "/mo over " + Math.max(1, num("upfitLife")) + " mo";
     var modelKey = ({r1t:"r1t", silv_ext:"silv", silv_std:"silv", f150:"f150"})[state.vehicle] || state.vehicle;
@@ -1077,12 +1074,14 @@
       var rep2 = oow2 * per10k * (num("ptRepairPct") / 100) * num("ptRepairCost");      // drive unit, after its warranty
       var rep3 = oow3 * per10k * (num("battRepairPct") / 100) * num("battRepairCost");  // battery pack, after its warranty
       var repairs = rep1 + rep2 + rep3;
+      var visits = N * per10k * (Math.max(0, num("bodyPct")) / 100);                     // body-shop visits over N years
+      var downtime = visits * Math.max(0, num("bodyLeadWk")) * 7 * Math.max(0, num("rentalDay"));
       var retain = Math.pow(Math.max(0.0001, num("residualPct") / 100), 12 / termM);   // per-year retention from term residual
       var residual = num("price") * Math.pow(retain, N);
       var life = Math.max(1, num("upfitLife"));
       var transfer = Math.max(0, upfitTotal() - num("upfitWrap")) * Math.max(0, life - months) / life;
-      var net = acqCashT + upfront + operating + repairs - residual - transfer;
-      return { net:net, perYr:net / N, repairs:repairs, rep1:rep1, rep2:rep2, rep3:rep3, residual:residual, transfer:transfer, wExp:wExp, ptExp:ptEnd, battExp:battEnd, oow:oow, oow2:oow2, oow3:oow3, extCost:extCost, personalYr:r.pTotal * 12 };
+      var net = acqCashT + upfront + operating + repairs + downtime - residual - transfer;
+      return { net:net, perYr:net / N, repairs:repairs, downtime:downtime, visits:visits, rep1:rep1, rep2:rep2, rep3:rep3, residual:residual, transfer:transfer, wExp:wExp, ptExp:ptEnd, battExp:battEnd, oow:oow, oow2:oow2, oow3:oow3, extCost:extCost, personalYr:r.pTotal * 12 };
     }
     var N = Math.max(1, Math.min(10, Math.round((num("tcoYears") || 3) * 2) / 2));   // half-year steps
     var t = tcoAt(N);
@@ -1100,7 +1099,13 @@
     if (t.oow2 > 0) capParts.push(r1(t.oow2) + " yr past drive-unit: " + fmt(t.rep2));
     if (t.oow3 > 0) capParts.push(r1(t.oow3) + " yr past battery: " + fmt(t.rep3));
     $("tcoRepCap").textContent = capParts.length ? capParts.join(" · ") : "fully covered through year " + N;
-    $("warrSummary").textContent = num("warrYrs") + " yr / " + fmtN(num("warrMi")) + " mi basic · drive unit " + num("ptWarrYrs") + " yr / " + fmtN(num("ptWarrMi")) + " · battery " + num("battWarrYrs") + " yr / " + fmtN(num("battWarrMi"));
+    var vp = VEHICLES[state.vehicle] || {}, wk = Math.max(0, num("bodyLeadWk")), medWk = medianLeadWk(), slow = wk > medWk;
+    $("tcoDown").textContent = fmt(t.downtime);
+    $("tcoDown").className = "v " + (slow ? "bad" : (t.downtime > 0 ? "warn" : ""));
+    $("tcoDownCap").innerHTML = (slow ? '<b style="color:var(--bad)">&#9888; above fleet median</b> · ' : '') + r1(t.visits) + " body-shop visits × " + wk + " wk × " + fmt(num("rentalDay")) + "/day" + (slow ? " · median " + medWk + " wk" : "");
+    $("tcoDownTile").style.borderColor = slow ? "color-mix(in srgb, var(--bad) 45%, transparent)" : "";
+    $("bodyNetCap").innerHTML = (vp.netNote ? vp.netNote.charAt(0).toUpperCase() + vp.netNote.slice(1) + ". " : "") + "Fleet median " + medWk + " wk" + (slow ? ' · <b style="color:var(--bad)">this vehicle is above it</b>' : "");
+    $("warrSummary").textContent = num("warrYrs") + " yr / " + fmtN(num("warrMi")) + " mi basic · drive unit " + num("ptWarrYrs") + " yr / " + fmtN(num("ptWarrMi")) + " · battery " + num("battWarrYrs") + " yr / " + fmtN(num("battWarrMi")) + " · body shop " + num("bodyLeadWk") + " wk";
     var wY = num("warrYrs"), basicYrLimit = Math.max(wY, t.extCost > 0 ? num("extWarrYrs") : 0);
     $("tcoWarrNote").textContent = (t.wExp <= 0 ? "no basic warranty" : "basic ends ≈ " + r1(t.wExp) + " yr" + (basicYrLimit > 0 && t.wExp < basicYrLimit - 0.05 ? " (mileage cap)" : ""))
       + (Math.abs(t.ptExp - t.battExp) < 0.05
@@ -1169,7 +1174,7 @@
     if (perTruckN < 1) xv.innerHTML = "Essentially <em>break-even</em> with reimbursement";
     else if (dMo < 0) xv.innerHTML = "<em>" + fmt(perTruckN) + "/mo cheaper</em> than reimbursement";
     else xv.innerHTML = "<em>" + fmt(perTruckN) + "/mo more</em> than reimbursement";
-    $("execLine").textContent = "Owned for " + N + " years, the " + vName + " works out to " + fmt(tcoMo) + " per truck per month all-in (acquisition, upfit, operating, and expected repairs, net of resale and reusable racking) against " + fmt(r.pTotal) + " in mileage reimbursement. Move the ownership slider to see how the horizon changes the answer.";
+    $("execLine").textContent = "";
     $("xVehK").textContent = vName + " / mo · all-in";
     $("xVehMo").textContent = fmt(tcoMo);
     $("xPerMo").textContent = fmt(r.pTotal);
@@ -1194,7 +1199,7 @@
     var bullets = [];
     bullets.push("<b>All-in at " + N + " years:</b> the " + vName + " costs " + fmt(perTruckN) + "/mo " + (dMo < 0 ? "less" : "more") + " than reimbursing " + fmtN(r.miles) + " mi/mo at " + fmt2(num("reimb")) + "/mi" + (cpiVN !== null ? " — " + fmt(cpiVN) + " per install vs " + fmt(r.cpiP) : "") + (t.repairs > 0 ? ", including " + fmt(t.repairs) + " of expected repairs" : "") + ".");
     bullets.push("<b>What you hold at year " + N + ":</b> reimbursement leaves nothing owned; the " + vName + " leaves " + fmt(equityN) + " of equity (truck " + fmt(t.residual) + " + reusable racking " + fmt(t.transfer) + "), and once paid off the run-rate drops to " + fmt(y4V) + "/mo.");
-    bullets.push("<b>Coverage at this mileage:</b> basic warranty " + (t.wExp <= 0 ? "is already gone" : "ends ≈" + r1(t.wExp) + " yr") + ", powertrain ≈" + r1(t.ptExp) + " yr" + (Math.abs(t.ptExp - t.battExp) < 0.05 ? " (battery on the same term)" : ", battery ≈" + r1(t.battExp) + " yr") + " — longer ownership spreads the upfront cost but adds out-of-warranty exposure.");
+    bullets.push("<b>Coverage at this mileage:</b> basic warranty " + (t.wExp <= 0 ? "is already gone" : "ends ≈" + r1(t.wExp) + " yr") + ", powertrain ≈" + r1(t.ptExp) + " yr" + (Math.abs(t.ptExp - t.battExp) < 0.05 ? " (battery on the same term)" : ", battery ≈" + r1(t.battExp) + " yr") + " — longer ownership spreads the upfront cost but adds out-of-warranty exposure." + (t.downtime > 0 ? " Repair downtime adds " + fmt(t.downtime / N) + "/yr in rental" + (slow ? " — <b>flag:</b> " + vName + " body work runs ≈" + wk + " wk against a " + medWk + "-wk fleet median (" + (vp.netNote || "limited repair network") + ")" : "") + "." : ""));
     if (beN !== null && beN > 0) bullets.push("<b>Break-even:</b> at " + N + " years owned the " + vName + " is cheaper than reimbursement above " + fmtN(beN) + " mi/mo; below that the case rests on equity, brand control, and the paid-off run-rate.");
     else if (beN === 0) bullets.push("<b>Break-even:</b> at " + N + " years owned the " + vName + " is cheaper than reimbursement at any mileage.");
     $("execBullets").innerHTML = bullets.map(function(b){ return "<li>" + b + "</li>"; }).join("");
@@ -1248,6 +1253,7 @@
     $("battWarrYrs").value = v.battWarrYrs; $("battWarrMi").value = v.battWarrMi;
     $("battRepairPct").value = v.battRepairPct; $("battRepairCost").value = v.battRepairCost;
     $("extWarrCost").value = 0; $("extWarrYrs").value = 0; $("extWarrMi").value = 0;
+    $("bodyLeadWk").value = v.bodyLeadWk || 2;
     // bed topper / cap only makes sense on a pickup bed
     var isPickup = v.type === "pickup";
     $("upfitTopper").value = isPickup ? DEFAULTS.upfitTopper : 0;
