@@ -475,7 +475,8 @@
                 <option value="ioniq6">Hyundai Ioniq 6 — sedan</option>
                 <option value="ioniq9">Hyundai Ioniq 9 — SUV</option>
                 <option value="ev6">Kia EV6 Light Long Range — crossover (negotiated lease)</option>
-                <option value="ev9">Kia EV9 — SUV</option>
+                <option value="ev9">Kia EV9 Light Long Range — SUV (negotiated lease)</option>
+                <option value="ev9wind">Kia EV9 Wind AWD — SUV (negotiated lease)</option>
                 <option value="blazer">Chevrolet Blazer EV — SUV</option>
                 <option value="equinox">Chevrolet Equinox EV — crossover</option>
                 <option value="bzwood">Toyota bZ Woodland — AWD crossover</option>
@@ -514,6 +515,11 @@
             <div class="field">
               <label for="term">Term / hold</label>
               <div class="input-wrap"><input id="term" type="number" min="1" step="1" value="36" class="has-suf"><span class="aff suf">mo</span></div>
+            </div>
+            <div class="field" id="downField">
+              <label for="downPct">Down payment <span class="note">% of cap cost, paid up front</span></label>
+              <div class="input-wrap"><input id="downPct" type="number" min="0" max="100" step="1" value="10" class="has-suf"><span class="aff suf">%</span></div>
+              <div class="fieldcap" id="downCap"></div>
             </div>
             <div class="field">
               <label for="upfitBase">Upfit: base build <span class="note">shelving, electrical</span> <sup style="color:var(--accent);font-weight:700">*</sup></label>
@@ -731,7 +737,8 @@
               <tr><td>Rivian RCV700</td><td>Van</td><td>~150 mi</td><td>$75,900</td><td>~$2,178</td><td>~2,600 lbs</td><td>700 cu ft</td><td>N/A</td><td>1.6</td><td>~150 kW</td><td>CCS1</td><td>5 yr / 60k mi<span class="mkt">powertrain / battery 8 yr / 175k</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
               <tr data-veh="r1t"><td>Rivian R1T</td><td>Pickup</td><td>~314 mi</td><td>$72,000</td><td>~$2,066</td><td>~1,760 lbs</td><td>~77 cu ft</td><td>11,000 lbs</td><td>2.4</td><td>~215 kW</td><td>NACS</td><td>5 yr / 60k mi<span class="mkt">powertrain / battery 8 yr / 175k</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
               <tr><td>Rivian R1S</td><td>SUV</td><td>~303 mi</td><td>$76,000</td><td>~$2,181</td><td>~900 lbs</td><td>104 cu ft</td><td>7,700 lbs</td><td>2.2</td><td>~215 kW</td><td>NACS</td><td>5 yr / 60k mi<span class="mkt">powertrain / battery 8 yr / 175k</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
-              <tr data-veh="ev9"><td>Kia EV9</td><td>SUV</td><td>~304 mi</td><td>$56,395+</td><td>~$1,618</td><td>~1,200 lbs</td><td>82 cu ft</td><td>5,000 lbs</td><td>2.8</td><td>~236 kW</td><td>NACS</td><td>5 yr / 60k mi<span class="mkt">powertrain 10 yr / 100k retail · <b>5 yr / 60k fleet</b> · battery 10 yr / 100k</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr data-veh="ev9"><td>Kia EV9 Light LR</td><td>SUV</td><td>~304 mi</td><td>$57,900<span class="mkt">Light Long Range RWD · dashboard base $56,395+</span></td><td>$1,357<span class="mkt">negotiated · FMC quote · $944 at 48 mo / 20% down</span></td><td>~1,200 lbs</td><td>82 cu ft</td><td>5,000 lbs</td><td>2.8</td><td>~236 kW</td><td>NACS</td><td>5 yr / 60k mi<span class="mkt">powertrain 10 yr / 100k retail · <b>5 yr / 60k fleet</b> · battery 10 yr / 100k</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr data-veh="ev9wind"><td>Kia EV9 Wind</td><td>SUV</td><td>~280 mi</td><td>$63,900<span class="mkt">Wind AWD</span></td><td>$1,522<span class="mkt">negotiated · FMC quote · $1,059 at 48 mo / 20% down</span></td><td>~1,200 lbs</td><td>82 cu ft</td><td>5,000 lbs</td><td>2.7</td><td>~236 kW</td><td>NACS</td><td>5 yr / 60k mi<span class="mkt">powertrain 10 yr / 100k retail · <b>5 yr / 60k fleet</b> · battery 10 yr / 100k</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
               <tr data-veh="ev6"><td>Kia EV6</td><td>Crossover</td><td>~310 mi</td><td>$45,200<span class="mkt">Light Long Range · dashboard base $42,600+</span></td><td>$1,134<span class="mkt">negotiated · FMC quote</span></td><td>~1,000 lbs</td><td>50 cu ft</td><td>2,300 lbs</td><td>3.5</td><td>~236 kW</td><td>NACS</td><td>5 yr / 60k mi<span class="mkt">powertrain 10 yr / 100k retail · <b>5 yr / 60k fleet</b> · battery 10 yr / 100k</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
               <tr><td>Hyundai Ioniq 5</td><td>Crossover</td><td>~303 mi</td><td>$44,745+</td><td>~$1,284</td><td>~1,000 lbs</td><td>59 cu ft</td><td>3,500 lbs</td><td>3.5</td><td>~350 kW</td><td>NACS</td><td>5 yr / 60k mi<span class="mkt">powertrain 10 yr / 100k retail · <b>5 yr / 60k fleet</b> · battery 10 yr / 100k</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
               <tr data-veh="ioniq9"><td>Hyundai Ioniq 9</td><td>SUV</td><td>~350 mi</td><td>$56,175+</td><td>~$1,612</td><td>~1,300 lbs</td><td>87 cu ft</td><td>5,000 lbs</td><td>2.8</td><td>~350 kW</td><td>NACS</td><td>5 yr / 60k mi<span class="mkt">powertrain 10 yr / 100k retail · <b>5 yr / 60k fleet</b> · battery 10 yr / 100k</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
@@ -751,7 +758,7 @@
               <tr data-veh="f150"><td>Ford F-150 Lightning <span class="mkt">added · used</span></td><td>Pickup</td><td>~240 mi</td><td>~$50,000<span class="mkt">used mkt ~$32K–$53K</span></td><td>— <span class="mkt">bought used</span></td><td>~2,000 lbs</td><td>5.5 ft bed</td><td>~10,000 lbs</td><td>2.0</td><td>~150 kW</td><td>CCS1</td><td>3 yr / 36k mi <span class="mkt">EV components / battery 8 yr / 100k</span><span class="mkt">EV components / battery 8 yr / 100k</span></td><td><span style="color:var(--ink-mute);font-weight:700">n/a</span></td></tr>
         </tbody>
       </table>
-      <p class="small" style="margin:12px 0 0"><b style="color:var(--ink)">&dagger; Monthly lease reverse-engineered from Jetson&rsquo;s R1T lease structure:</b> capitalized cost = MSRP &minus; manufacturer rebate (no rebates assumed on non-Rivian brands, so those use full MSRP), 10% down, 36-month term, $0 residual (full straight-line depreciation, &asymp; 2.78%/mo), 9.16% implied rate (3-yr Treasury + 4.85%, 8/21/26), plus a 0.045%/mo management fee &mdash; working out to &asymp; 2.87% of cap cost per month, anchored so the R1T reproduces its actual $2,206 quote. The Kia EV6 shows its FMC-negotiated rent ($1,134 on a $39,629 acquisition after $5,571 of discounts and incentives — 2.86%/mo, confirming the structure). Estimates use each model&rsquo;s <em>starting</em> MSRP, so a configured build runs higher. Vans, SUVs and sedans are shown for reference; the pickups and cargo vans are the work-relevant candidates.</p>
+      <p class="small" style="margin:12px 0 0"><b style="color:var(--ink)">&dagger; Monthly lease follows Jetson&rsquo;s FMC lease structure:</b> capitalized cost = (MSRP &minus; negotiated discounts and incentives) &times; (1 &minus; down payment), amortized to a $0 residual over the term at 3-yr Treasury + 4.85% (9.02&ndash;9.16% on the actual sheets; the tool uses 9.1%), plus a 0.045%/mo management fee billed separately (&asymp; $20&ndash;$35). The standard sheet is 10% down over 36 months; the R1T at that structure reproduces its actual $2,206. Rents marked <em>negotiated</em> are real FMC quotes: Kia EV6 Light Long Range $1,134 (on $39,629 after $5,571 of discounts), Kia EV9 Light Long Range $1,357 (on $47,388 after $10,512), Kia EV9 Wind AWD $1,522 (on $53,180 after $10,720). Both EV9 trims were also quoted at 48 months with 20% down ($944 and $1,059); pick a 48-month term in the calculator to use them. Other rows are estimates at each model&rsquo;s <em>starting</em> MSRP with no discounts, so a configured build runs higher. Vans, SUVs and sedans are shown for reference; the pickups and cargo vans are the work-relevant candidates.</p>
       <p class="small" style="margin:8px 0 0"><b style="color:var(--ink)">Notes:</b> data mirrors the Fleet Dashboard &ldquo;EV Models Under Consideration&rdquo; list. Jetson&rsquo;s modeled R1T is the <b>Premium</b> build ($82,885 &rarr; $76,885 cap after the $6K rebate &rarr; <b>$2,206</b>/mo actual), while the dashboard lists the R1T at its $72,000 base. Rows marked <em>added</em> — Ford F-150 Lightning (used), Hyundai Ioniq 6, and Toyota bZ Woodland — are not on the dashboard list; the F-150 is a used-market option modeled as a purchase. The highlighted row is the vehicle modeled above. <b style="color:var(--ink)">Warranty</b> shows the standard bumper-to-bumper term; the smaller line beneath it gives the drive-unit and high-voltage-battery terms (shown together when they match, separately when they differ &mdash; Toyota and Hyundai/Kia cover the battery longer than the drive unit). <b style="color:var(--ink)">Fleet caveat:</b> Hyundai and Kia&rsquo;s 10-yr / 100k powertrain warranty is for original retail owners; commercial-use vehicles get 5 yr / 60k. At fleet mileage, coverage lapses by miles well before years.</p>
     </div>
   </section>
@@ -783,15 +790,29 @@
     lease:"#2bb453", upfit:"#7BC98F", charge:"#CBFF8A", insurance:"#113823",
     telematics:"#6c7365", maintenance:"#ACAA93"
   };
-  var LEASE_COEF = 2206/76885;  // R1T lease-derived: ~2.87% of cap cost (value − rebate) per month
+  // FMC lease structure (R1T, EV6, EV9 sheets): cap cost = (value − discounts) × (1 − down %),
+  // amortized to a $0 residual over the term at 3-yr Treasury + 4.85% (9.02–9.16% on the quotes).
+  var LEASE_APR = 0.091;
   function vehRebate(){ var v = VEHICLES[state.vehicle]; return v ? (v.rebate || 0) : 0; }
-  function estLease(){
-    var v = VEHICLES[state.vehicle];
-    if (v && v.quotedLease && num("price") === v.quotedPrice) return v.quotedLease;   // real FMC quote
-    return Math.round(Math.max(0, num("price") - vehRebate()) * LEASE_COEF);          // derived estimate
+  function capCost(){ return Math.max(0, num("price") - vehRebate()); }
+  function downPctNow(){ return state.acqMode === "purchase" ? 0 : Math.min(100, Math.max(0, num("downPct"))); }
+  function downAmt(){ return capCost() * downPctNow() / 100; }
+  function pmt(principal, apr, months){
+    var r = apr / 12; months = Math.max(1, months);
+    if (r <= 0) return principal / months;
+    var f = Math.pow(1 + r, months); return principal * r * f / (f - 1);
   }
-  // The R1T at its quoted MSRP is a real quote, not an estimate; anything else derived is.
-  function isQuotedLease(){ var v = VEHICLES[state.vehicle]; return !!(v && v.quotedPrice && num("price") === v.quotedPrice); }
+  // A preset's real FMC quote applies while value, term and down % still match the sheet.
+  function quoteNow(){
+    var v = VEHICLES[state.vehicle]; if (!v || !v.quotes || num("price") !== v.quotedPrice) return null;
+    var q = v.quotes[String(Math.round(num("term")))]; if (!q) return null;
+    return Math.round(num("downPct")) === q.down ? q : null;
+  }
+  function estLease(){
+    var q = quoteNow(); if (q) return q.lease;                                        // real FMC quote
+    return Math.round(pmt(capCost() * (1 - Math.min(100, Math.max(0, num("downPct"))) / 100), LEASE_APR, num("term")));   // derived estimate
+  }
+  function isQuotedLease(){ return !!quoteNow(); }
   function updateLeaseTag(){
     var t = $("leaseEstTag"); if (!t) return;
     if (state.acqMode !== "lease" || !state.leaseEstimated){ t.style.display = "none"; return; }
@@ -808,14 +829,15 @@
   // the R1T at its quoted MSRP reproduces its actual $2,206. `type` drives the
   // topper rule (bed topper/cap only on pickups).
   var VEHICLES = {
-    r1t:      { name:"R1T",                    desc:"Rivian R1T Premium with all-season wheels — FMC negotiated lease", type:"pickup", acq:"lease", rebate:6000, quotedPrice:82885, quotedLease:2206, price:82885, residualPct:35, warrYrs:5, warrMi:60000, ptWarrYrs:8, ptWarrMi:175000, repairPct:22, repairCost:3500, ptRepairPct:1.5, ptRepairCost:10000, battWarrYrs:8, battWarrMi:175000, battRepairPct:0.5, battRepairCost:25000, term:36, eff:2.3, range:329 },
+    r1t:      { name:"R1T",                    desc:"Rivian R1T Premium with all-season wheels — FMC negotiated lease", type:"pickup", acq:"lease", rebate:6000, quotedPrice:82885, quotes:{ "36":{lease:2206, down:10} }, price:82885, residualPct:35, warrYrs:5, warrMi:60000, ptWarrYrs:8, ptWarrMi:175000, repairPct:22, repairCost:3500, ptRepairPct:1.5, ptRepairCost:10000, battWarrYrs:8, battWarrMi:175000, battRepairPct:0.5, battRepairCost:25000, term:36, eff:2.3, range:329 },
     silv_ext: { name:"Silverado EV (Ext.)",    desc:"Chevrolet Silverado EV LT — Extended Range",     type:"pickup",    acq:"purchase", rebate:0,    price:71700, residualPct:32, warrYrs:3, warrMi:36000, ptWarrYrs:8, ptWarrMi:100000, repairPct:18, repairCost:3000, ptRepairPct:1.5, ptRepairCost:10000, battWarrYrs:8, battWarrMi:100000, battRepairPct:0.5, battRepairCost:30000, term:60, eff:2.0, range:410 },
     silv_std: { name:"Silverado EV (Std.)",    desc:"Chevrolet Silverado EV LT — Standard Range",     type:"pickup",    acq:"purchase", rebate:0,    price:63500, residualPct:30, warrYrs:3, warrMi:36000, ptWarrYrs:8, ptWarrMi:100000, repairPct:18, repairCost:3000, ptRepairPct:1.5, ptRepairCost:10000, battWarrYrs:8, battWarrMi:100000, battRepairPct:0.5, battRepairCost:26000, term:60, eff:2.0, range:283 },
     f150:     { name:"F-150 Lightning (Used)", desc:"Ford F-150 Lightning (Used) — Pro / XLT",         type:"pickup",    acq:"purchase", rebate:0,    price:50000, residualPct:25, warrYrs:0, warrMi:0, ptWarrYrs:5, ptWarrMi:65000, repairPct:18, repairCost:2800, ptRepairPct:1.5, ptRepairCost:9000, battWarrYrs:5, battWarrMi:65000, battRepairPct:0.5, battRepairCost:20000, term:60, eff:2.0, range:240 },
     ioniq6:   { name:"Ioniq 6",                desc:"Hyundai Ioniq 6 — sedan",                        type:"sedan",     acq:"lease",    rebate:0,    price:37850, residualPct:25, warrYrs:5, warrMi:60000, ptWarrYrs:5, ptWarrMi:60000, repairPct:12, repairCost:2000, ptRepairPct:2.0, ptRepairCost:8000, battWarrYrs:10, battWarrMi:100000, battRepairPct:0.5, battRepairCost:15000, term:36, eff:3.8, range:342 },
     ioniq9:   { name:"Ioniq 9",                desc:"Hyundai Ioniq 9 — three-row SUV",                type:"SUV",       acq:"lease",    rebate:0,    price:56175, residualPct:27, warrYrs:5, warrMi:60000, ptWarrYrs:5, ptWarrMi:60000, repairPct:14, repairCost:2400, ptRepairPct:2.0, ptRepairCost:8500, battWarrYrs:10, battWarrMi:100000, battRepairPct:0.5, battRepairCost:20000, term:36, eff:2.8, range:350 },
-    ev6:      { name:"EV6",                    desc:"2026 Kia EV6 Light Long Range — FMC negotiated lease ($45,200 MSRP − $5,571 discounts/incentives = $39,629 acquisition; 10% down; 9.02%)", type:"crossover", acq:"lease", rebate:5571, quotedPrice:45200, quotedLease:1134, price:45200, residualPct:25, warrYrs:5, warrMi:60000, ptWarrYrs:5, ptWarrMi:60000, repairPct:12, repairCost:2000, ptRepairPct:2.0, ptRepairCost:8000, battWarrYrs:10, battWarrMi:100000, battRepairPct:0.5, battRepairCost:15000, term:36, eff:3.5, range:310 },
-    ev9:      { name:"EV9",                    desc:"Kia EV9 — three-row SUV",                        type:"SUV",       acq:"lease",    rebate:0,    price:56395, residualPct:26, warrYrs:5, warrMi:60000, ptWarrYrs:5, ptWarrMi:60000, repairPct:14, repairCost:2400, ptRepairPct:2.0, ptRepairCost:8500, battWarrYrs:10, battWarrMi:100000, battRepairPct:0.5, battRepairCost:20000, term:36, eff:2.8, range:304 },
+    ev6:      { name:"EV6",                    desc:"2026 Kia EV6 Light Long Range — FMC negotiated lease ($45,200 MSRP − $5,571 discounts/incentives = $39,629 acquisition; 10% down; 9.02%)", type:"crossover", acq:"lease", rebate:5571, quotedPrice:45200, quotes:{ "36":{lease:1134, down:10} }, price:45200, residualPct:25, warrYrs:5, warrMi:60000, ptWarrYrs:5, ptWarrMi:60000, repairPct:12, repairCost:2000, ptRepairPct:2.0, ptRepairCost:8000, battWarrYrs:10, battWarrMi:100000, battRepairPct:0.5, battRepairCost:15000, term:36, eff:3.5, range:310 },
+    ev9:      { name:"EV9 Light LR",           desc:"2026 Kia EV9 Light Long Range RWD — FMC negotiated lease ($57,900 MSRP − $10,512 discounts/incentives = $47,388 acquisition; 36 mo at 10% down → $1,357, or 48 mo at 20% down → $944; 9.02–9.04%)", type:"SUV", acq:"lease", rebate:10512, quotedPrice:57900, quotes:{ "36":{lease:1357, down:10}, "48":{lease:944, down:20} }, price:57900, residualPct:26, warrYrs:5, warrMi:60000, ptWarrYrs:5, ptWarrMi:60000, repairPct:14, repairCost:2400, ptRepairPct:2.0, ptRepairCost:8500, battWarrYrs:10, battWarrMi:100000, battRepairPct:0.5, battRepairCost:20000, term:36, eff:2.8, range:304 },
+    ev9wind:  { name:"EV9 Wind",               desc:"2026 Kia EV9 Wind AWD — FMC negotiated lease ($63,900 MSRP − $10,720 discounts/incentives = $53,180 acquisition; 36 mo at 10% down → $1,522, or 48 mo at 20% down → $1,059; 9.02–9.04%)", type:"SUV", acq:"lease", rebate:10720, quotedPrice:63900, quotes:{ "36":{lease:1522, down:10}, "48":{lease:1059, down:20} }, price:63900, residualPct:26, warrYrs:5, warrMi:60000, ptWarrYrs:5, ptWarrMi:60000, repairPct:14, repairCost:2400, ptRepairPct:2.0, ptRepairCost:8500, battWarrYrs:10, battWarrMi:100000, battRepairPct:0.5, battRepairCost:20000, term:36, eff:2.7, range:280 },
     blazer:   { name:"Blazer EV",              desc:"Chevrolet Blazer EV — SUV",                      type:"SUV",       acq:"lease",    rebate:0,    price:45995, residualPct:27, warrYrs:3, warrMi:36000, ptWarrYrs:8, ptWarrMi:100000, repairPct:16, repairCost:2500, ptRepairPct:1.5, ptRepairCost:8000, battWarrYrs:8, battWarrMi:100000, battRepairPct:0.5, battRepairCost:16000, term:36, eff:2.9, range:283 },
     equinox:  { name:"Equinox EV",             desc:"Chevrolet Equinox EV — crossover",               type:"crossover", acq:"lease",    rebate:0,    price:33900, residualPct:28, warrYrs:3, warrMi:36000, ptWarrYrs:8, ptWarrMi:100000, repairPct:14, repairCost:2200, ptRepairPct:1.5, ptRepairCost:8000, battWarrYrs:8, battWarrMi:100000, battRepairPct:0.5, battRepairCost:16000, term:36, eff:3.4, range:315 },
     bzwood:   { name:"bZ Woodland",            desc:"Toyota bZ Woodland — AWD crossover, 74.7 kWh",   type:"crossover", acq:"lease",    rebate:0,    price:45300, residualPct:30, warrYrs:3, warrMi:36000, ptWarrYrs:5, ptWarrMi:60000, repairPct:10, repairCost:1900, ptRepairPct:1.0, ptRepairCost:7000, battWarrYrs:8, battWarrMi:100000, battRepairPct:0.5, battRepairCost:14000, term:36, eff:3.0, range:281 },
@@ -824,7 +846,7 @@
 
   var DEFAULTS = {
     techs:1, days:21, milesMode:"perday", milesDay:100, milesDirect:2100,
-    reimb:0.76, stipend:0,
+    reimb:0.76, stipend:0, downPct:10,
     installsDay:2, upfitBase:9185, upfitWrap:3500, upfitTopper:6250, upfitBott:8000, upfitLife:84, ins:375, teleSub:40, teleInstall:107, maint:60, kwh:0.16,
     repairPct:22, repairCost:3500, ptWarrYrs:8, ptWarrMi:175000, ptRepairPct:1.5, ptRepairCost:10000, battWarrYrs:8, battWarrMi:175000, battRepairPct:0.5, battRepairCost:25000, extWarrCost:0, extWarrYrs:0, extWarrMi:0, tcoYears:3
   };
@@ -852,9 +874,10 @@
     var term    = Math.max(1, num("term"));
     var acqMode = state.acqMode;
     var resaleVal = num("price") * num("residualPct") / 100;
+    var downM   = acqMode === "purchase" ? 0 : downAmt() / term;   // up-front down payment, spread over the term
     var acq     = acqMode === "purchase"
                     ? Math.max(0, num("price") - resaleVal) / term
-                    : num("lease");
+                    : num("lease") + downM;
     var upfitM  = upfitTotal() / Math.max(1, num("upfitLife"));
     var teleHwM = num("teleInstall") / term;
     var ins     = num("ins");
@@ -880,7 +903,7 @@
       installsMo:installsMo, cpiV: installsMo > 0 ? rTotal/installsMo : null, cpiP: installsMo > 0 ? pTotal/installsMo : null,
       techs:techs, miles:miles, mode:mode,
       pReimb:pReimb, stipend:stipend, pTotal:pTotal,
-      acq:acq, acqMode:acqMode, upfitM:upfitM, teleHwM:teleHwM, ins:ins, teleSub:teleSub, maint:maint,
+      acq:acq, downM:downM, lease:num("lease"), acqMode:acqMode, upfitM:upfitM, teleHwM:teleHwM, ins:ins, teleSub:teleSub, maint:maint,
       chargeM:chargeM, rTotal:rTotal, rFixed:rFixed,
       perMilePersonal: miles>0 ? pTotal/miles : reimb,
       perMileR1T: miles>0 ? rTotal/miles : null,
@@ -930,6 +953,7 @@
     $("detailVHead").textContent = vName;
     var resVal = num("price") * num("residualPct") / 100;
     $("residualCap").innerHTML = "≈ <b style=\'color:var(--ink)\'>" + fmt(resVal) + "</b> resale value, owned outright at term end · edit % to taste";
+    $("downCap").innerHTML = downAmt() > 0 ? "≈ <b style=\'color:var(--ink)\'>" + fmt(downAmt()) + "</b> up front on a " + fmt(capCost()) + " cap cost · " + fmt(downAmt() / Math.max(1, num("term"))) + "/mo over the term" : "no money down";
     $("upfitTotalCap").innerHTML = "Upfitting total <b style=\'color:var(--ink)\'>" + fmt(upfitTotal()) + "</b> · " + fmt(r.upfitM) + "/mo over " + Math.max(1, num("upfitLife")) + " mo";
     var modelKey = ({r1t:"r1t", silv_ext:"silv", silv_std:"silv", f150:"f150"})[state.vehicle] || state.vehicle;
     Array.prototype.forEach.call(document.querySelectorAll("#modelsTable tr[data-veh]"), function(tr){ tr.classList.toggle("sel", tr.dataset.veh === modelKey); });
@@ -966,7 +990,8 @@
     body.innerHTML =
       row("Mileage reimbursement", r.pReimb*k, null) +
       row("Vehicle stipend", r.stipend*k, null, {muted:r.stipend===0}) +
-      row(r.acqMode==="purchase"?"Financing (amortized)":"Lease payment", null, r.acq*k) +
+      row(r.acqMode==="purchase"?"Financing (amortized)":"Lease payment", null, (r.acqMode==="purchase" ? r.acq : r.lease)*k) +
+      (r.acqMode==="purchase" ? "" : row("Down payment (amortized over term)", null, r.downM*k, {muted:r.downM===0})) +
       row("Upfitting (amortized)", null, r.upfitM*k) +
       row("Telematics install (amortized)", null, r.teleHwM*k, {muted:r.teleHwM===0}) +
       row("Insurance", null, r.ins*k) +
@@ -984,7 +1009,8 @@
     var residualAsset = num("price") * num("residualPct") / 100;
     var terminalAsset = residualAsset + transferUpfit;
     var operMo = r.ins + r.teleSub + r.maint + r.chargeM;
-    var acqCash = r.acqMode === "purchase" ? num("price") : num("lease") * termH;
+    var downH = r.acqMode === "purchase" ? 0 : downAmt();
+    var acqCash = r.acqMode === "purchase" ? num("price") : num("lease") * termH + downH;
     var cashV = acqCash + upfitTotal() + num("teleInstall") + operMo * termH;
     var cashP = r.pTotal * termH;
     var netP = cashP, netV = cashV - terminalAsset;
@@ -997,7 +1023,7 @@
     $("hNetV").textContent = fmt(netV);
     var ownLine = r.acqMode === "purchase"
       ? "we own the " + vName + " outright, worth about " + fmt(residualAsset) + " at resale"
-      : "the lease fully pays the " + vName + " off (" + fmt(num("lease")) + " &times; " + termH + " = " + fmt(num("lease") * termH) + "), so we own it outright &mdash; worth about " + fmt(residualAsset) + " at resale";
+      : "the lease fully pays the " + vName + " off (" + (downH > 0 ? fmt(downH) + " down + " : "") + fmt(num("lease")) + " &times; " + termH + " = " + fmt(acqCash) + "), so we own it outright &mdash; worth about " + fmt(residualAsset) + " at resale";
     $("horizonLead").innerHTML = "Two very different places to stand after <b>" + termH + " months</b>: reimbursement is pure expense with nothing owned, while " + ownLine + ", plus reusable racking and cap. Upfitting is counted up front and its reusable portion credited back as equity.";
     function hrow(label, pv, vv, opts){ opts = opts || {}; var c = opts.sum ? ' class="sum"' : (opts.muted ? ' class="muted"' : ''); return '<tr'+c+'><td>'+label+'</td><td>'+pv+'</td><td>'+vv+'</td></tr>'; }
     $("horizonBody").innerHTML =
@@ -1028,7 +1054,7 @@
       var battEnd = Math.max(basicEnd, coverageEnd(num("battWarrYrs"), num("battWarrMi"), milesYr)); // ...and the battery
       var wExp = basicEnd;
       var termM = Math.max(1, num("term"));
-      var acqCashT = r.acqMode === "purchase" ? num("price") : num("lease") * termM;   // full payoff / price
+      var acqCashT = r.acqMode === "purchase" ? num("price") : num("lease") * termM + downAmt();   // down + full payoff / price
       var upfront = upfitTotal() + num("teleInstall") + extCost;
       var operating = operMoN * months;
       var oow = Math.max(0, N - basicEnd), oow2 = Math.max(0, N - ptEnd), oow3 = Math.max(0, N - battEnd);
@@ -1183,6 +1209,7 @@
   function setAcqUI(mode){
     state.acqMode = mode;
     $("leaseField").style.display  = mode === "lease" ? "" : "none";
+    $("downField").style.display   = mode === "lease" ? "" : "none";
     $("priceField").style.display  = "";
     $("residualField").style.display = "";
     Array.prototype.forEach.call($("acqMode").querySelectorAll("button"), function(x){ x.classList.toggle("on", x.dataset.a === mode); });
@@ -1197,6 +1224,7 @@
     $("price").value  = v.price;
     $("residualPct").value = v.residualPct;
     $("term").value   = v.term;
+    $("downPct").value = (v.quotes && v.quotes[String(v.term)]) ? v.quotes[String(v.term)].down : DEFAULTS.downPct;
     $("eff").value    = v.eff;
     $("warrYrs").value = v.warrYrs; $("warrMi").value = v.warrMi;
     $("ptWarrYrs").value = v.ptWarrYrs; $("ptWarrMi").value = v.ptWarrMi;
@@ -1219,7 +1247,9 @@
   $("lease").addEventListener("input", function(){ state.leaseEstimated = false; updateLeaseTag(); });
   $("execEditBtn").addEventListener("click", function(){ try { document.querySelector(".col-inputs").scrollIntoView({behavior:"smooth", block:"start"}); } catch(e){} });
   $("execDetailBtn").addEventListener("click", function(){ try { $("verdict").scrollIntoView({behavior:"smooth", block:"start"}); } catch(e){} });
-  $("price").addEventListener("input", function(){ if (state.leaseEstimated) $("lease").value = estLease(); updateLeaseTag(); });
+  ["price", "term", "downPct"].forEach(function(id){
+    $(id).addEventListener("input", function(){ if (state.leaseEstimated) $("lease").value = estLease(); updateLeaseTag(); });
+  });
   $("vehicle").addEventListener("change", function(){ applyVehicle(this.value); render(); });
   $("acqMode").addEventListener("click", function(e){
     var b = e.target.closest("button"); if (!b) return;
