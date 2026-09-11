@@ -159,7 +159,6 @@
   @media (min-width: 960px) { .grid { grid-template-columns: minmax(0,1.05fr) minmax(0,1fr); align-items: start; } }
 
   .col-results { position: static; }
-  @media (min-width: 960px) { .col-results { position: sticky; top: 18px; } }
 
   /* ---------- cards ---------- */
   .card {
@@ -391,6 +390,12 @@
   input[type="range"] { width:100%; accent-color: var(--accent); margin:8px 0 0; }
   .tco-years { font-family:var(--display); font-weight:900; font-size:36px; line-height:1; flex:none; }
   .tco-svg { width:100%; height:auto; display:block; margin-top:12px; }
+  details.cases > summary { cursor:pointer; list-style:none; }
+  details.cases > summary::-webkit-details-marker { display:none; }
+  details.cases > summary .caret { margin-left:auto; color:var(--accent); font-weight:900; transition:transform .15s; }
+  details.cases[open] > summary .caret { transform:rotate(90deg); }
+  details.cases > summary .hint { margin-left:auto; }
+  details.cases > summary .hint + .caret { margin-left:10px; }
   details.adv { margin-top:16px; border:1px solid var(--line); border-radius:12px; background:var(--surface-2); }
   details.adv summary { cursor:pointer; padding:11px 14px; font-weight:700; font-size:14px; display:flex; justify-content:space-between; gap:10px; align-items:center; list-style:none; }
   details.adv summary::-webkit-details-marker { display:none; }
@@ -447,8 +452,8 @@
     <!-- ============ INPUTS ============ -->
     <div class="col-inputs">
 
-      <section class="card">
-        <div class="card-h"><span class="n">&#9873;</span><h2>Saved Cases</h2><span class="hint" id="casesHint">on this device</span></div>
+      <details class="card cases" id="casesCard">
+        <summary class="card-h"><span class="n">&#9873;</span><h2>Saved Cases</h2><span class="hint" id="casesHint">on this device</span><span class="caret">&#9656;</span></summary>
         <div class="card-b">
           <div class="caserow">
             <div class="input-wrap" style="flex:1"><input id="caseName" type="text" maxlength="80" placeholder="Name this case — e.g. Denver · 10 trucks · R1T" autocomplete="off"></div>
@@ -457,7 +462,7 @@
           <div class="small" id="caseStatus" style="margin-top:8px;min-height:1.2em"></div>
           <div class="caselist" id="caseList"></div>
         </div>
-      </section>
+      </details>
 
       <section class="card">
         <div class="card-h"><span class="n">1</span><h2>Vehicle — Fully-Loaded Cost</h2><span class="hint">per truck / month</span></div>
@@ -580,8 +585,13 @@
               <div class="input-wrap"><span class="aff pre">$</span><input id="kwh" type="number" min="0" step="0.01" value="0.16" class="has-pre has-suf"><span class="aff suf">/kWh</span></div>
             </div>
           </div>
+          <details class="adv" style="margin-top:10px">
+            <summary><span><span class="caret">&#9656;</span>Notes on upfitting &amp; amortization</span><span class="note">how the * items are counted</span></summary>
+            <div class="adv-body">
           <p class="small" style="margin:4px 0 0">Upfitting amortizes over its own service life (racks &amp; bins transfer between trucks); telematics install amortizes over the term / hold. For a purchased truck, the vehicle line is straight-line depreciation of (price − residual) over the hold; financing interest is not modeled. Charging cost scales with mileage. EV incentives are handled within the acquisition cost by state, so they are not modeled separately. The wrap cell is vehicle-specific, so it is excluded from the reusable-equipment equity at term end.</p>
           <p class="small" style="margin:8px 0 0"><b style="color:var(--ink)">*&nbsp;Upfitting breaks out as:</b> base build (shelving, electrical) $9,185 + vehicle wrap $3,500 + bed topper / cap $6,250 + Bott storage modules $8,000 = $26,935 for a pickup. Choosing a non-pickup zeroes the topper automatically; choosing an SUV also cuts the base build and Bott modules by 40% ($5,511 + $4,800) for the lighter interior build. Adjust any cell to taste. These are early, low-volume quotes — per-vehicle upfit cost is expected to come down meaningfully as fleet volume scales.</p>
+            </div>
+          </details>
           <div style="margin-top:14px"><button class="reset" id="resetBtn" type="button">↺ Reset all assumptions</button></div>
         </div>
       </section>
@@ -637,64 +647,7 @@
 
     <!-- ============ RESULTS ============ -->
     <div class="col-results">
-      <div class="verdict" id="verdict">
-        <span class="tag" id="vtag">● Result</span>
-        <div class="big" id="vbig">—</div>
-        <div class="line" id="vline"></div>
-        <div class="foot">
-          <div><div class="k">Per truck / yr</div><div class="val" id="vYear">—</div></div>
-          <div><div class="k">Fleet / yr</div><div class="val" id="vFleet">—</div></div>
-          <div><div class="k">Over term</div><div class="val" id="vTerm">—</div></div>
-        </div>
-      </div>
-
-      <section class="card" style="margin-top:22px">
-        <div class="card-h"><span class="n">$</span><h2>Monthly Cost / Truck</h2></div>
-        <div class="card-b">
-          <div class="cmp">
-            <div class="cmp-row">
-              <div class="top"><span class="name"><span class="d" style="background:var(--personal)"></span>Personal vehicle</span><span class="tot" id="pTot">—</span></div>
-              <div class="bar" id="pBar"></div>
-            </div>
-            <div class="cmp-row">
-              <div class="top"><span class="name"><span class="d" style="background:var(--r1t)"></span><span id="rName">R1T (fully loaded)</span></span><span class="tot" id="rTot">—</span></div>
-              <div class="bar" id="rBar"></div>
-              <div class="legend" id="rLegend"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="card">
-        <div class="card-h"><span class="n">∞</span><h2 id="horizonTitle">The 3-Year Horizon</h2><span class="hint" id="horizonHint">end of term</span></div>
-        <div class="card-b">
-          <p class="section-note" id="horizonLead"></p>
-          <div class="tiles" style="grid-template-columns:1fr 1fr">
-            <div class="tile"><div class="k">Personal — net cost</div><div class="v bad" id="hNetP">—</div><div class="cap">no asset · meter runs on</div></div>
-            <div class="tile"><div class="k" id="hNetVLabel">Vehicle — net cost</div><div class="v good" id="hNetV">—</div><div class="cap">after equity retained</div></div>
-          </div>
-          <div style="overflow-x:auto"><table class="detail" style="margin-top:14px">
-            <thead><tr><th>At end of term</th><th>Personal</th><th id="hVHead">Vehicle</th></tr></thead>
-            <tbody id="horizonBody"></tbody>
-          </table></div>
-          <div class="banner" id="horizonCallout" style="margin:14px 0 0; background:var(--good-bg); border-color:color-mix(in srgb, var(--good) 35%, transparent)"></div>
-        </div>
-      </section>
-
-      <section class="card">
-        <div class="card-h"><span class="n">≡</span><h2>Cost Breakdown</h2><span class="hint" id="fleetHint">per truck / mo</span></div>
-        <div class="card-b" style="overflow-x:auto">
-          <table class="detail" id="detail">
-            <thead><tr><th>Line item</th><th>Personal</th><th id="detailVHead">R1T</th></tr></thead>
-            <tbody id="detailBody"></tbody>
-          </table>
-        </div>
-      </section>
-
-    </div>
-  </div>
-
-  <section class="card" style="margin-top:22px" id="tcoCard">
+  <section class="card" id="tcoCard">
     <div class="card-h"><span class="n">&Sigma;</span><h2>Total Cost of Ownership</h2><span class="hint">per vehicle · by years owned</span></div>
     <div class="card-b">
       <div class="tco-top">
@@ -745,6 +698,66 @@
       <p class="small" style="margin:10px 0 0">Cost per year = (acquisition + upfitting + telematics install + charger + operating + expected repairs + repair downtime + cost of capital &minus; resale value &minus; reusable racking) &divide; years owned. Repair downtime = body-shop visits (incidence per 10k miles, from day one) &times; the brand&rsquo;s typical lead time &times; replacement rental per day; vehicles above the fleet-median lead time are flagged. Cost of capital = the hurdle rate &times; cash tied up (purchase price or lease down payment, plus upfitting, telematics install and charger) &times; years owned &mdash; simple interest on money that is not opening a new market while it sits in a truck. Acquisition is the down payment plus full lease payoff, or the purchase price; resale decays each year from your term residual. Coverage ends at the <em>earlier</em> of its year or mileage limit &mdash; at fleet mileage the mileage cap almost always governs, which is why basic coverage lapses in years 1&ndash;2. Repairs accrue in three tiers: once basic coverage lapses, non-powertrain repairs accrue at incidence &times; cost per 10k miles driven; once the drive-unit warranty lapses, drive-unit failures accrue on top; and once the high-voltage battery warranty lapses, battery-pack failures (rare, but the single most expensive EV repair) accrue as well. Drive-unit and battery terms are tracked separately because they differ by brand. Defaults are vehicle-specific starting estimates from reliability-survey patterns, not fleet data &mdash; replace them with FMC or maintenance records as they come in. <b style="color:var(--ink)">Fleet caveat:</b> Hyundai and Kia&rsquo;s 10-yr / 100k powertrain warranty applies to original retail owners only; commercial-use vehicles get 5 yr / 60k, so for our fleet it adds nothing beyond bumper-to-bumper.</p>
     </div>
   </section>
+    </div>
+  </div>
+
+  <div class="grid" style="margin-top:22px" id="detailGrid">
+    <div>
+      <div class="verdict" id="verdict">
+        <span class="tag" id="vtag">● Result</span>
+        <div class="big" id="vbig">—</div>
+        <div class="line" id="vline"></div>
+        <div class="foot">
+          <div><div class="k">Per truck / yr</div><div class="val" id="vYear">—</div></div>
+          <div><div class="k">Fleet / yr</div><div class="val" id="vFleet">—</div></div>
+          <div><div class="k">Over term</div><div class="val" id="vTerm">—</div></div>
+        </div>
+      </div>
+
+      <section class="card" style="margin-top:22px">
+        <div class="card-h"><span class="n">$</span><h2>Monthly Cost / Truck</h2></div>
+        <div class="card-b">
+          <div class="cmp">
+            <div class="cmp-row">
+              <div class="top"><span class="name"><span class="d" style="background:var(--personal)"></span>Personal vehicle</span><span class="tot" id="pTot">—</span></div>
+              <div class="bar" id="pBar"></div>
+            </div>
+            <div class="cmp-row">
+              <div class="top"><span class="name"><span class="d" style="background:var(--r1t)"></span><span id="rName">R1T (fully loaded)</span></span><span class="tot" id="rTot">—</span></div>
+              <div class="bar" id="rBar"></div>
+              <div class="legend" id="rLegend"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div>
+      <section class="card">
+        <div class="card-h"><span class="n">∞</span><h2 id="horizonTitle">The 3-Year Horizon</h2><span class="hint" id="horizonHint">end of term</span></div>
+        <div class="card-b">
+          <p class="section-note" id="horizonLead"></p>
+          <div class="tiles" style="grid-template-columns:1fr 1fr">
+            <div class="tile"><div class="k">Personal — net cost</div><div class="v bad" id="hNetP">—</div><div class="cap">no asset · meter runs on</div></div>
+            <div class="tile"><div class="k" id="hNetVLabel">Vehicle — net cost</div><div class="v good" id="hNetV">—</div><div class="cap">after equity retained</div></div>
+          </div>
+          <div style="overflow-x:auto"><table class="detail" style="margin-top:14px">
+            <thead><tr><th>At end of term</th><th>Personal</th><th id="hVHead">Vehicle</th></tr></thead>
+            <tbody id="horizonBody"></tbody>
+          </table></div>
+          <div class="banner" id="horizonCallout" style="margin:14px 0 0; background:var(--good-bg); border-color:color-mix(in srgb, var(--good) 35%, transparent)"></div>
+        </div>
+      </section>
+      <section class="card" style="margin-top:22px">
+        <div class="card-h"><span class="n">≡</span><h2>Cost Breakdown</h2><span class="hint" id="fleetHint">per truck / mo</span></div>
+        <div class="card-b" style="overflow-x:auto">
+          <table class="detail" id="detail">
+            <thead><tr><th>Line item</th><th>Personal</th><th id="detailVHead">R1T</th></tr></thead>
+            <tbody id="detailBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
 
   <section class="card" style="margin-top:22px">
     <div class="card-h"><span class="n">⊞</span><h2>EV Models Under Consideration</h2><span class="hint">fleet dashboard · future · for management review</span></div>
