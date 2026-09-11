@@ -375,6 +375,21 @@
   .mini.danger:hover, .mini.danger.arm { border-color:var(--bad); color:var(--bad); }
   .caseitem.locked { border-color: color-mix(in srgb, var(--warn) 45%, transparent); }
   .lockedtag { font-size:11px; color:var(--warn); font-weight:700; margin-left:6px; text-transform:uppercase; letter-spacing:.04em; }
+  /* executive summary */
+  .exec { margin-bottom:22px; border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+  .exec-head { display:flex; justify-content:space-between; gap:18px; flex-wrap:wrap; align-items:flex-start; }
+  .exec-verdict { font-family:var(--display); font-weight:900; text-transform:uppercase; font-size:clamp(26px,4.5vw,40px); line-height:.95; margin:6px 0 6px; text-wrap:balance; }
+  .exec-verdict em { font-style:normal; color:var(--accent); }
+  .exec-actions { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .exec-tiles { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); margin-top:16px; }
+  .exec-bullets { margin:14px 0 0; padding-left:18px; font-size:14px; color:var(--ink-soft); }
+  .exec-bullets li { margin:4px 0; }
+  .exec-bullets b { color:var(--ink); }
+  /* TCO */
+  .tco-top { display:flex; gap:18px; align-items:flex-end; flex-wrap:wrap; }
+  input[type="range"] { width:100%; accent-color: var(--accent); margin:8px 0 0; }
+  .tco-years { font-family:var(--display); font-weight:900; font-size:36px; line-height:1; flex:none; }
+  .tco-svg { width:100%; height:auto; display:block; margin-top:12px; }
   .section-note { font-size: 12.5px; color: var(--ink-mute); margin: -4px 0 12px; }
   a { color: var(--accent); }
 </style>
@@ -397,6 +412,35 @@
       future scenario. Adjust any field and the verdict updates live.
     </div>
   </div>
+
+  <section class="card exec" id="execCard">
+    <div class="card-h"><span class="n">&#9733;</span><h2>Executive Summary</h2><span class="hint" id="execCase">current model</span></div>
+    <div class="card-b">
+      <div class="exec-head">
+        <div style="min-width:0">
+          <div class="eyebrow" id="execEyebrow">&nbsp;</div>
+          <div class="exec-verdict" id="execVerdict">&mdash;</div>
+          <p class="sub" id="execLine" style="margin:0"></p>
+        </div>
+        <div class="exec-actions">
+          <button class="btn" id="execEditBtn" type="button">Edit assumptions &darr;</button>
+          <button class="reset" id="execDetailBtn" type="button">Full detail</button>
+        </div>
+      </div>
+      <div class="tiles exec-tiles">
+        <div class="tile"><div class="k" id="xVehK">Vehicle / mo</div><div class="v" id="xVehMo">&mdash;</div><div class="cap">fully loaded</div></div>
+        <div class="tile"><div class="k">Personal / mo</div><div class="v" id="xPerMo">&mdash;</div><div class="cap">mileage reimbursement</div></div>
+        <div class="tile"><div class="k">Difference / mo</div><div class="v" id="xDelta">&mdash;</div><div class="cap" id="xDeltaCap"></div></div>
+        <div class="tile"><div class="k">Cost per install</div><div class="v" id="xCPI">&mdash;</div><div class="cap" id="xCPIcap"></div></div>
+        <div class="tile"><div class="k">Break-even</div><div class="v" id="xBreak">&mdash;</div><div class="cap">mi / mo</div></div>
+        <div class="tile"><div class="k" id="xNetK">Net cost, term</div><div class="v" id="xNet">&mdash;</div><div class="cap" id="xNetCap"></div></div>
+        <div class="tile"><div class="k">Equity at term end</div><div class="v good" id="xEquity">&mdash;</div><div class="cap" id="xEquityCap"></div></div>
+        <div class="tile"><div class="k">Run-rate after term</div><div class="v" id="xRun">&mdash;</div><div class="cap" id="xRunCap"></div></div>
+        <div class="tile"><div class="k" id="xTCOK">TCO / yr</div><div class="v" id="xTCO">&mdash;</div><div class="cap" id="xTCOcap"></div></div>
+      </div>
+      <ul class="exec-bullets" id="execBullets"></ul>
+    </div>
+  </section>
 
   <div class="grid">
     <!-- ============ INPUTS ============ -->
@@ -425,6 +469,10 @@
             <div class="field">
               <label for="days">Working days / month</label>
               <div class="input-wrap"><input id="days" type="number" min="1" step="1" value="21"></div>
+            </div>
+            <div class="field">
+              <label for="installsDay">Installs / day <span class="note">per truck</span></label>
+              <div class="input-wrap"><input id="installsDay" type="number" min="0" step="0.5" value="2"></div>
             </div>
           </div>
         </div>
@@ -577,6 +625,14 @@
               <div class="input-wrap"><input id="eff" type="number" min="0.5" step="0.1" value="2.3" class="has-suf"><span class="aff suf">mi/kWh</span></div>
             </div>
             <div class="field">
+              <label for="warrYrs">Warranty <span class="note">basic, years</span></label>
+              <div class="input-wrap"><input id="warrYrs" type="number" min="0" step="1" value="5" class="has-suf"><span class="aff suf">yr</span></div>
+            </div>
+            <div class="field">
+              <label for="warrMi">Warranty <span class="note">basic, miles</span></label>
+              <div class="input-wrap"><input id="warrMi" type="number" min="0" step="1000" value="60000" class="has-suf"><span class="aff suf">mi</span></div>
+            </div>
+            <div class="field">
               <label for="kwh">Electricity <span class="note">blended</span></label>
               <div class="input-wrap"><span class="aff pre">$</span><input id="kwh" type="number" min="0" step="0.01" value="0.16" class="has-pre has-suf"><span class="aff suf">/kWh</span></div>
             </div>
@@ -672,38 +728,62 @@
     </div>
   </div>
 
+  <section class="card" style="margin-top:22px" id="tcoCard">
+    <div class="card-h"><span class="n">&Sigma;</span><h2>Total Cost of Ownership</h2><span class="hint">per vehicle · by years owned</span></div>
+    <div class="card-b">
+      <div class="tco-top">
+        <div style="flex:1; min-width:240px">
+          <label for="tcoYears" style="font-weight:600;font-size:14px;display:flex;justify-content:space-between;gap:10px"><span>Years owned</span><span class="note" id="tcoWarrNote"></span></label>
+          <input id="tcoYears" type="range" min="1" max="10" step="1" value="3">
+        </div>
+        <div class="tco-years"><span id="tcoYearsVal">3</span><span style="font-size:14px;color:var(--ink-mute);font-family:var(--sans);font-weight:600"> yrs</span></div>
+      </div>
+      <div class="tiles" style="margin-top:14px">
+        <div class="tile"><div class="k" id="tcoVehK">Vehicle &mdash; cost / yr</div><div class="v" id="tcoVeh">&mdash;</div><div class="cap" id="tcoVehCap"></div></div>
+        <div class="tile"><div class="k">Personal &mdash; cost / yr</div><div class="v" id="tcoPer">&mdash;</div><div class="cap">reimbursement · no equity, never ends</div></div>
+        <div class="tile"><div class="k">Post-warranty repairs</div><div class="v" id="tcoRep">&mdash;</div><div class="cap" id="tcoRepCap"></div></div>
+      </div>
+      <div id="tcoChart"></div>
+      <div class="grid2" style="margin-top:14px">
+        <div class="field"><label for="repairPct">Repair incidence <span class="note">out of warranty, per yr</span></label><div class="input-wrap"><input id="repairPct" type="number" min="0" max="100" step="5" value="35" class="has-suf"><span class="aff suf">%</span></div></div>
+        <div class="field"><label for="repairCost">Avg repair cost <span class="note">per event</span></label><div class="input-wrap"><span class="aff pre">$</span><input id="repairCost" type="number" min="0" step="100" value="2500" class="has-pre"></div></div>
+      </div>
+      <p class="small" style="margin:10px 0 0">Cost per year = (acquisition + upfitting + telematics install + operating + post-warranty repairs &minus; resale value &minus; reusable racking) &divide; years owned. Acquisition is the full lease payoff or purchase price. Resale decays each year from your term residual; the basic warranty ends at the earlier of its year or mileage limit, after which an expected repair allowance (incidence &times; average cost) is added per year. The battery and drive unit carry a separate 8-yr / 100k-mi warranty and are not in the allowance &mdash; adjust incidence and cost as fleet data comes in.</p>
+    </div>
+  </section>
+
   <section class="card" style="margin-top:22px">
     <div class="card-h"><span class="n">⊞</span><h2>EV Models Under Consideration</h2><span class="hint">fleet dashboard · future · for management review</span></div>
     <div class="card-b" style="overflow-x:auto">
       <table class="detail models" id="modelsTable">
-        <thead><tr><th>Model</th><th>Type</th><th>Range</th><th>MSRP</th><th>Est. lease /mo <sup style="color:var(--accent)">&dagger;</sup></th><th>Payload</th><th>Cargo</th><th>Towing</th><th>Eff.</th><th>DC charge</th><th>Plug</th><th>Cancel risk</th></tr></thead>
+        <thead><tr><th>Model</th><th>Type</th><th>Range</th><th>MSRP</th><th>Est. lease /mo <sup style="color:var(--accent)">&dagger;</sup></th><th>Payload</th><th>Cargo</th><th>Towing</th><th>Eff.</th><th>DC charge</th><th>Plug</th><th>Warranty</th><th>Cancel risk</th></tr></thead>
         <tbody>
-              <tr><td>Rivian RCV500</td><td>Van</td><td>~150 mi</td><td>$71,900</td><td>~$2,063</td><td>~2,600 lbs</td><td>500 cu ft</td><td>N/A</td><td>1.8</td><td>~150 kW</td><td>CCS1</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
-              <tr><td>Rivian RCV700</td><td>Van</td><td>~150 mi</td><td>$75,900</td><td>~$2,178</td><td>~2,600 lbs</td><td>700 cu ft</td><td>N/A</td><td>1.6</td><td>~150 kW</td><td>CCS1</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
-              <tr data-veh="r1t"><td>Rivian R1T</td><td>Pickup</td><td>~314 mi</td><td>$72,000</td><td>~$2,066</td><td>~1,760 lbs</td><td>~77 cu ft</td><td>11,000 lbs</td><td>2.4</td><td>~215 kW</td><td>NACS</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
-              <tr><td>Rivian R1S</td><td>SUV</td><td>~303 mi</td><td>$76,000</td><td>~$2,181</td><td>~900 lbs</td><td>104 cu ft</td><td>7,700 lbs</td><td>2.2</td><td>~215 kW</td><td>NACS</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
-              <tr data-veh="ev9"><td>Kia EV9</td><td>SUV</td><td>~304 mi</td><td>$56,395+</td><td>~$1,618</td><td>~1,200 lbs</td><td>82 cu ft</td><td>5,000 lbs</td><td>2.8</td><td>~236 kW</td><td>NACS</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
-              <tr data-veh="ev6"><td>Kia EV6</td><td>Crossover</td><td>~310 mi</td><td>$42,600+</td><td>~$1,222</td><td>~1,000 lbs</td><td>50 cu ft</td><td>2,300 lbs</td><td>3.5</td><td>~236 kW</td><td>NACS</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
-              <tr><td>Hyundai Ioniq 5</td><td>Crossover</td><td>~303 mi</td><td>$44,745+</td><td>~$1,284</td><td>~1,000 lbs</td><td>59 cu ft</td><td>3,500 lbs</td><td>3.5</td><td>~350 kW</td><td>NACS</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
-              <tr data-veh="ioniq9"><td>Hyundai Ioniq 9</td><td>SUV</td><td>~350 mi</td><td>$56,175+</td><td>~$1,612</td><td>~1,300 lbs</td><td>87 cu ft</td><td>5,000 lbs</td><td>2.8</td><td>~350 kW</td><td>NACS</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
-              <tr data-veh="ioniq6"><td>Hyundai Ioniq 6 <span class="mkt">added</span></td><td>Sedan</td><td>~342 mi</td><td>$37,850+</td><td>~$1,086</td><td>~900 lbs</td><td>11 cu ft</td><td>N/A</td><td>3.8</td><td>~350 kW</td><td>NACS</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
-              <tr><td>Slate EV Truck</td><td>Pickup</td><td>~150 mi</td><td>$34,900+</td><td>~$1,001</td><td>~2,500 lbs</td><td>75 cu ft</td><td>5,000 lbs</td><td>2.5</td><td>~150 kW</td><td>CCS1</td><td><span style="color:var(--warn);font-weight:700">Medium</span></td></tr>
-              <tr><td>VW ID.Buzz</td><td>Van</td><td>~234 mi</td><td>$59,995+</td><td>~$1,721</td><td>~1,100 lbs</td><td>117 cu ft</td><td>N/A</td><td>2.6</td><td>~200 kW</td><td>CCS1</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
-              <tr><td>Tesla Model 3</td><td>Sedan</td><td>~341 mi</td><td>$42,490+</td><td>~$1,219</td><td>~900 lbs</td><td>23 cu ft</td><td>N/A</td><td>4.0</td><td>~250 kW</td><td>NACS</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
-              <tr><td>Tesla Model Y</td><td>Crossover</td><td>~310 mi</td><td>$44,990+</td><td>~$1,291</td><td>~1,000 lbs</td><td>76 cu ft</td><td>3,500 lbs</td><td>3.5</td><td>~250 kW</td><td>NACS</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
-              <tr><td>Tesla Cybertruck</td><td>Pickup</td><td>~325 mi</td><td>$79,990+</td><td>~$2,295</td><td>~2,500 lbs</td><td>68 cu ft</td><td>11,000 lbs</td><td>2.2</td><td>~250 kW</td><td>NACS</td><td><span style="color:var(--warn);font-weight:700">Medium</span></td></tr>
-              <tr><td>Ford Mustang Mach-E</td><td>Crossover</td><td>~312 mi</td><td>$42,995+</td><td>~$1,234</td><td>~1,000 lbs</td><td>60 cu ft</td><td>N/A</td><td>3.2</td><td>~150 kW</td><td>NACS</td><td><span style="color:var(--warn);font-weight:700">Medium</span></td></tr>
-              <tr data-veh="bz"><td>Toyota bZ <span class="mkt">formerly bZ4X</span></td><td>Crossover</td><td>~252 mi</td><td>$37,070+</td><td>~$1,064</td><td>~1,000 lbs</td><td>28 cu ft</td><td>N/A</td><td>3.3</td><td>~150 kW</td><td>CCS1</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
-              <tr data-veh="bzwood"><td>Toyota bZ Woodland <span class="mkt">added</span></td><td>Crossover (AWD)</td><td>~281 mi</td><td>$45,300+</td><td>~$1,300</td><td>~1,000 lbs</td><td>74 cu ft</td><td>3,500 lbs</td><td>3.0</td><td>~150 kW</td><td>NACS</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
-              <tr data-veh="silv"><td>Chevrolet Silverado EV</td><td>Pickup</td><td>~400 mi</td><td>$57,095+</td><td>~$1,638</td><td>~1,300 lbs</td><td>5.11 ft bed</td><td>10,000 lbs</td><td>2.0</td><td>~350 kW</td><td>NACS</td><td><span style="color:var(--bad);font-weight:700">High</span></td></tr>
-              <tr data-veh="equinox"><td>Chevrolet Equinox EV</td><td>Crossover</td><td>~315 mi</td><td>$33,900+</td><td>~$973</td><td>~1,000 lbs</td><td>57 cu ft</td><td>N/A</td><td>3.4</td><td>~150 kW</td><td>NACS</td><td><span style="color:var(--bad);font-weight:700">High</span></td></tr>
-              <tr data-veh="blazer"><td>Chevrolet Blazer EV</td><td>SUV</td><td>~283 mi</td><td>$45,995+</td><td>~$1,320</td><td>~1,100 lbs</td><td>59 cu ft</td><td>4,000 lbs</td><td>2.9</td><td>~190 kW</td><td>NACS</td><td><span style="color:var(--bad);font-weight:700">High</span></td></tr>
-              <tr><td>Chevrolet BrightDrop 400</td><td>Van</td><td>~230 mi</td><td>$41,000+</td><td>~$1,176</td><td>~2,200 lbs</td><td>400 cu ft</td><td>N/A</td><td>2.0</td><td>~170 kW</td><td>CCS1</td><td><span style="color:var(--bad);text-decoration:line-through;font-weight:700">Canceled</span></td></tr>
-              <tr data-veh="f150"><td>Ford F-150 Lightning <span class="mkt">added · used</span></td><td>Pickup</td><td>~240 mi</td><td>~$50,000<span class="mkt">used mkt ~$32K–$53K</span></td><td>— <span class="mkt">bought used</span></td><td>~2,000 lbs</td><td>5.5 ft bed</td><td>~10,000 lbs</td><td>2.0</td><td>~150 kW</td><td>CCS1</td><td><span style="color:var(--ink-mute);font-weight:700">n/a</span></td></tr>
+              <tr><td>Rivian RCV500</td><td>Van</td><td>~150 mi</td><td>$71,900</td><td>~$2,063</td><td>~2,600 lbs</td><td>500 cu ft</td><td>N/A</td><td>1.8</td><td>~150 kW</td><td>CCS1</td><td>5 yr / 60k mi</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr><td>Rivian RCV700</td><td>Van</td><td>~150 mi</td><td>$75,900</td><td>~$2,178</td><td>~2,600 lbs</td><td>700 cu ft</td><td>N/A</td><td>1.6</td><td>~150 kW</td><td>CCS1</td><td>5 yr / 60k mi</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr data-veh="r1t"><td>Rivian R1T</td><td>Pickup</td><td>~314 mi</td><td>$72,000</td><td>~$2,066</td><td>~1,760 lbs</td><td>~77 cu ft</td><td>11,000 lbs</td><td>2.4</td><td>~215 kW</td><td>NACS</td><td>5 yr / 60k mi</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr><td>Rivian R1S</td><td>SUV</td><td>~303 mi</td><td>$76,000</td><td>~$2,181</td><td>~900 lbs</td><td>104 cu ft</td><td>7,700 lbs</td><td>2.2</td><td>~215 kW</td><td>NACS</td><td>5 yr / 60k mi</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr data-veh="ev9"><td>Kia EV9</td><td>SUV</td><td>~304 mi</td><td>$56,395+</td><td>~$1,618</td><td>~1,200 lbs</td><td>82 cu ft</td><td>5,000 lbs</td><td>2.8</td><td>~236 kW</td><td>NACS</td><td>5 yr / 60k mi</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr data-veh="ev6"><td>Kia EV6</td><td>Crossover</td><td>~310 mi</td><td>$42,600+</td><td>~$1,222</td><td>~1,000 lbs</td><td>50 cu ft</td><td>2,300 lbs</td><td>3.5</td><td>~236 kW</td><td>NACS</td><td>5 yr / 60k mi</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr><td>Hyundai Ioniq 5</td><td>Crossover</td><td>~303 mi</td><td>$44,745+</td><td>~$1,284</td><td>~1,000 lbs</td><td>59 cu ft</td><td>3,500 lbs</td><td>3.5</td><td>~350 kW</td><td>NACS</td><td>5 yr / 60k mi</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr data-veh="ioniq9"><td>Hyundai Ioniq 9</td><td>SUV</td><td>~350 mi</td><td>$56,175+</td><td>~$1,612</td><td>~1,300 lbs</td><td>87 cu ft</td><td>5,000 lbs</td><td>2.8</td><td>~350 kW</td><td>NACS</td><td>5 yr / 60k mi</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr data-veh="ioniq6"><td>Hyundai Ioniq 6 <span class="mkt">added</span></td><td>Sedan</td><td>~342 mi</td><td>$37,850+</td><td>~$1,086</td><td>~900 lbs</td><td>11 cu ft</td><td>N/A</td><td>3.8</td><td>~350 kW</td><td>NACS</td><td>5 yr / 60k mi</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr><td>Slate EV Truck</td><td>Pickup</td><td>~150 mi</td><td>$34,900+</td><td>~$1,001</td><td>~2,500 lbs</td><td>75 cu ft</td><td>5,000 lbs</td><td>2.5</td><td>~150 kW</td><td>CCS1</td><td>TBD</td><td><span style="color:var(--warn);font-weight:700">Medium</span></td></tr>
+              <tr><td>VW ID.Buzz</td><td>Van</td><td>~234 mi</td><td>$59,995+</td><td>~$1,721</td><td>~1,100 lbs</td><td>117 cu ft</td><td>N/A</td><td>2.6</td><td>~200 kW</td><td>CCS1</td><td>4 yr / 50k mi</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr><td>Tesla Model 3</td><td>Sedan</td><td>~341 mi</td><td>$42,490+</td><td>~$1,219</td><td>~900 lbs</td><td>23 cu ft</td><td>N/A</td><td>4.0</td><td>~250 kW</td><td>NACS</td><td>4 yr / 50k mi</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr><td>Tesla Model Y</td><td>Crossover</td><td>~310 mi</td><td>$44,990+</td><td>~$1,291</td><td>~1,000 lbs</td><td>76 cu ft</td><td>3,500 lbs</td><td>3.5</td><td>~250 kW</td><td>NACS</td><td>4 yr / 50k mi</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr><td>Tesla Cybertruck</td><td>Pickup</td><td>~325 mi</td><td>$79,990+</td><td>~$2,295</td><td>~2,500 lbs</td><td>68 cu ft</td><td>11,000 lbs</td><td>2.2</td><td>~250 kW</td><td>NACS</td><td>4 yr / 50k mi</td><td><span style="color:var(--warn);font-weight:700">Medium</span></td></tr>
+              <tr><td>Ford Mustang Mach-E</td><td>Crossover</td><td>~312 mi</td><td>$42,995+</td><td>~$1,234</td><td>~1,000 lbs</td><td>60 cu ft</td><td>N/A</td><td>3.2</td><td>~150 kW</td><td>NACS</td><td>3 yr / 36k mi</td><td><span style="color:var(--warn);font-weight:700">Medium</span></td></tr>
+              <tr data-veh="bz"><td>Toyota bZ <span class="mkt">formerly bZ4X</span></td><td>Crossover</td><td>~252 mi</td><td>$37,070+</td><td>~$1,064</td><td>~1,000 lbs</td><td>28 cu ft</td><td>N/A</td><td>3.3</td><td>~150 kW</td><td>CCS1</td><td>3 yr / 36k mi</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr data-veh="bzwood"><td>Toyota bZ Woodland <span class="mkt">added</span></td><td>Crossover (AWD)</td><td>~281 mi</td><td>$45,300+</td><td>~$1,300</td><td>~1,000 lbs</td><td>74 cu ft</td><td>3,500 lbs</td><td>3.0</td><td>~150 kW</td><td>NACS</td><td>3 yr / 36k mi</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr data-veh="silv"><td>Chevrolet Silverado EV</td><td>Pickup</td><td>~400 mi</td><td>$57,095+</td><td>~$1,638</td><td>~1,300 lbs</td><td>5.11 ft bed</td><td>10,000 lbs</td><td>2.0</td><td>~350 kW</td><td>NACS</td><td>3 yr / 36k mi</td><td><span style="color:var(--bad);font-weight:700">High</span></td></tr>
+              <tr data-veh="equinox"><td>Chevrolet Equinox EV</td><td>Crossover</td><td>~315 mi</td><td>$33,900+</td><td>~$973</td><td>~1,000 lbs</td><td>57 cu ft</td><td>N/A</td><td>3.4</td><td>~150 kW</td><td>NACS</td><td>3 yr / 36k mi</td><td><span style="color:var(--bad);font-weight:700">High</span></td></tr>
+              <tr data-veh="blazer"><td>Chevrolet Blazer EV</td><td>SUV</td><td>~283 mi</td><td>$45,995+</td><td>~$1,320</td><td>~1,100 lbs</td><td>59 cu ft</td><td>4,000 lbs</td><td>2.9</td><td>~190 kW</td><td>NACS</td><td>3 yr / 36k mi</td><td><span style="color:var(--bad);font-weight:700">High</span></td></tr>
+              <tr><td>Chevrolet BrightDrop 400</td><td>Van</td><td>~230 mi</td><td>$41,000+</td><td>~$1,176</td><td>~2,200 lbs</td><td>400 cu ft</td><td>N/A</td><td>2.0</td><td>~170 kW</td><td>CCS1</td><td>3 yr / 36k mi</td><td><span style="color:var(--bad);text-decoration:line-through;font-weight:700">Canceled</span></td></tr>
+              <tr data-veh="f150"><td>Ford F-150 Lightning <span class="mkt">added · used</span></td><td>Pickup</td><td>~240 mi</td><td>~$50,000<span class="mkt">used mkt ~$32K–$53K</span></td><td>— <span class="mkt">bought used</span></td><td>~2,000 lbs</td><td>5.5 ft bed</td><td>~10,000 lbs</td><td>2.0</td><td>~150 kW</td><td>CCS1</td><td>3 yr / 36k mi <span class="mkt">new; used varies</span></td><td><span style="color:var(--ink-mute);font-weight:700">n/a</span></td></tr>
         </tbody>
       </table>
       <p class="small" style="margin:12px 0 0"><b style="color:var(--ink)">&dagger; Monthly lease reverse-engineered from Jetson&rsquo;s R1T lease structure:</b> capitalized cost = MSRP &minus; manufacturer rebate (no rebates assumed on non-Rivian brands, so those use full MSRP), 10% down, 36-month term, $0 residual (full straight-line depreciation, &asymp; 2.78%/mo), 9.16% implied rate (3-yr Treasury + 4.85%, 8/21/26), plus a 0.045%/mo management fee &mdash; working out to &asymp; 2.87% of cap cost per month, anchored so the R1T reproduces its actual $2,206 quote. Estimates use each model&rsquo;s <em>starting</em> MSRP, so a configured build runs higher. Vans, SUVs and sedans are shown for reference; the pickups and cargo vans are the work-relevant candidates.</p>
-      <p class="small" style="margin:8px 0 0"><b style="color:var(--ink)">Notes:</b> data mirrors the Fleet Dashboard &ldquo;EV Models Under Consideration&rdquo; list. Jetson&rsquo;s modeled R1T is the <b>Premium</b> build ($82,885 &rarr; $76,885 cap after the $6K rebate &rarr; <b>$2,206</b>/mo actual), while the dashboard lists the R1T at its $72,000 base. Rows marked <em>added</em> — Ford F-150 Lightning (used), Hyundai Ioniq 6, and Toyota bZ Woodland — are not on the dashboard list; the F-150 is a used-market option modeled as a purchase. The highlighted row is the vehicle modeled above.</p>
+      <p class="small" style="margin:8px 0 0"><b style="color:var(--ink)">Notes:</b> data mirrors the Fleet Dashboard &ldquo;EV Models Under Consideration&rdquo; list. Jetson&rsquo;s modeled R1T is the <b>Premium</b> build ($82,885 &rarr; $76,885 cap after the $6K rebate &rarr; <b>$2,206</b>/mo actual), while the dashboard lists the R1T at its $72,000 base. Rows marked <em>added</em> — Ford F-150 Lightning (used), Hyundai Ioniq 6, and Toyota bZ Woodland — are not on the dashboard list; the F-150 is a used-market option modeled as a purchase. The highlighted row is the vehicle modeled above. <b style="color:var(--ink)">Warranty</b> shows the standard bumper-to-bumper term; every EV listed also carries a separate battery &amp; drive-unit warranty of at least 8 yr / 100,000 mi.</p>
     </div>
   </section>
 
@@ -733,24 +813,25 @@
   // the R1T at its quoted MSRP reproduces its actual $2,206. `type` drives the
   // topper rule (bed topper/cap only on pickups).
   var VEHICLES = {
-    r1t:      { name:"R1T",                    desc:"Rivian R1T Premium with all-season wheels",     type:"pickup",    acq:"lease",    rebate:6000, quotedPrice:82885, price:82885, residualPct:35, term:36, eff:2.3, range:329 },
-    silv_ext: { name:"Silverado EV (Ext.)",    desc:"Chevrolet Silverado EV LT — Extended Range",     type:"pickup",    acq:"purchase", rebate:0,    price:71700, residualPct:32, term:60, eff:2.0, range:410 },
-    silv_std: { name:"Silverado EV (Std.)",    desc:"Chevrolet Silverado EV LT — Standard Range",     type:"pickup",    acq:"purchase", rebate:0,    price:63500, residualPct:30, term:60, eff:2.0, range:283 },
-    f150:     { name:"F-150 Lightning (Used)", desc:"Ford F-150 Lightning (Used) — Pro / XLT",         type:"pickup",    acq:"purchase", rebate:0,    price:50000, residualPct:25, term:60, eff:2.0, range:240 },
-    ioniq6:   { name:"Ioniq 6",                desc:"Hyundai Ioniq 6 — sedan",                        type:"sedan",     acq:"lease",    rebate:0,    price:37850, residualPct:35, term:36, eff:3.8, range:342 },
-    ioniq9:   { name:"Ioniq 9",                desc:"Hyundai Ioniq 9 — three-row SUV",                type:"SUV",       acq:"lease",    rebate:0,    price:56175, residualPct:35, term:36, eff:2.8, range:350 },
-    ev6:      { name:"EV6",                    desc:"Kia EV6 — crossover",                            type:"crossover", acq:"lease",    rebate:0,    price:42600, residualPct:35, term:36, eff:3.5, range:310 },
-    ev9:      { name:"EV9",                    desc:"Kia EV9 — three-row SUV",                        type:"SUV",       acq:"lease",    rebate:0,    price:56395, residualPct:35, term:36, eff:2.8, range:304 },
-    blazer:   { name:"Blazer EV",              desc:"Chevrolet Blazer EV — SUV",                      type:"SUV",       acq:"lease",    rebate:0,    price:45995, residualPct:35, term:36, eff:2.9, range:283 },
-    equinox:  { name:"Equinox EV",             desc:"Chevrolet Equinox EV — crossover",               type:"crossover", acq:"lease",    rebate:0,    price:33900, residualPct:35, term:36, eff:3.4, range:315 },
-    bzwood:   { name:"bZ Woodland",            desc:"Toyota bZ Woodland — AWD crossover, 74.7 kWh",   type:"crossover", acq:"lease",    rebate:0,    price:45300, residualPct:35, term:36, eff:3.0, range:281 },
-    bz:       { name:"bZ",                     desc:"Toyota bZ (formerly bZ4X) — crossover",          type:"crossover", acq:"lease",    rebate:0,    price:37070, residualPct:35, term:36, eff:3.3, range:252 }
+    r1t:      { name:"R1T",                    desc:"Rivian R1T Premium with all-season wheels",     type:"pickup",    acq:"lease",    rebate:6000, quotedPrice:82885, price:82885, residualPct:35, warrYrs:5, warrMi:60000, term:36, eff:2.3, range:329 },
+    silv_ext: { name:"Silverado EV (Ext.)",    desc:"Chevrolet Silverado EV LT — Extended Range",     type:"pickup",    acq:"purchase", rebate:0,    price:71700, residualPct:32, warrYrs:3, warrMi:36000, term:60, eff:2.0, range:410 },
+    silv_std: { name:"Silverado EV (Std.)",    desc:"Chevrolet Silverado EV LT — Standard Range",     type:"pickup",    acq:"purchase", rebate:0,    price:63500, residualPct:30, warrYrs:3, warrMi:36000, term:60, eff:2.0, range:283 },
+    f150:     { name:"F-150 Lightning (Used)", desc:"Ford F-150 Lightning (Used) — Pro / XLT",         type:"pickup",    acq:"purchase", rebate:0,    price:50000, residualPct:25, warrYrs:0, warrMi:0, term:60, eff:2.0, range:240 },
+    ioniq6:   { name:"Ioniq 6",                desc:"Hyundai Ioniq 6 — sedan",                        type:"sedan",     acq:"lease",    rebate:0,    price:37850, residualPct:35, warrYrs:5, warrMi:60000, term:36, eff:3.8, range:342 },
+    ioniq9:   { name:"Ioniq 9",                desc:"Hyundai Ioniq 9 — three-row SUV",                type:"SUV",       acq:"lease",    rebate:0,    price:56175, residualPct:35, warrYrs:5, warrMi:60000, term:36, eff:2.8, range:350 },
+    ev6:      { name:"EV6",                    desc:"Kia EV6 — crossover",                            type:"crossover", acq:"lease",    rebate:0,    price:42600, residualPct:35, warrYrs:5, warrMi:60000, term:36, eff:3.5, range:310 },
+    ev9:      { name:"EV9",                    desc:"Kia EV9 — three-row SUV",                        type:"SUV",       acq:"lease",    rebate:0,    price:56395, residualPct:35, warrYrs:5, warrMi:60000, term:36, eff:2.8, range:304 },
+    blazer:   { name:"Blazer EV",              desc:"Chevrolet Blazer EV — SUV",                      type:"SUV",       acq:"lease",    rebate:0,    price:45995, residualPct:35, warrYrs:3, warrMi:36000, term:36, eff:2.9, range:283 },
+    equinox:  { name:"Equinox EV",             desc:"Chevrolet Equinox EV — crossover",               type:"crossover", acq:"lease",    rebate:0,    price:33900, residualPct:35, warrYrs:3, warrMi:36000, term:36, eff:3.4, range:315 },
+    bzwood:   { name:"bZ Woodland",            desc:"Toyota bZ Woodland — AWD crossover, 74.7 kWh",   type:"crossover", acq:"lease",    rebate:0,    price:45300, residualPct:35, warrYrs:3, warrMi:36000, term:36, eff:3.0, range:281 },
+    bz:       { name:"bZ",                     desc:"Toyota bZ (formerly bZ4X) — crossover",          type:"crossover", acq:"lease",    rebate:0,    price:37070, residualPct:35, warrYrs:3, warrMi:36000, term:36, eff:3.3, range:252 }
   };
 
   var DEFAULTS = {
     techs:1, days:21, milesMode:"perday", milesDay:100, milesDirect:2100,
     reimb:0.76, stipend:0,
-    upfitBase:9185, upfitWrap:3500, upfitTopper:6250, upfitBott:8000, upfitLife:84, ins:375, teleSub:40, teleInstall:107, maint:60, kwh:0.16
+    installsDay:2, upfitBase:9185, upfitWrap:3500, upfitTopper:6250, upfitBott:8000, upfitLife:84, ins:375, teleSub:40, teleInstall:107, maint:60, kwh:0.16,
+    repairPct:35, repairCost:2500, tcoYears:3
   };
   var state = {};
 
@@ -799,7 +880,9 @@
     var denom = reimb - perMileVar;
     var breakeven = denom > 0 ? (rFixed - stipend) / denom : null;
 
+    var installsMo = Math.max(0, num("installsDay")) * Math.max(0, num("days"));
     return {
+      installsMo:installsMo, cpiV: installsMo > 0 ? rTotal/installsMo : null, cpiP: installsMo > 0 ? pTotal/installsMo : null,
       techs:techs, miles:miles, mode:mode,
       pReimb:pReimb, stipend:stipend, pTotal:pTotal,
       acq:acq, acqMode:acqMode, upfitM:upfitM, teleHwM:teleHwM, ins:ins, teleSub:teleSub, maint:maint,
@@ -946,6 +1029,101 @@
       hrow("Net " + yrs + "-yr cost", fmt(netP), fmt(netV), {sum:true}) +
       hrow("Run-rate, following year", fmt(y4P) + "/mo", fmt(y4V) + "/mo");
     $("horizonCallout").innerHTML = '<span class="ic" style="color:var(--good)">&rarr;</span><div>After the term, reimbursement keeps costing <b>' + fmt(y4P) + '/mo</b> indefinitely with nothing owned. We own the ' + vName + ' outright &mdash; so cost drops to about <b>' + fmt(y4V) + '/mo</b> operating-only (no lease payment), and we can roll <b>' + fmt(terminalAsset) + '</b> of truck + racking/cap equity into the next truck.</div>';
+
+    // ---- Total cost of ownership by years owned ----
+    var operMoT = r.ins + r.teleSub + r.maint + r.chargeM;
+    function tcoAt(N){
+      var months = N * 12, milesYr = r.miles * 12;
+      var wYrs = Math.max(0, num("warrYrs")), wMi = Math.max(0, num("warrMi"));
+      var wExp = wYrs <= 0 ? 0 : Math.min(wYrs, (milesYr > 0 && wMi > 0) ? wMi / milesYr : wYrs);
+      var termM = Math.max(1, num("term"));
+      var acqCashT = r.acqMode === "purchase" ? num("price") : num("lease") * termM;   // full payoff / price
+      var upfront = upfitTotal() + num("teleInstall");
+      var operating = operMoT * months;
+      var oow = Math.max(0, N - wExp);
+      var repairs = oow * (num("repairPct") / 100) * num("repairCost");
+      var retain = Math.pow(Math.max(0.0001, num("residualPct") / 100), 12 / termM);   // per-year retention from term residual
+      var residual = num("price") * Math.pow(retain, N);
+      var life = Math.max(1, num("upfitLife"));
+      var transfer = Math.max(0, upfitTotal() - num("upfitWrap")) * Math.max(0, life - months) / life;
+      var net = acqCashT + upfront + operating + repairs - residual - transfer;
+      return { net:net, perYr:net / N, repairs:repairs, residual:residual, transfer:transfer, wExp:wExp, oow:oow, personalYr:r.pTotal * 12 };
+    }
+    var N = Math.max(1, Math.min(10, Math.round(num("tcoYears")) || 3));
+    var t = tcoAt(N);
+    $("tcoYearsVal").textContent = N;
+    $("tcoVehK").textContent = vName + " — cost / yr";
+    $("tcoVeh").textContent = fmt(t.perYr);
+    $("tcoVeh").className = "v " + (t.perYr <= t.personalYr ? "good" : "bad");
+    $("tcoVehCap").textContent = "net of " + fmt(t.residual) + " resale + " + fmt(t.transfer) + " reusable racking at yr " + N;
+    $("tcoPer").textContent = fmt(t.personalYr);
+    $("tcoRep").textContent = fmt(t.repairs);
+    $("tcoRep").className = "v " + (t.repairs > 0 ? "warn" : "");
+    $("tcoRepCap").textContent = t.oow > 0
+      ? (Math.round(t.oow * 10) / 10) + " yr out of warranty × " + num("repairPct") + "% × " + fmt(num("repairCost"))
+      : "within basic warranty through year " + N;
+    var wY = num("warrYrs");
+    $("tcoWarrNote").textContent = wY <= 0 ? "no remaining warranty assumed"
+      : "basic warranty ends ≈ " + (Math.round(t.wExp * 10) / 10) + " yr" + (t.wExp < wY - 0.05 ? " (mileage cap hit first)" : "");
+    // bar strip: cost/yr for years 1–10, personal as a dashed line, warranty end marked
+    var series = []; for (var n = 1; n <= 10; n++) series.push(tcoAt(n).perYr);
+    var maxV = Math.max(t.personalYr, Math.max.apply(null, series), 1);
+    var W = 600, H = 150, padL = 8, padT = 20, padB = 22, bw = (W - 2 * padL) / 10, plotH = H - padT - padB;
+    function kfmt(v){ return v >= 10000 ? "$" + Math.round(v/1000) + "k" : v >= 1000 ? "$" + (v/1000).toFixed(1) + "k" : fmt(v); }
+    var svg = '<svg class="tco-svg" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Cost per year by years owned">';
+    var yP = padT + plotH - (t.personalYr / maxV) * plotH;
+    svg += '<line x1="' + padL + '" y1="' + yP.toFixed(1) + '" x2="' + (W - padL) + '" y2="' + yP.toFixed(1) + '" style="stroke:var(--personal);stroke-width:1.5;stroke-dasharray:5 4"/>';
+    svg += '<text x="' + (W - padL) + '" y="' + (yP - 4).toFixed(1) + '" text-anchor="end" style="font:600 10px var(--sans);fill:var(--personal)">personal ' + kfmt(t.personalYr) + '/yr</text>';
+    for (var i = 0; i < 10; i++){
+      var v = Math.max(0, series[i]), h = (v / maxV) * plotH, x = padL + i * bw + 6, y = padT + plotH - h, w = bw - 12;
+      var sel = (i + 1) === N;
+      svg += '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + w.toFixed(1) + '" height="' + h.toFixed(1) + '" rx="4" style="fill:var(--r1t);opacity:' + (sel ? 1 : 0.38) + '"/>';
+      svg += '<text x="' + (x + w/2).toFixed(1) + '" y="' + (y - 4).toFixed(1) + '" text-anchor="middle" style="font:' + (sel ? 800 : 600) + ' 10px var(--sans);fill:var(--ink' + (sel ? '' : '-mute') + ')">' + kfmt(v) + '</text>';
+      svg += '<text x="' + (x + w/2).toFixed(1) + '" y="' + (H - 6) + '" text-anchor="middle" style="font:' + (sel ? 800 : 600) + ' 10px var(--sans);fill:var(--ink' + (sel ? '' : '-mute') + ')">' + (i + 1) + ' yr</text>';
+    }
+    if (t.wExp > 0 && t.wExp < 10){
+      var xw = padL + t.wExp * bw;
+      svg += '<line x1="' + xw.toFixed(1) + '" y1="' + padT + '" x2="' + xw.toFixed(1) + '" y2="' + (padT + plotH) + '" style="stroke:var(--warn);stroke-width:1.5;stroke-dasharray:3 3"/>';
+      svg += '<text x="' + (xw + 4).toFixed(1) + '" y="' + (padT + 10) + '" style="font:700 9.5px var(--sans);fill:var(--warn)">warranty ends</text>';
+    }
+    svg += '</svg>';
+    $("tcoChart").innerHTML = svg;
+
+    // ---- Executive summary ----
+    var acqLabel = r.acqMode === "purchase" ? "purchase" : "lease-to-own";
+    $("execEyebrow").textContent = vName + " · " + acqLabel + " · " + fmtN(r.miles) + " mi/mo · " + fmtN(r.installsMo) + " installs/mo";
+    var xv = $("execVerdict");
+    if (Math.abs(r.delta) < 1) xv.innerHTML = "Essentially <em>break-even</em> with reimbursement";
+    else if (r.delta < 0) xv.innerHTML = "<em>" + fmt(perTruck) + "/mo cheaper</em> than reimbursement";
+    else xv.innerHTML = "<em>" + fmt(perTruck) + "/mo more</em> than reimbursement";
+    $("execLine").textContent = "A fully-loaded " + vName + " runs " + fmt(r.rTotal) + " per truck per month against " + fmt(r.pTotal) + " in mileage reimbursement — but the two paths end in very different places.";
+    $("xVehK").textContent = vName + " / mo";
+    $("xVehMo").textContent = fmt(r.rTotal);
+    $("xPerMo").textContent = fmt(r.pTotal);
+    $("xDelta").textContent = (r.delta < 0 ? "−" : "+") + fmt(perTruck);
+    $("xDelta").className = "v " + (r.delta < 0 ? "good" : "bad");
+    $("xDeltaCap").textContent = fmt(perTruck * 12) + " / yr per truck";
+    $("xCPI").textContent = r.cpiV === null ? "—" : fmt(r.cpiV);
+    $("xCPIcap").textContent = r.cpiV === null ? "set installs / day" : "vs " + fmt(r.cpiP) + " on reimbursement";
+    $("xBreak").textContent = r.breakeven === null ? "n/a" : (r.breakeven < 0 ? "0" : fmtN(r.breakeven));
+    $("xNetK").textContent = "Net cost, " + yrs + " yrs";
+    $("xNet").textContent = fmt(netV);
+    $("xNet").className = "v " + (netV <= netP ? "good" : "");
+    $("xNetCap").textContent = "vs " + fmt(netP) + " reimbursement";
+    $("xEquity").textContent = fmt(terminalAsset);
+    $("xEquityCap").textContent = "truck " + fmt(residualAsset) + " + racking " + fmt(transferUpfit);
+    $("xRun").textContent = fmt(y4V) + "/mo";
+    $("xRunCap").textContent = "vs " + fmt(y4P) + "/mo reimbursement, indefinitely";
+    $("xTCOK").textContent = "TCO / yr · " + N + " yrs owned";
+    $("xTCO").textContent = fmt(t.perYr);
+    $("xTCO").className = "v " + (t.perYr <= t.personalYr ? "good" : "");
+    $("xTCOcap").textContent = "vs " + fmt(t.personalYr) + "/yr reimbursement";
+    var bullets = [];
+    bullets.push("<b>Monthly:</b> the " + vName + " costs " + fmt(perTruck) + "/mo " + (r.delta < 0 ? "less" : "more") + " than reimbursing " + fmtN(r.miles) + " mi/mo at " + fmt2(num("reimb")) + "/mi" + (r.cpiV !== null ? " — " + fmt(r.cpiV) + " per install vs " + fmt(r.cpiP) : "") + ".");
+    bullets.push("<b>End of term:</b> reimbursement leaves nothing owned; the " + vName + " leaves " + fmt(terminalAsset) + " of equity (truck " + fmt(residualAsset) + " + reusable racking " + fmt(transferUpfit) + ") and the run-rate drops to " + fmt(y4V) + "/mo.");
+    bullets.push("<b>Ownership horizon:</b> at " + N + " years the " + vName + " runs " + fmt(t.perYr) + "/yr all-in vs " + fmt(t.personalYr) + "/yr reimbursement" + (t.repairs > 0 ? ", including " + fmt(t.repairs) + " of expected post-warranty repairs" : "") + " — longer ownership spreads the upfront cost; watch the " + (wY <= 0 ? "lack of warranty coverage" : "warranty ending at ≈" + (Math.round(t.wExp*10)/10) + " yr") + ".");
+    if (r.breakeven !== null && r.breakeven > 0) bullets.push("<b>Break-even:</b> on monthly cost alone the " + vName + " wins above " + fmtN(r.breakeven) + " mi/mo; the case below that rests on equity, brand control, and the year-4+ run-rate.");
+    $("execBullets").innerHTML = bullets.map(function(b){ return "<li>" + b + "</li>"; }).join("");
   }
 
   function seg(val, max, color){
@@ -987,6 +1165,7 @@
     $("residualPct").value = v.residualPct;
     $("term").value   = v.term;
     $("eff").value    = v.eff;
+    $("warrYrs").value = v.warrYrs; $("warrMi").value = v.warrMi;
     // bed topper / cap only makes sense on a pickup bed
     var isPickup = v.type === "pickup";
     $("upfitTopper").value = isPickup ? DEFAULTS.upfitTopper : 0;
@@ -999,6 +1178,8 @@
     $("spAcq").textContent = v.acq === "purchase" ? "Purchase" : "Lease-to-own";
   }
   $("lease").addEventListener("input", function(){ state.leaseEstimated = false; updateLeaseTag(); });
+  $("execEditBtn").addEventListener("click", function(){ try { document.querySelector(".col-inputs").scrollIntoView({behavior:"smooth", block:"start"}); } catch(e){} });
+  $("execDetailBtn").addEventListener("click", function(){ try { $("verdict").scrollIntoView({behavior:"smooth", block:"start"}); } catch(e){} });
   $("price").addEventListener("input", function(){ if (state.leaseEstimated) $("lease").value = estLease(); updateLeaseTag(); });
   $("vehicle").addEventListener("change", function(){ applyVehicle(this.value); render(); });
   $("acqMode").addEventListener("click", function(e){
@@ -1034,6 +1215,7 @@
       if ($(key)) $(key).value = DEFAULTS[key];
     });
     applyVehicle("r1t");
+    $("execCase").textContent = "current model";
     state.milesMode = "perday";
     Array.prototype.forEach.call($("milesMode").querySelectorAll("button"), function(x){ x.classList.toggle("on", x.dataset.m==="perday"); });
     $("directWrap").style.display = "none";
@@ -1042,7 +1224,7 @@
 
   // ---- Saved cases: shared via the db capability when this view grants it,
   //      otherwise kept on this device in localStorage ----
-  var INPUT_SEL = '.col-inputs input[id], .col-inputs select[id]';
+  var INPUT_SEL = '.col-inputs input[id], .col-inputs select[id], #tcoCard input[id]';
   var LS_KEY = "r1t-fleet-cases-v1";
   var caseDb = null;
 
@@ -1083,6 +1265,8 @@
     var fh = $("fleetHint"); fh.dataset.fleet = st.fleet ? "1" : "0"; fh.textContent = st.fleet ? "whole fleet / mo" : "per truck / mo";
     $("caseName").value = c.name || "";
     render();
+    $("execCase").textContent = c.name ? "case: " + c.name : "current model";
+    try { $("execCard").scrollIntoView({behavior:"smooth", block:"start"}); } catch(e){}
   }
   function lsLoad(){ try { return JSON.parse(localStorage.getItem(LS_KEY) || "{}") || {}; } catch(e){ return {}; } }
   function lsSave(all){ try { localStorage.setItem(LS_KEY, JSON.stringify(all)); } catch(e){} }
