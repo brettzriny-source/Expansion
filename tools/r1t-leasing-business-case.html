@@ -516,7 +516,7 @@
               <div class="input-wrap"><input id="term" type="number" min="1" step="1" value="36" class="has-suf"><span class="aff suf">mo</span></div>
             </div>
             <div class="field" id="downField">
-              <label for="downPct">Cash down at signing <span class="note">% of cap cost · $0 — covered by the earlier fleet deposit</span></label>
+              <label for="downPct">Cash down at signing <span class="note">place holder</span></label>
               <div class="input-wrap"><input id="downPct" type="number" min="0" max="100" step="1" value="0" class="has-suf"><span class="aff suf">%</span></div>
               <div class="fieldcap" id="downCap"></div>
             </div>
@@ -777,7 +777,7 @@
               <tr data-veh="f150"><td>Ford F-150 Lightning <span class="mkt">added · used</span></td><td>Pickup</td><td>~240 mi</td><td>~$50,000<span class="mkt">used mkt ~$32K–$53K</span></td><td>— <span class="mkt">bought used</span></td><td>~2,000 lbs</td><td>5.5 ft bed</td><td>~10,000 lbs</td><td>2.0</td><td>~150 kW</td><td>CCS1</td><td>3 yr / 36k mi <span class="mkt">EV components / battery 8 yr / 100k</span><span class="mkt">EV components / battery 8 yr / 100k</span></td><td>Any dealer / indie<span class="mkt">broad network · ~1–3 wk</span></td><td><span style="color:var(--ink-mute);font-weight:700">n/a</span></td></tr>
         </tbody>
       </table>
-      <p class="small" style="margin:12px 0 0"><b style="color:var(--ink)">&dagger; Monthly lease follows Jetson&rsquo;s FMC lease structure:</b> capitalized cost = (MSRP &minus; negotiated discounts and incentives) &times; (1 &minus; down payment), amortized to a $0 residual over the term at 3-yr Treasury + 4.85% (9.02&ndash;9.16% on the actual sheets; the tool uses 9.1%), plus a 0.045%/mo management fee billed separately (&asymp; $20&ndash;$35). The standard sheet is 10% down over 36 months (20% at 48); Jetson funds that down payment from an earlier fleet deposit, so no cash changes hands per vehicle at signing. The R1T at the standard structure reproduces its actual $2,206. Rents marked <em>negotiated</em> are real FMC quotes: Kia EV6 Light Long Range $1,134 (on $39,629 after $5,571 of discounts), Kia EV9 Light Long Range $1,357 (on $47,388 after $10,512), Kia EV9 Wind AWD $1,522 (on $53,180 after $10,720). Both EV9 trims were also quoted at 48 months with 20% down ($944 and $1,059); pick a 48-month term in the calculator to use them. Other rows are estimates at each model&rsquo;s <em>starting</em> MSRP with no discounts, so a configured build runs higher. Vans, SUVs and sedans are shown for reference; the pickups and cargo vans are the work-relevant candidates.</p>
+      <p class="small" style="margin:12px 0 0"><b style="color:var(--ink)">&dagger; Monthly lease follows Jetson&rsquo;s FMC lease structure:</b> capitalized cost = (MSRP &minus; negotiated discounts and incentives) &times; (1 &minus; down payment), amortized to a $0 residual over the term at 3-yr Treasury + 4.85% (9.02&ndash;9.16% on the actual sheets; the tool uses 9.1%), plus a 0.045%/mo management fee billed separately (&asymp; $20&ndash;$35). The standard sheet is 10% down over 36 months (20% at 48); cash down at signing: place holder. The R1T at the standard structure reproduces its actual $2,206. Rents marked <em>negotiated</em> are real FMC quotes: Kia EV6 Light Long Range $1,134 (on $39,629 after $5,571 of discounts), Kia EV9 Light Long Range $1,357 (on $47,388 after $10,512), Kia EV9 Wind AWD $1,522 (on $53,180 after $10,720). Both EV9 trims were also quoted at 48 months with 20% down ($944 and $1,059); pick a 48-month term in the calculator to use them. Other rows are estimates at each model&rsquo;s <em>starting</em> MSRP with no discounts, so a configured build runs higher. Vans, SUVs and sedans are shown for reference; the pickups and cargo vans are the work-relevant candidates.</p>
       <p class="small" style="margin:8px 0 0"><b style="color:var(--ink)">Notes:</b> data mirrors the Fleet Dashboard &ldquo;EV Models Under Consideration&rdquo; list. Jetson&rsquo;s modeled R1T is the <b>Premium</b> build ($82,885 &rarr; $76,885 cap after the $6K rebate &rarr; <b>$2,206</b>/mo actual), while the dashboard lists the R1T at its $72,000 base. Rows marked <em>added</em> — Ford F-150 Lightning (used), Hyundai Ioniq 6, and Toyota bZ Woodland — are not on the dashboard list; the F-150 is a used-market option modeled as a purchase. The highlighted row is the vehicle modeled above. <b style="color:var(--ink)">Warranty</b> shows the standard bumper-to-bumper term; the smaller line beneath it gives the drive-unit and high-voltage-battery terms (shown together when they match, separately when they differ &mdash; Toyota and Hyundai/Kia cover the battery longer than the drive unit). <b style="color:var(--ink)">Fleet caveat:</b> Hyundai and Kia&rsquo;s 10-yr / 100k powertrain warranty is for original retail owners; commercial-use vehicles get 5 yr / 60k. At fleet mileage, coverage lapses by miles well before years.</p>
     </div>
   </section>
@@ -824,8 +824,7 @@
     var f = Math.pow(1 + r, months); return principal * r * f / (f - 1);
   }
   // The FMC structure carries a down payment (10% at 36 mo, 20% at 48 mo) that sets the rent.
-  // Jetson funds it from an earlier fleet deposit, so it is not cash at signing per vehicle:
-  // the structural down drives the lease derivation; "Cash down at signing" drives cash flow.
+  // The structural down drives the lease derivation; "Cash down at signing" (place holder) drives cash flow.
   var STRUCT_DOWN = { "36":10, "48":20 };
   function structDown(){
     var v = VEHICLES[state.vehicle], t = String(Math.round(num("term")));
@@ -994,7 +993,7 @@
     $("detailVHead").textContent = vName;
     var resVal = num("price") * num("residualPct") / 100;
     $("residualCap").innerHTML = "≈ <b style=\'color:var(--ink)\'>" + fmt(resVal) + "</b> resale value, owned outright at term end · edit % to taste";
-    $("downCap").innerHTML = downAmt() > 0 ? "≈ <b style=\'color:var(--ink)\'>" + fmt(downAmt()) + "</b> at signing on a " + fmt(capCost()) + " cap cost · " + fmt(downAmt() / Math.max(1, num("term"))) + "/mo over the term" : "no cash at signing — the structure's " + structDown() + "% down (" + fmt(capCost() * structDown() / 100) + ") is drawn from Jetson's earlier fleet deposit";
+    $("downCap").innerHTML = downAmt() > 0 ? "≈ <b style=\'color:var(--ink)\'>" + fmt(downAmt()) + "</b> at signing on a " + fmt(capCost()) + " cap cost · " + fmt(downAmt() / Math.max(1, num("term"))) + "/mo over the term" : "place holder";
     $("chargerCap").innerHTML = "cash up front, per truck — <b>not financeable</b>; counted in the horizon and TCO, not the monthly run-rate" + (state.chargerMode === "home" ? " · stays with the tech's home if they leave" : " · shared-site hardware, stays with Jetson");
     $("upfitTotalCap").innerHTML = "Upfitting total <b style=\'color:var(--ink)\'>" + fmt(upfitTotal()) + "</b> · " + fmt(r.upfitM) + "/mo over " + Math.max(1, num("upfitLife")) + " mo";
     var modelKey = ({r1t:"r1t", silv_ext:"silv", silv_std:"silv", f150:"f150"})[state.vehicle] || state.vehicle;
@@ -1137,7 +1136,7 @@
     $("tcoDown").textContent = fmt(t.downtime);
     $("tcoDown").className = "v " + (slow ? "bad" : "");
     $("tcoCap").textContent = fmt(t.capital);
-    $("tcoCapCap").textContent = num("capRate") + "%/yr on " + fmt(upfrontCash()) + " tied up" + (r.acqMode === "purchase" ? " (purchase price + setup)" : (downAmt() > 0 ? " (cash down + setup)" : " (setup only — no cash down)")) + " for " + N + " yrs";
+    $("tcoCapCap").textContent = num("capRate") + "%/yr on " + fmt(upfrontCash()) + " tied up" + (r.acqMode === "purchase" ? " (purchase price + setup)" : (downAmt() > 0 ? " (cash down + setup)" : " (setup · place holder)")) + " for " + N + " yrs";
     $("capCap").innerHTML = "≈ <b style=\'color:var(--ink)\'>" + fmt(upfrontCash() * capRate()) + "/yr</b> foregone on " + fmt(upfrontCash()) + " of up-front cash" + (r.acqMode === "purchase" ? " — buying outright ties up the whole price" : " — leasing keeps the truck itself off the balance sheet");
     var oos10k = (Math.max(0, num("bodyPct")) / 100) * wk * 7;   // expected days out of service per 10k miles driven
     $("tcoDownCap").innerHTML = (slow ? '<b style="color:var(--bad)">&#9888; above fleet median</b> · ' : '') + r1(t.visits) + " body-shop visits × " + wk + " wk × " + fmt(num("rentalDay")) + "/day" + (slow ? " · median " + medWk + " wk" : "") + " · <b>≈ " + r1(oos10k) + " days out of service per 10k mi</b>";
@@ -1240,7 +1239,7 @@
     $("xTCOcap").textContent = "vs " + fmt(t.personalYr) + "/yr reimbursement";
     var bullets = [];
     bullets.push("<b>All-in at " + N + " years:</b> the " + vName + " costs " + fmt(perTruckN) + "/mo " + (dMo < 0 ? "less" : "more") + " than reimbursing " + fmtN(r.miles) + " mi/mo at " + fmt2(num("reimb")) + "/mi" + (cpiVN !== null ? " — " + fmt(cpiVN) + " per install vs " + fmt(r.cpiP) : "") + (t.repairs > 0 ? ", including " + fmt(t.repairs) + " of expected repairs" : "") + ".");
-    bullets.push("<b>Cash tied up:</b> " + (r.acqMode === "purchase" ? "buying outright puts " : (downAmt() > 0 ? "leasing puts only the down payment and setup — " : "leasing puts only setup cash — no money down, the deposit covers it — ")) + fmt(upfrontCash()) + " out the door on day one; at a " + num("capRate") + "% hurdle rate that is " + fmt(t.capital) + " of foregone return over " + N + " years" + (r.acqMode === "purchase" ? " — the lease-to-own route would tie up " + fmt(capCost() * Math.min(100, Math.max(0, num("downPct"))) / 100 + upfitTotal() + num("teleInstall") + Math.max(0, num("chargerCost"))) + " instead." : "."));
+    bullets.push("<b>Cash tied up:</b> " + (r.acqMode === "purchase" ? "buying outright puts " : (downAmt() > 0 ? "leasing puts only the down payment and setup — " : "leasing puts only setup cash (place holder) — ")) + fmt(upfrontCash()) + " out the door on day one; at a " + num("capRate") + "% hurdle rate that is " + fmt(t.capital) + " of foregone return over " + N + " years" + (r.acqMode === "purchase" ? " — the lease-to-own route would tie up " + fmt(capCost() * Math.min(100, Math.max(0, num("downPct"))) / 100 + upfitTotal() + num("teleInstall") + Math.max(0, num("chargerCost"))) + " instead." : "."));
     bullets.push("<b>What you hold at year " + N + ":</b> reimbursement leaves nothing owned; the " + vName + " leaves " + fmt(equityN) + " of equity (truck " + fmt(t.residual) + " + reusable racking " + fmt(t.transfer) + "), and once paid off the run-rate drops to " + fmt(y4V) + "/mo.");
     bullets.push("<b>Coverage at this mileage:</b> basic warranty " + (t.wExp <= 0 ? "is already gone" : "ends ≈" + r1(t.wExp) + " yr") + ", powertrain ≈" + r1(t.ptExp) + " yr" + (Math.abs(t.ptExp - t.battExp) < 0.05 ? " (battery on the same term)" : ", battery ≈" + r1(t.battExp) + " yr") + " — longer ownership spreads the upfront cost but adds out-of-warranty exposure." + (t.downtime > 0 ? " Repair downtime adds " + fmt(t.downtime / N) + "/yr in rental (≈" + r1(oos10k) + " days off the road per 10k mi)" + (slow ? " — <b>flag:</b> " + vName + " body work runs ≈" + wk + " wk against a " + medWk + "-wk fleet median (" + (vp.netNote || "limited repair network") + ")" : "") + "." : ""));
     if (beN !== null && beN > 0) bullets.push("<b>Break-even:</b> at " + N + " years owned the " + vName + " is cheaper than reimbursement above " + fmtN(beN) + " mi/mo; below that the case rests on equity, brand control, and the paid-off run-rate.");
@@ -1288,7 +1287,7 @@
     $("price").value  = v.price;
     $("residualPct").value = v.residualPct;
     $("term").value   = v.term;
-    $("downPct").value = DEFAULTS.downPct;   // structural down is funded from the fleet deposit — no cash at signing
+    $("downPct").value = DEFAULTS.downPct;   // cash down at signing: place holder
     $("eff").value    = v.eff;
     $("warrYrs").value = v.warrYrs; $("warrMi").value = v.warrMi;
     $("ptWarrYrs").value = v.ptWarrYrs; $("ptWarrMi").value = v.ptWarrMi;
