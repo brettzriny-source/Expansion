@@ -391,6 +391,15 @@
   input[type="range"] { width:100%; accent-color: var(--accent); margin:8px 0 0; }
   .tco-years { font-family:var(--display); font-weight:900; font-size:36px; line-height:1; flex:none; }
   .tco-svg { width:100%; height:auto; display:block; margin-top:12px; }
+  details.adv { margin-top:16px; border:1px solid var(--line); border-radius:12px; background:var(--surface-2); }
+  details.adv summary { cursor:pointer; padding:11px 14px; font-weight:700; font-size:14px; display:flex; justify-content:space-between; gap:10px; align-items:center; list-style:none; }
+  details.adv summary::-webkit-details-marker { display:none; }
+  details.adv .caret { display:inline-block; color:var(--accent); margin-right:8px; transition:transform .15s; }
+  details.adv[open] .caret { transform:rotate(90deg); }
+  details.adv .adv-body { padding:4px 14px 14px; }
+  details.adv .adv-body .grid2 .field { margin-bottom:12px; }
+  input[readonly] { background:var(--surface-3); color:var(--ink-mute); cursor:not-allowed; }
+  input[readonly]:focus { box-shadow:none; border-color:var(--line-strong); background:var(--surface-3); }
   .section-note { font-size: 12.5px; color: var(--ink-mute); margin: -4px 0 12px; }
   a { color: var(--accent); }
 </style>
@@ -626,14 +635,6 @@
               <div class="input-wrap"><input id="eff" type="number" min="0.5" step="0.1" value="2.3" class="has-suf"><span class="aff suf">mi/kWh</span></div>
             </div>
             <div class="field">
-              <label for="warrYrs">Warranty <span class="note">basic, years</span></label>
-              <div class="input-wrap"><input id="warrYrs" type="number" min="0" step="1" value="5" class="has-suf"><span class="aff suf">yr</span></div>
-            </div>
-            <div class="field">
-              <label for="warrMi">Warranty <span class="note">basic, miles</span></label>
-              <div class="input-wrap"><input id="warrMi" type="number" min="0" step="1000" value="60000" class="has-suf"><span class="aff suf">mi</span></div>
-            </div>
-            <div class="field">
               <label for="kwh">Electricity <span class="note">blended</span></label>
               <div class="input-wrap"><span class="aff pre">$</span><input id="kwh" type="number" min="0" step="0.01" value="0.16" class="has-pre has-suf"><span class="aff suf">/kWh</span></div>
             </div>
@@ -676,17 +677,6 @@
       </section>
 
       <section class="card">
-        <div class="card-h"><span class="n">◇</span><h2>Key Metrics</h2></div>
-        <div class="card-b">
-          <div class="tiles">
-            <div class="tile"><div class="k">Cost / mile — Personal</div><div class="v" id="mPersonal">—</div></div>
-            <div class="tile"><div class="k" id="mVLabel">Cost / mile — R1T</div><div class="v" id="mR1T">—</div></div>
-            <div class="tile"><div class="k">Break-even mileage</div><div class="v" id="mBreak">—</div><div class="cap" id="mBreakCap">R1T wins above this</div></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="card">
         <div class="card-h"><span class="n">∞</span><h2 id="horizonTitle">The 3-Year Horizon</h2><span class="hint" id="horizonHint">end of term</span></div>
         <div class="card-b">
           <p class="section-note" id="horizonLead"></p>
@@ -712,20 +702,6 @@
         </div>
       </section>
 
-      <section class="card">
-        <div class="card-h"><span class="n">★</span><h2>Beyond the Numbers</h2></div>
-        <div class="card-b">
-          <div class="intang">
-            <div class="it"><span class="m">+</span><span><b>Brand presence.</b> Wrapped trucks are rolling billboards at every job site and driveway.</span></div>
-            <div class="it"><span class="m">+</span><span><b>Brand control at the curb.</b> No risk of a tech pulling up in a dirty, damaged, lifted/modified, or sticker-covered personal vehicle — every truck presents one clean, professional image in the customer's driveway.</span></div>
-            <div class="it"><span class="m">+</span><span><b>Recruiting &amp; retention.</b> A company truck is a real perk; techs stop putting wear on their own cars.</span></div>
-            <div class="it"><span class="m">+</span><span><b>Tool security &amp; readiness.</b> Standardized, locked upfit means every truck is job-ready.</span></div>
-            <div class="it"><span class="m">+</span><span><b>Telematics &amp; control.</b> Routing, safety, and utilization data you can't get from personal cars.</span></div>
-            <div class="it"><span class="m">−</span><span><b>Fleet overhead.</b> Titling, registration, downtime, and admin the personal-vehicle model avoids.</span></div>
-            <div class="it"><span class="m">−</span><span><b>Utilization risk.</b> Fixed vehicle cost is largely sunk whether or not the truck is driven.</span></div>
-          </div>
-        </div>
-      </section>
     </div>
   </div>
 
@@ -735,7 +711,7 @@
       <div class="tco-top">
         <div style="flex:1; min-width:240px">
           <label for="tcoYears" style="font-weight:600;font-size:14px;display:flex;justify-content:space-between;gap:10px"><span>Years owned</span><span class="note" id="tcoWarrNote"></span></label>
-          <input id="tcoYears" type="range" min="1" max="10" step="1" value="3">
+          <input id="tcoYears" type="range" min="1" max="10" step="0.5" value="3">
         </div>
         <div class="tco-years"><span id="tcoYearsVal">3</span><span style="font-size:14px;color:var(--ink-mute);font-family:var(--sans);font-weight:600"> yrs</span></div>
       </div>
@@ -745,16 +721,21 @@
         <div class="tile"><div class="k">Post-warranty repairs</div><div class="v" id="tcoRep">&mdash;</div><div class="cap" id="tcoRepCap"></div></div>
       </div>
       <div id="tcoChart"></div>
-      <p class="section-note" style="margin:16px 0 8px"><b style="color:var(--ink)">Warranty &amp; repair profile</b> — populated per vehicle, editable. Incidence is per 10,000 miles driven <em>out of coverage</em>, so exposure scales with how hard the fleet drives. Basic (bumper-to-bumper) warranty is set on the vehicle card above.</p>
+      <details class="adv" id="warrDetails">
+        <summary><span><span class="caret">&#9656;</span>Warranty &amp; repair assumptions</span><span class="note" id="warrSummary">per vehicle · expand to edit</span></summary>
+        <div class="adv-body">
+      <p class="section-note" style="margin:8px 0 8px">Populated per vehicle. Warranty <em>mileage</em> limits are fixed manufacturer terms; years, incidence and costs are editable. Incidence is per 10,000 miles driven <em>out of coverage</em>, so exposure scales with how hard the fleet drives.</p>
       <div class="grid2">
+        <div class="field"><label for="warrYrs">Basic (bumper-to-bumper) warranty <span class="note">years</span></label><div class="input-wrap"><input id="warrYrs" type="number" min="0" step="1" value="5" class="has-suf"><span class="aff suf">yr</span></div></div>
+        <div class="field"><label for="warrMi">Basic (bumper-to-bumper) warranty <span class="note">miles · fixed</span></label><div class="input-wrap"><input id="warrMi" type="number" min="0" step="1000" value="60000" class="has-suf" readonly title="Manufacturer term — fixed"><span class="aff suf">mi</span></div></div>
         <div class="field"><label for="ptWarrYrs">Powertrain (drive unit) warranty <span class="note">years</span></label><div class="input-wrap"><input id="ptWarrYrs" type="number" min="0" step="1" value="8" class="has-suf"><span class="aff suf">yr</span></div></div>
-        <div class="field"><label for="ptWarrMi">Powertrain (drive unit) warranty <span class="note">miles</span></label><div class="input-wrap"><input id="ptWarrMi" type="number" min="0" step="5000" value="175000" class="has-suf"><span class="aff suf">mi</span></div></div>
+        <div class="field"><label for="ptWarrMi">Powertrain (drive unit) warranty <span class="note">miles · fixed</span></label><div class="input-wrap"><input id="ptWarrMi" type="number" min="0" step="5000" value="175000" class="has-suf" readonly title="Manufacturer term — fixed"><span class="aff suf">mi</span></div></div>
         <div class="field"><label for="repairPct">Repairs after basic warranty <span class="note">incidence / 10k mi</span></label><div class="input-wrap"><input id="repairPct" type="number" min="0" max="100" step="1" value="22" class="has-suf"><span class="aff suf">%</span></div></div>
         <div class="field"><label for="repairCost">Avg repair cost <span class="note">non-powertrain event</span></label><div class="input-wrap"><span class="aff pre">$</span><input id="repairCost" type="number" min="0" step="100" value="3500" class="has-pre"></div></div>
         <div class="field"><label for="ptRepairPct">Drive-unit failures <span class="note">incidence / 10k mi, after its warranty</span></label><div class="input-wrap"><input id="ptRepairPct" type="number" min="0" max="100" step="0.5" value="1.5" class="has-suf"><span class="aff suf">%</span></div></div>
         <div class="field"><label for="ptRepairCost">Avg drive-unit repair</label><div class="input-wrap"><span class="aff pre">$</span><input id="ptRepairCost" type="number" min="0" step="500" value="10000" class="has-pre"></div></div>
         <div class="field"><label for="battWarrYrs">High-voltage battery warranty <span class="note">years</span></label><div class="input-wrap"><input id="battWarrYrs" type="number" min="0" step="1" value="8" class="has-suf"><span class="aff suf">yr</span></div></div>
-        <div class="field"><label for="battWarrMi">High-voltage battery warranty <span class="note">miles</span></label><div class="input-wrap"><input id="battWarrMi" type="number" min="0" step="5000" value="175000" class="has-suf"><span class="aff suf">mi</span></div></div>
+        <div class="field"><label for="battWarrMi">High-voltage battery warranty <span class="note">miles · fixed</span></label><div class="input-wrap"><input id="battWarrMi" type="number" min="0" step="5000" value="175000" class="has-suf" readonly title="Manufacturer term — fixed"><span class="aff suf">mi</span></div></div>
         <div class="field"><label for="battRepairPct">Battery-pack failures <span class="note">incidence / 10k mi, after its warranty</span></label><div class="input-wrap"><input id="battRepairPct" type="number" min="0" max="100" step="0.25" value="0.5" class="has-suf"><span class="aff suf">%</span></div></div>
         <div class="field"><label for="battRepairCost">Avg battery-pack repair / replacement</label><div class="input-wrap"><span class="aff pre">$</span><input id="battRepairCost" type="number" min="0" step="1000" value="25000" class="has-pre"></div></div>
       </div>
@@ -764,6 +745,8 @@
         <div class="field"><label for="extWarrYrs">Extends basic coverage to <span class="note">years</span></label><div class="input-wrap"><input id="extWarrYrs" type="number" min="0" step="1" value="0" class="has-suf"><span class="aff suf">yr</span></div></div>
         <div class="field"><label for="extWarrMi">Extends basic coverage to <span class="note">miles</span></label><div class="input-wrap"><input id="extWarrMi" type="number" min="0" step="5000" value="0" class="has-suf"><span class="aff suf">mi</span></div></div>
       </div>
+        </div>
+      </details>
       <p class="small" style="margin:10px 0 0">Cost per year = (acquisition + upfitting + telematics install + extended warranty + operating + expected repairs &minus; resale value &minus; reusable racking) &divide; years owned. Acquisition is the full lease payoff or purchase price; resale decays each year from your term residual. Coverage ends at the <em>earlier</em> of its year or mileage limit &mdash; at fleet mileage the mileage cap almost always governs, which is why basic coverage lapses in years 1&ndash;2. Repairs accrue in three tiers: once basic (or extended) coverage lapses, non-powertrain repairs accrue at incidence &times; cost per 10k miles driven; once the drive-unit warranty lapses, drive-unit failures accrue on top; and once the high-voltage battery warranty lapses, battery-pack failures (rare, but the single most expensive EV repair) accrue as well. Drive-unit and battery terms are tracked separately because they differ by brand. Defaults are vehicle-specific starting estimates from reliability-survey patterns, not fleet data &mdash; replace them with FMC or maintenance records as they come in. <b style="color:var(--ink)">Fleet caveat:</b> Hyundai and Kia&rsquo;s 10-yr / 100k powertrain warranty applies to original retail owners only; commercial-use vehicles get 5 yr / 60k, so for our fleet it adds nothing beyond bumper-to-bumper.</p>
     </div>
   </section>
@@ -800,6 +783,21 @@
       </table>
       <p class="small" style="margin:12px 0 0"><b style="color:var(--ink)">&dagger; Monthly lease reverse-engineered from Jetson&rsquo;s R1T lease structure:</b> capitalized cost = MSRP &minus; manufacturer rebate (no rebates assumed on non-Rivian brands, so those use full MSRP), 10% down, 36-month term, $0 residual (full straight-line depreciation, &asymp; 2.78%/mo), 9.16% implied rate (3-yr Treasury + 4.85%, 8/21/26), plus a 0.045%/mo management fee &mdash; working out to &asymp; 2.87% of cap cost per month, anchored so the R1T reproduces its actual $2,206 quote. The Kia EV6 shows its FMC-negotiated rent ($1,134 on a $39,629 acquisition after $5,571 of discounts and incentives — 2.86%/mo, confirming the structure). Estimates use each model&rsquo;s <em>starting</em> MSRP, so a configured build runs higher. Vans, SUVs and sedans are shown for reference; the pickups and cargo vans are the work-relevant candidates.</p>
       <p class="small" style="margin:8px 0 0"><b style="color:var(--ink)">Notes:</b> data mirrors the Fleet Dashboard &ldquo;EV Models Under Consideration&rdquo; list. Jetson&rsquo;s modeled R1T is the <b>Premium</b> build ($82,885 &rarr; $76,885 cap after the $6K rebate &rarr; <b>$2,206</b>/mo actual), while the dashboard lists the R1T at its $72,000 base. Rows marked <em>added</em> — Ford F-150 Lightning (used), Hyundai Ioniq 6, and Toyota bZ Woodland — are not on the dashboard list; the F-150 is a used-market option modeled as a purchase. The highlighted row is the vehicle modeled above. <b style="color:var(--ink)">Warranty</b> shows the standard bumper-to-bumper term; the smaller line beneath it gives the drive-unit and high-voltage-battery terms (shown together when they match, separately when they differ &mdash; Toyota and Hyundai/Kia cover the battery longer than the drive unit). <b style="color:var(--ink)">Fleet caveat:</b> Hyundai and Kia&rsquo;s 10-yr / 100k powertrain warranty is for original retail owners; commercial-use vehicles get 5 yr / 60k. At fleet mileage, coverage lapses by miles well before years.</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-h"><span class="n">★</span><h2>Beyond the Numbers</h2></div>
+    <div class="card-b">
+      <div class="intang">
+        <div class="it"><span class="m">+</span><span><b>Brand presence.</b> Wrapped trucks are rolling billboards at every job site and driveway.</span></div>
+        <div class="it"><span class="m">+</span><span><b>Brand control at the curb.</b> No risk of a tech pulling up in a dirty, damaged, lifted/modified, or sticker-covered personal vehicle — every truck presents one clean, professional image in the customer's driveway.</span></div>
+        <div class="it"><span class="m">+</span><span><b>Recruiting &amp; retention.</b> A company truck is a real perk; techs stop putting wear on their own cars.</span></div>
+        <div class="it"><span class="m">+</span><span><b>Tool security &amp; readiness.</b> Standardized, locked upfit means every truck is job-ready.</span></div>
+        <div class="it"><span class="m">+</span><span><b>Telematics &amp; control.</b> Routing, safety, and utilization data you can't get from personal cars.</span></div>
+        <div class="it"><span class="m">−</span><span><b>Fleet overhead.</b> Titling, registration, downtime, and admin the personal-vehicle model avoids.</span></div>
+        <div class="it"><span class="m">−</span><span><b>Utilization risk.</b> Fixed vehicle cost is largely sunk whether or not the truck is driven.</span></div>
+      </div>
     </div>
   </section>
 
@@ -959,7 +957,6 @@
 
     // comparison bars
     $("rName").textContent = vName + " (fully loaded)";
-    $("mVLabel").textContent = "Cost / mile — " + vName;
     $("detailVHead").textContent = vName;
     var resVal = num("price") * num("residualPct") / 100;
     $("residualCap").innerHTML = "≈ <b style=\'color:var(--ink)\'>" + fmt(resVal) + "</b> resale value, owned outright at term end · edit % to taste";
@@ -985,22 +982,6 @@
     $("rLegend").innerHTML = rSegs.filter(function(s){return s[1]>0;}).map(function(s){
       return '<span class="li"><span class="d" style="background:'+s[2]+'"></span>'+s[0]+'<span class="amt">'+fmt(s[1])+'</span></span>';
     }).join("");
-
-    // metrics
-    $("mPersonal").textContent = fmt2(r.perMilePersonal);
-    $("mR1T").textContent = r.perMileR1T===null ? "—" : fmt2(r.perMileR1T);
-    var mb = $("mBreak"), cap = $("mBreakCap");
-    if (r.breakeven === null) {
-      mb.textContent = "n/a"; mb.className = "v warn";
-      cap.textContent = "Personal is cheaper per mile at any mileage";
-    } else if (r.breakeven < 0) {
-      mb.textContent = "0 mi"; mb.className = "v good";
-      cap.textContent = vName + " wins at every mileage level";
-    } else {
-      mb.textContent = fmtN(r.breakeven) + " mi"; mb.className = "v";
-      var cur = r.miles;
-      cap.innerHTML = vName + " wins above this — you're at <b style='color:var(--ink)'>"+fmtN(cur)+"</b>";
-    }
 
     // detail table (respects fleet toggle via techs multiplier shown separately)
     var body = $("detailBody");
@@ -1090,7 +1071,7 @@
       var net = acqCashT + upfront + operating + repairs - residual - transfer;
       return { net:net, perYr:net / N, repairs:repairs, rep1:rep1, rep2:rep2, rep3:rep3, residual:residual, transfer:transfer, wExp:wExp, ptExp:ptEnd, battExp:battEnd, oow:oow, oow2:oow2, oow3:oow3, extCost:extCost, personalYr:r.pTotal * 12 };
     }
-    var N = Math.max(1, Math.min(10, Math.round(num("tcoYears")) || 3));
+    var N = Math.max(1, Math.min(10, Math.round((num("tcoYears") || 3) * 2) / 2));   // half-year steps
     var t = tcoAt(N);
     $("tcoYearsVal").textContent = N;
     $("tcoVehK").textContent = vName + " — cost / yr";
@@ -1106,6 +1087,7 @@
     if (t.oow2 > 0) capParts.push(r1(t.oow2) + " yr past drive-unit: " + fmt(t.rep2));
     if (t.oow3 > 0) capParts.push(r1(t.oow3) + " yr past battery: " + fmt(t.rep3));
     $("tcoRepCap").textContent = capParts.length ? capParts.join(" · ") : "fully covered through year " + N;
+    $("warrSummary").textContent = num("warrYrs") + " yr / " + fmtN(num("warrMi")) + " mi basic · drive unit " + num("ptWarrYrs") + " yr / " + fmtN(num("ptWarrMi")) + " · battery " + num("battWarrYrs") + " yr / " + fmtN(num("battWarrMi"));
     var wY = num("warrYrs"), basicYrLimit = Math.max(wY, t.extCost > 0 ? num("extWarrYrs") : 0);
     $("tcoWarrNote").textContent = (t.wExp <= 0 ? "no basic warranty" : "basic ends ≈ " + r1(t.wExp) + " yr" + (basicYrLimit > 0 && t.wExp < basicYrLimit - 0.05 ? " (mileage cap)" : ""))
       + (Math.abs(t.ptExp - t.battExp) < 0.05
@@ -1122,10 +1104,15 @@
     svg += '<text x="' + (W - padL) + '" y="' + (yP - 4).toFixed(1) + '" text-anchor="end" style="font:600 10px var(--sans);fill:var(--personal)">personal ' + kfmt(t.personalYr) + '/yr</text>';
     for (var i = 0; i < 10; i++){
       var v = Math.max(0, series[i]), h = (v / maxV) * plotH, x = padL + i * bw + 6, y = padT + plotH - h, w = bw - 12;
-      var sel = (i + 1) === N;
+      var sel = (i + 1) === Math.round(N);
       svg += '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + w.toFixed(1) + '" height="' + h.toFixed(1) + '" rx="4" style="fill:var(--r1t);opacity:' + (sel ? 1 : 0.38) + '"/>';
       svg += '<text x="' + (x + w/2).toFixed(1) + '" y="' + (y - 4).toFixed(1) + '" text-anchor="middle" style="font:' + (sel ? 800 : 600) + ' 10px var(--sans);fill:var(--ink' + (sel ? '' : '-mute') + ')">' + kfmt(v) + '</text>';
       svg += '<text x="' + (x + w/2).toFixed(1) + '" y="' + (H - 6) + '" text-anchor="middle" style="font:' + (sel ? 800 : 600) + ' 10px var(--sans);fill:var(--ink' + (sel ? '' : '-mute') + ')">' + (i + 1) + ' yr</text>';
+    }
+    if (N % 1 !== 0){
+      var xn = padL + N * bw;
+      svg += '<line x1="' + xn.toFixed(1) + '" y1="' + padT + '" x2="' + xn.toFixed(1) + '" y2="' + (padT + plotH) + '" style="stroke:var(--accent);stroke-width:2"/>';
+      svg += '<text x="' + (xn + 4).toFixed(1) + '" y="' + (padT + plotH - 6) + '" style="font:800 10px var(--sans);fill:var(--accent)">' + N + ' yr · ' + kfmt(t.perYr) + '</text>';
     }
     if (t.wExp > 0 && t.wExp < 10){
       var xw = padL + t.wExp * bw;
