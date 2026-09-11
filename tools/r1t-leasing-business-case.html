@@ -373,6 +373,8 @@
   .mini { border:1px solid var(--line-strong); background:var(--surface); color:var(--ink); font-family:var(--sans); font-weight:700; font-size:12px; border-radius:8px; padding:6px 10px; cursor:pointer; }
   .mini:hover { border-color:var(--accent); }
   .mini.danger:hover, .mini.danger.arm { border-color:var(--bad); color:var(--bad); }
+  .caseitem.locked { border-color: color-mix(in srgb, var(--warn) 45%, transparent); }
+  .lockedtag { font-size:11px; color:var(--warn); font-weight:700; margin-left:6px; text-transform:uppercase; letter-spacing:.04em; }
   .section-note { font-size: 12.5px; color: var(--ink-mute); margin: -4px 0 12px; }
   a { color: var(--accent); }
 </style>
@@ -1084,39 +1086,58 @@
   }
   function lsLoad(){ try { return JSON.parse(localStorage.getItem(LS_KEY) || "{}") || {}; } catch(e){ return {}; } }
   function lsSave(all){ try { localStorage.setItem(LS_KEY, JSON.stringify(all)); } catch(e){} }
+  // Shared list state: everyday cases (any viewer may write) and locked
+  // reference cases (the "locked" collection is editor-only by access rule).
+  var shared = { cases: [], locked: [] };
+  function renderSharedList(){
+    var items = shared.locked.map(function(x){ return {id:x.id, data:x.data, col:"locked"}; })
+      .concat(shared.cases.map(function(x){ return {id:x.id, data:x.data, col:"cases"}; }));
+    renderCaseList(items);
+  }
   function renderCaseList(items){
     var list = $("caseList");
     if (!items.length){ list.innerHTML = '<div class="small" style="padding:4px 0">No saved cases yet — set up a scenario above and save it here.</div>'; return; }
     list.innerHTML = items.map(function(it){
-      var d = it.data || {}, sm = d.summary || {};
+      var d = it.data || {}, sm = d.summary || {}, locked = it.col === "locked";
       var when = d.savedAt ? new Date(d.savedAt).toLocaleDateString(undefined, {month:"short", day:"numeric", year:"numeric"}) : "";
       var delta = (typeof sm.deltaMo === "number") ? ((sm.deltaMo < 0 ? "−" : "+") + "$" + Math.abs(sm.deltaMo).toLocaleString("en-US") + "/mo vs personal") : "";
       var meta = [sm.vehicle || "", sm.acqMode ? (sm.acqMode === "purchase" ? "buy" : "lease-to-own") : "", sm.milesMo ? sm.milesMo.toLocaleString("en-US") + " mi/mo" : "", delta, when].filter(Boolean).join(" · ");
-      return '<div class="caseitem" data-id="' + esc(it.id) + '">' +
-        '<div class="ci-main"><div class="ci-name">' + esc(d.name || it.id) + '</div><div class="ci-meta">' + esc(meta) + '</div></div>' +
-        '<div class="ci-actions"><button type="button" class="mini" data-act="load">Load</button><button type="button" class="mini danger" data-act="del">Delete</button></div>' +
+      var actions = '<button type="button" class="mini" data-act="load">Load</button>';
+      if (caseDb){
+        actions += locked
+          ? '<button type="button" class="mini" data-act="unlock" title="Editors only">Unlock</button>'
+          : '<button type="button" class="mini" data-act="lock" title="Editors only">Lock</button><button type="button" class="mini danger" data-act="del">Delete</button>';
+      } else {
+        actions += '<button type="button" class="mini danger" data-act="del">Delete</button>';
+      }
+      return '<div class="caseitem' + (locked ? ' locked' : '') + '" data-id="' + esc(it.id) + '" data-col="' + (it.col || "cases") + '">' +
+        '<div class="ci-main"><div class="ci-name">' + (locked ? '&#128274; ' : '') + esc(d.name || it.id) + (locked ? '<span class="lockedtag">locked</span>' : '') + '</div><div class="ci-meta">' + esc(meta) + '</div></div>' +
+        '<div class="ci-actions">' + actions + '</div>' +
       '</div>';
     }).join("");
   }
   function refreshLocalList(){
     var all = lsLoad();
-    var items = Object.keys(all).map(function(k){ return {id:k, data:all[k]}; })
+    var items = Object.keys(all).map(function(k){ return {id:k, data:all[k], col:"cases"}; })
       .sort(function(a,b){ return String(b.data.savedAt || "").localeCompare(String(a.data.savedAt || "")); });
     renderCaseList(items);
   }
   function errText(e){ return (e && (e.message || e.code)) || "unknown error"; }
+  function isDenied(e){ return !!(e && (e.code === "invalid_argument" || e.code === "not_granted")); }
 
   $("saveCaseBtn").addEventListener("click", function(){
     var name = $("caseName").value.trim();
     if (!name){ setStatus("Give the case a name first.", true); $("caseName").focus(); return; }
     var c = buildCase(name), id = slugId(name);
     if (caseDb){
-      caseDb.collection("cases").doc(id).set(c)
-        .then(function(){ setStatus("Saved \u201c" + name + "\u201d \u2014 everyone with this page can load it."); })
-        .catch(function(e){ setStatus("Couldn\u2019t save: " + errText(e), true); });
+      // never let an everyday save shadow a locked reference case of the same name
+      caseDb.collection("locked").doc(id).get().then(function(snap){
+        if (snap.exists){ setStatus("“" + name + "” is a locked case — unlock it first, or choose a different name.", true); return; }
+        return caseDb.collection("cases").doc(id).set(c).then(function(){ setStatus("Saved “" + name + "” — everyone with this page can load it."); });
+      }).catch(function(e){ setStatus("Couldn’t save: " + errText(e), true); });
     } else {
       var all = lsLoad(); all[id] = c; lsSave(all); refreshLocalList();
-      setStatus("Saved \u201c" + name + "\u201d on this device.");
+      setStatus("Saved “" + name + "” on this device.");
     }
   });
   $("caseName").addEventListener("keydown", function(e){ if (e.key === "Enter") $("saveCaseBtn").click(); });
@@ -1124,17 +1145,20 @@
   $("caseList").addEventListener("click", function(e){
     var b = e.target.closest("button[data-act]"); if (!b) return;
     var item = b.closest(".caseitem"); var id = item && item.dataset.id; if (!id) return;
-    var nm = item.querySelector(".ci-name").textContent;
-    if (b.dataset.act === "load"){
+    var col = item.dataset.col || "cases", act = b.dataset.act;
+    var nm = item.querySelector(".ci-name").textContent.replace(/^🔒\s*/, "").replace(/locked$/i, "").trim();
+
+    if (act === "load"){
       if (caseDb){
-        caseDb.collection("cases").doc(id).get()
-          .then(function(snap){ if (snap.exists){ applyCase(snap.data()); setStatus("Loaded \u201c" + nm + "\u201d."); } else { setStatus("That case is no longer available.", true); } })
-          .catch(function(err){ setStatus("Couldn\u2019t load: " + errText(err), true); });
+        caseDb.collection(col).doc(id).get()
+          .then(function(snap){ if (snap.exists){ applyCase(snap.data()); setStatus("Loaded “" + nm + "”."); } else { setStatus("That case is no longer available.", true); } })
+          .catch(function(err){ setStatus("Couldn’t load: " + errText(err), true); });
       } else {
-        var all = lsLoad(); if (all[id]){ applyCase(all[id]); setStatus("Loaded \u201c" + nm + "\u201d."); }
+        var all = lsLoad(); if (all[id]){ applyCase(all[id]); setStatus("Loaded “" + nm + "”."); }
       }
-    } else if (b.dataset.act === "del"){
-      // two-step delete: first click arms, second within 4s confirms
+      return;
+    }
+    if (act === "del"){
       if (!b.classList.contains("arm")){
         b.classList.add("arm"); b.textContent = "Confirm delete";
         setTimeout(function(){ b.classList.remove("arm"); b.textContent = "Delete"; }, 4000);
@@ -1142,11 +1166,30 @@
       }
       if (caseDb){
         caseDb.collection("cases").doc(id).delete()
-          .then(function(){ setStatus("Deleted \u201c" + nm + "\u201d."); })
-          .catch(function(err){ setStatus("Couldn\u2019t delete: " + errText(err), true); });
+          .then(function(){ setStatus("Deleted “" + nm + "”."); })
+          .catch(function(err){ setStatus("Couldn’t delete: " + errText(err), true); });
       } else {
-        var all2 = lsLoad(); delete all2[id]; lsSave(all2); refreshLocalList(); setStatus("Deleted \u201c" + nm + "\u201d.");
+        var all2 = lsLoad(); delete all2[id]; lsSave(all2); refreshLocalList(); setStatus("Deleted “" + nm + "”.");
       }
+      return;
+    }
+    if (!caseDb) return;
+    if (act === "lock"){
+      // write to the protected path FIRST so a non-editor fails cleanly with nothing moved
+      caseDb.collection("cases").doc(id).get().then(function(snap){
+        if (!snap.exists) throw {code:"gone", message:"case not found"};
+        var d = Object.assign({}, snap.data(), {locked:true, lockedAt:new Date().toISOString()});
+        return caseDb.collection("locked").doc(id).set(d).then(function(){ return caseDb.collection("cases").doc(id).delete(); });
+      }).then(function(){ setStatus("Locked “" + nm + "” — viewers can load it, only editors can change it."); })
+        .catch(function(err){ setStatus(isDenied(err) ? "Only editors can lock cases." : "Couldn’t lock: " + errText(err), true); });
+    } else if (act === "unlock"){
+      // remove from the protected path FIRST for the same reason
+      caseDb.collection("locked").doc(id).get().then(function(snap){
+        if (!snap.exists) throw {code:"gone", message:"case not found"};
+        var d = Object.assign({}, snap.data()); delete d.locked; delete d.lockedAt;
+        return caseDb.collection("locked").doc(id).delete().then(function(){ return caseDb.collection("cases").doc(id).set(d); });
+      }).then(function(){ setStatus("Unlocked “" + nm + "”."); })
+        .catch(function(err){ setStatus(isDenied(err) ? "Only editors can unlock cases." : "Couldn’t unlock: " + errText(err), true); });
     }
   });
 
@@ -1160,11 +1203,13 @@
       if (!db) return;
       caseDb = db;
       $("casesHint").textContent = "shared with your team";
+      var fail = function(){ caseDb = null; $("casesHint").textContent = "on this device"; refreshLocalList(); };
+      db.collection("locked").orderBy("savedAt", "desc").limit(50).onSnapshot(function(snap){
+        shared.locked = snap.docs.map(function(d){ return {id: d.id, data: d.data() || {}}; }); renderSharedList();
+      }, fail);
       db.collection("cases").orderBy("savedAt", "desc").limit(200).onSnapshot(function(snap){
-        renderCaseList(snap.docs.map(function(d){ return {id: d.id, data: d.data() || {}}; }));
-      }, function(){
-        caseDb = null; $("casesHint").textContent = "on this device"; refreshLocalList();
-      });
+        shared.cases = snap.docs.map(function(d){ return {id: d.id, data: d.data() || {}}; }); renderSharedList();
+      }, fail);
     }).catch(function(){ /* stay local */ });
   })();
 
