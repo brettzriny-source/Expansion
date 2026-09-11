@@ -705,7 +705,7 @@
         <div class="foot">
           <div><div class="k">Per truck / yr</div><div class="val" id="vYear">—</div></div>
           <div><div class="k">Fleet / yr</div><div class="val" id="vFleet">—</div></div>
-          <div><div class="k">Over term</div><div class="val" id="vTerm">—</div></div>
+          <div><div class="k" id="vTermK">Over term</div><div class="val" id="vTerm">—</div></div>
         </div>
       </div>
 
@@ -974,26 +974,6 @@
     $("milesVal").textContent = fmtN(r.miles);
     $("milesLabel").textContent = r.mode === "direct" ? "Entered monthly" : "Miles/day × working days";
 
-    // verdict
-    var v = $("verdict"), big = $("vbig"), tag = $("vtag"), line = $("vline");
-    var r1tCheaper = r.delta < 0;
-    var perTruck = Math.abs(r.delta);
-    big.classList.toggle("win", r1tCheaper);
-    tag.innerHTML = r1tCheaper ? "● " + vName + " wins" : "● Personal vehicle wins";
-    if (Math.abs(r.delta) < 1) {
-      big.innerHTML = "Essentially <em>break-even</em>";
-      line.innerHTML = "The two options cost about the same at <b>"+fmtN(r.miles)+" mi/mo</b>. Intangibles likely tip the call.";
-    } else if (r1tCheaper) {
-      big.innerHTML = "Save <em>"+fmt(perTruck)+"</em>/truck·mo";
-      line.innerHTML = "At <b>"+fmtN(r.miles)+" mi/mo</b>, a fully-loaded "+vName+" costs <b>"+fmt(perTruck)+" less per truck each month</b> than reimbursing personal miles.";
-    } else {
-      big.innerHTML = "Costs <em>"+fmt(perTruck)+"</em>/truck·mo";
-      line.innerHTML = "At <b>"+fmtN(r.miles)+" mi/mo</b>, a fully-loaded "+vName+" costs <b>"+fmt(perTruck)+" more per truck each month</b> than reimbursing personal miles.";
-    }
-    var sign = r1tCheaper ? "−" : "+";
-    $("vYear").textContent  = sign + fmt(perTruck*12);
-    $("vFleet").textContent = sign + fmt(perTruck*12*r.techs);
-    $("vTerm").textContent  = sign + fmt(perTruck*Math.max(1,num("term"))*r.techs);
 
     // comparison bars
     $("rName").textContent = vName + " (fully loaded)";
@@ -1125,6 +1105,29 @@
     }
     var N = Math.max(1, Math.min(10, Math.round((num("tcoYears") || 3) * 2) / 2));   // half-year steps
     var t = tcoAt(N);
+    // verdict — on the TCO basis at the slider's ownership horizon, so it moves with the slider
+    (function(){
+      var big = $("vbig"), tag = $("vtag"), line = $("vline");
+      var dV = t.perYr / 12 - r.pTotal;            // + => vehicle costs more, all-in at N yrs
+      var vehCheaper = dV < 0, perTruck = Math.abs(dV);
+      big.classList.toggle("win", vehCheaper);
+      tag.innerHTML = vehCheaper ? "● " + vName + " wins · " + N + " yrs owned" : "● Personal vehicle wins · " + N + " yrs owned";
+      if (perTruck < 1) {
+        big.innerHTML = "Essentially <em>break-even</em>";
+        line.innerHTML = "Owned " + N + " years at <b>" + fmtN(r.miles) + " mi/mo</b>, the two options cost about the same all-in. Intangibles likely tip the call.";
+      } else if (vehCheaper) {
+        big.innerHTML = "Save <em>" + fmt(perTruck) + "</em>/truck·mo";
+        line.innerHTML = "Owned " + N + " years at <b>" + fmtN(r.miles) + " mi/mo</b>, a fully-loaded " + vName + " costs <b>" + fmt(perTruck) + " less per truck each month</b> all-in than reimbursing personal miles.";
+      } else {
+        big.innerHTML = "Costs <em>" + fmt(perTruck) + "</em>/truck·mo";
+        line.innerHTML = "Owned " + N + " years at <b>" + fmtN(r.miles) + " mi/mo</b>, a fully-loaded " + vName + " costs <b>" + fmt(perTruck) + " more per truck each month</b> all-in than reimbursing personal miles.";
+      }
+      var sign = vehCheaper ? "−" : "+";
+      $("vYear").textContent  = sign + fmt(perTruck * 12);
+      $("vFleet").textContent = sign + fmt(perTruck * 12 * r.techs);
+      $("vTermK").textContent = "Over " + N + " yrs" + (r.techs > 1 ? " · fleet" : "");
+      $("vTerm").textContent  = sign + fmt(perTruck * 12 * N * r.techs);
+    })();
     $("tcoYearsVal").textContent = N;
     $("tcoVehK").textContent = vName + " — cost / yr";
     $("tcoVeh").textContent = fmt(t.perYr);
