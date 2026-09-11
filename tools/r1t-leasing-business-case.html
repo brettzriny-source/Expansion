@@ -1017,8 +1017,10 @@
       var byYr = yrs > 0 ? yrs : Infinity, byMi = (mi > 0 && milesYr > 0) ? mi / milesYr : Infinity;
       var e = Math.min(byYr, byMi); return isFinite(e) ? e : 0;
     }
-    function tcoAt(N){
-      var months = N * 12, milesYr = r.miles * 12, per10k = milesYr / 10000;
+    function tcoAt(N, milesMo){
+      if (milesMo === undefined) milesMo = r.miles;
+      var months = N * 12, milesYr = milesMo * 12, per10k = milesYr / 10000;
+      var operMoN = r.ins + r.teleSub + r.maint + (milesMo / Math.max(0.1, num("eff"))) * num("kwh");
       var extCost = Math.max(0, num("extWarrCost"));
       var basicEnd = Math.max(coverageEnd(num("warrYrs"), num("warrMi"), milesYr),
                               extCost > 0 ? coverageEnd(num("extWarrYrs"), num("extWarrMi"), milesYr) : 0);
@@ -1028,7 +1030,7 @@
       var termM = Math.max(1, num("term"));
       var acqCashT = r.acqMode === "purchase" ? num("price") : num("lease") * termM;   // full payoff / price
       var upfront = upfitTotal() + num("teleInstall") + extCost;
-      var operating = operMoT * months;
+      var operating = operMoN * months;
       var oow = Math.max(0, N - basicEnd), oow2 = Math.max(0, N - ptEnd), oow3 = Math.max(0, N - battEnd);
       var rep1 = oow  * per10k * (num("repairPct") / 100) * num("repairCost");          // non-powertrain, after basic
       var rep2 = oow2 * per10k * (num("ptRepairPct") / 100) * num("ptRepairCost");      // drive unit, after its warranty
@@ -1103,40 +1105,57 @@
     svg += '</svg>';
     $("tcoChart").innerHTML = svg;
 
-    // ---- Executive summary ----
+    // ---- Executive summary: everything on the TCO basis at the slider's ownership horizon ----
     var acqLabel = r.acqMode === "purchase" ? "purchase" : "lease-to-own";
-    $("execEyebrow").textContent = vName + " · " + acqLabel + " · " + fmtN(r.miles) + " mi/mo · " + fmtN(r.installsMo) + " installs/mo";
+    var tcoMo = t.perYr / 12;                       // all-in monthly at N yrs owned
+    var dMo = tcoMo - r.pTotal;                     // + => vehicle costs more
+    var perTruckN = Math.abs(dMo);
+    var cpiVN = r.installsMo > 0 ? tcoMo / r.installsMo : null;
+    var netPN = r.pTotal * 12 * N;                  // reimbursement over the same N years
+    var equityN = t.residual + t.transfer;
+    // break-even mileage on the TCO curve: monthly all-in == reimbursement, solved by bisection
+    var beN = null;
+    (function(){
+      var f = function(M){ return tcoAt(N, M).perYr / 12 - (num("reimb") * M + num("stipend")); };
+      var lo = 0, hi = 30000, flo = f(lo), fhi = f(hi);
+      if (flo <= 0) { beN = 0; return; }
+      if (fhi > 0) { beN = null; return; }
+      for (var k = 0; k < 40; k++){ var mid = (lo + hi) / 2; if (f(mid) > 0) lo = mid; else hi = mid; }
+      beN = (lo + hi) / 2;
+    })();
+    $("execEyebrow").textContent = vName + " · " + acqLabel + " · " + fmtN(r.miles) + " mi/mo · " + fmtN(r.installsMo) + " installs/mo · all-in at " + N + " yrs owned";
     var xv = $("execVerdict");
-    if (Math.abs(r.delta) < 1) xv.innerHTML = "Essentially <em>break-even</em> with reimbursement";
-    else if (r.delta < 0) xv.innerHTML = "<em>" + fmt(perTruck) + "/mo cheaper</em> than reimbursement";
-    else xv.innerHTML = "<em>" + fmt(perTruck) + "/mo more</em> than reimbursement";
-    $("execLine").textContent = "A fully-loaded " + vName + " runs " + fmt(r.rTotal) + " per truck per month against " + fmt(r.pTotal) + " in mileage reimbursement — but the two paths end in very different places.";
-    $("xVehK").textContent = vName + " / mo";
-    $("xVehMo").textContent = fmt(r.rTotal);
+    if (perTruckN < 1) xv.innerHTML = "Essentially <em>break-even</em> with reimbursement";
+    else if (dMo < 0) xv.innerHTML = "<em>" + fmt(perTruckN) + "/mo cheaper</em> than reimbursement";
+    else xv.innerHTML = "<em>" + fmt(perTruckN) + "/mo more</em> than reimbursement";
+    $("execLine").textContent = "Owned for " + N + " years, the " + vName + " works out to " + fmt(tcoMo) + " per truck per month all-in (acquisition, upfit, operating, and expected repairs, net of resale and reusable racking) against " + fmt(r.pTotal) + " in mileage reimbursement. Move the ownership slider to see how the horizon changes the answer.";
+    $("xVehK").textContent = vName + " / mo · all-in";
+    $("xVehMo").textContent = fmt(tcoMo);
     $("xPerMo").textContent = fmt(r.pTotal);
-    $("xDelta").textContent = (r.delta < 0 ? "−" : "+") + fmt(perTruck);
-    $("xDelta").className = "v " + (r.delta < 0 ? "good" : "bad");
-    $("xDeltaCap").textContent = fmt(perTruck * 12) + " / yr per truck";
-    $("xCPI").textContent = r.cpiV === null ? "—" : fmt(r.cpiV);
-    $("xCPIcap").textContent = r.cpiV === null ? "set installs / day" : "vs " + fmt(r.cpiP) + " on reimbursement";
-    $("xBreak").textContent = r.breakeven === null ? "n/a" : (r.breakeven < 0 ? "0" : fmtN(r.breakeven));
-    $("xNetK").textContent = "Net cost, " + yrs + " yrs";
-    $("xNet").textContent = fmt(netV);
-    $("xNet").className = "v " + (netV <= netP ? "good" : "");
-    $("xNetCap").textContent = "vs " + fmt(netP) + " reimbursement";
-    $("xEquity").textContent = fmt(terminalAsset);
-    $("xEquityCap").textContent = "truck " + fmt(residualAsset) + " + racking " + fmt(transferUpfit);
+    $("xDelta").textContent = (dMo < 0 ? "−" : "+") + fmt(perTruckN);
+    $("xDelta").className = "v " + (dMo < 0 ? "good" : "bad");
+    $("xDeltaCap").textContent = fmt(perTruckN * 12) + " / yr per truck";
+    $("xCPI").textContent = cpiVN === null ? "—" : fmt(cpiVN);
+    $("xCPIcap").textContent = cpiVN === null ? "set installs / day" : "vs " + fmt(r.cpiP) + " on reimbursement";
+    $("xBreak").textContent = beN === null ? "n/a" : (beN <= 0 ? "0" : fmtN(beN));
+    $("xNetK").textContent = "Net cost, " + N + " yrs";
+    $("xNet").textContent = fmt(t.net);
+    $("xNet").className = "v " + (t.net <= netPN ? "good" : "");
+    $("xNetCap").textContent = "vs " + fmt(netPN) + " reimbursement";
+    $("xEquity").textContent = fmt(equityN);
+    $("xEquityCap").textContent = "at yr " + N + ": truck " + fmt(t.residual) + " + racking " + fmt(t.transfer);
     $("xRun").textContent = fmt(y4V) + "/mo";
-    $("xRunCap").textContent = "vs " + fmt(y4P) + "/mo reimbursement, indefinitely";
+    $("xRunCap").textContent = "operating only once paid off · vs " + fmt(y4P) + "/mo reimbursement, indefinitely";
     $("xTCOK").textContent = "TCO / yr · " + N + " yrs owned";
     $("xTCO").textContent = fmt(t.perYr);
     $("xTCO").className = "v " + (t.perYr <= t.personalYr ? "good" : "");
     $("xTCOcap").textContent = "vs " + fmt(t.personalYr) + "/yr reimbursement";
     var bullets = [];
-    bullets.push("<b>Monthly:</b> the " + vName + " costs " + fmt(perTruck) + "/mo " + (r.delta < 0 ? "less" : "more") + " than reimbursing " + fmtN(r.miles) + " mi/mo at " + fmt2(num("reimb")) + "/mi" + (r.cpiV !== null ? " — " + fmt(r.cpiV) + " per install vs " + fmt(r.cpiP) : "") + ".");
-    bullets.push("<b>End of term:</b> reimbursement leaves nothing owned; the " + vName + " leaves " + fmt(terminalAsset) + " of equity (truck " + fmt(residualAsset) + " + reusable racking " + fmt(transferUpfit) + ") and the run-rate drops to " + fmt(y4V) + "/mo.");
-    bullets.push("<b>Ownership horizon:</b> at " + N + " years the " + vName + " runs " + fmt(t.perYr) + "/yr all-in vs " + fmt(t.personalYr) + "/yr reimbursement" + (t.repairs > 0 ? ", including " + fmt(t.repairs) + " of expected post-warranty repairs" : "") + " — longer ownership spreads the upfront cost; at this mileage basic coverage " + (t.wExp <= 0 ? "is already gone" : "ends ≈" + r1(t.wExp) + " yr") + " and powertrain coverage ≈" + r1(t.ptExp) + " yr" + (Math.abs(t.ptExp - t.battExp) < 0.05 ? " (battery on the same term)" : ", battery ≈" + r1(t.battExp) + " yr") + ".");
-    if (r.breakeven !== null && r.breakeven > 0) bullets.push("<b>Break-even:</b> on monthly cost alone the " + vName + " wins above " + fmtN(r.breakeven) + " mi/mo; the case below that rests on equity, brand control, and the year-4+ run-rate.");
+    bullets.push("<b>All-in at " + N + " years:</b> the " + vName + " costs " + fmt(perTruckN) + "/mo " + (dMo < 0 ? "less" : "more") + " than reimbursing " + fmtN(r.miles) + " mi/mo at " + fmt2(num("reimb")) + "/mi" + (cpiVN !== null ? " — " + fmt(cpiVN) + " per install vs " + fmt(r.cpiP) : "") + (t.repairs > 0 ? ", including " + fmt(t.repairs) + " of expected repairs" : "") + ".");
+    bullets.push("<b>What you hold at year " + N + ":</b> reimbursement leaves nothing owned; the " + vName + " leaves " + fmt(equityN) + " of equity (truck " + fmt(t.residual) + " + reusable racking " + fmt(t.transfer) + "), and once paid off the run-rate drops to " + fmt(y4V) + "/mo.");
+    bullets.push("<b>Coverage at this mileage:</b> basic warranty " + (t.wExp <= 0 ? "is already gone" : "ends ≈" + r1(t.wExp) + " yr") + ", powertrain ≈" + r1(t.ptExp) + " yr" + (Math.abs(t.ptExp - t.battExp) < 0.05 ? " (battery on the same term)" : ", battery ≈" + r1(t.battExp) + " yr") + " — longer ownership spreads the upfront cost but adds out-of-warranty exposure.");
+    if (beN !== null && beN > 0) bullets.push("<b>Break-even:</b> at " + N + " years owned the " + vName + " is cheaper than reimbursement above " + fmtN(beN) + " mi/mo; below that the case rests on equity, brand control, and the paid-off run-rate.");
+    else if (beN === 0) bullets.push("<b>Break-even:</b> at " + N + " years owned the " + vName + " is cheaper than reimbursement at any mileage.");
     $("execBullets").innerHTML = bullets.map(function(b){ return "<li>" + b + "</li>"; }).join("");
   }
 
