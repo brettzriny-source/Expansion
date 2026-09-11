@@ -201,6 +201,7 @@
     border: 1px solid color-mix(in srgb, var(--warn) 30%, transparent);
     padding: 2px 6px; border-radius: 6px;
   }
+  .flag.neg { color: var(--good); background: var(--good-bg); border-color: color-mix(in srgb, var(--good) 35%, transparent); }
   .input-wrap { position: relative; display: flex; align-items: center; }
   .input-wrap .aff {
     position: absolute; color: var(--ink-mute); font-size: 14px; font-weight: 600;
@@ -539,10 +540,10 @@
                 <option value="silv_std">Chevrolet Silverado EV LT — Standard Range (buy)</option>
                 <option value="f150">Ford F-150 Lightning (Used) — Pro / XLT (buy)</option>
               </optgroup>
-              <optgroup label="SUVs, crossovers &amp; sedans (lease estimated)">
+              <optgroup label="SUVs, crossovers &amp; sedans">
                 <option value="ioniq6">Hyundai Ioniq 6 — sedan</option>
                 <option value="ioniq9">Hyundai Ioniq 9 — SUV</option>
-                <option value="ev6">Kia EV6 — crossover</option>
+                <option value="ev6">Kia EV6 Light Long Range — crossover (negotiated lease)</option>
                 <option value="ev9">Kia EV9 — SUV</option>
                 <option value="blazer">Chevrolet Blazer EV — SUV</option>
                 <option value="equinox">Chevrolet Equinox EV — crossover</option>
@@ -763,7 +764,7 @@
               <tr data-veh="r1t"><td>Rivian R1T</td><td>Pickup</td><td>~314 mi</td><td>$72,000</td><td>~$2,066</td><td>~1,760 lbs</td><td>~77 cu ft</td><td>11,000 lbs</td><td>2.4</td><td>~215 kW</td><td>NACS</td><td>5 yr / 60k mi</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
               <tr><td>Rivian R1S</td><td>SUV</td><td>~303 mi</td><td>$76,000</td><td>~$2,181</td><td>~900 lbs</td><td>104 cu ft</td><td>7,700 lbs</td><td>2.2</td><td>~215 kW</td><td>NACS</td><td>5 yr / 60k mi</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
               <tr data-veh="ev9"><td>Kia EV9</td><td>SUV</td><td>~304 mi</td><td>$56,395+</td><td>~$1,618</td><td>~1,200 lbs</td><td>82 cu ft</td><td>5,000 lbs</td><td>2.8</td><td>~236 kW</td><td>NACS</td><td>5 yr / 60k mi</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
-              <tr data-veh="ev6"><td>Kia EV6</td><td>Crossover</td><td>~310 mi</td><td>$42,600+</td><td>~$1,222</td><td>~1,000 lbs</td><td>50 cu ft</td><td>2,300 lbs</td><td>3.5</td><td>~236 kW</td><td>NACS</td><td>5 yr / 60k mi</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
+              <tr data-veh="ev6"><td>Kia EV6</td><td>Crossover</td><td>~310 mi</td><td>$45,200<span class="mkt">Light Long Range · dashboard base $42,600+</span></td><td>$1,134<span class="mkt">negotiated · FMC quote</span></td><td>~1,000 lbs</td><td>50 cu ft</td><td>2,300 lbs</td><td>3.5</td><td>~236 kW</td><td>NACS</td><td>5 yr / 60k mi</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
               <tr><td>Hyundai Ioniq 5</td><td>Crossover</td><td>~303 mi</td><td>$44,745+</td><td>~$1,284</td><td>~1,000 lbs</td><td>59 cu ft</td><td>3,500 lbs</td><td>3.5</td><td>~350 kW</td><td>NACS</td><td>5 yr / 60k mi</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
               <tr data-veh="ioniq9"><td>Hyundai Ioniq 9</td><td>SUV</td><td>~350 mi</td><td>$56,175+</td><td>~$1,612</td><td>~1,300 lbs</td><td>87 cu ft</td><td>5,000 lbs</td><td>2.8</td><td>~350 kW</td><td>NACS</td><td>5 yr / 60k mi</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
               <tr data-veh="ioniq6"><td>Hyundai Ioniq 6 <span class="mkt">added</span></td><td>Sedan</td><td>~342 mi</td><td>$37,850+</td><td>~$1,086</td><td>~900 lbs</td><td>11 cu ft</td><td>N/A</td><td>3.8</td><td>~350 kW</td><td>NACS</td><td>5 yr / 60k mi</td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
@@ -782,7 +783,7 @@
               <tr data-veh="f150"><td>Ford F-150 Lightning <span class="mkt">added · used</span></td><td>Pickup</td><td>~240 mi</td><td>~$50,000<span class="mkt">used mkt ~$32K–$53K</span></td><td>— <span class="mkt">bought used</span></td><td>~2,000 lbs</td><td>5.5 ft bed</td><td>~10,000 lbs</td><td>2.0</td><td>~150 kW</td><td>CCS1</td><td>3 yr / 36k mi <span class="mkt">new; used varies</span></td><td><span style="color:var(--ink-mute);font-weight:700">n/a</span></td></tr>
         </tbody>
       </table>
-      <p class="small" style="margin:12px 0 0"><b style="color:var(--ink)">&dagger; Monthly lease reverse-engineered from Jetson&rsquo;s R1T lease structure:</b> capitalized cost = MSRP &minus; manufacturer rebate (no rebates assumed on non-Rivian brands, so those use full MSRP), 10% down, 36-month term, $0 residual (full straight-line depreciation, &asymp; 2.78%/mo), 9.16% implied rate (3-yr Treasury + 4.85%, 8/21/26), plus a 0.045%/mo management fee &mdash; working out to &asymp; 2.87% of cap cost per month, anchored so the R1T reproduces its actual $2,206 quote. Estimates use each model&rsquo;s <em>starting</em> MSRP, so a configured build runs higher. Vans, SUVs and sedans are shown for reference; the pickups and cargo vans are the work-relevant candidates.</p>
+      <p class="small" style="margin:12px 0 0"><b style="color:var(--ink)">&dagger; Monthly lease reverse-engineered from Jetson&rsquo;s R1T lease structure:</b> capitalized cost = MSRP &minus; manufacturer rebate (no rebates assumed on non-Rivian brands, so those use full MSRP), 10% down, 36-month term, $0 residual (full straight-line depreciation, &asymp; 2.78%/mo), 9.16% implied rate (3-yr Treasury + 4.85%, 8/21/26), plus a 0.045%/mo management fee &mdash; working out to &asymp; 2.87% of cap cost per month, anchored so the R1T reproduces its actual $2,206 quote. The Kia EV6 shows its FMC-negotiated rent ($1,134 on a $39,629 acquisition after $5,571 of discounts and incentives — 2.86%/mo, confirming the structure). Estimates use each model&rsquo;s <em>starting</em> MSRP, so a configured build runs higher. Vans, SUVs and sedans are shown for reference; the pickups and cargo vans are the work-relevant candidates.</p>
       <p class="small" style="margin:8px 0 0"><b style="color:var(--ink)">Notes:</b> data mirrors the Fleet Dashboard &ldquo;EV Models Under Consideration&rdquo; list. Jetson&rsquo;s modeled R1T is the <b>Premium</b> build ($82,885 &rarr; $76,885 cap after the $6K rebate &rarr; <b>$2,206</b>/mo actual), while the dashboard lists the R1T at its $72,000 base. Rows marked <em>added</em> — Ford F-150 Lightning (used), Hyundai Ioniq 6, and Toyota bZ Woodland — are not on the dashboard list; the F-150 is a used-market option modeled as a purchase. The highlighted row is the vehicle modeled above. <b style="color:var(--ink)">Warranty</b> shows the standard bumper-to-bumper term; every EV listed also carries a separate battery &amp; drive-unit warranty of at least 8 yr / 100,000 mi.</p>
     </div>
   </section>
@@ -801,10 +802,21 @@
   };
   var LEASE_COEF = 2206/76885;  // R1T lease-derived: ~2.87% of cap cost (value − rebate) per month
   function vehRebate(){ var v = VEHICLES[state.vehicle]; return v ? (v.rebate || 0) : 0; }
-  function estLease(){ return Math.round(Math.max(0, num("price") - vehRebate()) * LEASE_COEF); }
+  function estLease(){
+    var v = VEHICLES[state.vehicle];
+    if (v && v.quotedLease && num("price") === v.quotedPrice) return v.quotedLease;   // real FMC quote
+    return Math.round(Math.max(0, num("price") - vehRebate()) * LEASE_COEF);          // derived estimate
+  }
   // The R1T at its quoted MSRP is a real quote, not an estimate; anything else derived is.
   function isQuotedLease(){ var v = VEHICLES[state.vehicle]; return !!(v && v.quotedPrice && num("price") === v.quotedPrice); }
-  function updateLeaseTag(){ var t = $("leaseEstTag"); if (t) t.style.display = (state.acqMode === "lease" && state.leaseEstimated && !isQuotedLease()) ? "" : "none"; }
+  function updateLeaseTag(){
+    var t = $("leaseEstTag"); if (!t) return;
+    if (state.acqMode !== "lease" || !state.leaseEstimated){ t.style.display = "none"; return; }
+    var q = isQuotedLease();
+    t.textContent = q ? "negotiated" : "estimate";
+    t.classList.toggle("neg", q);
+    t.style.display = "";
+  }
   function upfitTotal(){ return num("upfitBase") + num("upfitWrap") + num("upfitTopper") + num("upfitBott"); }
 
   // Vehicle presets. Pickup prices per confirmed quotes; others at starting MSRP
@@ -813,13 +825,13 @@
   // the R1T at its quoted MSRP reproduces its actual $2,206. `type` drives the
   // topper rule (bed topper/cap only on pickups).
   var VEHICLES = {
-    r1t:      { name:"R1T",                    desc:"Rivian R1T Premium with all-season wheels",     type:"pickup",    acq:"lease",    rebate:6000, quotedPrice:82885, price:82885, residualPct:35, warrYrs:5, warrMi:60000, term:36, eff:2.3, range:329 },
+    r1t:      { name:"R1T",                    desc:"Rivian R1T Premium with all-season wheels — FMC negotiated lease", type:"pickup", acq:"lease", rebate:6000, quotedPrice:82885, quotedLease:2206, price:82885, residualPct:35, warrYrs:5, warrMi:60000, term:36, eff:2.3, range:329 },
     silv_ext: { name:"Silverado EV (Ext.)",    desc:"Chevrolet Silverado EV LT — Extended Range",     type:"pickup",    acq:"purchase", rebate:0,    price:71700, residualPct:32, warrYrs:3, warrMi:36000, term:60, eff:2.0, range:410 },
     silv_std: { name:"Silverado EV (Std.)",    desc:"Chevrolet Silverado EV LT — Standard Range",     type:"pickup",    acq:"purchase", rebate:0,    price:63500, residualPct:30, warrYrs:3, warrMi:36000, term:60, eff:2.0, range:283 },
     f150:     { name:"F-150 Lightning (Used)", desc:"Ford F-150 Lightning (Used) — Pro / XLT",         type:"pickup",    acq:"purchase", rebate:0,    price:50000, residualPct:25, warrYrs:0, warrMi:0, term:60, eff:2.0, range:240 },
     ioniq6:   { name:"Ioniq 6",                desc:"Hyundai Ioniq 6 — sedan",                        type:"sedan",     acq:"lease",    rebate:0,    price:37850, residualPct:35, warrYrs:5, warrMi:60000, term:36, eff:3.8, range:342 },
     ioniq9:   { name:"Ioniq 9",                desc:"Hyundai Ioniq 9 — three-row SUV",                type:"SUV",       acq:"lease",    rebate:0,    price:56175, residualPct:35, warrYrs:5, warrMi:60000, term:36, eff:2.8, range:350 },
-    ev6:      { name:"EV6",                    desc:"Kia EV6 — crossover",                            type:"crossover", acq:"lease",    rebate:0,    price:42600, residualPct:35, warrYrs:5, warrMi:60000, term:36, eff:3.5, range:310 },
+    ev6:      { name:"EV6",                    desc:"2026 Kia EV6 Light Long Range — FMC negotiated lease ($45,200 MSRP − $5,571 discounts/incentives = $39,629 acquisition; 10% down; 9.02%)", type:"crossover", acq:"lease", rebate:5571, quotedPrice:45200, quotedLease:1134, price:45200, residualPct:35, warrYrs:5, warrMi:60000, term:36, eff:3.5, range:310 },
     ev9:      { name:"EV9",                    desc:"Kia EV9 — three-row SUV",                        type:"SUV",       acq:"lease",    rebate:0,    price:56395, residualPct:35, warrYrs:5, warrMi:60000, term:36, eff:2.8, range:304 },
     blazer:   { name:"Blazer EV",              desc:"Chevrolet Blazer EV — SUV",                      type:"SUV",       acq:"lease",    rebate:0,    price:45995, residualPct:35, warrYrs:3, warrMi:36000, term:36, eff:2.9, range:283 },
     equinox:  { name:"Equinox EV",             desc:"Chevrolet Equinox EV — crossover",               type:"crossover", acq:"lease",    rebate:0,    price:33900, residualPct:35, warrYrs:3, warrMi:36000, term:36, eff:3.4, range:315 },
