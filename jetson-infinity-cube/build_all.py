@@ -15,7 +15,11 @@ from shapely.ops import unary_union
 from logo_geom import wordmark_mm, slab_intervals
 
 SRC = "/root/.claude/uploads/3302de19-8fcd-57a8-a3ab-24f1533cfab6/28c316b1-CE3E3V2_infinity_cube.gcode"
-OUT = "CE3E3V2_infinity_cube_jetson_allfaces.gcode"
+import sys
+CLEAN_ONLY = '--clean-only' in sys.argv        # skip every face that carries hinge hardware
+OUT = "CE3E3V2_infinity_cube_jetson_cleanfaces.gcode" if CLEAN_ONLY else "CE3E3V2_infinity_cube_jetson_allfaces.gcode"
+FULL_SIDE = 13.5      # a side face smaller than this in either direction has a knuckle or slot on it
+FULL_TOP = 12.0
 E_PER_MM = 0.4 * 0.2 / (math.pi * 0.875 ** 2)
 RETRACT, F_RETRACT, F_TRAVEL, F_PERIM = 5.0, 2700, 9000, 600
 LAYER_H = 0.2
@@ -136,6 +140,9 @@ def build():
     cuts = collections.defaultdict(list)
     for (i, j, fname), f in faces.items():
         w, h = f['b'] - f['a'], f['zhi'] - f['zlo']
+        if CLEAN_ONLY and (w < FULL_SIDE or h < FULL_SIDE):
+            report.append(f"({i},{j}) {fname:3} plane {f['plane']:6.1f}  clear {w:4.1f} x {h:4.1f} mm  -> SKIPPED (hinge on this face)")
+            continue
         g, desc = design_for((i, j), w, h)
         u0, zc = (f['a'] + f['b']) / 2, (f['zlo'] + f['zhi']) / 2
         ngaps = 0
@@ -156,6 +163,9 @@ def build():
     top_excl, top_rings = {}, {}
     for key, (x0, y0, x1, y1) in TOP_CLEAR.items():
         w, h = x1 - x0, y1 - y0
+        if CLEAN_ONLY and (w < FULL_TOP or h < FULL_TOP):
+            report.append(f"({key[0]},{key[1]}) top  clear {w:4.1f} x {h:4.1f} mm -> SKIPPED (hinge on this face)")
+            continue
         g, desc = design_for(key, w, h)
         g = affinity.translate(g, (x0 + x1) / 2, (y0 + y1) / 2)
         top_excl[key] = g.buffer(0.4, join_style=1)
@@ -241,7 +251,7 @@ def build():
         if not counts:
             return
         key = counts.most_common(1)[0][0]
-        if (layer, key) in stats:
+        if (layer, key) in stats or key not in top_rings:
             return
         stats[(layer, key)] = 1
         out.append(f";JETSON rings ({key[0]},{key[1]})")
@@ -354,7 +364,7 @@ def build():
             after_skin_extrusion(nx, ny, i)
 
     hdr = next(k for k, l in enumerate(out) if l.startswith(';Generated with'))
-    out.insert(hdr + 1, ";Post-processed: Jetson wordmark / bolt checkerboard engraved 0.4 mm into 4 side faces + top of every cube")
+    out.insert(hdr + 1, ";Post-processed: Jetson wordmark / bolt checkerboard engraved 0.4 mm into " + ("hinge-free faces only" if CLEAN_ONLY else "4 side faces + top of every cube"))
     open(OUT, 'w').write('\n'.join(out))
     stats['final_E'] = round(e_out, 3)
     return report, {k: v for k, v in stats.items() if isinstance(k, str)}

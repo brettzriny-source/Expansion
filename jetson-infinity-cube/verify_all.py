@@ -3,7 +3,8 @@ import matplotlib; matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
 from verify import parse, draw
-path="CE3E3V2_infinity_cube_jetson_allfaces.gcode"
+path=sys.argv[1] if len(sys.argv)>1 else "CE3E3V2_infinity_cube_jetson_allfaces.gcode"
+tag=path.split("_")[-1].replace(".gcode","")
 segs,travels,issues,neg=parse(path)
 print("issues:",len(issues)); [print("  ",x) for x in issues[:8]]
 print("pure-E deltas:",dict(neg.most_common(4)))
@@ -30,13 +31,13 @@ elev(axs[0],'y',97.5,76,159,"FRONT  y=97.5  (viewed from -Y; +X to the right)")
 elev(axs[1],'y',137.5,76,159,"BACK  y=137.5  (viewed from +Y; mirrored here, so text appears reversed)")
 elev(axs[2],'y',117.1,76,159,"inner face of front row  y=117.1  (faces +Y; appears reversed here)")
 elev(axs[3],'y',117.9,76,159,"inner face of back row  y=117.9  (faces -Y)")
-plt.tight_layout(); fig.savefig("all_elev_y.png"); plt.close(fig)
+plt.tight_layout(); fig.savefig(f"{tag}_elev_y.png"); plt.close(fig)
 fig,axs=plt.subplots(2,4,figsize=(15,8),dpi=130)
 for ax,(p,t) in zip(axs.flat,[(77.1,"LEFT end x=77.1 (faces -X; appears reversed)"),(96.7,"x=96.7 cube0 +X"),(97.5,"x=97.5 cube1 -X (reversed)"),(117.1,"x=117.1 cube1 +X"),(117.9,"x=117.9 cube2 -X (reversed)"),(137.5,"x=137.5 cube2 +X"),(138.3,"x=138.3 cube3 -X (reversed)"),(157.9,"RIGHT end x=157.9 (faces +X)")]):
     elev(ax,'x',p,96,139,t)
-plt.tight_layout(); fig.savefig("all_elev_x.png"); plt.close(fig)
+plt.tight_layout(); fig.savefig(f"{tag}_elev_x.png"); plt.close(fig)
 fig,axs=plt.subplots(1,2,figsize=(16,6),dpi=130)
 draw(axs[0],segs,travels,99,(76,158),(96,139),"layer 99 (top)")
 draw(axs[1],segs,travels,98,(76,158),(96,139),"layer 98")
-plt.tight_layout(); fig.savefig("all_top.png"); plt.close(fig)
+plt.tight_layout(); fig.savefig(f"{tag}_top.png"); plt.close(fig)
 print("segs per layer 50/98/99:",len(segs[50]),len(segs[98]),len(segs[99]))
