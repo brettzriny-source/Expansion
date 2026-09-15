@@ -265,6 +265,9 @@
   table.models th, table.models td { text-align:left; white-space:nowrap; }
   table.models .mkt { display:block; font-size:11px; color:var(--ink-mute); font-variant-numeric:normal; }
   /* frozen model column: stays put while the matrix scrolls sideways */
+  .mwrap { overflow-x:auto; margin:0 -18px; }
+  table.models th:first-child, table.models td:first-child { padding-left:18px; }
+  table.models th:last-child, table.models td:last-child { padding-right:18px; }
   table.models th:first-child, table.models td:first-child { position:sticky; left:0; z-index:2; background:var(--surface); box-shadow: 2px 0 0 var(--line); }
   table.models thead th:first-child { z-index:3; }
   table.models tr.sel td { background:var(--good-bg); }
@@ -750,8 +753,8 @@
 
   <section class="card" style="margin-top:22px">
     <div class="card-h"><span class="n">⊞</span><h2>EV Models Under Consideration</h2><span class="hint">fleet dashboard · future · for management review</span></div>
-    <div class="card-b" style="overflow-x:auto">
-      <table class="detail models" id="modelsTable">
+    <div class="card-b">
+      <div class="mwrap"><table class="detail models" id="modelsTable">
         <thead><tr><th>Model</th><th>Type</th><th>Range</th><th>MSRP</th><th>Est. lease /mo <sup style="color:var(--accent)">&dagger;</sup></th><th>Payload</th><th>Cargo</th><th>Towing</th><th>Eff.</th><th>DC charge</th><th>Plug</th><th>Warranty</th><th>Body repair</th><th>Cancel risk</th></tr></thead>
         <tbody>
               <tr><td>Rivian RCV500</td><td>Van</td><td>~150 mi</td><td>$71,900</td><td>~$2,063</td><td>~2,600 lbs</td><td>500 cu ft</td><td>N/A</td><td>1.8</td><td>~150 kW</td><td>CCS1</td><td>5 yr / 60k mi<span class="mkt">powertrain / battery 8 yr / 175k</span></td><td><span style="color:var(--bad);font-weight:700">&#9888; Rivian-certified only</span><span class="mkt">few hundred shops · ~4–8 wk</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
@@ -780,7 +783,7 @@
               <tr data-veh="etransit"><td>Ford E-Transit 350 <span class="mkt">added · cargo van</span></td><td>Van</td><td>~159 mi</td><td>$51,000+<span class="mkt">low roof · high roof ext. $56,295</span></td><td>~$1,462</td><td>~3,300 lbs</td><td>278–487 cu ft</td><td>N/A</td><td>1.8</td><td>~180 kW</td><td>CCS1</td><td>3 yr / 36k mi<span class="mkt">EV components / battery 8 yr / 100k</span></td><td>Any dealer / indie<span class="mkt">broad network · ~1–3 wk</span></td><td><span style="color:var(--ink-mute);font-weight:700">Low</span></td></tr>
               <tr data-veh="f150"><td>Ford F-150 Lightning <span class="mkt">used only · BEV production ended Dec 2025 · EREV successor 2027</span></td><td>Pickup</td><td>~240 mi</td><td>~$50,000<span class="mkt">used mkt ~$32K–$53K</span></td><td>— <span class="mkt">bought used</span></td><td>~2,000 lbs</td><td>5.5 ft bed</td><td>~10,000 lbs</td><td>2.0</td><td>~150 kW</td><td>CCS1</td><td>3 yr / 36k mi <span class="mkt">EV components / battery 8 yr / 100k</span><span class="mkt">EV components / battery 8 yr / 100k</span></td><td>Any dealer / indie<span class="mkt">broad network · ~1–3 wk</span></td><td><span style="color:var(--ink-mute);font-weight:700">n/a</span></td></tr>
         </tbody>
-      </table>
+      </table></div>
       <p class="small" style="margin:12px 0 0"><b style="color:var(--ink)">&dagger; Monthly lease follows Jetson&rsquo;s FMC lease structure:</b> capitalized cost = (MSRP &minus; negotiated discounts and incentives) &times; (1 &minus; down payment), amortized to a $0 residual over the term at 3-yr Treasury + 4.85% (9.02&ndash;9.16% on the actual sheets; the tool uses 9.1%), plus a 0.045%/mo management fee billed separately (&asymp; $20&ndash;$35). The standard sheet is 10% down over 36 months (20% at 48); cash down at signing: place holder. The R1T at the standard structure reproduces its actual $2,206. Rents marked <em>negotiated</em> are real FMC quotes: Kia EV6 Light Long Range $1,134 (on $39,629 after $5,571 of discounts), Kia EV9 Light Long Range $1,357 (on $47,388 after $10,512), Kia EV9 Wind AWD $1,522 (on $53,180 after $10,720). Both EV9 trims were also quoted at 48 months with 20% down ($944 and $1,059); pick a 48-month term in the calculator to use them. Other rows are estimates at each model&rsquo;s <em>starting</em> MSRP with no discounts, so a configured build runs higher. Vans, SUVs and sedans are shown for reference; the pickups and cargo vans are the work-relevant candidates.</p>
       <p class="small" style="margin:8px 0 0"><b style="color:var(--ink)">Notes:</b> data mirrors the Fleet Dashboard &ldquo;EV Models Under Consideration&rdquo; list. Jetson&rsquo;s modeled R1T is the <b>Premium</b> build ($82,885 &rarr; $76,885 cap after the $6K rebate &rarr; <b>$2,206</b>/mo actual), while the dashboard lists the R1T at its $72,000 base. Rows marked <em>added</em> — Ford F-150 Lightning (used), Hyundai Ioniq 6, and Toyota bZ Woodland — are not on the dashboard list; the F-150 is a used-market option modeled as a purchase. The highlighted row is the vehicle modeled above. <b style="color:var(--ink)">Warranty</b> shows the standard bumper-to-bumper term; the smaller line beneath it gives the drive-unit and high-voltage-battery terms (shown together when they match, separately when they differ &mdash; Toyota and Hyundai/Kia cover the battery longer than the drive unit). <b style="color:var(--ink)">Fleet caveat:</b> Hyundai and Kia&rsquo;s 10-yr / 100k powertrain warranty is for original retail owners; commercial-use vehicles get 5 yr / 60k. At fleet mileage, coverage lapses by miles well before years.</p>
     </div>
