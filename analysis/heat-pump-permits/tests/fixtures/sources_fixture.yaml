@@ -1,0 +1,27 @@
+markets:
+  - key: fixture
+    name: Fixture Market
+    population_fallback: {population: 200000, note: "fixture"}
+    jurisdictions:
+      - name: Fixture City
+        population_fallback: {population: 100000, single_family_units: 25000, note: "fixture"}
+        source:
+          kind: csv_file
+          verified: true
+          path: tests/fixtures/sample_permits.csv
+          mechanical_filter: {column: PermitType, regex: "mechanical"}
+          fields:
+            permit_id: PermitNumber
+            issued: IssueDate
+            permit_type: PermitType
+            work_type: WorkType
+            description: Comments
+            address: Address
+            zip: Zip
+            valuation: Value
+      - name: Fixture Town (no feed)
+        population_fallback: {population: 50000, note: "fixture"}
+        source:
+          kind: manual
+          verified: false
+          notes: no feed

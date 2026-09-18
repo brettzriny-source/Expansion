@@ -1,0 +1,13 @@
+PermitNumber,IssueDate,PermitType,WorkType,Comments,Address,Zip,Value
+M-1001,2026-08-02,Mechanical,Replacement,INSTALL 3 TON HEAT PUMP SPLIT SYSTEM,100 Main St,55401,9500
+M-1002,2026-07-15,Mechanical,Replacement,Replace gas furnace 96% and AC condenser,101 Main St,55401,11000
+M-1003,2026-06-30,Mechanical,New,Mitsubishi hyper heat mini split 2 zones,102 Main St,55402,8200
+M-1004,2026-05-10,Mechanical,Replacement,Replace 3 ton condenser and coil,103 Main St,55402,6000
+M-1005,2026-04-01,Mechanical,Replacement,Dual fuel: new 80% furnace with 2.5 ton heat pump,104 Main St,55403,13000
+M-1006,2025-11-20,Mechanical,Replacement,Heat pump water heater 50 gal,105 Main St,55403,3200
+M-1007,2025-10-05,Mechanical,Replacement,ductless heat pump wall unit basement,106 Main St,55404,4800
+M-1008,2024-03-15,Mechanical,Replacement,Install 4 ton heat pump,107 Main St,55404,10000
+M-1009,2023-01-15,Mechanical,Replacement,Install 4 ton heat pump,108 Main St,55405,10000
+B-2001,2026-08-02,Building,Remodel,Kitchen remodel,109 Main St,55405,45000
+P-3001,2026-08-02,Plumbing,Replacement,Water heater replacement,110 Main St,55406,1800
+M-1010,2026-08-20,Mechanical,Replacement,Pool heat pump install,111 Main St,55406,5000

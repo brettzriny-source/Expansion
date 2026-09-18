@@ -1,0 +1,319 @@
+# Source inventory for heat pump permit counts, four markets.
+#
+# Every jurisdiction has `verified`: true only when the endpoint AND the field
+# names were confirmed against the live API. As of 2026-09-18 nothing here is
+# fully verified because the authoring session had no network access to any
+# government host. Endpoints marked verified: false were identified from search
+# results only. Run `python -m pipeline.run --probe` first and fix field names.
+#
+# `kind` values:  arcgis | socrata | csv | csv_file | manual
+# `manual` means there is no machine-readable feed; the notes say what to do.
+#
+# population_fallback values are approximate 2023 Census Population Estimates
+# recalled by the author, not fetched. They are overwritten by the Census API
+# on any run with network access. Treat them as +/- 2%.
+
+markets:
+
+  # ---------------------------------------------------------------------------
+  - key: minneapolis
+    name: Minneapolis-St. Paul, MN
+    census: {state: "27", type: county, fips: "053"}   # Hennepin only, as the market anchor
+    population_fallback: {population: 1270000, note: "Hennepin County, approx 2023 PEP"}
+    permit_rule: >
+      Minnesota Rules 1300.0120 requires a mechanical permit for any furnace, AC or
+      heat pump replacement; only minor-part replacement is exempt. Minneapolis and
+      St. Paul both state a mechanical permit is always required for a heat pump
+      install. No Minnesota compliance-rate study exists.
+    jurisdictions:
+
+      - name: Minneapolis
+        census: {state: "27", type: place, fips: "43000"}
+        population_fallback: {population: 425000, single_family_units: 100000, note: "approx 2023 PEP; SF units rough"}
+        source:
+          kind: arcgis
+          verified: false
+          layer_url: https://services.arcgis.com/afSMGVsC7QlRK1kZ/arcgis/rest/services/CCS_Permits/FeatureServer/0
+          where: "1=1"
+          mechanical_filter: {column: PermitType, regex: "mechanical"}
+          fields:
+            permit_id: PermitNumber          # TODO confirm via --probe
+            issued: IssueDate                # TODO confirm; may be issueDate / IssuedDate
+            permit_type: PermitType          # confirmed in portal description
+            work_type: WorkType              # confirmed in portal description
+            description: Comments            # confirmed: free-text scope of work
+            address: Address
+            zip: Zip
+            valuation: Value
+          notes: >
+            Best single source in any of the four markets. Weekly refresh, one layer,
+            free-text scope. Portal page: https://opendata.minneapolismn.gov/datasets/ccs-permits
+
+      - name: St. Paul
+        census: {state: "27", type: place, fips: "58000"}
+        population_fallback: {population: 303000, note: "approx 2023 PEP"}
+        source:
+          kind: socrata
+          verified: false
+          domain: information.stpaul.gov
+          dataset_id: j8ip-eytd
+          mechanical_filter: {column: permit_type, regex: "mechanical"}
+          fields:
+            permit_id: permit_number         # TODO all field names unconfirmed
+            issued: issue_date
+            permit_type: permit_type
+            work_type: work_type
+            description: description
+            address: address
+            zip: zip
+            valuation: valuation
+          notes: >
+            "Approved Building Permits Dataset", reportedly includes mechanical permits,
+            2013/2015 to present. Whether a description field exists is unconfirmed.
+            St. Paul moved to the PAULIE permitting system recently; check the feed
+            did not change shape.
+
+      - name: Hennepin/Ramsey suburbs (LOGIS ePermits cities)
+        population_fallback: {population: 1500000, note: "rough; Edina, Eden Prairie, Minnetonka, Maple Grove, Eagan, Bloomington, Burnsville, Woodbury and others"}
+        source:
+          kind: manual
+          verified: false
+          notes: >
+            Roughly 70% of the metro lives in cities on the LOGIS ePermits system
+            (epermits.logis.org), which offers per-address search only, no export.
+            Path: Minnesota Government Data Practices Act request to each city for
+            mechanical permits with work description, or accept city-only coverage.
+            Met Council residential permit data covers new construction only.
+
+  # ---------------------------------------------------------------------------
+  - key: charlotte
+    name: Charlotte-Concord-Gastonia, NC-SC
+    census: {state: "37", type: county, fips: "119"}
+    population_fallback: {population: 1200000, note: "Mecklenburg County, approx 2023 PEP"}
+    permit_rule: >
+      NC G.S. 160D-1110(c): the $40,000 no-permit exemption explicitly excludes the
+      addition, replacement or change of a heating or air-conditioning system, so
+      every HVAC changeout needs a mechanical permit statewide. Mecklenburg issues
+      these via the Trade Internet Permitting (TIP) path with a flat changeout fee.
+      No compliance-rate study found.
+    jurisdictions:
+
+      - name: Mecklenburg County (Charlotte + 6 towns)
+        census: {state: "37", type: county, fips: "119"}
+        population_fallback: {population: 1200000, single_family_units: 330000, note: "approx 2023 PEP; SF units rough"}
+        source:
+          kind: manual
+          verified: false
+          notes: >
+            One permitting authority for the whole county, which is why this market
+            is structurally the best after Minneapolis. But the published open-data
+            "Building Permits" layer (maps.mecknc.gov/opendata) covers CO-requiring
+            permits and appears to EXCLUDE stand-alone trade changeouts. The
+            changeout population lives in Accela (aca-prod.accela.com/Mecklenburg)
+            as Mechanical Permit records, searchable by record type and date with
+            CSV export of a few hundred rows per query. Two paths:
+            (a) scripted ACA searches by month and mechanical record type;
+            (b) a data extract from LUESA Code Enforcement, who state they share
+                "data reporting and query tools" on request. Ask for permit subtype,
+                issue date, work description, and the Appendix 5 HVAC compliance
+                form fields (equipment type, capacity) if captured.
+            Path (b) is the only route to structured system type in any market.
+
+      - name: Cabarrus County (Concord, Kannapolis)
+        census: {state: "37", type: county, fips: "025"}
+        population_fallback: {population: 240000, note: "approx 2023 PEP"}
+        source:
+          kind: manual
+          verified: false
+          notes: >
+            Accela plus an ArcGIS Hub (gis-cabarrus.opendata.arcgis.com) with annual
+            "Permits" point layers. Check whether recent years and trade permits are
+            included; if so switch this entry to kind: arcgis.
+
+      - name: Union, Gaston, Iredell NC; York SC
+        population_fallback: {population: 900000, note: "rough combined"}
+        source:
+          kind: manual
+          verified: false
+          notes: >
+            Portal-by-portal only: Evolve (Union, York County), Tyler EnerGov CSS
+            (Gaston, Iredell), BS&A (Rock Hill). No bulk export. Recommend leaving
+            out of the metro rate and stating Mecklenburg-only coverage.
+
+  # ---------------------------------------------------------------------------
+  - key: phoenix
+    name: Phoenix-Mesa-Chandler, AZ
+    census: {state: "04", type: county, fips: "013"}
+    population_fallback: {population: 4585000, note: "Maricopa County, approx 2023 PEP"}
+    permit_rule: >
+      Phoenix requires a mechanical permit for AC / heat pump changeouts, issued
+      over the counter to ROC-licensed contractors (Phoenix TRT guideline 00687).
+      Other Valley cities similar. No Arizona compliance study; California studies
+      put residential changeout permitting at 8% to 35%, and Arizona has no
+      utility-linked permit enforcement, so expect the low end.
+    market_note: >
+      About 25% of Arizona homes already heat with a central heat pump (EIA RECS
+      2020) and roughly half heat electrically. Heat pump permits here are mostly
+      like-kind cooling replacements, not electrification. Read the per-capita
+      number as HVAC replacement volume with a heat pump default, and do not
+      compare it to Minneapolis or Newark as an adoption signal.
+    jurisdictions:
+
+      - name: Mesa
+        census: {state: "04", type: place, fips: "46000"}
+        population_fallback: {population: 513000, single_family_units: 140000, note: "approx 2023 PEP; SF units rough"}
+        source:
+          kind: socrata
+          verified: false
+          domain: data.mesaaz.gov
+          dataset_id: m2kk-w2hz
+          mechanical_filter: {column: permit_type, regex: "mechanical|hvac|residential"}   # TODO tighten after probe
+          fields:
+            permit_id: permit_number         # TODO confirm all names via --probe
+            issued: issue_date
+            permit_type: permit_type
+            work_type: sub_type
+            description: description_of_work  # snippet confirms a "Description of work" column exists
+            address: property_address
+            zip: zip
+            valuation: valuation
+          notes: >
+            "Building Permits (Commercial, Residential and Signs)", updated Sept 2026.
+            Whether stand-alone mechanical trade permits are in this extract is the
+            first thing to check: filter distinct permit_type values.
+
+      - name: Tempe
+        census: {state: "04", type: place, fips: "73000"}
+        population_fallback: {population: 189000, note: "approx 2023 PEP"}
+        source:
+          kind: csv
+          verified: false
+          url: "https://hub.arcgis.com/api/v3/datasets/55b38626464d48cb94e81cb8227d6fde_0/downloads/data?format=csv&spatialRefId=4326&where=1%3D1"
+          mechanical_filter: {column: PermitType, regex: "mechanical|hvac"}
+          fields:
+            permit_id: PermitNumber          # TODO confirm
+            issued: IssueDate
+            permit_type: PermitType
+            work_type: PermitCategory
+            description: Description
+            address: Address
+            zip: Zip
+            valuation: Valuation
+          notes: '"Permits Issued by Building Safety", extracted from Tempe Accela. Portal: data.tempe.gov'
+
+      - name: Scottsdale
+        census: {state: "04", type: place, fips: "65000"}
+        population_fallback: {population: 244000, note: "approx 2023 PEP"}
+        source:
+          kind: csv
+          verified: false
+          url: "https://hub.arcgis.com/api/v3/datasets/68ba7b38073f4cd4aee38d2b59afcaf4_12/downloads/data?format=csv&spatialRefId=4326&where=1%3D1"
+          mechanical_filter: {column: PermitType, regex: "mechanical|minimum"}   # Scottsdale files changeouts as MINIMUM (…) permit types
+          fields:
+            permit_id: PermitNumber          # TODO confirm
+            issued: IssueDate
+            permit_type: PermitType
+            work_type: WorkClass
+            description: Description
+            address: Address
+            zip: Zip
+            valuation: Valuation
+          notes: '"Planning and Development Building Permits". Portal: data.scottsdaleaz.gov'
+
+      - name: Gilbert
+        census: {state: "04", type: place, fips: "27400"}
+        population_fallback: {population: 282000, note: "approx 2023 PEP"}
+        source:
+          kind: csv
+          verified: false
+          url: "https://hub.arcgis.com/api/v3/datasets/cba4345453f94ca5881b7727f069a431_3/downloads/data?format=csv&spatialRefId=4326&where=1%3D1"
+          mechanical_filter: {column: PermitType, regex: "mechanical|hvac"}
+          fields:
+            permit_id: PermitNumber          # TODO confirm
+            issued: IssueDate
+            permit_type: PermitType
+            work_type: PermitSubType
+            description: Description
+            address: Address
+            zip: Zip
+            valuation: Valuation
+          notes: 'All permits since 2003. Portal: data-tog.opendata.arcgis.com'
+
+      - name: Phoenix (city)
+        census: {state: "04", type: place, fips: "55000"}
+        population_fallback: {population: 1650000, single_family_units: 400000, note: "approx 2023 PEP; SF units rough"}
+        source:
+          kind: manual
+          verified: false
+          notes: >
+            The largest jurisdiction in any of the four markets and the biggest hole.
+            phoenixopendata.com's "Building Permit Data" is HUD SOCDS new-unit
+            aggregates, last updated 2023, no mechanical permits. Current permits are
+            in SHAPE PHX (shapephx.phoenix.gov) with per-record guest search and no
+            export. The legacy PDD Online "Issued Permits" search
+            (apps-secure.phoenix.gov/PDD/Search/IssuedPermit) has a "Create File"
+            CSV export by permit type and date; test whether it still serves
+            post-SHAPE-PHX records. Otherwise a public records request to
+            Planning & Development for mechanical permits with description.
+
+      - name: Chandler, Glendale, Peoria, Surprise, Goodyear, Buckeye, Queen Creek, unincorporated Maricopa
+        population_fallback: {population: 1700000, note: "rough combined"}
+        source:
+          kind: manual
+          verified: false
+          notes: Record-lookup portals only (Accela, SmartGov, EnerGov). Exclude and state coverage.
+
+  # ---------------------------------------------------------------------------
+  - key: newark
+    name: Newark, NJ (Essex County)
+    census: {state: "34", type: county, fips: "013"}
+    population_fallback: {population: 850000, note: "Essex County, approx 2023 PEP"}
+    permit_rule: >
+      N.J.A.C. 5:23-2.17A classifies like-capacity replacement of furnaces, boilers,
+      AC units and condensing units as "minor work": the contractor gives notice,
+      may start immediately, and a permit is issued after the fact with an
+      inspection. Fuel switches and capacity changes need a standard permit,
+      usually electrical plus (for 1-2 family) mechanical subcode. Result: heat
+      pump changeouts exist as thin subcode tickets in each town's software with
+      minimal description, and the state's monthly rollup lumps them into
+      "alterations" dollars.
+    jurisdictions:
+
+      - name: New Jersey statewide permit dataset (NJOIT)
+        source:
+          kind: socrata
+          verified: false
+          domain: data.nj.gov
+          dataset_id: w9se-dmra
+          fields: {}                           # schema unknown; run --probe before anything else
+          notes: >
+            "NJ Construction Permit Data" on data.nj.gov. Schema could not be seen.
+            If it is record-level with subcode or description it is the only free
+            source for this market. If it is municipality-month aggregates (more
+            likely, given how DCA collects data) it gives relative alteration
+            activity by town and nothing about heat pumps.
+
+      - name: Newark (city)
+        census: {state: "34", type: place, fips: "51000"}
+        population_fallback: {population: 305000, single_family_units: 25000, note: "approx 2023 PEP; Newark is mostly 2-4 family stock so SF units is a poor denominator here"}
+        source:
+          kind: manual
+          verified: false
+          notes: >
+            data.ci.newark.nj.us has Certificate of Occupancy datasets but no permit
+            dataset. Path: OPRA request to the Newark Division of Code Enforcement /
+            Construction Official for mechanical and electrical subcode permits with
+            work description, trailing 36 months.
+
+      - name: Essex/Hudson/Union suburbs
+        population_fallback: {population: 545000, note: "Essex County minus Newark, rough"}
+        source:
+          kind: manual
+          verified: false
+          notes: >
+            Bloomfield and Montclair run Spatial Data Logic portals with per-address
+            permit history (samplable, not exportable). Jersey City, Elizabeth,
+            Montclair use GovPilot for intake, no public search. East Orange,
+            Irvington, West Orange, Belleville, Nutley, Kearny, Bayonne: unknown.
+            OPRA requests per town, or accept that this market gets a state-aggregate
+            proxy plus PSE&G rebate counts rather than a permit rate.
