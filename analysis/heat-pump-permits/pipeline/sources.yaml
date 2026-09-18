@@ -9,6 +9,13 @@
 # `kind` values:  arcgis | socrata | csv | csv_file | manual
 # `manual` means there is no machine-readable feed; the notes say what to do.
 #
+# Signal definition (decided 2026-09-18): ANY permit whose description mentions
+# heat pump work is a demand signal, whatever the permit type. An electrical
+# service upgrade with a "heat pump" note counts. So `mechanical_filter` entries
+# below are kept for reference but are NOT applied unless a source sets
+# `apply_mechanical_filter: true`. The summary reports how many signals came
+# via mechanical, electrical, and other permit types.
+#
 # population_fallback values are approximate 2023 Census Population Estimates
 # recalled by the author, not fetched. They are overwritten by the Census API
 # on any run with network access. Treat them as +/- 2%.

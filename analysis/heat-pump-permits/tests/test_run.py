@@ -27,33 +27,39 @@ def test_pipeline_offline(tmp_path):
     summary = pd.read_csv(tmp_path / "out" / "market_summary.csv")
     permits = pd.read_csv(tmp_path / "out" / "permits_classified.csv")
 
-    # Only mechanical permits survive the filter: 10 of 12 rows.
-    assert len(permits) == 10
+    # All permit types are classified; only the row with an empty description drops: 13 of 14.
+    assert len(permits) == 13
 
     city = summary[summary["jurisdiction"] == "Fixture City"].iloc[0]
-    # Trailing 12 months to 2026-09-18 covers 2025-09-18 onward: 8 mechanical permits.
-    assert city["hvac_permits_12m"] == 8
-    # Confirmed heat pumps in window: M-1001, M-1003, M-1005, M-1007 = 4.
-    # Not counted: M-1002 (furnace+AC -> False), M-1004 (ambiguous), M-1006 (HPWH), M-1010 (pool).
-    assert city["heat_pump_confirmed_12m"] == 4
+    # Trailing 12 months to 2026-09-18 covers 2025-09-18 onward: 11 permits with text.
+    assert city["permits_with_text_12m"] == 11
+    # Confirmed heat pumps in window: M-1001, M-1003, M-1005, M-1007, E-4001 (ESU note) = 5.
+    # Not counted: M-1002 (furnace+AC -> False), M-1004 (ambiguous), M-1006 (HPWH),
+    # M-1010 (pool), B-2001 (kitchen), P-3001 (water heater).
+    assert city["heat_pump_confirmed_12m"] == 5
     assert city["hvac_ambiguous_12m"] == 1
+    assert city["hvac_permits_12m"] == 6
+    assert city["hp_via_mechanical_12m"] == 4
+    assert city["hp_via_electrical_12m"] == 1
+    assert city["hp_via_other_permit_12m"] == 0
     assert city["ductless_12m"] == 2
     assert city["dual_fuel_12m"] == 1
     assert city["ducted_12m"] == 1
-    # 4 per 100k pop annualised = 0.4 per 10k
-    assert city["hp_per_10k_pop_12m_annualised_low"] == 0.4
-    assert city["hp_per_10k_pop_12m_annualised_high"] == 0.5
+    assert city["type_unknown_12m"] == 1
+    # 5 per 100k pop annualised = 0.5 per 10k
+    assert city["hp_per_10k_pop_12m_annualised_low"] == 0.5
+    assert city["hp_per_10k_pop_12m_annualised_high"] == 0.6
     assert city["denominator_source"].startswith("fallback")
 
     # 36 month window adds M-1008 (2024-03) but not M-1009 (2023-01).
-    assert city["heat_pump_confirmed_36m"] == 5
+    assert city["heat_pump_confirmed_36m"] == 6
 
     town = summary[summary["jurisdiction"] == "Fixture Town (no feed)"].iloc[0]
     assert town["status"].startswith("skipped")
 
     total = summary[summary["jurisdiction"].str.startswith("MARKET TOTAL")].iloc[0]
     assert total["coverage_share_of_market_pop"] == 0.5
-    assert total["heat_pump_confirmed_12m"] == 4
+    assert total["heat_pump_confirmed_12m"] == 5
 
     md = (tmp_path / "out" / "market_summary.md").read_text()
     assert "Fixture City" in md

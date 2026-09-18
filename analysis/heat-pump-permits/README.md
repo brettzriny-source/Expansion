@@ -20,6 +20,12 @@ a measured rate until `output/market_summary.csv` exists.
 | **Phoenix** | **Good for Mesa, Tempe, Scottsdale, Gilbert** (about 1.2M people). **Bad for Phoenix city** (1.65M), which has no exportable permit feed. | Weak. Free-text descriptions only where present. | Phoenix's open-data "permits" dataset is HUD new-construction aggregates. Its current SHAPE PHX system has per-record search only. A legacy PDD export may still work. Bigger issue: heat pumps are already the default system in about a quarter of Arizona homes, so this metric measures HVAC replacement volume, not adoption. Compliance for like-kind changeouts is believed to be very low. |
 | **Newark** | **Poor.** No city permit dataset. State reporting is municipality-month aggregates with no equipment detail. | **Not feasible** from public data. | NJ treats like-capacity HVAC replacement as "minor work" (N.J.A.C. 5:23-2.17A): notice, start work, permit issued after the fact. These become thin subcode tickets in each town's Spatial Data Logic or GovPilot system. One unknown: the statewide `NJ Construction Permit Data` Socrata dataset on data.nj.gov, whose schema could not be inspected. |
 
+**Decision (2026-09-18).** The target is heat pump permit activity as a whole, not full
+system installs, used as one of several demand signals. Type breakdown is a nice-to-have
+reported as a range where text supports it. Coverage is the priority, which points to
+Shovels for the raw permit feed (with this classifier run on their description text,
+not their pre-built heat pump tag, which validated at roughly 5% recall in Philadelphia).
+
 **Accuracy verdict.** Permit *volume* in covered jurisdictions: 80-90% achievable for
 Minneapolis, St. Paul, Mesa, Tempe, Scottsdale, Gilbert, and Mecklenburg once the
 extract is obtained. Below that for any metro-wide figure because of coverage gaps.
@@ -120,8 +126,15 @@ python -m pipeline.run --probe       # print every endpoint's real field names; 
 python -m pipeline.run               # full run -> output/market_summary.csv, .md, permits_classified.csv
 ```
 
-**Classifier behaviour that drives the numbers.** Each mechanical permit gets one of
-three verdicts. *Heat pump* when the text says heat pump, HSPF, mini-split, ductless,
+**Signal definition.** Any permit whose text mentions heat pump work counts, whatever
+the permit type. An electrical service upgrade with a "heat pump" note is a signal. The
+summary breaks confirmed signals out by the permit type that carried them (mechanical,
+electrical, other) so the electrical share can be read as a rough proxy for
+electrification-driven work versus like-kind changeouts. This is a demand indicator,
+not an install count, and sits alongside the other demand signals in the market model.
+
+**Classifier behaviour that drives the numbers.** Each permit with a description gets
+one of three verdicts. *Heat pump* when the text says heat pump, HSPF, mini-split, ductless,
 geothermal, a ductless brand, or "HP" alongside HVAC context. *Not heat pump* when it
 names a gas furnace, boiler, straight-cool AC, water heater, pool, or ductwork only.
 *Ambiguous* when it is clearly HVAC ("replace 3 ton condenser and coil") but names no

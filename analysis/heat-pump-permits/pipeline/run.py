@@ -32,6 +32,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import os
+import re
 import sys
 from pathlib import Path
 
@@ -94,12 +95,32 @@ def normalise(df: pd.DataFrame, j: dict) -> pd.DataFrame:
     out["jurisdiction"] = j["name"]
     out["market"] = j["market"]
 
+    # Signal definition: ANY permit whose text mentions heat pump work counts,
+    # including electrical service upgrades and building permits. The optional
+    # mechanical_filter is only applied when the source asks for it explicitly;
+    # otherwise permits with an empty description are dropped (no text, no signal).
     flt = j["source"].get("mechanical_filter")
-    if flt:
+    if flt and j["source"].get("apply_mechanical_filter", False):
         col, pattern = flt["column"], flt["regex"]
         mask = df[col].astype(str).str.contains(pattern, case=False, regex=True, na=False)
         out = out[mask.values]
+    else:
+        out = out[out["description"].fillna("").astype(str).str.strip() != ""]
     return out.reset_index(drop=True)
+
+
+_MECH = r"mechanical|hvac|heating|cooling"
+_ELEC = r"electrical|electric|service\s*upgrade|esu|panel"
+
+
+def permit_type_bucket(permit_type) -> str:
+    """Collapse portal-specific permit type labels into mechanical / electrical / other."""
+    t = str(permit_type or "")
+    if re.search(_MECH, t, re.IGNORECASE):
+        return "mechanical"
+    if re.search(_ELEC, t, re.IGNORECASE):
+        return "electrical"
+    return "other"
 
 
 # ---------------------------------------------------------------------------
@@ -112,10 +133,15 @@ def window_counts(df: pd.DataFrame, asof: pd.Timestamp, months: int) -> dict:
     hp = w[w["is_heat_pump"] == True]  # noqa: E712
     amb = w[w["is_heat_pump"].isna()]
     types = hp["system_type"].value_counts()
+    via = hp["permit_type"].map(permit_type_bucket).value_counts()
     return {
-        f"hvac_permits_{months}m": len(w),
+        f"permits_with_text_{months}m": len(w),
+        f"hvac_permits_{months}m": len(hp) + len(amb),   # permits with any HVAC language
         f"heat_pump_confirmed_{months}m": len(hp),
         f"hvac_ambiguous_{months}m": len(amb),
+        f"hp_via_mechanical_{months}m": int(via.get("mechanical", 0)),
+        f"hp_via_electrical_{months}m": int(via.get("electrical", 0)),
+        f"hp_via_other_permit_{months}m": int(via.get("other", 0)),
         f"ductless_{months}m": int(types.get("ductless", 0)),
         f"dual_fuel_{months}m": int(types.get("dual_fuel", 0)),
         f"ducted_{months}m": int(types.get("ducted", 0)),
@@ -205,6 +231,7 @@ def render_markdown(summary: pd.DataFrame, asof: pd.Timestamp) -> str:
     cols = [
         "market", "jurisdiction", "status", "population",
         "hvac_permits_12m", "heat_pump_confirmed_12m", "hvac_ambiguous_12m",
+        "hp_via_mechanical_12m", "hp_via_electrical_12m", "hp_via_other_permit_12m",
         "ductless_12m", "dual_fuel_12m", "ducted_12m", "type_unknown_12m",
         "hp_per_10k_pop_12m_annualised_low", "hp_per_10k_pop_12m_annualised_high",
         "coverage_share_of_market_pop",
