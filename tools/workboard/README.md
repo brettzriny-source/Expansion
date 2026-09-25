@@ -12,6 +12,8 @@ which is published alongside the page and falls back to system fonts if missing.
 
 ## Project document shape
 
-name, stream (Special Projects | Expansion | Fleet), kind (Project | Program), owners[],
+name, stream (Special Projects | Expansion | Fleet), kind (Project | Program), size (S | M | L = 1/2/3 pts), owners[],
 sponsor, health (green | yellow | red | hold | done), target (YYYY-MM-DD), goal, nextStep,
 blockers, notion, milestones[{id, title, due, done, doneOn}], notes[{id, date, text}], updatedAt
+
+Owner capacity (points per week, default 6) lives in `settings/capacity` as `{caps: {"<owner name>": n}}`.
