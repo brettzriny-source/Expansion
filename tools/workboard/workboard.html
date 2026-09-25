@@ -1,0 +1,443 @@
+<title>Expansion Workboard</title>
+<style>
+@font-face{font-family:"MNKY Jane";src:url("mnkyjane-variable.woff2") format("woff2-variations"),url("mnkyjane-variable.woff2") format("woff2");font-weight:100 900;font-stretch:50% 100%;font-display:swap}
+:root{
+  --bg:#FBFAF1;--panel:#F2F0E4;--card:#FFFFFF;--line:#E2E1D3;--line-strong:#ACAA93;
+  --ink:#0F1F0D;--muted:#666858;--accent:#3CD567;--accent-ink:#113823;--lime:#CBFF8A;
+  --ok:#1E9E47;--warn:#B77900;--bad:#C8412F;--hold:#8A8873;
+  --ok-bg:#E3F6E7;--warn-bg:#FBF0D6;--bad-bg:#F9E3DF;--hold-bg:#ECEBE2;
+  --shadow:0 12px 40px rgba(15,31,13,.18);
+  --display:"MNKY Jane","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  --body:"MNKY Jane",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark;--bg:#0F1F0D;--panel:#132616;--card:#17301C;--line:#24402A;--line-strong:#3E5A43;
+  --ink:#FBFAF1;--muted:#ACAA93;--accent:#3CD567;--accent-ink:#CBFF8A;
+  --ok:#5BE07F;--warn:#F2C14E;--bad:#FF7A66;--hold:#ACAA93;
+  --ok-bg:#1B3D22;--warn-bg:#3A3217;--bad-bg:#3F1F19;--hold-bg:#26352A;--shadow:0 12px 40px rgba(0,0,0,.5)}}
+:root[data-theme="dark"]{
+  color-scheme:dark;--bg:#0F1F0D;--panel:#132616;--card:#17301C;--line:#24402A;--line-strong:#3E5A43;
+  --ink:#FBFAF1;--muted:#ACAA93;--accent:#3CD567;--accent-ink:#CBFF8A;
+  --ok:#5BE07F;--warn:#F2C14E;--bad:#FF7A66;--hold:#ACAA93;
+  --ok-bg:#1B3D22;--warn-bg:#3A3217;--bad-bg:#3F1F19;--hold-bg:#26352A;--shadow:0 12px 40px rgba(0,0,0,.5)}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45}
+.wrap{max-width:1240px;margin:0 auto;padding-inline:20px;padding-block:28px 64px}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+
+/* header */
+.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:22px}
+.eyebrow{font-weight:700;text-transform:uppercase;letter-spacing:.09em;font-size:12px;color:var(--muted)}
+h1{font-family:var(--display);font-stretch:62%;font-weight:900;font-size:clamp(40px,6vw,64px);line-height:.9;margin:4px 0 0;text-wrap:balance}
+h1 span{color:var(--accent)}
+.sub{color:var(--muted);font-size:13px;margin-top:8px}
+.btn{border:1px solid var(--line-strong);background:var(--card);border-radius:8px;padding:8px 14px;font-weight:600}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#0F1F0D}
+.btn.primary:hover{filter:brightness(.95)}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--muted)}
+.btn.danger{color:var(--bad);border-color:var(--bad);background:transparent}
+
+/* tiles */
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
+.tile{background:var(--panel);border-radius:12px;padding:14px 16px;text-align:left;border:1px solid transparent}
+button.tile:hover{border-color:var(--line-strong)}
+.tile b{display:block;font-family:var(--display);font-stretch:62%;font-weight:900;font-size:40px;line-height:1}
+.tile small{color:var(--muted);font-size:13px}
+.tile.warn b{color:var(--warn)} .tile.bad b{color:var(--bad)}
+
+/* controls */
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px}
+.seg{display:inline-flex;background:var(--panel);border-radius:10px;padding:3px}
+.seg button{border:0;background:transparent;padding:7px 14px;border-radius:8px;font-weight:600;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.search{flex:1;min-width:180px;max-width:320px;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:8px 12px}
+select.pill{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:8px 10px}
+.spacer{flex:1}
+
+/* layout */
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:start}
+.group{margin-bottom:24px}
+.group h2{font-family:var(--display);font-stretch:75%;font-weight:800;font-size:22px;margin:0 0 8px;display:flex;align-items:baseline;gap:10px}
+.group h2 small{font-family:var(--body);font-stretch:100%;font-weight:500;font-size:13px;color:var(--muted)}
+.rows{border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:14px minmax(0,2.2fr) minmax(0,1.2fr) minmax(0,2fr) 92px;gap:14px;align-items:center;padding:12px 6px;border-bottom:1px solid var(--line);cursor:pointer;width:100%;background:none;border-left:0;border-right:0;border-top:0;text-align:left}
+.row:hover{background:var(--panel)}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--hold)}
+.h-green{background:var(--ok)}.h-yellow{background:var(--warn)}.h-red{background:var(--bad)}.h-hold{background:var(--hold)}.h-done{background:var(--accent-ink);box-shadow:inset 0 0 0 3px var(--card)}
+.pname{font-weight:700}
+.meta{font-size:12.5px;color:var(--muted)}
+.kind{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:1px 6px;border-radius:4px;background:var(--panel);color:var(--muted);margin-left:6px;vertical-align:1px}
+.row:hover .kind{background:var(--card)}
+.next{font-size:13.5px;min-width:0}
+.next .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.due{font-size:12px;font-weight:600}
+.due.over{color:var(--bad)}.due.soon{color:var(--warn)}.due.none{color:var(--muted);font-weight:500}
+.prog{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.track{width:100%;height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.track i{display:block;height:100%;background:var(--accent)}
+.stale{color:var(--warn)}
+
+/* rail */
+.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);background:var(--panel);border-radius:14px;padding:16px}
+.rail h3{margin:0 0 2px;font-family:var(--display);font-stretch:75%;font-weight:800;font-size:20px}
+.rail .meta{margin-bottom:10px}
+.wk{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+.ms-item{display:grid;grid-template-columns:44px 1fr;gap:8px;padding:6px 0;border-top:1px solid var(--line);font-size:13.5px;cursor:pointer;background:none;border-left:0;border-right:0;border-bottom:0;text-align:left;width:100%}
+.ms-item .d{font-weight:700;font-size:12px;line-height:1.2}
+.ms-item .d.over{color:var(--bad)}
+.ms-item .p{color:var(--muted);font-size:12px}
+
+/* 1:1 */
+.people{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.chip{border:1px solid var(--line-strong);background:var(--card);border-radius:999px;padding:6px 12px;font-weight:600;font-size:14px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip .c{font-weight:500;opacity:.7;margin-left:4px}
+.prep{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:24px;align-items:start}
+.agenda{background:var(--panel);border-radius:14px;padding:18px}
+.agenda h3{margin:0;font-family:var(--display);font-stretch:62%;font-weight:900;font-size:32px;line-height:1}
+.agenda ul{list-style:none;padding:0;margin:12px 0 0;display:flex;flex-direction:column;gap:8px}
+.agenda li{display:grid;grid-template-columns:74px 1fr;gap:10px;font-size:14px;align-items:baseline}
+.tag{font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:2px 6px;border-radius:4px;text-align:center}
+.tag.bad{background:var(--bad-bg);color:var(--bad)}.tag.warn{background:var(--warn-bg);color:var(--warn)}.tag.ok{background:var(--ok-bg);color:var(--ok)}.tag.hold{background:var(--hold-bg);color:var(--muted)}
+.cards{display:flex;flex-direction:column;gap:14px}
+.pcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.pcard header{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.pcard h4{margin:0;font-size:17px;display:flex;gap:8px;align-items:center}
+.kv{display:grid;grid-template-columns:90px 1fr;gap:4px 12px;font-size:13.5px;margin:10px 0}
+.kv dt{color:var(--muted)} .kv dd{margin:0;white-space:pre-line}
+.empty{color:var(--muted);padding:24px;text-align:center;border:1px dashed var(--line-strong);border-radius:12px}
+
+/* milestones (shared) */
+.ms{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-direction:column}
+.ms li{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:8px;align-items:center;padding:6px 0;border-top:1px solid var(--line)}
+.ms li.done .mt{text-decoration:line-through;color:var(--muted)}
+.ms input[type=checkbox]{width:17px;height:17px;accent-color:var(--accent)}
+.ms .mt{font-size:14px}
+.ms .md{font-size:12px;font-weight:600}
+.noteform{display:flex;gap:8px;margin-top:10px}
+.noteform input{flex:1;min-width:0;border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:8px 10px}
+.notes{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.note{font-size:13px;display:grid;grid-template-columns:62px 1fr;gap:8px}
+.note time{color:var(--muted);font-weight:600}
+
+/* sheet */
+.scrim{position:fixed;inset:0;background:rgba(15,31,13,.35);z-index:10}
+.sheet{position:fixed;top:0;right:0;bottom:0;width:min(600px,100%);background:var(--bg);z-index:11;box-shadow:var(--shadow);overflow-y:auto;padding:calc(env(safe-area-inset-top,0px) + 18px) 22px calc(env(safe-area-inset-bottom,0px) + 40px)}
+.sheet .head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.sheet .title{width:100%;font-family:var(--display);font-stretch:70%;font-weight:900;font-size:34px;line-height:1;border:0;background:transparent;padding:4px 0;border-bottom:2px solid transparent}
+.sheet .title:focus{outline:none;border-bottom-color:var(--accent)}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px;margin:14px 0}
+.f{display:flex;flex-direction:column;gap:4px;min-width:0}
+.f.full{grid-column:1/-1}
+.f label,.lab{font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.f input,.f select,.f textarea{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:8px 10px;width:100%}
+.f textarea{min-height:64px;resize:vertical}
+.owners{display:flex;flex-wrap:wrap;gap:6px}
+.owners .chip{font-size:13px;padding:4px 10px}
+.sec{margin-top:22px}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline}
+.sheet .ms li{grid-template-columns:22px minmax(0,1fr) 138px 28px}
+.sheet .ms input.mt{border:0;background:transparent;padding:4px 2px;width:100%;border-bottom:1px solid transparent}
+.sheet .ms input.mt:focus{outline:none;border-bottom-color:var(--accent)}
+.sheet .ms input[type=date]{border:1px solid var(--line);background:var(--card);border-radius:6px;padding:4px 6px;font-size:13px;width:100%}
+.x{border:0;background:transparent;color:var(--muted);font-size:18px;line-height:1;padding:4px}
+.x:hover{color:var(--bad)}
+.addms{display:flex;gap:8px;margin-top:8px}
+.addms input{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:8px 10px}
+.addms input[type=text]{flex:1;min-width:0}
+.foot{margin-top:28px;padding-top:16px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:8px;font-size:14px;z-index:20}
+.status{padding:40px;text-align:center;color:var(--muted)}
+a{color:inherit}
+
+@media (max-width:900px){
+  .grid,.prep{grid-template-columns:1fr}
+  .rail{position:static}
+  .tiles{grid-template-columns:repeat(2,1fr)}
+  .row{grid-template-columns:14px minmax(0,1fr) 80px}
+  .row .own,.row .next{display:none}
+}
+@media (max-width:520px){
+  .wrap{padding-inline:16px}
+  .fields{grid-template-columns:1fr}
+  .sheet{padding-inline:16px}
+  .sheet .ms li{grid-template-columns:22px minmax(0,1fr) 28px}
+  .sheet .ms li input[type=date]{grid-column:2/3}
+}
+@media (prefers-reduced-motion:no-preference){.sheet{animation:slide .18s ease-out}@keyframes slide{from{transform:translateX(24px);opacity:.6}}}
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <div>
+      <div class="eyebrow">Expansion &amp; Fleet Ops</div>
+      <h1>Team <span>Workboard</span></h1>
+      <div class="sub" id="sub">Loading the shared board…</div>
+    </div>
+    <button class="btn primary" id="newBtn" type="button">+ New project</button>
+  </div>
+
+  <div class="tiles" id="tiles"></div>
+
+  <div class="bar">
+    <div class="seg" role="group" aria-label="View">
+      <button type="button" id="vPortfolio" aria-pressed="true">Portfolio</button>
+      <button type="button" id="vPrep" aria-pressed="false">1:1 Prep</button>
+    </div>
+    <input class="search" id="q" type="search" placeholder="Search projects, milestones, blockers">
+    <select class="pill" id="streamFilter" aria-label="Workstream">
+      <option value="">All workstreams</option>
+      <option>Special Projects</option><option>Expansion</option><option>Fleet</option>
+    </select>
+    <label class="meta"><input type="checkbox" id="showDone"> Show complete</label>
+  </div>
+
+  <div id="main"><div class="status">Loading…</div></div>
+</div>
+<div id="sheetRoot"></div>
+
+<script>
+const ROSTER=["Ben Gode","Bryan Montalto","Jayne Baranowsky","Austin Butler","Jennifer Pearson","Karrie Ford","Brett Zriny"];
+const STREAMS=["Special Projects","Expansion","Fleet"];
+const HEALTH={green:["On track","ok"],yellow:["At risk","warn"],red:["Off track","bad"],hold:["On hold","hold"],done:["Complete","ok"]};
+const S={projects:[],view:"portfolio",person:null,openId:null,q:"",stream:"",showDone:false,ready:false,err:null};
+let db=null;
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const uid=()=>Math.random().toString(36).slice(2,10);
+const today=()=>{const d=new Date();d.setHours(0,0,0,0);return d};
+const pd=s=>{if(!s)return null;const[y,m,d]=s.slice(0,10).split("-").map(Number);return new Date(y,m-1,d)};
+const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const days=s=>{const d=pd(s);return d?Math.round((d-today())/864e5):null};
+const fmt=s=>{const d=pd(s);return d?d.toLocaleDateString(undefined,{month:"short",day:"numeric"}):"No date"};
+const ago=s=>{if(!s)return null;return Math.floor((Date.now()-new Date(s).getTime())/864e5)};
+const first=n=>n.split(" ")[0];
+
+function openMs(p){return (p.milestones||[]).filter(m=>!m.done).sort((a,b)=>(a.due||"9999")<(b.due||"9999")?-1:1)}
+function isActive(p){return p.health!=="done"}
+function dueCls(s){const n=days(s);if(n==null)return"none";if(n<0)return"over";if(n<=14)return"soon";return""}
+function dueTxt(s){const n=days(s);if(n==null)return"No date";if(n<0)return fmt(s)+" · "+(-n)+"d late";if(n===0)return"Today";if(n<=14)return fmt(s)+" · in "+n+"d";return fmt(s)}
+function matches(p){
+  if(S.stream&&p.stream!==S.stream)return false;
+  if(!S.showDone&&!isActive(p))return false;
+  if(!S.q)return true;
+  const hay=[p.name,p.sponsor,p.nextStep,p.blockers,(p.owners||[]).join(" "),...(p.milestones||[]).map(m=>m.title)].join(" ").toLowerCase();
+  return hay.includes(S.q.toLowerCase());
+}
+
+/* ---------- render ---------- */
+function render(){
+  if(!S.ready){$("#main").innerHTML=`<div class="status">${S.err?esc(S.err):"Loading…"}</div>`;return}
+  const act=S.projects.filter(isActive);
+  const all=act.flatMap(p=>openMs(p).map(m=>({...m,p})));
+  const over=all.filter(m=>m.due&&days(m.due)<0).length;
+  const soon=all.filter(m=>m.due&&days(m.due)>=0&&days(m.due)<=14).length;
+  const risk=act.filter(p=>p.health==="yellow"||p.health==="red").length;
+  $("#tiles").innerHTML=`
+    <div class="tile"><b class="num">${act.length}</b><small>Active projects &amp; programs</small></div>
+    <div class="tile ${risk?"warn":""}"><b class="num">${risk}</b><small>At risk or off track</small></div>
+    <div class="tile ${soon?"warn":""}"><b class="num">${soon}</b><small>Milestones due in 14 days</small></div>
+    <div class="tile ${over?"bad":""}"><b class="num">${over}</b><small>Overdue milestones</small></div>`;
+  const last=S.projects.map(p=>p.updatedAt).filter(Boolean).sort().pop();
+  $("#sub").textContent=last?`Last change ${new Date(last).toLocaleString(undefined,{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"})} · shared with everyone who opens this page`:"Shared with everyone who opens this page";
+  $("#vPortfolio").setAttribute("aria-pressed",S.view==="portfolio");
+  $("#vPrep").setAttribute("aria-pressed",S.view==="prep");
+  $("#main").innerHTML=S.view==="portfolio"?portfolio():prep();
+  renderSheet();
+}
+
+function row(p){
+  const ms=p.milestones||[],done=ms.filter(m=>m.done).length,n=openMs(p)[0];
+  const st=ago(p.updatedAt);
+  return `<button class="row" type="button" data-open="${p.id}">
+    <span class="dot h-${p.health||"hold"}" title="${HEALTH[p.health]?.[0]||""}"></span>
+    <span style="min-width:0"><span class="pname">${esc(p.name)}</span><span class="kind">${esc(p.kind||"Project")}</span>
+      <span class="meta" style="display:block">${p.target?"Target "+fmt(p.target):"No target date"}${p.sponsor?" · Sponsor "+esc(p.sponsor):""}${st!=null&&st>14?` · <span class="stale">no update in ${st}d</span>`:""}</span></span>
+    <span class="own meta">${esc((p.owners||[]).join(", ")||"Unassigned")}</span>
+    <span class="next">${n?`<span class="t">${esc(n.title)}</span><span class="due ${dueCls(n.due)}">${dueTxt(n.due)}</span>`:`<span class="meta">${ms.length?"All milestones done":"No milestones yet"}</span>`}</span>
+    <span class="prog"><span class="meta num">${done}/${ms.length}</span><span class="track"><i style="width:${ms.length?Math.round(done/ms.length*100):0}%"></i></span></span>
+  </button>`;
+}
+
+function portfolio(){
+  const list=S.projects.filter(matches);
+  const groups=STREAMS.map(s=>[s,list.filter(p=>p.stream===s)]).filter(g=>g[1].length);
+  const other=list.filter(p=>!STREAMS.includes(p.stream));if(other.length)groups.push(["Other",other]);
+  const hRank={red:0,yellow:1,green:2,hold:3,done:4};
+  const left=groups.length?groups.map(([s,ps])=>`<section class="group"><h2>${esc(s)} <small>${ps.length}</small></h2><div class="rows">${ps.sort((a,b)=>(hRank[a.health]??5)-(hRank[b.health]??5)||a.name.localeCompare(b.name)).map(row).join("")}</div></section>`).join("")
+    :`<div class="empty">${S.projects.length?"Nothing matches these filters.":"No projects yet. Add the first one with “New project”."}</div>`;
+  return `<div class="grid"><div>${left}</div>${rail()}</div>`;
+}
+
+function rail(){
+  const items=S.projects.filter(isActive).flatMap(p=>openMs(p).filter(m=>m.due&&days(m.due)<=35).map(m=>({...m,p}))).sort((a,b)=>a.due<b.due?-1:1);
+  const undated=S.projects.filter(isActive).reduce((n,p)=>n+openMs(p).filter(m=>!m.due).length,0);
+  const buckets=[["Overdue",m=>days(m.due)<0],["This week",m=>days(m.due)>=0&&days(m.due)<7],["Next week",m=>days(m.due)>=7&&days(m.due)<14],["Weeks 3–5",m=>days(m.due)>=14]];
+  const body=buckets.map(([lab,f])=>{const xs=items.filter(f);if(!xs.length)return"";return `<div class="wk">${lab}</div>`+xs.map(m=>`<button class="ms-item" type="button" data-open="${m.p.id}"><span class="d num ${days(m.due)<0?"over":""}">${fmt(m.due)}</span><span>${esc(m.title)}<span class="p" style="display:block">${esc(m.p.name)} · ${esc(first((m.p.owners||["—"])[0]))}</span></span></button>`).join("")}).join("");
+  return `<aside class="rail"><h3>Coming up</h3><div class="meta">Open milestones due in the next 5 weeks</div>${body||`<div class="meta">Nothing dated in the next 5 weeks.</div>`}${undated?`<div class="wk">Needs a date</div><div class="meta">${undated} open milestone${undated>1?"s have":" has"} no due date. Set them in 1:1s.</div>`:""}</aside>`;
+}
+
+function agendaFor(person,ps){
+  const out=[];
+  ps.forEach(p=>{
+    openMs(p).forEach(m=>{const n=days(m.due);if(n!=null&&n<0)out.push([0,"bad","Overdue",`${m.title} — ${p.name}, due ${fmt(m.due)}`]);else if(n!=null&&n<=14)out.push([1,"warn","Due soon",`${m.title} — ${p.name}, ${dueTxt(m.due)}`])});
+    if(p.health==="red")out.push([0,"bad","Off track",`${p.name}: what gets it back on track?`]);
+    else if(p.health==="yellow")out.push([2,"warn","At risk",`${p.name}: what is driving the risk?`]);
+    if(p.blockers)out.push([1,"bad","Blocker",`${p.name}: ${p.blockers.split("\n")[0].slice(0,160)}`]);
+    const st=ago(p.updatedAt);if(st!=null&&st>14)out.push([3,"hold","Stale",`${p.name}: no update in ${st} days`]);
+    const u=openMs(p).filter(m=>!m.due).length;if(u)out.push([4,"hold","No date",`${p.name}: ${u} milestone${u>1?"s":""} need a due date`]);
+    if(!(p.milestones||[]).length)out.push([4,"hold","No plan",`${p.name}: define milestones`]);
+  });
+  return out.sort((a,b)=>a[0]-b[0]);
+}
+
+function prep(){
+  const counts=Object.fromEntries(ROSTER.map(r=>[r,S.projects.filter(p=>isActive(p)&&(p.owners||[]).includes(r)).length]));
+  S.projects.forEach(p=>(p.owners||[]).forEach(o=>{if(!(o in counts))counts[o]=S.projects.filter(x=>isActive(x)&&(x.owners||[]).includes(o)).length}));
+  if(!S.person)S.person=Object.keys(counts).find(k=>counts[k])||ROSTER[0];
+  const chips=Object.entries(counts).map(([n,c])=>`<button type="button" class="chip" data-person="${esc(n)}" aria-pressed="${n===S.person}">${esc(n)}<span class="c num">${c}</span></button>`).join("");
+  const ps=S.projects.filter(p=>(p.owners||[]).includes(S.person)&&matches(p));
+  const ag=agendaFor(S.person,ps.filter(isActive));
+  const cards=ps.length?ps.map(pcard).join(""):`<div class="empty">${esc(first(S.person))} has no projects on the board.</div>`;
+  return `<div class="people" role="group" aria-label="Team member">${chips}</div>
+  <div class="prep">
+    <div class="agenda"><div class="eyebrow">1:1 talking points</div><h3>${esc(S.person)}</h3>
+      ${ag.length?`<ul>${ag.map(a=>`<li><span class="tag ${a[1]}">${a[2]}</span><span>${esc(a[3])}</span></li>`).join("")}</ul>`:`<p class="meta">Nothing flagged. Every milestone is dated, on time and unblocked.</p>`}
+      <div style="margin-top:14px"><button class="btn" type="button" id="copyAgenda">Copy agenda</button></div>
+    </div>
+    <div class="cards">${cards}</div>
+  </div>`;
+}
+
+function pcard(p){
+  const ms=(p.milestones||[]).slice().sort((a,b)=>(a.done-b.done)||((a.due||"9999")<(b.due||"9999")?-1:1));
+  const notes=(p.notes||[]).slice().sort((a,b)=>a.date<b.date?1:-1).slice(0,3);
+  const h=HEALTH[p.health]||HEALTH.hold;
+  return `<article class="pcard">
+    <header><h4><span class="dot h-${p.health||"hold"}"></span>${esc(p.name)}<span class="kind">${esc(p.kind||"Project")}</span></h4>
+      <span style="display:flex;gap:8px;align-items:center"><span class="tag ${h[1]}">${h[0]}</span><button class="btn" type="button" data-open="${p.id}">Edit</button></span></header>
+    <dl class="kv">
+      <dt>Target</dt><dd>${p.target?fmt(p.target)+" ("+dueTxt(p.target)+")":"Not set"}</dd>
+      ${p.nextStep?`<dt>Next step</dt><dd>${esc(p.nextStep)}</dd>`:""}
+      ${p.blockers?`<dt>Blockers</dt><dd>${esc(p.blockers)}</dd>`:""}
+    </dl>
+    <div class="lab">Milestones</div>
+    ${ms.length?`<ul class="ms">${ms.map(m=>`<li class="${m.done?"done":""}"><input type="checkbox" data-toggle="${p.id}:${m.id}" ${m.done?"checked":""} aria-label="Mark ${esc(m.title)} done"><span class="mt">${esc(m.title)}</span><span class="md due ${m.done?"none":dueCls(m.due)}">${m.done?"Done":dueTxt(m.due)}</span></li>`).join("")}</ul>`:`<p class="meta">No milestones yet.</p>`}
+    <form class="noteform" data-note="${p.id}"><input id="note-${p.id}" name="note" placeholder="Add a 1:1 note or decision" autocomplete="off"><button class="btn" type="submit">Log</button></form>
+    ${notes.length?`<div class="notes">${notes.map(n=>`<div class="note"><time>${fmt(n.date)}</time><span>${esc(n.text)}</span></div>`).join("")}</div>`:""}
+  </article>`;
+}
+
+/* ---------- sheet ---------- */
+function renderSheet(){
+  const root=$("#sheetRoot");
+  if(!S.openId){root.innerHTML="";return}
+  if(root.contains(document.activeElement)&&document.activeElement!==document.body&&root.innerHTML)return;
+  const p=S.projects.find(x=>x.id===S.openId);
+  if(!p){root.innerHTML="";S.openId=null;return}
+  const ms=(p.milestones||[]).slice().sort((a,b)=>(a.due||"9999")<(b.due||"9999")?-1:1);
+  const notes=(p.notes||[]).slice().sort((a,b)=>a.date<b.date?1:-1);
+  const owners=[...new Set([...ROSTER,...(p.owners||[])])];
+  root.innerHTML=`<div class="scrim" data-close></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(p.name)}">
+    <div class="head"><span class="eyebrow">${esc(p.stream||"")} · ${esc(p.kind||"Project")}</span><button class="btn ghost" type="button" data-close>Close</button></div>
+    <input class="title" id="f-name" data-field="name" value="${esc(p.name)}" aria-label="Project name">
+    <div class="fields">
+      <div class="f"><label for="f-health">Health</label><select id="f-health" data-field="health">${Object.entries(HEALTH).map(([k,v])=>`<option value="${k}" ${p.health===k?"selected":""}>${v[0]}</option>`).join("")}</select></div>
+      <div class="f"><label for="f-target">Target date</label><input id="f-target" type="date" data-field="target" value="${esc(p.target||"")}"></div>
+      <div class="f"><label for="f-stream">Workstream</label><select id="f-stream" data-field="stream">${STREAMS.map(s=>`<option ${p.stream===s?"selected":""}>${s}</option>`).join("")}</select></div>
+      <div class="f"><label for="f-kind">Type</label><select id="f-kind" data-field="kind">${["Project","Program"].map(s=>`<option ${p.kind===s?"selected":""}>${s}</option>`).join("")}</select></div>
+      <div class="f full"><span class="lab">Owners</span><div class="owners">${owners.map(o=>`<button type="button" class="chip" data-owner="${esc(o)}" aria-pressed="${(p.owners||[]).includes(o)}">${esc(o)}</button>`).join("")}</div></div>
+      <div class="f"><label for="f-sponsor">Sponsor</label><input id="f-sponsor" data-field="sponsor" value="${esc(p.sponsor||"")}"></div>
+      <div class="f"><label for="f-notion">Notion link</label><input id="f-notion" data-field="notion" value="${esc(p.notion||"")}" placeholder="https://…"></div>
+      <div class="f full"><label for="f-goal">Goal / definition of done</label><textarea id="f-goal" data-field="goal">${esc(p.goal||"")}</textarea></div>
+      <div class="f full"><label for="f-next">Next step</label><textarea id="f-next" data-field="nextStep">${esc(p.nextStep||"")}</textarea></div>
+      <div class="f full"><label for="f-block">Blockers</label><textarea id="f-block" data-field="blockers">${esc(p.blockers||"")}</textarea></div>
+    </div>
+    ${p.notion?`<a class="meta" href="${esc(p.notion)}" target="_blank" rel="noopener">Open in Notion ↗</a>`:""}
+    <div class="sec"><div class="sec-h"><span class="lab">Milestones</span><span class="meta num">${ms.filter(m=>m.done).length}/${ms.length} done</span></div>
+      <ul class="ms">${ms.map(m=>`<li class="${m.done?"done":""}"><input type="checkbox" data-toggle="${p.id}:${m.id}" ${m.done?"checked":""} aria-label="Done"><input class="mt" id="mt-${m.id}" data-mtitle="${m.id}" value="${esc(m.title)}" aria-label="Milestone"><input type="date" id="md-${m.id}" data-mdue="${m.id}" value="${esc(m.due||"")}" aria-label="Due date"><button class="x" type="button" data-mdel="${m.id}" aria-label="Remove milestone">×</button></li>`).join("")}</ul>
+      <form class="addms" id="addMs"><input type="text" id="newMsTitle" placeholder="New milestone" autocomplete="off"><input type="date" id="newMsDue" aria-label="Due date"><button class="btn" type="submit">Add</button></form>
+    </div>
+    <div class="sec"><span class="lab">1:1 notes &amp; decisions</span>
+      <form class="noteform" data-note="${p.id}"><input id="sheetnote" placeholder="What was discussed or decided?" autocomplete="off"><button class="btn" type="submit">Log</button></form>
+      <div class="notes">${notes.map(n=>`<div class="note"><time>${fmt(n.date)}</time><span>${esc(n.text)} <button class="x" type="button" data-ndel="${n.id}" aria-label="Remove note" style="font-size:14px">×</button></span></div>`).join("")||`<span class="meta">No notes yet.</span>`}</div>
+    </div>
+    <div class="foot"><span class="meta">${p.updatedAt?"Updated "+new Date(p.updatedAt).toLocaleDateString(undefined,{month:"short",day:"numeric"}):""}</span><button class="btn danger" type="button" id="delProj">Delete project</button></div>
+  </div>`;
+}
+
+/* ---------- writes ---------- */
+const chains={};
+function save(id,patch){
+  if(!db){toast("Changes can’t be saved in this view.");return Promise.resolve()}
+  const p=S.projects.find(x=>x.id===id);if(p)Object.assign(p,patch);
+  const body={...patch,updatedAt:new Date().toISOString()};
+  chains[id]=(chains[id]||Promise.resolve()).then(()=>db.doc("projects/"+id).update(body)).catch(e=>{toast(e?.code==="invalid_argument"?"You have view-only access to this board.":"Couldn’t save. Try again.")});
+  return chains[id];
+}
+function msOf(id){return JSON.parse(JSON.stringify(S.projects.find(p=>p.id===id)?.milestones||[]))}
+function toast(t){const el=document.createElement("div");el.className="toast";el.textContent=t;document.body.appendChild(el);setTimeout(()=>el.remove(),2600)}
+
+/* ---------- events ---------- */
+document.addEventListener("click",async e=>{
+  const t=e.target.closest("button,[data-close]");if(!t)return;
+  if(t.dataset.open){S.openId=t.dataset.open;$("#sheetRoot").innerHTML="";renderSheet();return}
+  if(t.hasAttribute("data-close")){S.openId=null;renderSheet();render();return}
+  if(t.dataset.person){S.person=t.dataset.person;render();return}
+  if(t.id==="vPortfolio"){S.view="portfolio";render();return}
+  if(t.id==="vPrep"){S.view="prep";render();return}
+  if(t.dataset.owner&&S.openId){const p=S.projects.find(x=>x.id===S.openId);const o=t.dataset.owner;const set=new Set(p.owners||[]);set.has(o)?set.delete(o):set.add(o);t.setAttribute("aria-pressed",set.has(o));save(p.id,{owners:[...set]});return}
+  if(t.dataset.mdel&&S.openId){save(S.openId,{milestones:msOf(S.openId).filter(m=>m.id!==t.dataset.mdel)});$("#sheetRoot").innerHTML="";render();return}
+  if(t.dataset.ndel&&S.openId){const p=S.projects.find(x=>x.id===S.openId);save(p.id,{notes:(p.notes||[]).filter(n=>n.id!==t.dataset.ndel)});$("#sheetRoot").innerHTML="";render();return}
+  if(t.id==="newBtn"){
+    if(!db){toast("The shared board isn’t available in this view.");return}
+    const id=uid();const body={name:"Untitled project",stream:S.stream||"Special Projects",kind:"Project",owners:S.view==="prep"&&S.person?[S.person]:[],health:"green",target:"",sponsor:"",goal:"",nextStep:"",blockers:"",notion:"",milestones:[],notes:[],updatedAt:new Date().toISOString()};
+    try{await db.doc("projects/"+id).set(body);S.projects.push({id,...body});S.openId=id;render();setTimeout(()=>{const n=$("#f-name");n&&(n.focus(),n.select())},30)}catch(err){toast("Couldn’t create the project.")}
+    return}
+  if(t.id==="delProj"){
+    if(t.dataset.armed){const id=S.openId;S.openId=null;S.projects=S.projects.filter(p=>p.id!==id);render();try{await db.doc("projects/"+id).delete();toast("Project deleted")}catch{toast("Couldn’t delete.")}return}
+    t.dataset.armed="1";t.textContent="Click again to delete";setTimeout(()=>{if(t.isConnected){delete t.dataset.armed;t.textContent="Delete project"}},4000);return}
+  if(t.id==="copyAgenda"){
+    const ps=S.projects.filter(p=>isActive(p)&&(p.owners||[]).includes(S.person));
+    const lines=[`1:1 with ${S.person} — ${new Date().toLocaleDateString()}`,"",...agendaFor(S.person,ps).map(a=>`• [${a[2]}] ${a[3]}`),"","Projects:",...ps.map(p=>`• ${p.name} (${HEALTH[p.health]?.[0]||""}) — next: ${openMs(p)[0]?.title||"—"}`)];
+    const txt=lines.join("\n");
+    try{await navigator.clipboard.writeText(txt);toast("Agenda copied")}catch{const ta=document.createElement("textarea");ta.value=txt;document.body.appendChild(ta);ta.select();toast("Press Ctrl/Cmd+C to copy");setTimeout(()=>ta.remove(),8000)}
+  }
+});
+document.addEventListener("change",e=>{
+  const t=e.target;
+  if(t.dataset.toggle){const[pid,mid]=t.dataset.toggle.split(":");const ms=msOf(pid);const m=ms.find(x=>x.id===mid);if(m){m.done=t.checked;m.doneOn=t.checked?iso(today()):""}save(pid,{milestones:ms});render();return}
+  if(!S.openId)return;
+  if(t.dataset.field){save(S.openId,{[t.dataset.field]:t.value.trim?t.value.trim():t.value});if(t.tagName==="SELECT"||t.type==="date")render();return}
+  if(t.dataset.mtitle){const ms=msOf(S.openId);const m=ms.find(x=>x.id===t.dataset.mtitle);if(m&&t.value.trim()){m.title=t.value.trim();save(S.openId,{milestones:ms})}return}
+  if(t.dataset.mdue){const ms=msOf(S.openId);const m=ms.find(x=>x.id===t.dataset.mdue);if(m){m.due=t.value;save(S.openId,{milestones:ms});render()}return}
+});
+document.addEventListener("submit",e=>{
+  e.preventDefault();const f=e.target;
+  if(f.id==="addMs"){const title=$("#newMsTitle").value.trim();if(!title)return;const ms=msOf(S.openId);ms.push({id:uid(),title,due:$("#newMsDue").value,done:false});save(S.openId,{milestones:ms});$("#sheetRoot").innerHTML="";render();setTimeout(()=>$("#newMsTitle")?.focus(),20);return}
+  if(f.dataset.note){const inp=f.querySelector("input");const text=inp.value.trim();if(!text)return;const p=S.projects.find(x=>x.id===f.dataset.note);save(p.id,{notes:[...(p.notes||[]),{id:uid(),date:iso(today()),text}]});inp.value="";$("#sheetRoot").innerHTML="";render();toast("Note logged")}
+});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&S.openId){S.openId=null;renderSheet();render()}});
+$("#q").addEventListener("input",e=>{S.q=e.target.value;render()});
+$("#streamFilter").addEventListener("change",e=>{S.stream=e.target.value;render()});
+$("#showDone").addEventListener("change",e=>{S.showDone=e.target.checked;render()});
+try{const v=localStorage.getItem("wb-view");if(v==="prep"||v==="portfolio")S.view=v}catch{}
+document.addEventListener("click",e=>{if(e.target.id==="vPortfolio"||e.target.id==="vPrep"){try{localStorage.setItem("wb-view",S.view)}catch{}}});
+
+/* ---------- boot ---------- */
+render();
+(async()=>{
+  db=await (window.claude?.use?.("db")??Promise.resolve(null)).catch(()=>null);
+  if(!db){S.err="The shared board can’t load in this view. Open it from claude.ai while signed in.";render();return}
+  db.collection("projects").onSnapshot(snap=>{
+    S.projects=snap.docs.map(d=>({id:d.id,...JSON.parse(JSON.stringify(d.data()))}));
+    S.ready=true;render();
+  },err=>{S.err=err?.code==="revoked"?"Access to this board changed.":"Couldn’t load the board.";S.ready=false;render()});
+})();
+</script>
