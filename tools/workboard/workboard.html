@@ -33,6 +33,10 @@ button{cursor:pointer}
 h1{font-family:var(--display);font-stretch:62%;font-weight:900;font-size:clamp(40px,6vw,64px);line-height:.9;margin:4px 0 0;text-wrap:balance}
 h1 span{color:var(--accent)}
 .sub{color:var(--muted);font-size:13px;margin-top:8px}
+.srcs{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--muted);margin-top:6px}
+.srcs a{color:var(--ink);font-weight:600;text-decoration:none;border-bottom:1px solid var(--accent)}
+.srcs a:hover{border-bottom-width:2px}
+.links{display:flex;flex-wrap:wrap;gap:14px}
 .btn{border:1px solid var(--line-strong);background:var(--card);border-radius:8px;padding:8px 14px;font-weight:600}
 .btn:hover{border-color:var(--ink)}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:#0F1F0D}
@@ -183,6 +187,7 @@ a{color:inherit}
       <div class="eyebrow">Expansion &amp; Fleet Ops</div>
       <h1>Team <span>Workboard</span></h1>
       <div class="sub" id="sub">Loading the shared board…</div>
+      <div class="srcs">Notion: <a href="https://app.notion.com/p/1e6516273df14c4095ca0fd9348902fc" target="_blank" rel="noopener">Expansion Team Projects Tracker ↗</a><a href="https://app.notion.com/p/ed580ccc77544c418c1de068f272fef9" target="_blank" rel="noopener">Special Projects Tracker ↗</a><a href="https://app.notion.com/p/306e76c43c518025a919f157967d901d" target="_blank" rel="noopener">Market Expansion hub ↗</a></div>
     </div>
     <button class="btn primary" id="newBtn" type="button">+ New project</button>
   </div>
@@ -330,7 +335,7 @@ function row(p){
   const st=ago(p.updatedAt);
   return `<button class="row" type="button" data-open="${p.id}">
     <span class="dot h-${p.health||"hold"}" title="${HEALTH[p.health]?.[0]||""}"></span>
-    <span style="min-width:0"><span class="pname">${esc(p.name)}</span><span class="kind">${esc(p.kind||"Project")}</span><span class="kind">${esc(p.size||"M")}</span>
+    <span style="min-width:0"><span class="pname">${esc(p.name)}</span><span class="kind">${esc(p.kind||"Project")}</span><span class="kind">${esc(p.size||"M")}</span>${p.priority==="Critical"?`<span class="tag bad" style="margin-left:6px">Critical</span>`:""}
       <span class="meta" style="display:block">${p.target?`Target <span class="due ${dueCls(p.target)}">${dueTxt(p.target)}</span>`:"No target date"}${p.sponsor?" · Sponsor "+esc(p.sponsor):""}${st!=null&&st>14?` · <span class="stale">no update in ${st}d</span>`:""}</span></span>
     <span class="own meta">${esc((p.owners||[]).join(", ")||"Unassigned")}</span>
     <span class="next">${n?`<span class="t">${esc(n.title)}</span><span class="due ${dueCls(n.due)}">${dueTxt(n.due)}</span>`:`<span class="meta">${ms.length?"All milestones done":"No milestones yet"}</span>`}</span>
@@ -385,11 +390,12 @@ function renderSheet(){
       <div class="f full"><span class="lab">Owners</span><div class="owners">${owners.map(o=>`<button type="button" class="chip" data-owner="${esc(o)}" aria-pressed="${(p.owners||[]).includes(o)}">${esc(o)}</button>`).join("")}</div></div>
       <div class="f"><label for="f-sponsor">Sponsor</label><input id="f-sponsor" data-field="sponsor" value="${esc(p.sponsor||"")}"></div>
       <div class="f"><label for="f-notion">Notion link</label><input id="f-notion" data-field="notion" value="${esc(p.notion||"")}" placeholder="https://…"></div>
+      <div class="f full"><label for="f-dash">Dashboard link</label><input id="f-dash" data-field="dashboard" value="${esc(p.dashboard||"")}" placeholder="https://…"></div>
       <div class="f full"><label for="f-goal">Goal / definition of done</label><textarea id="f-goal" data-field="goal">${esc(p.goal||"")}</textarea></div>
       <div class="f full"><label for="f-next">Next step</label><textarea id="f-next" data-field="nextStep">${esc(p.nextStep||"")}</textarea></div>
       <div class="f full"><label for="f-block">Blockers</label><textarea id="f-block" data-field="blockers">${esc(p.blockers||"")}</textarea></div>
     </div>
-    ${p.notion?`<a class="meta" href="${esc(p.notion)}" target="_blank" rel="noopener">Open in Notion ↗</a>`:""}
+    <div class="links">${p.notion?`<a class="meta" href="${esc(p.notion)}" target="_blank" rel="noopener">Open in Notion ↗</a>`:""}${p.dashboard?`<a class="meta" href="${esc(p.dashboard)}" target="_blank" rel="noopener">Open dashboard ↗</a>`:""}</div>
     <div class="sec"><div class="sec-h"><span class="lab">Milestones</span><span class="meta num">${ms.filter(m=>m.done).length}/${ms.length} done</span></div>
       <ul class="ms">${ms.map(m=>`<li class="${m.done?"done":""}"><input type="checkbox" data-toggle="${p.id}:${m.id}" ${m.done?"checked":""} aria-label="Done"><input class="mt" id="mt-${m.id}" data-mtitle="${m.id}" value="${esc(m.title)}" aria-label="Milestone"><input type="date" id="md-${m.id}" data-mdue="${m.id}" value="${esc(m.due||"")}" aria-label="Due date"><button class="x" type="button" data-mdel="${m.id}" aria-label="Remove milestone">×</button></li>`).join("")}</ul>
       <form class="addms" id="addMs"><input type="text" id="newMsTitle" placeholder="New milestone" autocomplete="off"><input type="date" id="newMsDue" aria-label="Due date"><button class="btn" type="submit">Add</button></form>
